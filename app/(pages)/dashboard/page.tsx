@@ -12,15 +12,6 @@ import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { restaurants } from "@/app/mock/restaurants";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,6 +25,13 @@ import {
 } from "@/components/ui/select";
 import { weekDays } from "@/constants/weekDays";
 import { FaTrash } from "react-icons/fa6";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface HourProps {
   id: number;
@@ -79,151 +77,157 @@ export default function Dashboard() {
   return (
     <main className="flex items-center justify-center h-[calc(100svh-4rem)] gap-8 ">
       <div className="space-y-4 w-full">
-        <AlertDialog>
-          <AlertDialogTrigger className="bg-primary text-background p-2 rounded hover:bg-primary/80 transition">
+        <Sheet>
+          <SheetTrigger className="bg-primary text-background p-2 rounded hover:bg-primary/80 transition">
             Novo Restaurante
-          </AlertDialogTrigger>
+          </SheetTrigger>
 
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogHeader>Novo Restaurante</AlertDialogHeader>
-            </AlertDialogHeader>
-
-            <div className="h-[500px] space-y-4 overflow-y-auto pr-5">
-              <div>
-                <p>Nome*</p>
-                <Input />
-              </div>
-
-              <div>
-                <p>Telefone 1*</p>
-                <Input />
-              </div>
-
-              <div>
-                <p>Telefone 2</p>
-                <Input />
-              </div>
-
-              <div>
-                <p>Endereço</p>
-                <Input />
-              </div>
-
-              <div>
-                <p>Link Maps</p>
-                <Input />
-              </div>
-
-              <div>
+          <SheetContent className="flex flex-col gap-2">
+            <SheetHeader>Novo Restaurante</SheetHeader>
+            <SheetDescription>
+              <div className="h-[calc(100vh-8rem)] space-y-4 overflow-y-auto pr-5 pb-4">
                 <div>
-                  <p>Cor Principal</p>
-                  <Input
-                    id="hs-color-input"
-                    value="#ffaa00"
-                    type="color"
-                    className="hidden"
-                  />
-
-                  <label
-                    htmlFor="hs-color-input"
-                    className="h-10 w-full cursor-pointer rounded disabled:opacity-50 disabled:pointer-events-none bg-primary block"
-                  />
+                  <p>Nome*</p>
+                  <Input />
                 </div>
-              </div>
 
-              <div>
-                <p>Observação</p>
-                <Textarea />
-              </div>
+                <div>
+                  <p>Telefone 1*</p>
+                  <Input />
+                </div>
 
-              <div className="border border-border p-2 rounded space-y-4 flex flex-col">
-                <p>Horários</p>
-                <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <p>Telefone 2</p>
+                  <Input />
+                </div>
+
+                <div>
+                  <p>Endereço*</p>
+                  <Input />
+                </div>
+
+                <div>
+                  <p>Link Maps</p>
+                  <Input />
+                </div>
+
+                <div>
                   <div>
-                    <p>Dia</p>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Dia" />
-                      </SelectTrigger>
+                    <p>Cor Principal*</p>
+                    <Input
+                      id="hs-color-input"
+                      value="#ffaa00"
+                      type="color"
+                      className="hidden"
+                    />
 
-                      <SelectContent>
-                        {weekDays.map((day) => (
-                          <SelectItem value={day.value} key={day.id}>
-                            {day.name}
-                          </SelectItem>
+                    <label
+                      htmlFor="hs-color-input"
+                      className="h-10 w-full cursor-pointer rounded disabled:opacity-50 disabled:pointer-events-none bg-primary block"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <p>Observação</p>
+                  <Textarea />
+                </div>
+
+                <div className="border border-border p-2 rounded space-y-4 flex flex-col">
+                  <p>Horários*</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    <div>
+                      <p>Dia</p>
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Dia" />
+                        </SelectTrigger>
+
+                        <SelectContent>
+                          {weekDays.map((day) => (
+                            <SelectItem value={day.value} key={day.id}>
+                              {day.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+
+                      <Separator />
+                    </div>
+
+                    <div>
+                      <p>Inicio</p>
+                      <Input type="time" />
+                    </div>
+
+                    <div>
+                      <p>Fim</p>
+                      <Input type="time" />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <p>Ativo</p>
+                      <Checkbox />
+                    </div>
+                  </div>
+
+                  <Button onClick={handleAddHour}>Adicionar</Button>
+
+                  {hours.map((hour) => (
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-center border border-border rounded p-2">
+                        <p>{weekDays[hour.weekDay].name}</p>
+                      </div>
+
+                      <div className="flex gap-2">
+                        {hour?.hours?.map((hourData, index) => (
+                          <div className="flex items-center gap-2">
+                            <div className="flex items-center justify-center border border-border rounded p-2">
+                              <p>{hourData.open}</p>
+                            </div>
+                            -
+                            <div className="flex items-center justify-center border border-border rounded p-2">
+                              <p>{hourData.close}</p>
+                            </div>
+                            <Button
+                              variant="destructive"
+                              onClick={() => handleRemoveHour(index)}
+                            >
+                              <FaTrash />
+                            </Button>
+                            {hour.hours && index !== hour.hours.length - 1 && (
+                              <Separator
+                                orientation="vertical"
+                                className="bg-muted-foreground"
+                              />
+                            )}
+                          </div>
                         ))}
-                      </SelectContent>
-                    </Select>
-
-                    <Separator />
-                  </div>
-
-                  <div>
-                    <p>Inicio</p>
-                    <Input type="time" />
-                  </div>
-
-                  <div>
-                    <p>Fim</p>
-                    <Input type="time" />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <p>Ativo</p>
-                    <Checkbox />
-                  </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
-                <Button onClick={handleAddHour}>Adicionar</Button>
-
-                {hours.map((hour) => (
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center justify-center border border-border rounded p-2">
-                      <p>{weekDays[hour.weekDay].name}</p>
-                    </div>
-
-                    <div className="flex gap-2">
-                      {hour?.hours?.map((hourData, index) => (
-                        <div className="flex items-center gap-2">
-                          <div className="flex items-center justify-center border border-border rounded p-2">
-                            <p>{hourData.open}</p>
-                          </div>
-                          -
-                          <div className="flex items-center justify-center border border-border rounded p-2">
-                            <p>{hourData.close}</p>
-                          </div>
-                          <Button
-                            variant="destructive"
-                            onClick={() => handleRemoveHour(index)}
-                          >
-                            <FaTrash />
-                          </Button>
-                          {hour.hours && index !== hour.hours.length - 1 && (
-                            <Separator
-                              orientation="vertical"
-                              className="bg-muted-foreground"
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                <div className="flex items-center gap-2">
+                  <p>Cardápio Ativo?</p>
+                  <Checkbox value="checked" />
+                </div>
               </div>
-
-              <div className="flex items-center gap-2">
-                <p>Cardápio Ativo?</p>
-                <Checkbox value="checked" />
-              </div>
+            </SheetDescription>
+            <div className="flex gap-2 items-center">
+              <SheetTrigger className="w-full">
+                <Button variant="destructive" className="w-full">
+                  Cancelar
+                </Button>
+              </SheetTrigger>
+              <SheetTrigger className="w-full">
+                <Button variant="default" className="w-full">
+                  Confirmar
+                </Button>
+              </SheetTrigger>
             </div>
-
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction>Continue</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+          </SheetContent>
+        </Sheet>
 
         <Separator className="w-full" />
 
@@ -256,7 +260,7 @@ export default function Dashboard() {
                 </CardContent>
                 <CardFooter>
                   <Link
-                    href={`/dashboard/restaurant/${restaurant.id}`}
+                    href={`/restaurant/${restaurant.id}`}
                     className="w-full"
                   >
                     <Button
