@@ -77,6 +77,8 @@ export default function Dashboard() {
   return (
     <main className="flex items-center justify-center h-[calc(100svh-4rem)] gap-8 ">
       <div className="space-y-4 w-full">
+        <p>Restaurantes</p>
+
         <Sheet>
           <SheetTrigger className="bg-primary text-background p-2 rounded hover:bg-primary/80 transition">
             Novo Restaurante
@@ -231,7 +233,7 @@ export default function Dashboard() {
 
         <Separator className="w-full" />
 
-        <ScrollArea className="h-[75svh]">
+        <ScrollArea className="h-[65svh] flex-1">
           <div className="grid grid-cols-1 mobile:grid-cols-2 tablet:grid-cols-4 gap-4 pb-4 tablet:pb-0">
             {restaurants.map((restaurant) => (
               <Card className="w-full" key={restaurant.id}>
