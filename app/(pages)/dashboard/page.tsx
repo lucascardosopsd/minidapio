@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Card,
   CardContent,
@@ -13,19 +12,225 @@ import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { restaurants } from "@/app/mock/restaurants";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { weekDays } from "@/constants/weekDays";
+import { FaTrash } from "react-icons/fa6";
+
+interface HourProps {
+  id: number;
+  open: string;
+  close: string;
+}
+
+interface HoursProps {
+  weekDay: number;
+  open: boolean;
+  hours?: HourProps[];
+}
 
 export default function Dashboard() {
+  const [hours, setHours] = useState<HoursProps[]>([]);
+
+  const handleAddHour = () => {
+    setHours([
+      ...hours,
+      {
+        weekDay: 2,
+        open: true,
+        hours: [
+          {
+            id: 1,
+            open: "08:00",
+            close: "13:00",
+          },
+          {
+            id: 2,
+            open: "17:00",
+            close: "23:00",
+          },
+        ],
+      },
+    ]);
+  };
+
+  const handleRemoveHour = (index: number) => {
+    setHours((prev) => prev.filter((hour, indexMap) => index !== indexMap));
+  };
+
   return (
     <main className="flex items-center justify-center h-[calc(100svh-4rem)] gap-8 ">
       <div className="space-y-4 w-full">
-        <Button>Novo Restaurante</Button>
+        <AlertDialog>
+          <AlertDialogTrigger className="bg-primary text-background p-2 rounded hover:bg-primary/80 transition">
+            Novo Restaurante
+          </AlertDialogTrigger>
+
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogHeader>Novo Restaurante</AlertDialogHeader>
+            </AlertDialogHeader>
+
+            <div className="h-[500px] space-y-4 overflow-y-auto pr-5">
+              <div>
+                <p>Nome*</p>
+                <Input />
+              </div>
+
+              <div>
+                <p>Telefone 1*</p>
+                <Input />
+              </div>
+
+              <div>
+                <p>Telefone 2</p>
+                <Input />
+              </div>
+
+              <div>
+                <p>Endereço</p>
+                <Input />
+              </div>
+
+              <div>
+                <p>Link Maps</p>
+                <Input />
+              </div>
+
+              <div>
+                <div>
+                  <p>Cor Principal</p>
+                  <Input
+                    id="hs-color-input"
+                    value="#ffaa00"
+                    type="color"
+                    className="hidden"
+                  />
+
+                  <label
+                    htmlFor="hs-color-input"
+                    className="h-10 w-full cursor-pointer rounded disabled:opacity-50 disabled:pointer-events-none bg-primary block"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <p>Observação</p>
+                <Textarea />
+              </div>
+
+              <div className="border border-border p-2 rounded space-y-4 flex flex-col">
+                <p>Horários</p>
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <p>Dia</p>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Dia" />
+                      </SelectTrigger>
+
+                      <SelectContent>
+                        {weekDays.map((day) => (
+                          <SelectItem value={day.value} key={day.id}>
+                            {day.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <Separator />
+                  </div>
+
+                  <div>
+                    <p>Inicio</p>
+                    <Input type="time" />
+                  </div>
+
+                  <div>
+                    <p>Fim</p>
+                    <Input type="time" />
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <p>Ativo</p>
+                    <Checkbox />
+                  </div>
+                </div>
+
+                <Button onClick={handleAddHour}>Adicionar</Button>
+
+                {hours.map((hour) => (
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center justify-center border border-border rounded p-2">
+                      <p>{weekDays[hour.weekDay].name}</p>
+                    </div>
+
+                    <div className="flex gap-2">
+                      {hour?.hours?.map((hourData, index) => (
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center justify-center border border-border rounded p-2">
+                            <p>{hourData.open}</p>
+                          </div>
+                          -
+                          <div className="flex items-center justify-center border border-border rounded p-2">
+                            <p>{hourData.close}</p>
+                          </div>
+                          <Button
+                            variant="destructive"
+                            onClick={() => handleRemoveHour(index)}
+                          >
+                            <FaTrash />
+                          </Button>
+                          {hour.hours && index !== hour.hours.length - 1 && (
+                            <Separator
+                              orientation="vertical"
+                              className="bg-muted-foreground"
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <p>Cardápio Ativo?</p>
+                <Checkbox value="checked" />
+              </div>
+            </div>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction>Continue</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         <Separator className="w-full" />
 
         <ScrollArea className="h-[75svh]">
           <div className="grid grid-cols-1 mobile:grid-cols-2 tablet:grid-cols-4 gap-4 pb-4 tablet:pb-0">
             {restaurants.map((restaurant) => (
-              <Card className="w-full">
+              <Card className="w-full" key={restaurant.id}>
                 <CardHeader>
                   <div className="flex justify-between">
                     <p>{restaurant.title}</p>
