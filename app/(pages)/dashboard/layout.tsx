@@ -3,7 +3,9 @@ import { BreadcrumbRouteProps } from "@/types/breacrumb";
 import { ReactNode } from "react";
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const breadcrumb: BreadcrumbRouteProps[] = [{ title: "Início", route: "/" }];
+  const breadcrumb: BreadcrumbRouteProps[] = [
+    { title: "Início", route: "/dashboard" },
+  ];
 
   return (
     <div className="flex flex-col">
