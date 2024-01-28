@@ -45,7 +45,6 @@ export default function Restaurant() {
     const file = event?.target?.files[0];
     if (file) {
       setImageUrl(URL.createObjectURL(file));
-      console.log();
     }
   };
 
@@ -53,6 +52,11 @@ export default function Restaurant() {
     <main className="flex flex-col items-start justify-center h-[calc(100svh-4rem)] gap-4">
       <div className="flex justify-between w-full items-center">
         <p>Categorias</p>
+
+        <div className="flex gap-2 flex-1 mx-8">
+          <Input />
+          <Button variant="outline">Buscar</Button>
+        </div>
 
         <div className="flex gap-2">
           <Sheet>
