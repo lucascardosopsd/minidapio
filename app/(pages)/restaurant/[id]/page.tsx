@@ -241,7 +241,7 @@ export default function Restaurant() {
       <Separator />
 
       <ScrollArea className="h-[75svh] w-full mx-auto">
-        <Accordion collapsible className="space-y-4">
+        <Accordion className="space-y-4">
           {categories.map((category) => (
             <AccordionItem
               className="flex flex-col mx-4 border-none"
@@ -264,62 +264,71 @@ export default function Restaurant() {
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                <div className="grid gap-2 p-4 border border-border mt-2 rounded">
-                  {items
+                {items.length > 0 &&
+                  items
                     .filter((item) => item.categoryId == category.id)
                     .map((item) => (
-                      <div
-                        className="flex items-center justify-between h-16 w-full border border-border rounded p-4"
-                        key={item.id}
-                      >
-                        <div className="grid grid-cols-3 gap-4 items-center">
-                          <p>{item.title}</p>
+                      <div className="grid gap-2 p-4 border border-border mt-2 rounded">
+                        <div
+                          className="flex items-center justify-between h-16 w-full border border-border rounded p-4"
+                          key={item.id}
+                        >
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <p>{item.title}</p>
 
-                          <div className="flex flex-col">
-                            <p
-                              className={
-                                item.sale.newPrice
-                                  ? "line-through text-muted"
-                                  : ""
-                              }
-                            >
-                              {item.price.toLocaleString("pt-br", {
-                                style: "currency",
-                                currency: "BRL",
-                              })}
-                            </p>
-                            {item.sale && (
-                              <p className="text-primary">
-                                {item.sale?.newPrice > 0 &&
-                                  item.sale?.newPrice.toLocaleString("pt-br", {
-                                    style: "currency",
-                                    currency: "BRL",
-                                  })}
+                            <div className="flex flex-col">
+                              <p
+                                className={
+                                  item.sale.newPrice
+                                    ? "line-through text-muted"
+                                    : ""
+                                }
+                              >
+                                {item.price.toLocaleString("pt-br", {
+                                  style: "currency",
+                                  currency: "BRL",
+                                })}
                               </p>
-                            )}
+                              {item.sale && (
+                                <p className="text-primary">
+                                  {item.sale?.newPrice > 0 &&
+                                    item.sale?.newPrice.toLocaleString(
+                                      "pt-br",
+                                      {
+                                        style: "currency",
+                                        currency: "BRL",
+                                      }
+                                    )}
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <p>Destaque</p>
+                              <Checkbox checked={item.highlight} />
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <p>Destaque</p>
-                            <Checkbox checked={item.highlight} />
+
+                          <div className="flex gap-4 ml-auto mr-2">
+                            <Button variant="default">
+                              <FaList />
+                            </Button>
+
+                            <Button variant="secondary">
+                              <FaPen />
+                            </Button>
+
+                            <Button variant="destructive">
+                              <FaTrash />
+                            </Button>
                           </div>
-                        </div>
-
-                        <div className="flex gap-4 ml-auto mr-2">
-                          <Button variant="default">
-                            <FaList />
-                          </Button>
-
-                          <Button variant="secondary">
-                            <FaPen />
-                          </Button>
-
-                          <Button variant="destructive">
-                            <FaTrash />
-                          </Button>
                         </div>
                       </div>
                     ))}
-                </div>
+
+                {items.filter((item) => item.categoryId == category.id)
+                  .length == 0 && (
+                  <p className="text-center p-4">Categoria sem items.</p>
+                )}
               </AccordionContent>
             </AccordionItem>
           ))}
