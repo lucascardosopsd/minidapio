@@ -18,21 +18,21 @@ export function ThemeToggle() {
 
   return (
     <Tabs defaultValue={theme}>
-      <TabsList className="border-none bg-background border-red h-9">
+      <TabsList className="border-none bg-background p-0">
         <TabsTrigger
           value="light"
           onClick={() => setTheme("light")}
-          className="rounded-full"
+          className="rounded h-9"
         >
-          <SunIcon className={`h-[1rem] w-[1rem]`} />
+          <SunIcon className="h-[1rem] w-[1rem]" />
         </TabsTrigger>
 
         <TabsTrigger
           value="dark"
           onClick={() => setTheme("dark")}
-          className="rounded-full"
+          className="rounded h-9"
         >
-          <MoonIcon className={`h-[1rem] w-[1rem] `} />
+          <MoonIcon className="h-[1rem] w-[1rem]" />
         </TabsTrigger>
       </TabsList>
     </Tabs>
