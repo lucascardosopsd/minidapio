@@ -175,8 +175,8 @@ export default function Dashboard() {
 
                   <Button onClick={handleAddHour}>Adicionar</Button>
 
-                  {hours.map((hour) => (
-                    <div className="flex flex-col gap-2">
+                  {hours.map((hour, index) => (
+                    <div className="flex flex-col gap-2" key={index}>
                       <div className="flex items-center justify-center border border-border rounded p-2">
                         <p>{weekDays[hour.weekDay].name}</p>
                       </div>

@@ -16,9 +16,9 @@ const Layout = ({ params: { id }, children }: LayoutProps) => {
   ];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-svh">
       <Navbar breadcrumb={breadcrumb} />
-      <div className="container">{children}</div>
+      <div className="container h-full">{children}</div>
     </div>
   );
 };
