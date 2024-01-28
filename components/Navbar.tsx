@@ -1,6 +1,7 @@
 import { BreadcrumbRouteProps } from "@/types/breacrumb";
 import { ThemeToggle } from "./ThemeToggle";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 interface NavbarProps {
   breadcrumb?: BreadcrumbRouteProps[];
@@ -22,7 +23,10 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
           </Link>
         ))}
       </div>
-      <ThemeToggle />
+      <div className="flex gap-2 items-center">
+        <ThemeToggle />
+        <Button variant="outline">Sair</Button>
+      </div>
     </div>
   );
 };
