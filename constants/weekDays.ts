@@ -1,37 +1,37 @@
 export const weekDays = [
   {
     id: 1,
-    name: "Dom",
+    name: "Domingo",
     value: "1",
   },
   {
     id: 2,
-    name: "Seg",
+    name: "Segunda",
     value: "2",
   },
   {
     id: 3,
-    name: "Ter",
+    name: "Terça",
     value: "3",
   },
   {
     id: 4,
-    name: "Qua",
+    name: "Quarta",
     value: "4",
   },
   {
     id: 5,
-    name: "Qui",
+    name: "Quinta",
     value: "5",
   },
   {
     id: 6,
-    name: "Sex",
+    name: "Sexta",
     value: "6",
   },
   {
     id: 7,
-    name: "Sab",
+    name: "Sabado",
     value: "7",
   },
 ];

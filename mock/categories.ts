@@ -24,4 +24,24 @@ export const categories = [
     title: "Categoria 5",
     restaurantId: 1,
   },
+  {
+    id: 6,
+    title: "Categoria 6",
+    restaurantId: 1,
+  },
+  {
+    id: 7,
+    title: "Categoria 7",
+    restaurantId: 1,
+  },
+  {
+    id: 8,
+    title: "Categoria 8",
+    restaurantId: 1,
+  },
+  {
+    id: 9,
+    title: "Categoria 9",
+    restaurantId: 1,
+  },
 ];

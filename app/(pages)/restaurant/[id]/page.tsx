@@ -1,6 +1,6 @@
 "use client";
-import { categories } from "@/app/mock/categories";
-import { items } from "@/app/mock/items";
+import { categories } from "@/mock/categories";
+import { items } from "@/mock/items";
 import {
   Accordion,
   AccordionContent,

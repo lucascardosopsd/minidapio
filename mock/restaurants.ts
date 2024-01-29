@@ -115,7 +115,7 @@ export const restaurants = [
     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus ante sed ligula efficitur, ac consequat odio vestibulum. In hac habitasse platea dictumst",
   },
   {
-    id: 1,
+    id: 2,
     title: "Restaurante 2",
     active: false,
     phone1: "(00)00000-0000",
