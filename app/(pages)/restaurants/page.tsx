@@ -14,7 +14,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { restaurants } from "@/mock/restaurants";
 import { useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
-import NewRestaurantForm from "@/components/forms/NewRestaurant";
+import RestaurantForm from "@/components/forms/Restaurant";
 import {
   Sheet,
   SheetContent,
@@ -44,7 +44,7 @@ export default function Dashboard() {
             <SheetHeader>Novo Restaurante</SheetHeader>
 
             <SheetDescription className="px-5 w-full max-w-[500px] overflow-y-auto h-[85svh]">
-              <NewRestaurantForm />
+              <RestaurantForm />
             </SheetDescription>
           </SheetContent>
         </Sheet>
@@ -121,7 +121,7 @@ export default function Dashboard() {
                       </SheetHeader>
 
                       <SheetDescription className="px-5 w-full max-w-[500px] overflow-y-auto h-[85svh]">
-                        <NewRestaurantForm defaultValues={restaurant} />
+                        <RestaurantForm defaultValues={restaurant} />
                       </SheetDescription>
                     </SheetContent>
                   </Sheet>

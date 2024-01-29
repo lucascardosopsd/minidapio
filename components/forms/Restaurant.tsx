@@ -28,11 +28,11 @@ import { SheetClose } from "../ui/sheet";
 import Image from "next/image";
 import { RestaurantProps } from "@/types/restaurant";
 
-interface NewRestaurantFormProps {
+interface RestaurantFormProps {
   defaultValues?: Partial<RestaurantProps> | undefined;
 }
 
-const NewRestaurantForm = ({ defaultValues = {} }: NewRestaurantFormProps) => {
+const RestaurantForm = ({ defaultValues = {} }: RestaurantFormProps) => {
   const form = useRestaurantForm({ defaultValues });
   const openRef = useRef(null);
 
@@ -372,4 +372,4 @@ const NewRestaurantForm = ({ defaultValues = {} }: NewRestaurantFormProps) => {
   );
 };
 
-export default NewRestaurantForm;
+export default RestaurantForm;
