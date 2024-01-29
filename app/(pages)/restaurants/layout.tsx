@@ -8,7 +8,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   ];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-svh">
       <Navbar breadcrumb={breadcrumb} />
       <div className="container">{children}</div>
     </div>
