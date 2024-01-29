@@ -11,7 +11,7 @@ interface LayoutProps {
 
 const Layout = ({ params: { id }, children }: LayoutProps) => {
   const breadcrumb: BreadcrumbRouteProps[] = [
-    { title: "Início", route: "/dashboard" },
+    { title: "Início", route: "/restaurants" },
     { title: "Restaurante", route: `/restaurant/${id}` },
   ];
 

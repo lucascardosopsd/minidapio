@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const breadcrumb: BreadcrumbRouteProps[] = [
-    { title: "Início", route: "/dashboard" },
+    { title: "Início", route: "/restarants" },
   ];
 
   return (
