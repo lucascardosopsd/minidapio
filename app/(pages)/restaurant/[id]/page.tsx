@@ -241,11 +241,11 @@ export default function Restaurant() {
       <Separator />
 
       <ScrollArea className="h-[75svh] w-full mx-auto">
-        <Accordion className="space-y-4">
+        <Accordion className="space-y-4" type="single">
           {categories.map((category) => (
             <AccordionItem
               className="flex flex-col mx-4 border-none"
-              value={category.id}
+              value={category.id.toString()}
             >
               <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
                 <p>{category.title}</p>
