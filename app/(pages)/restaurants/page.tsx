@@ -12,15 +12,42 @@ import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { restaurants } from "@/mock/restaurants";
-import NewRestaurantSheet from "@/components/sheets/NewRestaurant";
+import { useState } from "react";
+import { ImSpinner2 } from "react-icons/im";
+import NewRestaurantForm from "@/components/forms/NewRestaurant";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { FaArrowRight } from "react-icons/fa6";
 
 export default function Dashboard() {
+  const [loading, setLoading] = useState(false);
+
   return (
     <main className="flex items-center justify-center h-[calc(100svh-4rem)] gap-8 ">
       <div className="space-y-4 w-full">
         <p>Restaurantes</p>
 
-        <NewRestaurantSheet />
+        <Sheet>
+          <SheetTrigger className="bg-primary text-background p-2 rounded hover:bg-primary/80 transition">
+            Novo Restaurante
+          </SheetTrigger>
+
+          <SheetContent
+            className="flex flex-col items-center justify-end gap-2 w-full h-full "
+            side="bottom"
+          >
+            <SheetHeader>Novo Restaurante</SheetHeader>
+
+            <SheetDescription className="px-5 w-full max-w-[500px] overflow-y-auto h-[85svh]">
+              <NewRestaurantForm />
+            </SheetDescription>
+          </SheetContent>
+        </Sheet>
 
         <Separator className="w-full" />
 
@@ -51,18 +78,53 @@ export default function Dashboard() {
                     />
                   </div>
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="flex flex-col gap-2">
                   <Link
                     href={`/restaurant/${restaurant.id}`}
-                    className="w-full"
+                    className="w-full space-y-4"
                   >
                     <Button
                       variant={restaurant.active ? "default" : "outline"}
-                      className="w-full"
+                      className="w-full flex items-center justify-center gap-2"
+                      onClick={() => setLoading(true)}
                     >
-                      Editar
+                      {!loading ? (
+                        <>
+                          <p>Categorias</p>
+                          <FaArrowRight />
+                        </>
+                      ) : (
+                        <ImSpinner2 className="animate-spin" size={20} />
+                      )}
                     </Button>
                   </Link>
+
+                  <Sheet>
+                    <SheetTrigger
+                      className={`w-full flex items-center justify-center gap-2  text-background p-2 rounded hover:text-background hover:bg-primary transition ${
+                        !restaurant.active
+                          ? "bg-background border border-border text-accent-foreground"
+                          : "bg-muted text-accent-foreground "
+                      } `}
+                    >
+                      <p>Editar Restaurante</p>
+                    </SheetTrigger>
+
+                    <SheetContent
+                      className="flex flex-col items-center justify-end gap-2 w-full h-full "
+                      side="bottom"
+                    >
+                      <SheetHeader className="flex items-center flex-col">
+                        <p>Editar Restaurante</p>
+
+                        <Badge>{restaurant.title}</Badge>
+                      </SheetHeader>
+
+                      <SheetDescription className="px-5 w-full max-w-[500px] overflow-y-auto h-[85svh]">
+                        <NewRestaurantForm defaultValues={restaurant} />
+                      </SheetDescription>
+                    </SheetContent>
+                  </Sheet>
                 </CardFooter>
               </Card>
             ))}

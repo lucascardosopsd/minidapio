@@ -26,17 +26,22 @@ import { z } from "zod";
 import { restaurantValidator } from "@/validators/restaurant";
 import { SheetClose } from "../ui/sheet";
 import Image from "next/image";
+import { RestaurantProps } from "@/types/restaurant";
 
-const NewRestaurantForm = () => {
-  const form = useRestaurantForm();
+interface NewRestaurantFormProps {
+  defaultValues?: Partial<RestaurantProps> | undefined;
+}
+
+const NewRestaurantForm = ({ defaultValues = {} }: NewRestaurantFormProps) => {
+  const form = useRestaurantForm({ defaultValues });
   const openRef = useRef(null);
 
-  const [logoUrl, setlogoUrl] = useState<string>("");
+  const [logoFile, setLogoFile] = useState<string>("");
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setlogoUrl(URL.createObjectURL(file));
+      setLogoFile(URL.createObjectURL(file));
     }
   };
 
@@ -59,6 +64,8 @@ const NewRestaurantForm = () => {
   };
 
   const handleNewRestaurant = (data: z.infer<typeof restaurantValidator>) => {
+    // Image upload logic
+    form.setValue("logo", "/"); //URL after upload
     console.log(data);
   };
 
@@ -166,51 +173,37 @@ const NewRestaurantForm = () => {
           />
         </div>
 
-        <FormField
-          control={form.control}
-          name="logo"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Logo</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    id="logo"
-                    {...field}
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
+        {/* Logo */}
+        <div className="relative">
+          <Input
+            type="file"
+            accept="image/*"
+            id="logo"
+            onChange={handleImageChange}
+            className="hidden"
+          />
 
-                  <label
-                    htmlFor="logo"
-                    className={`flex w-full h-80 border border-dashed relative items-center justify-center hover:border-primary transition cursor-pointer rounded ${
-                      logoUrl && "border-primary"
-                    }`}
-                  >
-                    <p className="absolute bg-background z-10 p-2 text-primary rounded">
-                      {logoUrl
-                        ? "Substituir imagem"
-                        : "Clique para subir a Imagem"}
-                    </p>
-                    {logoUrl && (
-                      <Image
-                        height={0}
-                        width={0}
-                        src={logoUrl}
-                        alt="logo"
-                        sizes="1000px"
-                        className="h-full w-full absolute left-0 top-0 rounded object-cover"
-                      />
-                    )}
-                  </label>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <label
+            htmlFor="logo"
+            className={`flex w-full h-80 border border-dashed relative items-center justify-center hover:border-primary transition cursor-pointer rounded ${
+              logoFile && "border-primary"
+            }`}
+          >
+            <p className="absolute bg-background z-10 p-2 text-primary rounded">
+              {logoFile ? "Substituir imagem" : "Clique para subir a Imagem"}
+            </p>
+            {(logoFile || defaultValues.logo) && (
+              <Image
+                height={0}
+                width={0}
+                src={(logoFile || defaultValues.logo) ?? ""}
+                alt="logo"
+                sizes="1000px"
+                className="h-full w-full absolute left-0 top-0 rounded object-cover"
+              />
+            )}
+          </label>
+        </div>
 
         {/* Hours */}
         <div className="border border-border p-2 rounded space-y-4 flex flex-col">
@@ -229,7 +222,14 @@ const NewRestaurantForm = () => {
                         <FormControl>
                           <Select
                             onValueChange={field.onChange}
-                            defaultValue={field.value}
+                            defaultValue={
+                              !field.value
+                                ? defaultValues?.workHours &&
+                                  defaultValues?.workHours[
+                                    index
+                                  ]?.weekDay.toString()
+                                : field.value.toString()
+                            }
                           >
                             <SelectTrigger>
                               <SelectValue placeholder="Selecione o dia" />

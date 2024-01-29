@@ -10,109 +10,22 @@ export const restaurants = [
       {
         weekDay: 1,
         open: false,
-        hours: [],
+        times: {},
       },
       {
         weekDay: 2,
         open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
-      },
-      {
-        weekDay: 3,
-        open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
-      },
-      {
-        weekDay: 4,
-        open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
-      },
-      {
-        weekDay: 5,
-        open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
-      },
-      {
-        weekDay: 6,
-        open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
-      },
-      {
-        weekDay: 7,
-        open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
+        times: {
+          open: "08:00",
+          close: "13:00",
+        },
       },
     ],
     logo: "https://i.imgur.com/7jkiMQN.png",
     color: "#f02",
-    linkMaps: "#",
+    linkMaps: "/",
     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus ante sed ligula efficitur, ac consequat odio vestibulum. In hac habitasse platea dictumst",
+    activeMenu: true,
   },
   {
     id: 2,
@@ -125,108 +38,21 @@ export const restaurants = [
       {
         weekDay: 1,
         open: false,
-        hours: [],
+        times: {},
       },
       {
         weekDay: 2,
         open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
-      },
-      {
-        weekDay: 3,
-        open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
-      },
-      {
-        weekDay: 4,
-        open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
-      },
-      {
-        weekDay: 5,
-        open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
-      },
-      {
-        weekDay: 6,
-        open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
-      },
-      {
-        weekDay: 7,
-        open: true,
-        hours: [
-          {
-            id: 1,
-            open: "08:00",
-            close: "13:00",
-          },
-          {
-            id: 2,
-            open: "17:00",
-            close: "23:00",
-          },
-        ],
+        times: {
+          open: "08:00",
+          close: "13:00",
+        },
       },
     ],
     logo: "https://i.imgur.com/7jkiMQN.png",
     color: "#f02",
-    linkMaps: "#",
+    linkMaps: "/",
     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus ante sed ligula efficitur, ac consequat odio vestibulum. In hac habitasse platea dictumst",
+    activeMenu: true,
   },
 ];
