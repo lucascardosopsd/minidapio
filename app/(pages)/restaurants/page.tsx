@@ -15,14 +15,8 @@ import { restaurants } from "@/mock/restaurants";
 import { useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 import RestaurantForm from "@/components/forms/Restaurant";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { FaArrowRight } from "react-icons/fa6";
+import RestaurantSheet from "@/components/sheets/Restaurant";
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(false);
@@ -32,22 +26,12 @@ export default function Dashboard() {
       <div className="space-y-4 w-full">
         <p>Restaurantes</p>
 
-        <Sheet>
-          <SheetTrigger className="bg-primary text-background p-2 rounded hover:bg-primary/80 transition">
-            Novo Restaurante
-          </SheetTrigger>
-
-          <SheetContent
-            className="flex flex-col items-center justify-end gap-2 w-full h-full "
-            side="bottom"
-          >
-            <SheetHeader>Novo Restaurante</SheetHeader>
-
-            <SheetDescription className="px-5 w-full max-w-[500px] overflow-y-auto h-[85svh]">
-              <RestaurantForm />
-            </SheetDescription>
-          </SheetContent>
-        </Sheet>
+        <RestaurantSheet
+          restaurantForm={<RestaurantForm />}
+          sheetTitle="Novo Restaurante"
+          triggerText="Novo Restaurante"
+          triggerVariant="default"
+        />
 
         <Separator className="w-full" />
 
@@ -99,32 +83,14 @@ export default function Dashboard() {
                     </Button>
                   </Link>
 
-                  <Sheet>
-                    <SheetTrigger
-                      className={`w-full flex items-center justify-center gap-2  text-background p-2 rounded hover:text-background hover:bg-primary transition ${
-                        !restaurant.active
-                          ? "bg-background border border-border text-accent-foreground"
-                          : "bg-muted text-accent-foreground "
-                      } `}
-                    >
-                      <p>Editar Restaurante</p>
-                    </SheetTrigger>
-
-                    <SheetContent
-                      className="flex flex-col items-center justify-end gap-2 w-full h-full "
-                      side="bottom"
-                    >
-                      <SheetHeader className="flex items-center flex-col">
-                        <p>Editar Restaurante</p>
-
-                        <Badge>{restaurant.title}</Badge>
-                      </SheetHeader>
-
-                      <SheetDescription className="px-5 w-full max-w-[500px] overflow-y-auto h-[85svh]">
-                        <RestaurantForm defaultValues={restaurant} />
-                      </SheetDescription>
-                    </SheetContent>
-                  </Sheet>
+                  <RestaurantSheet
+                    restaurantForm={
+                      <RestaurantForm defaultValues={restaurant} />
+                    }
+                    sheetTitle="Editar Restaurant"
+                    triggerText="Editar"
+                    triggerVariant="outline"
+                  />
                 </CardFooter>
               </Card>
             ))}

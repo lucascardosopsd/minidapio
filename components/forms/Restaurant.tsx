@@ -73,7 +73,7 @@ const RestaurantForm = ({ defaultValues = {} }: RestaurantFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleNewRestaurant)}
-        className="space-y-4 pb-10 relative"
+        className="space-y-4 pb-10 relative max-w-[500px] w-full"
       >
         {/* Basic */}
         <FormField
@@ -364,7 +364,7 @@ const RestaurantForm = ({ defaultValues = {} }: RestaurantFormProps) => {
           </SheetClose>
 
           <Button variant="default" className="w-full" type="submit">
-            Criar
+            {defaultValues ? "Atualizar" : "Criar"}
           </Button>
         </div>
       </form>
