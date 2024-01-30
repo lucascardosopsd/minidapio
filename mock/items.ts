@@ -1,14 +1,4 @@
-interface ItemProps {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  image: string;
-  highlight: boolean;
-  active: boolean;
-  sale: { newPrice: number };
-  categoryId: number;
-}
+import { ItemProps } from "@/types/item";
 
 export const items: ItemProps[] = [
   {
@@ -20,9 +10,8 @@ export const items: ItemProps[] = [
     image: "https://i.imgur.com/PdzBxLb.png",
     highlight: true,
     active: true,
-    sale: {
-      newPrice: 8.99,
-    },
+    sale: false,
+    salePrice: undefined,
     categoryId: 1,
   },
   {
@@ -34,9 +23,8 @@ export const items: ItemProps[] = [
     image: "https://i.imgur.com/PdzBxLb.png",
     highlight: false,
     active: true,
-    sale: {
-      newPrice: 0,
-    },
+    sale: true,
+    salePrice: 2,
     categoryId: 1,
   },
   {
@@ -48,9 +36,8 @@ export const items: ItemProps[] = [
     image: "https://i.imgur.com/PdzBxLb.png",
     highlight: false,
     active: true,
-    sale: {
-      newPrice: 0,
-    },
+    sale: false,
+    salePrice: undefined,
     categoryId: 1,
   },
   {
@@ -62,9 +49,8 @@ export const items: ItemProps[] = [
     image: "https://i.imgur.com/PdzBxLb.png",
     highlight: false,
     active: true,
-    sale: {
-      newPrice: 0,
-    },
+    sale: true,
+    salePrice: 2,
     categoryId: 2,
   },
 ];
