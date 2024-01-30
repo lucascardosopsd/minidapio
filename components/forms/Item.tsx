@@ -26,12 +26,14 @@ import { ItemValidator } from "@/validators/item";
 import { Checkbox } from "../ui/checkbox";
 import Fence from "../Fence";
 import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
 
 interface ItemFormProps {
   defaultValues?: Partial<ItemProps>;
+  toggleOpen: () => void;
 }
 
-const ItemForm = ({ defaultValues }: ItemFormProps) => {
+const ItemForm = ({ defaultValues, toggleOpen }: ItemFormProps) => {
   const form = useItemFormHook({ defaultValues });
 
   const [itemImg, setItemImg] = useState<string>("");
@@ -262,6 +264,21 @@ const ItemForm = ({ defaultValues }: ItemFormProps) => {
               </FormItem>
             )}
           />
+        </div>
+
+        <div className="flex gap-2 items-center">
+          <Button
+            variant="destructive"
+            className="w-full"
+            type="button"
+            onClick={toggleOpen}
+          >
+            Cancelar
+          </Button>
+
+          <Button variant="default" className="w-full" type="submit">
+            {defaultValues ? "Atualizar" : "Criar"}
+          </Button>
         </div>
       </form>
     </Form>
