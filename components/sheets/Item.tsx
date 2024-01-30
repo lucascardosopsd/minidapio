@@ -15,7 +15,6 @@ interface ItemSheetProps {
   triggerVariant: ButtonVariants;
   sheetTitle: string | ReactNode;
   sheetDescription?: string;
-  update?: boolean;
 }
 
 const ItemSheet = ({

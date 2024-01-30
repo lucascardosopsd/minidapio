@@ -4,18 +4,25 @@ import { Button } from "./ui/button";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import ItemSheet from "./sheets/Item";
 import ItemForm from "./forms/Item";
+import { useItemStore } from "@/context/item";
 
 interface ItemCardProps {
   item: ItemProps;
 }
 
 const ItemCard = ({ item }: ItemCardProps) => {
+  const { toggleId, idList } = useItemStore();
+
   return (
     <div
       className="flex items-center justify-between h-16 w-full border border-primary rounded p-4"
       key={item.id}
     >
-      <div className="grid grid-cols-3 gap-4 items-center">
+      <div className="flex justify-between items-center w-full max-w-[400px]">
+        <Checkbox
+          onClick={() => toggleId(item.id)}
+          checked={idList.some((id) => item.id == id)}
+        />
         <p>{item.title}</p>
 
         <div className="flex flex-col">
@@ -48,7 +55,6 @@ const ItemCard = ({ item }: ItemCardProps) => {
           sheetTitle="Novo Item"
           triggerText={<FaPen />}
           triggerVariant="secondary"
-          update
         />
 
         <Button variant="destructive">

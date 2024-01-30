@@ -16,8 +16,12 @@ import ItemForm from "@/components/forms/Item";
 import ItemSheet from "@/components/sheets/Item";
 import ItemCard from "@/components/ItemCard";
 import CategorySheet from "@/components/sheets/Category";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useItemStore } from "@/context/item";
 
 export default function Restaurant() {
+  const { idList, setAllIds } = useItemStore();
+
   return (
     <main className="flex flex-col items-start justify-center h-[calc(100svh-4rem)] gap-4">
       <div className="flex justify-between w-full items-center">
@@ -68,7 +72,43 @@ export default function Restaurant() {
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                <div className="flex flex-col space-y-2 mt-2">
+                <div className="flex flex-col space-y-2 mt-2 ">
+                  {items.filter((item) => item.categoryId == category.id)
+                    .length > 1 &&
+                    idList.length >= 1 && (
+                      <div className="flex gap-4">
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            onClick={() => {
+                              const categoryItemIds = items
+                                .filter(
+                                  (item) => item.categoryId == category.id
+                                )
+                                .map((item) => item.id);
+
+                              setAllIds(categoryItemIds);
+                            }}
+                          />
+                          <p className="text-mutted">Selecionar Tudo</p>
+
+                          <Separator orientation="vertical" />
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <Checkbox />
+                          <p className="text-mutted">Transferir Tudo</p>
+
+                          <Separator orientation="vertical" />
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <Checkbox />
+                          <p className="text-mutted">Apagar Tudo</p>
+
+                          <Separator orientation="vertical" />
+                        </div>
+                      </div>
+                    )}
                   {items.length > 0 &&
                     items
                       .filter((item) => item.categoryId == category.id)
