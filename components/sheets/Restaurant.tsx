@@ -6,11 +6,11 @@ import {
   SheetHeader,
   SheetTitle,
 } from "../ui/sheet";
-import { ReactNode, useState } from "react";
+import { ReactElement, ReactNode, cloneElement, useState } from "react";
 import { Button } from "../ui/button";
 
 interface RestaurantSheetProps {
-  restaurantForm: ReactNode;
+  restaurantForm: ReactElement;
   triggerText: string | ReactNode;
   triggerVariant: ButtonVariants;
   sheetTitle: string | ReactNode;
@@ -45,7 +45,7 @@ const RestaurantSheet = ({
           <SheetDescription>{sheetDescription}</SheetDescription>
         </SheetHeader>
 
-        {restaurantForm}
+        {cloneElement(restaurantForm, { toggleOpen: toggleOpen })}
       </SheetContent>
     </Sheet>
   );

@@ -24,15 +24,18 @@ import { useFieldArray } from "react-hook-form";
 import { ChangeEvent, useRef, useState } from "react";
 import { z } from "zod";
 import { restaurantValidator } from "@/validators/restaurant";
-import { SheetClose } from "../ui/sheet";
 import Image from "next/image";
 import { RestaurantProps } from "@/types/restaurant";
 
 interface RestaurantFormProps {
   defaultValues?: Partial<RestaurantProps> | undefined;
+  toggleOpen?: () => void;
 }
 
-const RestaurantForm = ({ defaultValues = {} }: RestaurantFormProps) => {
+const RestaurantForm = ({
+  defaultValues = {},
+  toggleOpen = () => {},
+}: RestaurantFormProps) => {
   const form = useRestaurantForm({ defaultValues });
   const openRef = useRef(null);
 
@@ -357,11 +360,14 @@ const RestaurantForm = ({ defaultValues = {} }: RestaurantFormProps) => {
         />
 
         <div className="flex gap-2 items-center">
-          <SheetClose asChild className="w-full">
-            <Button variant="destructive" className="w-full" type="button">
-              Cancelar
-            </Button>
-          </SheetClose>
+          <Button
+            variant="destructive"
+            className="w-full"
+            type="button"
+            onClick={toggleOpen}
+          >
+            Cancelar
+          </Button>
 
           <Button variant="default" className="w-full" type="submit">
             {defaultValues ? "Atualizar" : "Criar"}
