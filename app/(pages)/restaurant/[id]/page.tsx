@@ -20,7 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { FaList, FaPen, FaTrash } from "react-icons/fa6";
+import { FaPen, FaTrash } from "react-icons/fa6";
 import ItemForm from "@/components/forms/Item";
 import ItemSheet from "@/components/sheets/Item";
 import ItemCard from "@/components/ItemCard";
@@ -72,7 +72,7 @@ export default function Restaurant() {
       <Separator />
 
       <ScrollArea className="h-[75svh] w-full mx-auto">
-        <Accordion className="space-y-4" type="single">
+        <Accordion className="space-y-2" type="single">
           {categories.map((category) => (
             <AccordionItem
               className="flex flex-col mx-4 border-none"
@@ -81,10 +81,6 @@ export default function Restaurant() {
               <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
                 <p>{category.title}</p>
                 <div className="flex gap-4 ml-auto mr-2">
-                  <Button variant="default">
-                    <FaList />
-                  </Button>
-
                   <Button variant="secondary">
                     <FaPen />
                   </Button>
@@ -95,11 +91,12 @@ export default function Restaurant() {
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                {items.length > 0 &&
-                  items
-                    .filter((item) => item.categoryId == category.id)
-                    .map((item) => <ItemCard item={item} />)}
-
+                <div className="flex flex-col space-y-2 mt-2">
+                  {items.length > 0 &&
+                    items
+                      .filter((item) => item.categoryId == category.id)
+                      .map((item) => <ItemCard item={item} key={item.id} />)}
+                </div>
                 {items.filter((item) => item.categoryId == category.id)
                   .length == 0 && (
                   <p className="text-center p-4">Categoria sem items.</p>
