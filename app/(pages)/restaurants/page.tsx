@@ -26,12 +26,14 @@ export default function Dashboard() {
       <div className="space-y-4 w-full">
         <p>Restaurantes</p>
 
-        <RestaurantSheet
-          restaurantForm={<RestaurantForm />}
-          sheetTitle="Novo Restaurante"
-          triggerText="Novo Restaurante"
-          triggerVariant="default"
-        />
+        <div className="max-w-[200px]">
+          <RestaurantSheet
+            restaurantForm={<RestaurantForm />}
+            sheetTitle="Novo Restaurante"
+            triggerText="Novo Restaurante"
+            triggerVariant="default"
+          />
+        </div>
 
         <Separator className="w-full" />
 

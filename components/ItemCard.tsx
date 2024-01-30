@@ -1,7 +1,7 @@
 import { ItemProps } from "@/types/item";
 import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
-import { FaList, FaPen, FaTrash } from "react-icons/fa6";
+import { FaPen, FaTrash } from "react-icons/fa6";
 import ItemSheet from "./sheets/Item";
 import ItemForm from "./forms/Item";
 
@@ -47,10 +47,6 @@ const ItemCard = ({ item }: ItemCardProps) => {
         </div>
 
         <div className="flex gap-4 ml-auto mr-2">
-          <Button variant="default">
-            <FaList />
-          </Button>
-
           <ItemSheet
             itemForm={<ItemForm defaultValues={item} />}
             sheetTitle="Novo Item"

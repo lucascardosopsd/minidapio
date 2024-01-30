@@ -20,15 +20,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useState } from "react";
 import { FaList, FaPen, FaTrash } from "react-icons/fa6";
 import ItemForm from "@/components/forms/Item";
 import ItemSheet from "@/components/sheets/Item";
 import ItemCard from "@/components/ItemCard";
 
 export default function Restaurant() {
-  const [imageUrl, setImageUrl] = useState<string>();
-
   return (
     <main className="flex flex-col items-start justify-center h-[calc(100svh-4rem)] gap-4">
       <div className="flex justify-between w-full items-center">
