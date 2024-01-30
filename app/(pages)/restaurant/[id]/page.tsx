@@ -11,19 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import ItemForm from "@/components/forms/Item";
 import ItemSheet from "@/components/sheets/Item";
 import ItemCard from "@/components/ItemCard";
+import CategorySheet from "@/components/sheets/Category";
 
 export default function Restaurant() {
   return (
@@ -37,29 +29,11 @@ export default function Restaurant() {
         </div>
 
         <div className="flex gap-2">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button>Nova Categoria</Button>
-            </SheetTrigger>
-
-            <SheetContent className="w-1/2">
-              <SheetHeader>
-                <SheetTitle>Nova Categoria</SheetTitle>
-              </SheetHeader>
-              <div>
-                <p>Nome</p>
-                <Input />
-              </div>
-
-              <SheetFooter className="py-2">
-                <SheetClose asChild>
-                  <Button type="submit" className="w-full">
-                    Criar
-                  </Button>
-                </SheetClose>
-              </SheetFooter>
-            </SheetContent>
-          </Sheet>
+          <CategorySheet
+            sheetTitle="Criar Categoria"
+            triggerText="Nova Categoria"
+            triggerVariant="default"
+          />
 
           <ItemSheet
             itemForm={<ItemForm />}
@@ -81,9 +55,12 @@ export default function Restaurant() {
               <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
                 <p>{category.title}</p>
                 <div className="flex gap-4 ml-auto mr-2">
-                  <Button variant="secondary">
-                    <FaPen />
-                  </Button>
+                  <CategorySheet
+                    sheetTitle="Editar Categoria"
+                    triggerText={<FaPen />}
+                    triggerVariant="default"
+                    defaultValues={category}
+                  />
 
                   <Button variant="destructive">
                     <FaTrash />
