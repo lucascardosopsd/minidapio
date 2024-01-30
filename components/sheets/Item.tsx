@@ -24,7 +24,6 @@ const ItemSheet = ({
   triggerVariant = "default",
   sheetTitle,
   sheetDescription,
-  update,
 }: ItemSheetProps) => {
   const [open, setOpen] = useState(false);
 

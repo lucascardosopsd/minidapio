@@ -30,10 +30,10 @@ import { Button } from "../ui/button";
 
 interface ItemFormProps {
   defaultValues?: Partial<ItemProps>;
-  toggleOpen: () => void;
+  toggleOpen?: () => void;
 }
 
-const ItemForm = ({ defaultValues, toggleOpen }: ItemFormProps) => {
+const ItemForm = ({ defaultValues, toggleOpen = () => {} }: ItemFormProps) => {
   const form = useItemFormHook({ defaultValues });
 
   const [itemImg, setItemImg] = useState<string>("");
