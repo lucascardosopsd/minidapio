@@ -11,17 +11,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { FaPen, FaTrash } from "react-icons/fa6";
+import { FaCheck, FaPen, FaTrash } from "react-icons/fa6";
 import ItemForm from "@/components/forms/Item";
 import ItemSheet from "@/components/sheets/Item";
 import ItemCard from "@/components/ItemCard";
 import CategorySheet from "@/components/sheets/Category";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useItemStore } from "@/context/item";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function Restaurant() {
   const { idList, setAllIds } = useItemStore();
-
   return (
     <main className="flex flex-col items-start justify-center h-[calc(100svh-4rem)] gap-4">
       <div className="flex justify-between w-full items-center">
@@ -73,42 +73,65 @@ export default function Restaurant() {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col space-y-2 mt-2 ">
-                  {items.filter((item) => item.categoryId == category.id)
-                    .length > 1 &&
-                    idList.length >= 1 && (
-                      <div className="flex gap-4">
-                        <div className="flex items-center gap-2">
-                          <Checkbox
-                            onClick={() => {
-                              const categoryItemIds = items
-                                .filter(
-                                  (item) => item.categoryId == category.id
-                                )
-                                .map((item) => item.id);
+                  <AnimatePresence>
+                    {items.filter((item) => item.categoryId == category.id)
+                      .length > 1 &&
+                      idList.length >= 1 && (
+                        <motion.div
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                        >
+                          <div className="flex gap-4 px-3">
+                            <div className="flex items-center gap-2">
+                              {(() => {
+                                const categoryItemsId = items
+                                  .filter(
+                                    (item) => item.categoryId == category.id
+                                  )
+                                  .map((item) => item.id);
 
-                              setAllIds(categoryItemIds);
-                            }}
-                          />
-                          <p className="text-mutted">Selecionar Tudo</p>
+                                return (
+                                  <Checkbox
+                                    checked={
+                                      idList.length == categoryItemsId.length
+                                    }
+                                    onClick={() => {
+                                      idList.length !== categoryItemsId.length
+                                        ? setAllIds(categoryItemsId)
+                                        : setAllIds([]);
+                                    }}
+                                  />
+                                );
+                              })()}
 
-                          <Separator orientation="vertical" />
-                        </div>
+                              <p className="text-mutted">Todos</p>
 
-                        <div className="flex items-center gap-2">
-                          <Checkbox />
-                          <p className="text-mutted">Transferir Tudo</p>
+                              <Separator orientation="vertical" />
+                            </div>
 
-                          <Separator orientation="vertical" />
-                        </div>
+                            <Button size="sm">Apagar</Button>
 
-                        <div className="flex items-center gap-2">
-                          <Checkbox />
-                          <p className="text-mutted">Apagar Tudo</p>
+                            <Button size="sm" variant="outline">
+                              Transferir
+                            </Button>
+                          </div>
+                        </motion.div>
+                      )}
+                  </AnimatePresence>
 
-                          <Separator orientation="vertical" />
-                        </div>
-                      </div>
-                    )}
+                  <div className="flex items-center gap-4 px-3 text-accent">
+                    <p>
+                      <FaCheck />
+                    </p>
+                    <p className="flex-[2] pl-4">Nome</p>
+                    <div className="flex-1 flex gap-4">
+                      <p className="flex-1">Preço</p>
+                      <p className="flex-1">Tipo</p>
+                      <p className="flex-1">Status</p>
+                      <p className="flex-1 flex justify-center">Ações</p>
+                    </div>
+                  </div>
                   {items.length > 0 &&
                     items
                       .filter((item) => item.categoryId == category.id)

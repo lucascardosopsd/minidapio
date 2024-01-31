@@ -3,7 +3,7 @@ import { ItemProps } from "@/types/item";
 export const items: ItemProps[] = [
   {
     id: 1,
-    title: "Item 1",
+    title: "Hamburguer Tradicional",
     description:
       "Irure velit irure occaecat amet velit aute quis. Duis commodo qui culpa et et dolor excepteur consectetur voluptate veniam dolor ut pariatur. Fugiat eiusmod magna sunt ex culpa.",
     price: 10,
