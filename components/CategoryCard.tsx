@@ -99,17 +99,18 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
               )}
           </AnimatePresence>
 
-          <div className="flex items-center gap-4 px-3 text-accent">
-            <p>
-              <FaCheck />
-            </p>
-            <p className="flex-[2] pl-4">Nome</p>
-            <div className="flex-1 flex gap-4">
-              <p className="flex-1">Preço</p>
-              <p className="flex-1">Tipo</p>
-              <p className="flex-1">Status</p>
-              <p className="flex-1 flex justify-center">Ações</p>
+          <div className="flex items-center pl-3 text-foreground/50">
+            <div className="flex gap-2 flex-[2]">
+              <p>
+                <FaCheck />
+              </p>
+              <p>Nome</p>
             </div>
+            <p className="flex-1">Preço</p>
+            <p className="flex-1">Desconto</p>
+            <p className="flex-1">Tipo</p>
+            <p className="flex-1">Status</p>
+            <p className="flex-1 flex justify-center">Ações</p>
           </div>
           {items.length > 0 &&
             items

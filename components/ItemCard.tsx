@@ -28,74 +28,99 @@ const ItemCard = ({ item, category }: ItemCardProps) => {
         />
       </div>
 
-      <p className="flex-[2]">{item.title}</p>
+      <p className="flex-[1.9]">{item.title}</p>
 
-      <div className="flex gap-4 flex-1">
-        <div className="flex justify-center flex-col flex-1">
-          <p className={item.salePrice ? "line-through text-muted" : ""}>
-            {item.price.toLocaleString("pt-br", {
-              style: "currency",
-              currency: "BRL",
-            })}
+      <div className="flex justify-center flex-col flex-1">
+        <p className={item.salePrice ? "line-through text-muted" : ""}>
+          {item.price.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL",
+          })}
+        </p>
+        {item.sale && (
+          <p className="text-primary">
+            {item?.salePrice &&
+              item?.salePrice > 0 &&
+              item?.salePrice.toLocaleString("pt-br", {
+                style: "currency",
+                currency: "BRL",
+              })}
           </p>
-          {item.sale && (
-            <p className="text-primary">
-              {item?.salePrice &&
-                item?.salePrice > 0 &&
-                item?.salePrice.toLocaleString("pt-br", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
-            </p>
-          )}
-        </div>
+        )}
+      </div>
 
-        <div className="flex items-center gap-2 flex-1">
-          {item.sale ? (
-            <Badge className="w-full flex justify-center">Promoção</Badge>
-          ) : (
-            <Badge variant="outline" className="w-full flex justify-center">
-              Preço
-            </Badge>
-          )}
-        </div>
+      <div className="flex items-center gap-2 flex-1">
+        {item.sale ? (
+          <Badge className="w-full max-w-[100px] flex justify-center">
+            Promoção
+          </Badge>
+        ) : (
+          <Badge
+            variant="outline"
+            className="w-full max-w-[100px] flex justify-center"
+          >
+            Preço
+          </Badge>
+        )}
+      </div>
 
-        <div className="flex items-center gap-2 flex-1">
-          {item.highlight ? (
-            <Badge className="w-full flex justify-center">Destaque</Badge>
-          ) : (
-            <Badge variant="outline">Normal</Badge>
-          )}
-        </div>
+      <div className="flex items-center gap-2 flex-1">
+        {item.highlight ? (
+          <Badge className="w-full max-w-[100px] flex justify-center">
+            Destaque
+          </Badge>
+        ) : (
+          <Badge
+            variant="outline"
+            className="w-full max-w-[100px] flex justify-center"
+          >
+            Normal
+          </Badge>
+        )}
+      </div>
 
-        <div className="flex gap-2 justify-end flex-1">
-          <ItemSheet
-            itemForm={<ItemForm defaultValues={item} />}
-            sheetTitle="Novo Item"
-            triggerText={<FaPen />}
-            triggerVariant="secondary"
-          />
+      <div className="flex items-center gap-2 flex-1">
+        {item.active ? (
+          <Badge className="w-full max-w-[100px] flex justify-center">
+            Ativo
+          </Badge>
+        ) : (
+          <Badge
+            variant="outline"
+            className="w-full max-w-[100px] flex justify-center"
+          >
+            Inativo
+          </Badge>
+        )}
+      </div>
 
-          <DeleteModal
-            action={() => {}}
-            dialogTitle="Deletar Item"
-            triggerText={<FaTrash />}
-            dialogDescription={
-              <div className="flex flex-col gap-2">
-                <div className="flex gap-2">
-                  <p>Você está apagando o item</p>
-                  <Badge>{item.title}</Badge>
-                </div>
+      <div className="flex gap-2 justify-end flex-1">
+        <ItemSheet
+          itemForm={<ItemForm defaultValues={item} />}
+          sheetTitle="Novo Item"
+          triggerText={<FaPen />}
+          triggerVariant="secondary"
+        />
 
-                <div className="flex gap-2">
-                  <p>Da categoria</p>
-                  <Badge variant="destructive">{category.title}</Badge>
-                </div>
+        <DeleteModal
+          action={() => {}}
+          dialogTitle="Deletar Item"
+          triggerText={<FaTrash />}
+          dialogDescription={
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <p>Você está apagando o item</p>
+                <Badge>{item.title}</Badge>
               </div>
-            }
-            triggerVariant="destructive"
-          />
-        </div>
+
+              <div className="flex gap-2">
+                <p>Da categoria</p>
+                <Badge variant="destructive">{category.title}</Badge>
+              </div>
+            </div>
+          }
+          triggerVariant="destructive"
+        />
       </div>
     </div>
   );
