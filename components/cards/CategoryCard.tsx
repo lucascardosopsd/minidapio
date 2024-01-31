@@ -32,7 +32,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
     >
       <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
         <p>{category.title}</p>
-        <div className="flex gap-4 ml-auto mr-2">
+        <div className="flex gap-4 ml-auto">
           <CategorySheet
             sheetTitle="Editar Categoria"
             triggerText={<FaPen />}
