@@ -12,7 +12,6 @@ import { Input } from "../ui/input";
 
 import { NumericFormat } from "react-number-format";
 import { ChangeEvent, useState } from "react";
-import Image from "next/image";
 import { categories } from "@/mock/categories";
 import {
   Select,
@@ -27,6 +26,10 @@ import { Checkbox } from "../ui/checkbox";
 import Fence from "../Fence";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import FieldBuilder from "../FieldBuilder";
+import UploadImage from "../UploadImage";
+import { useWatch } from "react-hook-form";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface ItemFormProps {
   defaultValues?: Partial<ItemProps>;
@@ -36,12 +39,18 @@ interface ItemFormProps {
 const ItemForm = ({ defaultValues, toggleOpen = () => {} }: ItemFormProps) => {
   const form = useItemFormHook({ defaultValues });
 
-  const [itemImg, setItemImg] = useState<string>("");
+  const [imgFile, setImgFile] = useState<string>("");
+
+  const watchSale = useWatch({
+    control: form.control,
+    name: "sale",
+    defaultValue: false,
+  });
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setItemImg(URL.createObjectURL(file));
+      setImgFile(URL.createObjectURL(file));
     }
   };
 
@@ -53,18 +62,11 @@ const ItemForm = ({ defaultValues, toggleOpen = () => {} }: ItemFormProps) => {
         className="flex flex-col gap-4"
         onSubmit={form.handleSubmit(handleNewItem)}
       >
-        <FormField
+        <FieldBuilder
           control={form.control}
+          fieldElement={<Input />}
           name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nome*</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          title="Nome*"
         />
 
         <FormField
@@ -81,188 +83,122 @@ const ItemForm = ({ defaultValues, toggleOpen = () => {} }: ItemFormProps) => {
           )}
         />
 
-        <FormField
+        <FieldBuilder
           control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Preço*</FormLabel>
-              <FormControl>
-                <NumericFormat
-                  {...field}
-                  decimalSeparator=","
-                  maxLength={8}
-                  prefix="R$"
-                  placeholder="R$0,00"
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          fieldElement={<Textarea />}
+          name="description"
+          title="Descrição*"
         />
 
-        <div className="relative">
-          <Input
-            type="file"
-            accept="image/*"
-            id="logo"
-            onChange={handleImageChange}
-            className="hidden"
-          />
+        <FieldBuilder
+          control={form.control}
+          fieldClassName="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          fieldElement={
+            <NumericFormat
+              decimalSeparator=","
+              maxLength={8}
+              prefix="R$"
+              placeholder="R$0,00"
+            />
+          }
+          name="price"
+          title="Preço*"
+        />
 
-          <label
-            htmlFor="logo"
-            className={`flex w-full h-80 border border-dashed relative items-center justify-center hover:border-primary transition cursor-pointer rounded ${
-              itemImg && "border-primary"
-            }`}
-          >
-            <p className="absolute bg-background z-10 p-2 text-primary rounded">
-              {itemImg ? "Substituir imagem" : "Clique para subir a Imagem"}
-            </p>
-            {(itemImg || defaultValues?.image) && (
-              <Image
-                height={0}
-                width={0}
-                src={(itemImg || defaultValues?.image) ?? ""}
-                alt="logo"
-                sizes="1000px"
-                className="h-full w-full absolute left-0 top-0 rounded object-cover"
-              />
-            )}
-          </label>
-        </div>
+        <UploadImage
+          onChange={handleImageChange}
+          imageFile={imgFile}
+          logoUrl={defaultValues?.image}
+        />
 
         <div className="flex gap-2">
           <Fence>
-            <FormField
+            <FieldBuilder
               control={form.control}
+              fieldElement={
+                <Checkbox defaultChecked={defaultValues?.active ?? true} />
+              }
               name="active"
-              render={({ field }) => (
-                <FormItem className="flex">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      defaultChecked
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              type="checkbox"
             />
             <p>Ativo?</p>
           </Fence>
 
           <Fence>
-            <FormField
+            <FieldBuilder
               control={form.control}
+              fieldElement={
+                <Checkbox defaultChecked={defaultValues?.highlight ?? false} />
+              }
               name="highlight"
-              render={({ field }) => (
-                <FormItem className="flex">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      defaultChecked
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              type="checkbox"
             />
-            <p>Destaque?</p>
+            <p>Destacar?</p>
           </Fence>
 
           <Fence>
-            <FormField
+            <FieldBuilder
               control={form.control}
+              fieldElement={
+                <Checkbox defaultChecked={defaultValues?.highlight ?? false} />
+              }
               name="sale"
-              render={({ field }) => (
-                <FormItem className="flex">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      defaultChecked
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              type="checkbox"
             />
             <p>Promoção?</p>
           </Fence>
         </div>
 
-        {(defaultValues?.sale || form.getValues("sale")) && (
-          <div>
-            <p>Promoção</p>
-            <FormField
-              control={form.control}
-              name="salePrice"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Preço Promocional*</FormLabel>
-                  <FormControl>
-                    <NumericFormat
-                      {...field}
-                      defaultValue={
-                        !field.value
-                          ? (defaultValues?.salePrice &&
-                              defaultValues?.salePrice) ||
-                            0
-                          : field.value || 0
-                      }
-                      prefix="R$"
-                      thousandSeparator="."
-                      decimalSeparator=","
-                      maxLength={8}
-                      placeholder="R$0,00"
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        )}
+        <AnimatePresence>
+          {(defaultValues?.sale || watchSale) && (
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+            >
+              <p>Promoção</p>
+              <FieldBuilder
+                control={form.control}
+                fieldElement={
+                  <NumericFormat
+                    defaultValue={defaultValues?.salePrice}
+                    prefix="R$"
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    maxLength={8}
+                    placeholder="R$0,00"
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                }
+                name="salePrice"
+                title="Preço Promocional*"
+                type="checkbox"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <div className="flex flex-col gap-1">
           <p>Categoria*</p>
 
-          <FormField
+          <FieldBuilder
+            type="select"
             control={form.control}
             name="categoryId"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Select
-                    defaultValue={
-                      !field.value
-                        ? (defaultValues?.categoryId &&
-                            defaultValues?.categoryId.toString()) ||
-                          ""
-                        : field.value.toString()
-                    }
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecionar Categoria" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem value={category.id.toString()}>
-                          {category.title}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            fieldElement={
+              <Select>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecionar Categoria" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem value={category.id.toString()}>
+                      {category.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            }
           />
         </div>
 
