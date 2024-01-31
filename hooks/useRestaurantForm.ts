@@ -9,6 +9,7 @@ const mockDefault = {
   phone1: "",
   phone2: "",
   address: "",
+  methods: ["Dinheiro", "PIX", "Crédito", "Débito"],
   workHours: [
     {
       weekDay: "",
@@ -27,7 +28,7 @@ const mockDefault = {
 };
 
 interface UseRestaurantFormProps {
-  defaultValues?: Partial<RestaurantProps> | undefined;
+  defaultValues?: Omit<RestaurantProps, "id"> | undefined;
 }
 
 export const useRestaurantForm = ({

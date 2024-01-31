@@ -6,6 +6,7 @@ export const restaurants = [
     phone1: "(00)00000-0000",
     phone2: "(00)00000-0000",
     address: "Rua exemplo da silva, 123. Centro. São Paulo-SP",
+    methods: ["Dinheiro", "PIX", "Crédito", "Débito"],
     workHours: [
       {
         weekDay: 1,
@@ -34,6 +35,7 @@ export const restaurants = [
     phone1: "(00)00000-0000",
     phone2: "(00)00000-0000",
     address: "Rua exemplo da silva, 123. Centro. São Paulo-SP",
+    methods: ["Dinheiro", "PIX", "Crédito", "Débito"],
     workHours: [
       {
         weekDay: 1,

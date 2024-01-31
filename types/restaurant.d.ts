@@ -15,6 +15,7 @@ export interface RestaurantProps {
   phone1: string;
   phone2?: string;
   address: string;
+  methods: string[];
   workHours: WorkHours[];
   logo: string;
   color: string;

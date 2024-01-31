@@ -26,14 +26,15 @@ import { z } from "zod";
 import { restaurantValidator } from "@/validators/restaurant";
 import Image from "next/image";
 import { RestaurantProps } from "@/types/restaurant";
+import { paymentMethods } from "@/constants/paymentMethods";
 
 interface RestaurantFormProps {
-  defaultValues?: Partial<RestaurantProps> | undefined;
+  defaultValues?: Omit<RestaurantProps, "id"> | undefined;
   toggleOpen?: () => void;
 }
 
 const RestaurantForm = ({
-  defaultValues = {},
+  defaultValues = undefined,
   toggleOpen = () => {},
 }: RestaurantFormProps) => {
   const form = useRestaurantForm({ defaultValues });
@@ -195,17 +196,49 @@ const RestaurantForm = ({
             <p className="absolute bg-background z-10 p-2 text-primary rounded">
               {logoFile ? "Substituir imagem" : "Clique para subir a Imagem"}
             </p>
-            {(logoFile || defaultValues.logo) && (
+            {(logoFile || defaultValues?.logo) && (
               <Image
                 height={0}
                 width={0}
-                src={(logoFile || defaultValues.logo) ?? ""}
+                src={(logoFile || defaultValues?.logo) ?? ""}
                 alt="logo"
                 sizes="1000px"
                 className="h-full w-full absolute left-0 top-0 rounded object-cover"
               />
             )}
           </label>
+        </div>
+
+        {/* Methods */}
+        <div className="border border-border p-2 rounded space-y-4 flex flex-col">
+          <p>Métodos de Pagamento*</p>
+
+          <div className="grid grid-cols-3 gap-2">
+            {paymentMethods.map((title, index) => {
+              const fieldWatch = form.watch(`methods`);
+
+              return (
+                <FormField
+                  key={index}
+                  control={form.control}
+                  name={`methods.${index}`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div
+                          className={`flex items-center gap-2 p-2 border border-primary rounded`}
+                        >
+                          <Checkbox {...field} />
+                          <p>{title}</p>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              );
+            })}
+          </div>
         </div>
 
         {/* Hours */}
@@ -215,44 +248,42 @@ const RestaurantForm = ({
           {workHoursFields.map((_, index) => (
             <span key={index}>
               <div className="flex flex-col gap-2 border border-primary rounded p-2">
-                <div className="">
-                  <FormField
-                    control={form.control}
-                    name={`workHours.${index}.weekDay`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Dia</FormLabel>
-                        <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={
-                              !field.value
-                                ? defaultValues?.workHours &&
-                                  defaultValues?.workHours[
-                                    index
-                                  ]?.weekDay.toString()
-                                : field.value.toString()
-                            }
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Selecione o dia" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                {weekDays.map((day) => (
-                                  <SelectItem value={day.value} key={day.id}>
-                                    {day.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name={`workHours.${index}.weekDay`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Dia</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={
+                            !field.value
+                              ? defaultValues?.workHours &&
+                                defaultValues?.workHours[
+                                  index
+                                ]?.weekDay.toString()
+                              : field.value.toString()
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione o dia" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {weekDays.map((day) => (
+                                <SelectItem value={day.value} key={day.id}>
+                                  {day.name}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <div className="flex gap-2">
                   <FormField
@@ -315,6 +346,7 @@ const RestaurantForm = ({
               </div>
             </span>
           ))}
+
           <Button type="button" onClick={handleAppendWorkHour}>
             Adicionar
           </Button>

@@ -25,4 +25,5 @@ export const restaurantValidator = z.object({
   linkMaps: z.string().optional(),
   note: z.string().optional(),
   activeMenu: z.boolean().default(true),
+  methods: z.array(z.string()),
 });
