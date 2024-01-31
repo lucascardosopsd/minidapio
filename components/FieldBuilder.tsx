@@ -14,7 +14,8 @@ interface FieldBuilderProps {
   fieldElement: ReactElement;
   control: Control<any>;
   fieldClassName?: string;
-  type?: "default" | "checkbox" | "select";
+  type?: "default" | "checkbox";
+  defaultValue?: string | number | boolean;
 }
 
 const FieldBuilder = ({
@@ -24,6 +25,7 @@ const FieldBuilder = ({
   control,
   fieldClassName,
   type = "default",
+  defaultValue,
 }: FieldBuilderProps) => {
   return (
     <FormField
@@ -39,13 +41,7 @@ const FieldBuilder = ({
                   className: fieldClassName,
                   checked: field.value,
                   onCheckedChange: field.onChange,
-                })
-              : type == "select"
-              ? cloneElement(fieldElement, {
-                  ...field,
-                  onValueChange: field.onChange,
-                  defaultValue: field.value,
-                  className: fieldClassName,
+                  defaultChecked: defaultValue,
                 })
               : cloneElement(fieldElement, {
                   ...field,

@@ -10,6 +10,7 @@ interface WorkHoursProps {
 }
 
 export interface RestaurantProps {
+  id: number;
   title: string;
   active: boolean;
   phone1: string;

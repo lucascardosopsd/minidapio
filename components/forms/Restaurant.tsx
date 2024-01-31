@@ -4,14 +4,7 @@ import { Textarea } from "../ui/textarea";
 import { weekDays } from "@/constants/weekDays";
 import { Form } from "../ui/form";
 import { useRestaurantForm } from "@/hooks/useRestaurantForm";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+import { SelectItem } from "../ui/select";
 import { Button } from "../ui/button";
 import { useFieldArray } from "react-hook-form";
 import { ChangeEvent, useState } from "react";
@@ -22,6 +15,7 @@ import { paymentMethods } from "@/constants/paymentMethods";
 import FieldBuilder from "../FieldBuilder";
 import UploadImage from "../UploadImage";
 import ColorPciker from "../ColorPicker";
+import SelectBuilder from "../SelectBuilder";
 
 interface RestaurantFormProps {
   defaultValues?: Omit<RestaurantProps, "id"> | undefined;
@@ -152,30 +146,18 @@ const RestaurantForm = ({
           {workHoursFields.map((_, index) => (
             <span key={index}>
               <div className="flex flex-col gap-2 border border-primary rounded p-2">
-                <FieldBuilder
-                  type="select"
+                <SelectBuilder
                   control={form.control}
                   name={`workHours.${index}.weekDay`}
                   title="Dia"
-                  defaultValue={
-                    defaultValues?.workHours[index].weekDay.toString() || "1"
-                  }
-                  fieldElement={
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o dia" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {weekDays.map((day) => (
-                            <SelectItem value={day.value} key={day.id}>
-                              {day.name}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  }
+                  defaultValue={defaultValues?.workHours[
+                    index
+                  ]?.weekDay.toString()}
+                  selectItem={weekDays.map((day) => (
+                    <SelectItem value={day.value} key={day.id}>
+                      {day.name}
+                    </SelectItem>
+                  ))}
                 />
 
                 <div className="flex gap-2">

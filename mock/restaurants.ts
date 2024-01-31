@@ -1,4 +1,6 @@
-export const restaurants = [
+import { RestaurantProps } from "@/types/restaurant";
+
+export const restaurants: RestaurantProps[] = [
   {
     id: 1,
     title: "Restaurante 1",
@@ -10,12 +12,12 @@ export const restaurants = [
     workHours: [
       {
         weekDay: 1,
-        open: false,
+        opened: false,
         times: {},
       },
       {
         weekDay: 2,
-        open: true,
+        opened: true,
         times: {
           open: "08:00",
           close: "13:00",
@@ -39,12 +41,12 @@ export const restaurants = [
     workHours: [
       {
         weekDay: 1,
-        open: false,
+        opened: false,
         times: {},
       },
       {
         weekDay: 2,
-        open: true,
+        opened: true,
         times: {
           open: "08:00",
           close: "13:00",
