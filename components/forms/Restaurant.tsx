@@ -24,9 +24,10 @@ import { useFieldArray } from "react-hook-form";
 import { ChangeEvent, useRef, useState } from "react";
 import { z } from "zod";
 import { restaurantValidator } from "@/validators/restaurant";
-import Image from "next/image";
 import { RestaurantProps } from "@/types/restaurant";
 import { paymentMethods } from "@/constants/paymentMethods";
+import FieldBuilder from "../FieldBuilder";
+import UploadImage from "../UploadImage";
 
 interface RestaurantFormProps {
   defaultValues?: Omit<RestaurantProps, "id"> | undefined;
@@ -42,7 +43,7 @@ const RestaurantForm = ({
 
   const [logoFile, setLogoFile] = useState<string>("");
 
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleLogoFile = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setLogoFile(URL.createObjectURL(file));
@@ -80,164 +81,80 @@ const RestaurantForm = ({
         className="space-y-4 pb-10 relative max-w-[500px] w-full"
       >
         {/* Basic */}
-        <FormField
+
+        <FieldBuilder
           control={form.control}
+          fieldElement={<Input />}
           name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nome*</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          title="Nome*"
         />
 
-        <FormField
+        <FieldBuilder
           control={form.control}
+          fieldElement={<Input />}
           name="phone1"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Telefone 1*</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          title="Telefone1*"
         />
 
-        <FormField
+        <FieldBuilder
           control={form.control}
+          fieldElement={<Input />}
           name="phone2"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Telefone 2</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          title="Telefone 2*"
         />
 
-        <FormField
+        <FieldBuilder
           control={form.control}
+          fieldElement={<Input />}
           name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Endereço*</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          title="Endereço*"
         />
 
-        <FormField
+        <FieldBuilder
           control={form.control}
+          fieldElement={<Input />}
           name="linkMaps"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Link do Google Maps</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          title="Link do Google Maps (Presencial)"
         />
 
-        <div>
-          <FormField
-            control={form.control}
-            name="color"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Cor Principal*</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    id="hs-color-input"
-                    value="#ffaa00"
-                    type="color"
-                    className="hidden"
-                  />
-                </FormControl>
-                <FormMessage />
+        <FieldBuilder
+          control={form.control}
+          fieldElement={
+            <Input
+              id="hs-color-input"
+              value="#ffaa00"
+              type="color"
+              className="hidden"
+            />
+          }
+          name="color"
+          title="Cor Principal*"
+        />
 
-                <label
-                  htmlFor="hs-color-input"
-                  className="h-10 w-full cursor-pointer rounded disabled:opacity-50 disabled:pointer-events-none bg-primary block"
-                />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {/* Logo */}
-        <div className="relative">
-          <Input
-            type="file"
-            accept="image/*"
-            id="logo"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-
-          <label
-            htmlFor="logo"
-            className={`flex w-full h-80 border border-dashed relative items-center justify-center hover:border-primary transition cursor-pointer rounded ${
-              logoFile && "border-primary"
-            }`}
-          >
-            <p className="absolute bg-background z-10 p-2 text-primary rounded">
-              {logoFile ? "Substituir imagem" : "Clique para subir a Imagem"}
-            </p>
-            {(logoFile || defaultValues?.logo) && (
-              <Image
-                height={0}
-                width={0}
-                src={(logoFile || defaultValues?.logo) ?? ""}
-                alt="logo"
-                sizes="1000px"
-                className="h-full w-full absolute left-0 top-0 rounded object-cover"
-              />
-            )}
-          </label>
-        </div>
+        <UploadImage
+          activeTitle="Substituir imagem"
+          defaultTitle="Clique para subir a Imagem"
+          onChange={handleLogoFile}
+          imageFile={logoFile}
+          logoUrl={defaultValues?.logo}
+        />
 
         {/* Methods */}
         <div className="border border-border p-2 rounded space-y-4 flex flex-col">
           <p>Métodos de Pagamento*</p>
 
           <div className="grid grid-cols-3 gap-2">
-            {paymentMethods.map((title, index) => {
-              const fieldWatch = form.watch(`methods`);
-
-              return (
-                <FormField
+            {paymentMethods.map((title, index) => (
+              <div className="flex items-center gap-2 p-2 border border-primary rounded">
+                <FieldBuilder
                   key={index}
                   control={form.control}
+                  fieldElement={<Checkbox />}
                   name={`methods.${index}`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <div
-                          className={`flex items-center gap-2 p-2 border border-primary rounded`}
-                        >
-                          <Checkbox {...field} />
-                          <p>{title}</p>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
                 />
-              );
-            })}
+                <p>{title}</p>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -355,40 +272,22 @@ const RestaurantForm = ({
         {/* Others */}
 
         <div className="flex items-center gap-2">
-          <FormField
+          <FieldBuilder
             control={form.control}
+            fieldElement={<Input defaultChecked={true} />}
             name="activeMenu"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    defaultChecked
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
           />
+
           <p>Cardápio ativo?</p>
         </div>
 
-        <FormField
+        <FieldBuilder
           control={form.control}
+          fieldElement={
+            <Textarea placeholder="Deseja deixar uma observação para o cliente no cardápio?" />
+          }
           name="note"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Observação</FormLabel>
-              <FormControl>
-                <Textarea
-                  {...field}
-                  placeholder="Deseja deixar uma observação para o cliente no cardápio?"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          title="Observação"
         />
 
         <div className="flex gap-2 items-center">
