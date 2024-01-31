@@ -15,6 +15,7 @@ interface ItemSheetProps {
   triggerVariant: ButtonVariants;
   sheetTitle: string | ReactNode;
   sheetDescription?: string;
+  triggerStyles?: string;
 }
 
 const ItemSheet = ({
@@ -23,6 +24,7 @@ const ItemSheet = ({
   triggerVariant = "default",
   sheetTitle,
   sheetDescription,
+  triggerStyles,
 }: ItemSheetProps) => {
   const [open, setOpen] = useState(false);
 
@@ -32,7 +34,11 @@ const ItemSheet = ({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <Button variant={triggerVariant} onClick={toggleOpen} className="w-full">
+      <Button
+        variant={triggerVariant}
+        onClick={toggleOpen}
+        className={triggerStyles}
+      >
         {triggerText}
       </Button>
 

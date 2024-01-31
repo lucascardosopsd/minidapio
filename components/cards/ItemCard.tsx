@@ -99,7 +99,7 @@ const ItemCard = ({ item, category }: ItemCardProps) => {
           itemForm={<ItemForm defaultValues={item} />}
           sheetTitle="Novo Item"
           triggerText={<FaPen />}
-          triggerVariant="secondary"
+          triggerVariant="default"
         />
 
         <DeleteModal

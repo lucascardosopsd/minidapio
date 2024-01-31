@@ -131,6 +131,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
             sheetTitle="Novo Item"
             triggerText="Novo Item"
             triggerVariant="default"
+            triggerStyles="w-full"
           />
         </div>
       </AccordionContent>
