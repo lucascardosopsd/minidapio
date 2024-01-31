@@ -32,7 +32,7 @@ const FieldBuilder = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="w-full">
           <FormLabel>{title}</FormLabel>
           <FormControl>
             {type == "checkbox"

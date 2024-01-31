@@ -16,6 +16,8 @@ import FieldBuilder from "../FieldBuilder";
 import UploadImage from "../UploadImage";
 import ColorPciker from "../ColorPicker";
 import SelectBuilder from "../SelectBuilder";
+import { PatternFormat } from "react-number-format";
+import Fence from "../Fence";
 
 interface RestaurantFormProps {
   defaultValues?: Omit<RestaurantProps, "id"> | undefined;
@@ -78,19 +80,22 @@ const RestaurantForm = ({
           title="Nome*"
         />
 
-        <FieldBuilder
-          control={form.control}
-          fieldElement={<Input />}
-          name="phone1"
-          title="Telefone1*"
-        />
+        <Fence className="flex-col !items-start">
+          <FieldBuilder
+            control={form.control}
+            fieldElement={<PatternFormat format="+55(##)#####-####" />}
+            name="whatsapp"
+            title="Whatsapp"
+          />
 
-        <FieldBuilder
-          control={form.control}
-          fieldElement={<Input />}
-          name="phone2"
-          title="Telefone 2*"
-        />
+          <FieldBuilder
+            control={form.control}
+            fieldElement={<PatternFormat format="+55(##)####-####" />}
+            name="landline"
+            title="Telefone FIxo"
+          />
+          <p className="text-xs">Deve haver pelo menos um</p>
+        </Fence>
 
         <FieldBuilder
           control={form.control}

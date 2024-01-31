@@ -5,8 +5,8 @@ export const restaurants: RestaurantProps[] = [
     id: 1,
     title: "Restaurante 1",
     active: true,
-    phone1: "(00)00000-0000",
-    phone2: "(00)00000-0000",
+    whatsapp: "(00)00000-0000",
+    landline: "(00)00000-0000",
     address: "Rua exemplo da silva, 123. Centro. São Paulo-SP",
     methods: ["Dinheiro", "PIX", "Crédito", "Débito"],
     workHours: [
@@ -34,8 +34,8 @@ export const restaurants: RestaurantProps[] = [
     id: 2,
     title: "Restaurante 2",
     active: false,
-    phone1: "(00)00000-0000",
-    phone2: "(00)00000-0000",
+    whatsapp: "(00)00000-0000",
+    landline: "(00)00000-0000",
     address: "Rua exemplo da silva, 123. Centro. São Paulo-SP",
     methods: ["Dinheiro", "PIX", "Crédito", "Débito"],
     workHours: [

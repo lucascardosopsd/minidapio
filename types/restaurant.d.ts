@@ -13,8 +13,8 @@ export interface RestaurantProps {
   id: number;
   title: string;
   active: boolean;
-  phone1: string;
-  phone2?: string;
+  landline?: string;
+  whatsapp?: string;
   address: string;
   methods: string[];
   workHours: WorkHours[];
