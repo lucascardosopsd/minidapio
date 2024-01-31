@@ -13,6 +13,8 @@ import { Checkbox } from "./ui/checkbox";
 import { Separator } from "./ui/separator";
 import ItemCard from "./ItemCard";
 import { useItemStore } from "@/context/item";
+import { Badge } from "./ui/badge";
+import DeleteModal from "./DeleteModal";
 
 interface CategoryCardProps {
   category: CategoryProps;
@@ -36,9 +38,20 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
             defaultValues={category}
           />
 
-          <Button variant="destructive">
-            <FaTrash />
-          </Button>
+          <DeleteModal
+            action={() => {}}
+            dialogTitle="Deletar Item"
+            triggerText={<FaTrash />}
+            dialogDescription={
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <p>Você está apagando a categoria</p>
+                  <Badge>{category.title}</Badge>
+                </div>
+              </div>
+            }
+            triggerVariant="destructive"
+          />
         </div>
       </AccordionTrigger>
       <AccordionContent>
