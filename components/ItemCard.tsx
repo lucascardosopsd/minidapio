@@ -1,17 +1,19 @@
 import { ItemProps } from "@/types/item";
 import { Checkbox } from "./ui/checkbox";
-import { Button } from "./ui/button";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import ItemSheet from "./sheets/Item";
 import ItemForm from "./forms/Item";
 import { useItemStore } from "@/context/item";
 import { Badge } from "./ui/badge";
+import DeleteModal from "./DeleteModal";
+import { CategoryProps } from "@/types/category";
 
 interface ItemCardProps {
   item: ItemProps;
+  category: CategoryProps;
 }
 
-const ItemCard = ({ item }: ItemCardProps) => {
+const ItemCard = ({ item, category }: ItemCardProps) => {
   const { toggleId, idList } = useItemStore();
 
   return (
@@ -74,9 +76,25 @@ const ItemCard = ({ item }: ItemCardProps) => {
             triggerVariant="secondary"
           />
 
-          <Button variant="destructive">
-            <FaTrash />
-          </Button>
+          <DeleteModal
+            action={() => {}}
+            dialogTitle="Deletar Item"
+            triggerText={<FaTrash />}
+            dialogDescription={
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <p>Você está apagando o item</p>
+                  <Badge>{item.title}</Badge>
+                </div>
+
+                <div className="flex gap-2">
+                  <p>Da categoria</p>
+                  <Badge variant="destructive">{category.title}</Badge>
+                </div>
+              </div>
+            }
+            triggerVariant="destructive"
+          />
         </div>
       </div>
     </div>

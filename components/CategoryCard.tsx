@@ -101,7 +101,9 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
           {items.length > 0 &&
             items
               .filter((item) => item.categoryId == category.id)
-              .map((item) => <ItemCard item={item} key={item.id} />)}
+              .map((item) => (
+                <ItemCard category={category} item={item} key={item.id} />
+              ))}
         </div>
         {items.filter((item) => item.categoryId == category.id).length == 0 && (
           <p className="text-center p-4">Categoria sem items.</p>
