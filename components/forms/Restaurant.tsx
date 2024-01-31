@@ -2,14 +2,7 @@ import { Checkbox } from "../ui/checkbox";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { weekDays } from "@/constants/weekDays";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
+import { Form } from "../ui/form";
 import { useRestaurantForm } from "@/hooks/useRestaurantForm";
 import {
   Select,
@@ -132,8 +125,6 @@ const RestaurantForm = ({
         />
 
         <UploadImage
-          activeTitle="Substituir imagem"
-          defaultTitle="Clique para subir a Imagem"
           onChange={handleLogoFile}
           imageFile={logoFile}
           logoUrl={defaultValues?.logo}
@@ -145,9 +136,12 @@ const RestaurantForm = ({
 
           <div className="grid grid-cols-3 gap-2">
             {paymentMethods.map((title, index) => (
-              <div className="flex items-center gap-2 p-2 border border-primary rounded">
+              <div
+                className="flex items-center gap-2 p-2 border border-primary rounded"
+                key={index}
+              >
                 <FieldBuilder
-                  key={index}
+                  type="checkbox"
                   control={form.control}
                   fieldElement={<Checkbox />}
                   name={`methods.${index}`}
@@ -165,90 +159,51 @@ const RestaurantForm = ({
           {workHoursFields.map((_, index) => (
             <span key={index}>
               <div className="flex flex-col gap-2 border border-primary rounded p-2">
-                <FormField
+                <FieldBuilder
+                  type="select"
                   control={form.control}
                   name={`workHours.${index}.weekDay`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Dia</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={
-                            !field.value
-                              ? defaultValues?.workHours &&
-                                defaultValues?.workHours[
-                                  index
-                                ]?.weekDay.toString()
-                              : field.value.toString()
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecione o dia" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              {weekDays.map((day) => (
-                                <SelectItem value={day.value} key={day.id}>
-                                  {day.name}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  title="Dia"
+                  fieldElement={
+                    <Select defaultValue={defaultValues?.workHours[index]}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione o dia" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {weekDays.map((day) => (
+                            <SelectItem value={day.value} key={day.id}>
+                              {day.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  }
                 />
 
                 <div className="flex gap-2">
-                  <FormField
+                  <FieldBuilder
                     control={form.control}
+                    fieldElement={<Input type="time" />}
                     name={`workHours.${index}.times.open`}
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>Inicio</FormLabel>
-                        <FormControl>
-                          <Input type="time" {...field} ref={openRef} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    title="Inicio"
                   />
 
-                  <FormField
+                  <FieldBuilder
                     control={form.control}
+                    fieldElement={<Input type="time" />}
                     name={`workHours.${index}.times.close`}
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>Fim</FormLabel>
-                        <FormControl>
-                          <Input type="time" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    title="Fim"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <FormField
+                  <FieldBuilder
+                    type="checkbox"
                     control={form.control}
+                    fieldElement={<Checkbox />}
                     name={`workHours.${index}.opened`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            defaultChecked
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
                   />
                   <p>Aberto</p>
                 </div>

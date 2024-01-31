@@ -6,16 +6,16 @@ interface UploadImageProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   imageFile?: string;
   logoUrl?: string;
-  defaultTitle: string;
-  activeTitle: string;
+  defaultTitle?: string;
+  activeTitle?: string;
 }
 
 const UploadImage = ({
   onChange,
   imageFile,
   logoUrl,
-  defaultTitle,
-  activeTitle,
+  defaultTitle = "Clique para subir a Imagem",
+  activeTitle = "Substituir imagem",
 }: UploadImageProps) => {
   return (
     <div className="relative">
