@@ -229,7 +229,7 @@ const RestaurantForm = ({
         <div className="flex items-center gap-2">
           <FieldBuilder
             control={form.control}
-            fieldElement={<Input defaultChecked={true} />}
+            fieldElement={<Checkbox defaultChecked={true} />}
             name="activeMenu"
           />
 
