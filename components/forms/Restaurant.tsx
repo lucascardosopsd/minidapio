@@ -14,13 +14,14 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { useFieldArray } from "react-hook-form";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { z } from "zod";
 import { restaurantValidator } from "@/validators/restaurant";
 import { RestaurantProps } from "@/types/restaurant";
 import { paymentMethods } from "@/constants/paymentMethods";
 import FieldBuilder from "../FieldBuilder";
 import UploadImage from "../UploadImage";
+import ColorPciker from "../ColorPicker";
 
 interface RestaurantFormProps {
   defaultValues?: Omit<RestaurantProps, "id"> | undefined;
@@ -32,7 +33,6 @@ const RestaurantForm = ({
   toggleOpen = () => {},
 }: RestaurantFormProps) => {
   const form = useRestaurantForm({ defaultValues });
-  const openRef = useRef(null);
 
   const [logoFile, setLogoFile] = useState<string>("");
 
@@ -66,6 +66,8 @@ const RestaurantForm = ({
     form.setValue("logo", "/"); //URL after upload
     console.log(data);
   };
+
+  console.log(defaultValues?.workHours[1]);
 
   return (
     <Form {...form}>
@@ -110,19 +112,10 @@ const RestaurantForm = ({
           title="Link do Google Maps (Presencial)"
         />
 
-        <FieldBuilder
-          control={form.control}
-          fieldElement={
-            <Input
-              id="hs-color-input"
-              value="#ffaa00"
-              type="color"
-              className="hidden"
-            />
-          }
-          name="color"
-          title="Cor Principal*"
-        />
+        <div className="flex flex-col">
+          <p>Cor Principal*</p>
+          <ColorPciker control={form.control} fieldName="color" />
+        </div>
 
         <UploadImage
           onChange={handleLogoFile}
@@ -164,8 +157,11 @@ const RestaurantForm = ({
                   control={form.control}
                   name={`workHours.${index}.weekDay`}
                   title="Dia"
+                  defaultValue={
+                    defaultValues?.workHours[index].weekDay.toString() || "1"
+                  }
                   fieldElement={
-                    <Select defaultValue={defaultValues?.workHours[index]}>
+                    <Select>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione o dia" />
                       </SelectTrigger>
@@ -204,6 +200,7 @@ const RestaurantForm = ({
                     control={form.control}
                     fieldElement={<Checkbox />}
                     name={`workHours.${index}.opened`}
+                    defaultValue={defaultValues?.workHours[index].opened}
                   />
                   <p>Aberto</p>
                 </div>
