@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 interface FenceProps {
-  className: string;
+  className?: string;
   children: ReactNode | ReactNode[];
 }
 

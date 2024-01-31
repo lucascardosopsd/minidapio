@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import ItemForm from "@/components/forms/Item";
-import ItemSheet from "@/components/sheets/Item";
 import CategorySheet from "@/components/sheets/Category";
 import CategoryCard from "@/components/CategoryCard";
 
@@ -27,13 +25,6 @@ export default function Restaurant() {
             triggerText="Nova Categoria"
             triggerVariant="default"
           />
-
-          <ItemSheet
-            itemForm={<ItemForm />}
-            sheetTitle="Novo Item"
-            triggerText="Novo Item"
-            triggerVariant="secondary"
-          />
         </div>
       </div>
       <Separator />
@@ -41,7 +32,7 @@ export default function Restaurant() {
       <ScrollArea className="h-[75svh] w-full mx-auto">
         <Accordion className="space-y-2" type="single">
           {categories.map((category) => (
-            <CategoryCard category={category} key={category.id}/>
+            <CategoryCard category={category} key={category.id} />
           ))}
         </Accordion>
       </ScrollArea>

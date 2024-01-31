@@ -15,6 +15,8 @@ import ItemCard from "./ItemCard";
 import { useItemStore } from "@/context/item";
 import { Badge } from "./ui/badge";
 import DeleteModal from "./DeleteModal";
+import ItemSheet from "./sheets/Item";
+import ItemForm from "./forms/Item";
 
 interface CategoryCardProps {
   category: CategoryProps;
@@ -55,7 +57,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
         </div>
       </AccordionTrigger>
       <AccordionContent>
-        <div className="flex flex-col space-y-2 mt-2 ">
+        <div className="flex flex-col space-y-2 mt-2">
           <AnimatePresence>
             {items.filter((item) => item.categoryId == category.id).length >
               1 &&
@@ -122,6 +124,15 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
         {items.filter((item) => item.categoryId == category.id).length == 0 && (
           <p className="text-center p-4">Categoria sem items.</p>
         )}
+
+        <div className="flex mt-2">
+          <ItemSheet
+            itemForm={<ItemForm categoryId={category.id.toString()} />}
+            sheetTitle="Novo Item"
+            triggerText="Novo Item"
+            triggerVariant="default"
+          />
+        </div>
       </AccordionContent>
     </AccordionItem>
   );

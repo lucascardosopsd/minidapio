@@ -1,25 +1,12 @@
 import { useItemFormHook } from "@/hooks/useItemForm";
 import { ItemProps } from "@/types/item";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
+import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 
 import { NumericFormat } from "react-number-format";
 import { ChangeEvent, useState } from "react";
 import { categories } from "@/mock/categories";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+import { SelectItem } from "../ui/select";
 import { z } from "zod";
 import { ItemValidator } from "@/validators/item";
 import { Checkbox } from "../ui/checkbox";
@@ -30,13 +17,19 @@ import FieldBuilder from "../FieldBuilder";
 import UploadImage from "../UploadImage";
 import { useWatch } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
+import SelectBuilder from "../SelectBuilder";
 
 interface ItemFormProps {
   defaultValues?: Partial<ItemProps>;
   toggleOpen?: () => void;
+  categoryId?: string;
 }
 
-const ItemForm = ({ defaultValues, toggleOpen = () => {} }: ItemFormProps) => {
+const ItemForm = ({
+  defaultValues,
+  categoryId,
+  toggleOpen = () => {},
+}: ItemFormProps) => {
   const form = useItemFormHook({ defaultValues });
 
   const [imgFile, setImgFile] = useState<string>("");
@@ -69,20 +62,6 @@ const ItemForm = ({ defaultValues, toggleOpen = () => {} }: ItemFormProps) => {
           title="Nome*"
         />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Descrição*</FormLabel>
-              <FormControl>
-                <Textarea {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <FieldBuilder
           control={form.control}
           fieldElement={<Textarea />}
@@ -92,7 +71,6 @@ const ItemForm = ({ defaultValues, toggleOpen = () => {} }: ItemFormProps) => {
 
         <FieldBuilder
           control={form.control}
-          fieldClassName="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           fieldElement={
             <NumericFormat
               decimalSeparator=","
@@ -181,24 +159,17 @@ const ItemForm = ({ defaultValues, toggleOpen = () => {} }: ItemFormProps) => {
         <div className="flex flex-col gap-1">
           <p>Categoria*</p>
 
-          <FieldBuilder
-            type="select"
+          <SelectBuilder
             control={form.control}
             name="categoryId"
-            fieldElement={
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Selecionar Categoria" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem value={category.id.toString()}>
-                      {category.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            }
+            title="Categoria*"
+            defaultValue={defaultValues?.categoryId?.toString() || categoryId}
+            selectItem={categories.map((category) => (
+              <SelectItem value={category.id.toString()}>
+                {category.title}
+              </SelectItem>
+            ))}
+            placeholder="Selecione a categoria"
           />
         </div>
 

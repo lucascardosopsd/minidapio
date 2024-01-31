@@ -32,7 +32,7 @@ const ItemSheet = ({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <Button variant={triggerVariant} onClick={toggleOpen}>
+      <Button variant={triggerVariant} onClick={toggleOpen} className="w-full">
         {triggerText}
       </Button>
 
