@@ -3,20 +3,20 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "./ui/accordion";
-import CategorySheet from "./sheets/Category";
+} from "../ui/accordion";
+import CategorySheet from "../sheets/Category";
 import { FaCheck, FaPen, FaTrash } from "react-icons/fa6";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { items } from "@/mock/items";
 import { AnimatePresence, motion } from "framer-motion";
-import { Checkbox } from "./ui/checkbox";
-import { Separator } from "./ui/separator";
+import { Checkbox } from "../ui/checkbox";
+import { Separator } from "../ui/separator";
 import ItemCard from "./ItemCard";
 import { useItemStore } from "@/context/item";
-import { Badge } from "./ui/badge";
-import DeleteModal from "./DeleteModal";
-import ItemSheet from "./sheets/Item";
-import ItemForm from "./forms/Item";
+import { Badge } from "../ui/badge";
+import DeleteModal from "../DeleteModal";
+import ItemSheet from "../sheets/Item";
+import ItemForm from "../forms/Item";
 
 interface CategoryCardProps {
   category: CategoryProps;

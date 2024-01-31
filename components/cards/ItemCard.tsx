@@ -1,11 +1,11 @@
 import { ItemProps } from "@/types/item";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 import { FaPen, FaTrash } from "react-icons/fa6";
-import ItemSheet from "./sheets/Item";
-import ItemForm from "./forms/Item";
+import ItemSheet from "../sheets/Item";
+import ItemForm from "../forms/Item";
 import { useItemStore } from "@/context/item";
-import { Badge } from "./ui/badge";
-import DeleteModal from "./DeleteModal";
+import { Badge } from "../ui/badge";
+import DeleteModal from "../DeleteModal";
 import { CategoryProps } from "@/types/category";
 
 interface ItemCardProps {
