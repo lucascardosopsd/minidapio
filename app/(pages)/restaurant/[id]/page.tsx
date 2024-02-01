@@ -30,7 +30,7 @@ export default function Restaurant() {
       <Separator />
 
       <ScrollArea className="h-[75svh] w-full mx-auto">
-        <Accordion className="space-y-2" type="single" collapsible>
+        <Accordion className="space-y-2" type="multiple">
           {categories.map((category) => (
             <CategoryCard category={category} key={category.id} />
           ))}
