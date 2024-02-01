@@ -31,7 +31,9 @@ const ItemCard = ({ item, category }: ItemCardProps) => {
       <p className="flex-[1.9]">{item.title}</p>
 
       <div className="flex justify-center flex-col flex-1">
-        <p className={item.salePrice ? "line-through text-muted" : ""}>
+        <p
+          className={item.salePrice ? "line-through text-muted-foreground" : ""}
+        >
           {item.price.toLocaleString("pt-br", {
             style: "currency",
             currency: "BRL",
