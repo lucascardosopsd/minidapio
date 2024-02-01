@@ -13,11 +13,11 @@ import { Checkbox } from "../ui/checkbox";
 import Fence from "../Fence";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import FieldBuilder from "../FieldBuilder";
+import FieldBuilder from "../builders/FieldBuilder";
 import UploadImage from "../UploadImage";
 import { useWatch } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
-import SelectBuilder from "../SelectBuilder";
+import SelectBuilder from "../builders/SelectBuilder";
 
 interface ItemFormProps {
   defaultValues?: Partial<ItemProps>;
