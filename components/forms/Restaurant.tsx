@@ -23,7 +23,7 @@ import { FaRegCopy } from "react-icons/fa6";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 
 interface RestaurantFormProps {
-  defaultValues?: Omit<RestaurantProps, "id"> | undefined;
+  defaultValues?: RestaurantProps | undefined;
   toggleOpen?: () => void;
 }
 

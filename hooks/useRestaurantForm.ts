@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { restaurantValidator } from "@/validators/restaurant";
-import { RestaurantProps } from "@/types/restaurant";
+import { RestaurantProps, SafeRestaurantProps } from "@/types/restaurant";
 
 const mockDefault = {
   title: "",
@@ -28,13 +28,13 @@ const mockDefault = {
 };
 
 interface UseRestaurantFormProps {
-  defaultValues?: Omit<RestaurantProps, "id"> | undefined;
+  defaultValues?: RestaurantProps | undefined;
 }
 
 export const useRestaurantForm = ({
   defaultValues,
 }: UseRestaurantFormProps) => {
-  return useForm<RestaurantProps>({
+  return useForm<SafeRestaurantProps>({
     resolver: zodResolver(restaurantValidator),
     defaultValues: defaultValues ? defaultValues : mockDefault,
   });

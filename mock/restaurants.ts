@@ -30,6 +30,9 @@ export const restaurants: RestaurantProps[] = [
     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus ante sed ligula efficitur, ac consequat odio vestibulum. In hac habitasse platea dictumst",
     activeMenu: true,
     slug: "restaurant-1",
+    createdAt: "2014-06-26 04:07:31",
+    updatedAt: "2014-06-27 04:07:31",
+    userId: 1,
   },
   {
     id: 2,
@@ -60,5 +63,8 @@ export const restaurants: RestaurantProps[] = [
     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus ante sed ligula efficitur, ac consequat odio vestibulum. In hac habitasse platea dictumst",
     activeMenu: true,
     slug: "restaurant-2",
+    createdAt: "2014-06-26 04:07:31",
+    updatedAt: "2014-06-27 04:07:31",
+    userId: 1,
   },
 ];
