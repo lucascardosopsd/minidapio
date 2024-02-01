@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import CategorySheet from "@/components/sheets/Category";
-import CategoryCard from "@/components/cards/CategoryCard";
+import CategoryCard from "@/components/cards/Category";
 
 export default function Restaurant() {
   return (

@@ -11,7 +11,7 @@ import { items } from "@/mock/items";
 import { AnimatePresence, motion } from "framer-motion";
 import { Checkbox } from "../ui/checkbox";
 import { Separator } from "../ui/separator";
-import ItemCard from "./ItemCard";
+import ItemCard from "./Item";
 import { useItemStore } from "@/context/item";
 import { Badge } from "../ui/badge";
 import DeleteModal from "../DeleteModal";
