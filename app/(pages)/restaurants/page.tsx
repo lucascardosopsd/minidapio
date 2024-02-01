@@ -12,12 +12,13 @@ export default function Dashboard() {
       <div className="space-y-4 w-full">
         <p>Restaurantes</p>
 
-        <div className="max-w-[200px]">
+        <div>
           <RestaurantSheet
             restaurantForm={<RestaurantForm />}
             sheetTitle="Novo Restaurante"
             triggerText="Novo Restaurante"
             triggerVariant="default"
+            triggerClassname="w-full tablet:w-auto"
           />
         </div>
 

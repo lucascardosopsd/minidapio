@@ -66,6 +66,7 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
           sheetTitle="Editar Restaurant"
           triggerText="Editar"
           triggerVariant="outline"
+          triggerClassname="w-full"
         />
       </CardFooter>
     </Card>

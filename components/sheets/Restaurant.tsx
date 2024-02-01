@@ -15,6 +15,7 @@ interface RestaurantSheetProps {
   triggerVariant: ButtonVariants;
   sheetTitle: string | ReactNode;
   sheetDescription?: string;
+  triggerClassname?: string;
 }
 
 const RestaurantSheet = ({
@@ -23,6 +24,7 @@ const RestaurantSheet = ({
   triggerText,
   triggerVariant,
   sheetDescription,
+  triggerClassname,
 }: RestaurantSheetProps) => {
   const [open, setOpen] = useState(false);
 
@@ -32,7 +34,11 @@ const RestaurantSheet = ({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <Button className="w-full" variant={triggerVariant} onClick={toggleOpen}>
+      <Button
+        className={triggerClassname}
+        variant={triggerVariant}
+        onClick={toggleOpen}
+      >
         {triggerText}
       </Button>
 
