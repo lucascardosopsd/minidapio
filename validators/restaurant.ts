@@ -27,6 +27,7 @@ export const restaurantValidator = z
     note: z.string().optional(),
     activeMenu: z.boolean().default(true),
     methods: z.array(z.string()),
+    slug: z.string(),
   })
   .refine(
     (data) => {

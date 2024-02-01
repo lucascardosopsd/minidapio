@@ -29,6 +29,7 @@ export const restaurants: RestaurantProps[] = [
     linkMaps: "/",
     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus ante sed ligula efficitur, ac consequat odio vestibulum. In hac habitasse platea dictumst",
     activeMenu: true,
+    slug: "restaurant-1",
   },
   {
     id: 2,
@@ -58,5 +59,6 @@ export const restaurants: RestaurantProps[] = [
     linkMaps: "/",
     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus ante sed ligula efficitur, ac consequat odio vestibulum. In hac habitasse platea dictumst",
     activeMenu: true,
+    slug: "restaurant-2",
   },
 ];

@@ -23,4 +23,5 @@ export interface RestaurantProps {
   linkMaps?: string;
   note?: string;
   activeMenu: boolean;
+  slug: string;
 }

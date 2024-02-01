@@ -6,7 +6,7 @@ import { Form } from "../ui/form";
 import { useRestaurantForm } from "@/hooks/useRestaurantForm";
 import { SelectItem } from "../ui/select";
 import { Button } from "../ui/button";
-import { useFieldArray } from "react-hook-form";
+import { useFieldArray, useWatch } from "react-hook-form";
 import { ChangeEvent, useState } from "react";
 import { z } from "zod";
 import { restaurantValidator } from "@/validators/restaurant";
@@ -18,6 +18,9 @@ import ColorPciker from "../ColorPicker";
 import SelectBuilder from "../SelectBuilder";
 import { PatternFormat } from "react-number-format";
 import Fence from "../Fence";
+import { slugGen } from "@/tools/slugGen";
+import { FaRegCopy } from "react-icons/fa6";
+import { copyToClipboard } from "@/tools/copyToClipboard";
 
 interface RestaurantFormProps {
   defaultValues?: Omit<RestaurantProps, "id"> | undefined;
@@ -28,9 +31,16 @@ const RestaurantForm = ({
   defaultValues = undefined,
   toggleOpen = () => {},
 }: RestaurantFormProps) => {
+  const userId = 80;
+
   const form = useRestaurantForm({ defaultValues });
 
   const [logoFile, setLogoFile] = useState<string>("");
+
+  const watchTitle = useWatch({
+    control: form.control,
+    name: "title",
+  });
 
   const handleLogoFile = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -62,8 +72,6 @@ const RestaurantForm = ({
     form.setValue("logo", "/"); //URL after upload
     console.log(data);
   };
-
-  console.log(defaultValues?.workHours[1]);
 
   return (
     <Form {...form}>
@@ -211,14 +219,38 @@ const RestaurantForm = ({
         {/* Others */}
 
         <div className="flex items-center gap-2">
-          <FieldBuilder
-            control={form.control}
-            fieldElement={<Checkbox defaultChecked={true} />}
-            name="activeMenu"
-          />
-
+          <div>
+            <FieldBuilder
+              control={form.control}
+              fieldElement={<Checkbox defaultChecked={true} />}
+              name="activeMenu"
+            />
+          </div>
           <p>Cardápio ativo?</p>
         </div>
+
+        <p>Link do Cardápio</p>
+        <Fence className="bg-primary flex-col">
+          <input name="slug" hidden value={slugGen(watchTitle)} id="slug" />
+
+          <div className="flex gap-2 items-center">
+            <p className="text-background font-semibold">
+              www.minidapio.com/{userId}/{slugGen(watchTitle)}
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() =>
+                copyToClipboard(
+                  `www.minidapio.com/${userId}/${slugGen(watchTitle)}`,
+                  "slug"
+                )
+              }
+            >
+              <FaRegCopy className="text-primary" />
+            </Button>
+          </div>
+        </Fence>
 
         <FieldBuilder
           control={form.control}
