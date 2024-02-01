@@ -27,6 +27,7 @@ interface CategorySheetProps {
   triggerVariant: ButtonVariants;
   sheetTitle: string | ReactNode;
   sheetDescription?: string;
+  triggerClassname?: string;
 }
 
 const CategorySheet = ({
@@ -35,6 +36,7 @@ const CategorySheet = ({
   triggerVariant,
   sheetTitle,
   sheetDescription,
+  triggerClassname,
 }: CategorySheetProps) => {
   const [open, setOpen] = useState(false);
 
@@ -48,11 +50,11 @@ const CategorySheet = ({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
+      <SheetTrigger asChild className={triggerClassname}>
         <Button>{triggerText}</Button>
       </SheetTrigger>
 
-      <SheetContent className="w-1/2">
+      <SheetContent className="w-svw tablet:w-[50svw]">
         <SheetHeader>
           <SheetTitle>{sheetTitle}</SheetTitle>
           <SheetTitle>{sheetDescription}</SheetTitle>

@@ -27,7 +27,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
 
   return (
     <AccordionItem
-      className="flex flex-col mx-4 border-none"
+      className="flex flex-col mx-4 border-none "
       value={category.id.toString()}
     >
       <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
@@ -57,73 +57,80 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
         </div>
       </AccordionTrigger>
       <AccordionContent>
-        <div className="flex flex-col space-y-2 mt-2">
-          <AnimatePresence>
-            {items.filter((item) => item.categoryId == category.id).length >
-              1 &&
-              idList.length >= 1 && (
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                >
-                  <div className="flex gap-4 px-3">
-                    <div className="flex items-center gap-2">
-                      {(() => {
-                        const categoryItemsId = items
-                          .filter((item) => item.categoryId == category.id)
-                          .map((item) => item.id);
+        <div className="overflow-x-auto w-[calc(100svw-60px)] tablet:w-full">
+          <div className="w-[250svw] pr-20 tablet:pr-0 tablet:w-full">
+            <div className="flex flex-col space-y-2 mt-2">
+              <AnimatePresence>
+                {items.filter((item) => item.categoryId == category.id).length >
+                  1 &&
+                  idList.length >= 1 && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                    >
+                      <div className="flex gap-4 px-3">
+                        <div className="flex items-center gap-2">
+                          {(() => {
+                            const categoryItemsId = items
+                              .filter((item) => item.categoryId == category.id)
+                              .map((item) => item.id);
 
-                        return (
-                          <Checkbox
-                            checked={idList.length == categoryItemsId.length}
-                            onClick={() => {
-                              idList.length !== categoryItemsId.length
-                                ? setAllIds(categoryItemsId)
-                                : setAllIds([]);
-                            }}
-                          />
-                        );
-                      })()}
+                            return (
+                              <Checkbox
+                                checked={
+                                  idList.length == categoryItemsId.length
+                                }
+                                onClick={() => {
+                                  idList.length !== categoryItemsId.length
+                                    ? setAllIds(categoryItemsId)
+                                    : setAllIds([]);
+                                }}
+                              />
+                            );
+                          })()}
 
-                      <p className="text-mutted">Todos</p>
+                          <p className="text-mutted">Todos</p>
 
-                      <Separator orientation="vertical" />
-                    </div>
+                          <Separator orientation="vertical" />
+                        </div>
 
-                    <Button size="sm">Apagar</Button>
+                        <Button size="sm">Apagar</Button>
 
-                    <Button size="sm" variant="outline">
-                      Transferir
-                    </Button>
-                  </div>
-                </motion.div>
-              )}
-          </AnimatePresence>
+                        <Button size="sm" variant="outline">
+                          Transferir
+                        </Button>
+                      </div>
+                    </motion.div>
+                  )}
+              </AnimatePresence>
 
-          <div className="flex items-center pl-3 text-foreground/50">
-            <div className="flex gap-2 flex-[2]">
-              <p>
-                <FaCheck />
-              </p>
-              <p>Nome</p>
+              <div className="flex items-center pl-3 text-foreground/50 ">
+                <div className="flex gap-2 flex-[2]">
+                  <p>
+                    <FaCheck />
+                  </p>
+                  <p>Nome</p>
+                </div>
+                <p className="flex-1">Preço</p>
+                <p className="flex-1">Desconto</p>
+                <p className="flex-1">Tipo</p>
+                <p className="flex-1">Status</p>
+                <p className="flex-1 flex justify-center">Ações</p>
+              </div>
+
+              {items.length &&
+                items
+                  .filter((item) => item.categoryId == category.id)
+                  .map((item) => (
+                    <ItemCard category={category} item={item} key={item.id} />
+                  ))}
             </div>
-            <p className="flex-1">Preço</p>
-            <p className="flex-1">Desconto</p>
-            <p className="flex-1">Tipo</p>
-            <p className="flex-1">Status</p>
-            <p className="flex-1 flex justify-center">Ações</p>
+
+            {items.filter((item) => item.categoryId == category.id).length ==
+              0 && <p className="text-center p-4">Categoria sem items.</p>}
           </div>
-          {items.length > 0 &&
-            items
-              .filter((item) => item.categoryId == category.id)
-              .map((item) => (
-                <ItemCard category={category} item={item} key={item.id} />
-              ))}
         </div>
-        {items.filter((item) => item.categoryId == category.id).length == 0 && (
-          <p className="text-center p-4">Categoria sem items.</p>
-        )}
 
         <div className="flex mt-2">
           <ItemSheet
