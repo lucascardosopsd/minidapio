@@ -9,7 +9,7 @@ const ErrorPage = (error: { error: Error }) => {
   useEffect(() => {}, [error]);
 
   return (
-    <div className="flex w-full h-full flex-col items-center justify-center gap-2">
+    <div className="flex w-full h-[calc(100svh-70px)] flex-col items-center justify-center gap-2">
       <Badge variant="destructive">Erro</Badge>
       <h3>Algo deu errado</h3>
       <Button asChild>

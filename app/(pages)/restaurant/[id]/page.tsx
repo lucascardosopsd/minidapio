@@ -9,6 +9,7 @@ import CategorySheet from "@/components/sheets/Category";
 import CategoryCard from "@/components/cards/Category";
 
 export default function Restaurant() {
+  
   return (
     <main className="flex flex-col items-start justify-center h-[calc(100svh-4rem)] gap-4">
       <div className="flex flex-col tablet:flex-row gap-4 tablet:gap-0 py-4 tablet:p-0 justify-between w-full items-center">
