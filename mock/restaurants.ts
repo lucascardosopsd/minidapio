@@ -11,60 +11,99 @@ export const restaurants: RestaurantProps[] = [
     methods: ["Dinheiro", "PIX", "Crédito", "Débito"],
     workHours: [
       {
-        weekDay: 1,
+        weekDay: 0,
         opened: false,
-        times: {},
+        times: [],
+      },
+      {
+        weekDay: 1,
+        opened: true,
+        times: [
+          {
+            open: "08:00",
+            close: "12:00",
+          },
+          {
+            open: "17:00",
+            close: "23:00",
+          },
+        ],
       },
       {
         weekDay: 2,
         opened: true,
-        times: {
-          open: "08:00",
-          close: "13:00",
-        },
+        times: [
+          {
+            open: "08:00",
+            close: "12:00",
+          },
+        ],
+      },
+      {
+        weekDay: 3,
+        opened: true,
+        times: [
+          {
+            open: "08:00",
+            close: "12:00",
+          },
+          {
+            open: "17:00",
+            close: "23:00",
+          },
+        ],
+      },
+      {
+        weekDay: 4,
+        opened: true,
+        times: [
+          {
+            open: "08:00",
+            close: "12:00",
+          },
+          {
+            open: "17:00",
+            close: "23:00",
+          },
+        ],
+      },
+      {
+        weekDay: 5,
+        opened: true,
+        times: [
+          {
+            open: "08:00",
+            close: "12:00",
+          },
+          {
+            open: "17:00",
+            close: "23:00",
+          },
+        ],
+      },
+      {
+        weekDay: 6,
+        opened: true,
+        times: [
+          {
+            open: "08:00",
+            close: "12:00",
+          },
+          {
+            open: "17:00",
+            close: "23:00",
+          },
+        ],
       },
     ],
     logo: "https://i.imgur.com/7jkiMQN.png",
-    color: "#f02",
+    color: "#fc0330",
     linkMaps: "/",
     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus ante sed ligula efficitur, ac consequat odio vestibulum. In hac habitasse platea dictumst",
     activeMenu: true,
     slug: "restaurant-1",
     createdAt: "2014-06-26 04:07:31",
     updatedAt: "2014-06-27 04:07:31",
-    userId: 1,
-  },
-  {
-    id: 2,
-    title: "Restaurante 2",
-    active: false,
-    whatsapp: "(00)00000-0000",
-    landline: "(00)00000-0000",
-    address: "Rua exemplo da silva, 123. Centro. São Paulo-SP",
-    methods: ["Dinheiro", "PIX", "Crédito", "Débito"],
-    workHours: [
-      {
-        weekDay: 1,
-        opened: false,
-        times: {},
-      },
-      {
-        weekDay: 2,
-        opened: true,
-        times: {
-          open: "08:00",
-          close: "13:00",
-        },
-      },
-    ],
-    logo: "https://i.imgur.com/7jkiMQN.png",
-    color: "#f02",
-    linkMaps: "/",
-    note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus ante sed ligula efficitur, ac consequat odio vestibulum. In hac habitasse platea dictumst",
-    activeMenu: true,
-    slug: "restaurant-2",
-    createdAt: "2014-06-26 04:07:31",
-    updatedAt: "2014-06-27 04:07:31",
-    userId: 1,
+    userId: 80,
   },
 ];

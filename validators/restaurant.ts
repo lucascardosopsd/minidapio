@@ -20,7 +20,10 @@ export const restaurantValidator = z
     address: z
       .string({ required_error: "Campo Obrigatório" })
       .min(4, { message: "Campo Obrigatório" }),
-    workHours: z.array(workHoursSchema).min(1),
+    workHours: z
+      .array(workHoursSchema)
+      .min(1, { message: "Ao menos um horário necessário" })
+      .max(3, { message: "Apenas 3 horários permitidos" }),
     logo: z.string().min(1, { message: "Campo Obrigatório" }),
     color: z.string({ required_error: "Campo Obrigatório" }),
     linkMaps: z.string().optional(),

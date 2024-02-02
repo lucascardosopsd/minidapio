@@ -1,14 +1,3 @@
-interface HoursProps {
-  open: string;
-  close: string;
-}
-
-interface WorkHoursProps {
-  weekDay: string;
-  opened: boolean;
-  times: Hours;
-}
-
 export interface RestaurantProps {
   id: number;
   title: string;
