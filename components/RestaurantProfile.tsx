@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { SlLocationPin } from "react-icons/sl";
 import { weekDays } from "@/constants/weekDays";
+import CategoriesSheet from "./sheets/Categories";
 
 interface RestaurantProfileProps {
   restaurant: RestaurantProps;
@@ -32,7 +33,17 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-5 py-5 relative h-svh w-full">
+      <div className="flex justify-center absolute bottom-0 m-0 left-0 right-0 w-full z-10">
+        <CategoriesSheet
+          triggerVariant="outline"
+          triggerText="Toque para ver o cardápio"
+          themeColor={themeColor}
+          restaurantId={restaurant.id}
+          triggerClassname="w-full rounded-none py-6"
+          triggerStyle={{ backgroundColor: themeColor }}
+        />
+      </div>
+      <div className="flex flex-col items-center justify-center gap-5 py-5 relative w-full pb-20">
         <div className="flex flex-col items-center">
           <Image
             src={restaurant.logo}
@@ -132,13 +143,6 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
             <p className="text-justify ">{restaurant.note}</p>
           )}
         </div>
-
-        <Button
-          variant="outline"
-          style={{ borderColor: themeColor, color: themeColor }}
-        >
-          Toque para ver o cardápio
-        </Button>
       </div>
     </>
   );
