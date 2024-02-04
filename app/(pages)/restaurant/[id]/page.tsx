@@ -9,9 +9,8 @@ import CategorySheet from "@/components/sheets/Category";
 import CategoryCard from "@/components/cards/Category";
 
 export default function Restaurant() {
-  
   return (
-    <main className="flex flex-col items-start justify-center h-[calc(100svh-4rem)] gap-4">
+    <main className="flex flex-col items-start justify-center gap-4 mt-5">
       <div className="flex flex-col tablet:flex-row gap-4 tablet:gap-0 py-4 tablet:p-0 justify-between w-full items-center">
         <p>Categorias</p>
 
@@ -33,7 +32,7 @@ export default function Restaurant() {
       </div>
       <Separator />
 
-      <ScrollArea className="h-[75svh] w-full mx-auto">
+      <ScrollArea className="h-[80svh] w-full mx-auto">
         <Accordion className="space-y-2 pb-10 tablet:pb-0" type="multiple">
           {categories.map((category) => (
             <CategoryCard category={category} key={category.id} />
