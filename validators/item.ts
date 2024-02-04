@@ -11,6 +11,7 @@ export const ItemValidator = z
     sale: z.boolean(),
     salePrice: z.number().optional(),
     categoryId: z.number().optional(),
+    restaurantId: z.number().optional(),
   })
   .refine(
     (data) =>

@@ -14,7 +14,7 @@ const Menu = ({ params: { userId, slug } }: MenuProps) => {
   )[0];
 
   return (
-    <div className="px-10">
+    <div className="px-10 h-[100svh] overflow-y-auto">
       <RestaurantProfile restaurant={restaurant} />
     </div>
   );

@@ -23,6 +23,9 @@ const config = {
         tablet: "1040px",
         desktop: "1620px",
       },
+      aspectRatio: {
+        poster: "1 / 3",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

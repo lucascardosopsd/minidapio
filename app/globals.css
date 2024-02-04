@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 ::-webkit-scrollbar {
-  @apply w-3;
+  @apply w-3 hidden tablet:block;
 }
 
 ::-webkit-scrollbar-track {

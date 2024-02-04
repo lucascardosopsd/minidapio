@@ -13,6 +13,7 @@ export const items: ItemProps[] = [
     sale: false,
     salePrice: undefined,
     categoryId: 1,
+    restaurantId: 1,
   },
   {
     id: 2,
@@ -26,6 +27,7 @@ export const items: ItemProps[] = [
     sale: true,
     salePrice: 2,
     categoryId: 1,
+    restaurantId: 1,
   },
   {
     id: 3,
@@ -39,6 +41,7 @@ export const items: ItemProps[] = [
     sale: false,
     salePrice: undefined,
     categoryId: 1,
+    restaurantId: 1,
   },
   {
     id: 4,
@@ -51,6 +54,21 @@ export const items: ItemProps[] = [
     active: true,
     sale: true,
     salePrice: 2,
-    categoryId: 2,
+    categoryId: 1,
+    restaurantId: 1,
+  },
+  {
+    id: 5,
+    title: "Item 4",
+    description:
+      "Irure velit irure occaecat amet velit aute quis. Duis commodo qui culpa et et dolor excepteur consectetur voluptate veniam dolor ut pariatur. Fugiat eiusmod magna sunt ex culpa.",
+    price: 5,
+    image: "https://i.imgur.com/PdzBxLb.png",
+    highlight: false,
+    active: true,
+    sale: true,
+    salePrice: 2,
+    categoryId: 1,
+    restaurantId: 1,
   },
 ];

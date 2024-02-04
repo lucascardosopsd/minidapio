@@ -9,4 +9,5 @@ export interface ItemProps {
   sale: boolean;
   salePrice: number | undefined;
   categoryId: number | undefined;
+  restaurantId: number;
 }
