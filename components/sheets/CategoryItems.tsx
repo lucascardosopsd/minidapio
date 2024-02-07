@@ -60,7 +60,7 @@ const CategoryItemsSheet = ({
         }
         closeIcon={<FaChevronLeft style={{ color: themeColor }} size={21} />}
       >
-        <div className="flex gap-5 flex-col mt-5 relative">
+        <div className="flex gap-5 flex-col mt-5 relative pb-10">
           <div className="fixed w-full h-20 bottom-0 left-0 bg-gradient-to-t from-background to-transparent cursor-none pointer-events-none" />
 
           {items
