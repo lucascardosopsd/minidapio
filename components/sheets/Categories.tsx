@@ -55,7 +55,9 @@ const CategoriesSheet = ({
         }
         closeIcon={<FaChevronLeft style={{ color: themeColor }} size={21} />}
       >
-        <div className="h-full flex flex-col mt-5 gap-5">
+        <div className="h-full flex flex-col mt-5 gap-5 relative">
+          <div className="fixed w-full h-20 bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-10 cursor-none pointer-events-none" />
+
           <div className="flex">
             <Input
               className="rounded-r-none border-r-0 placeholder:text-muted-foreground"
