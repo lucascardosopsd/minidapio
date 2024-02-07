@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import { SlLocationPin } from "react-icons/sl";
 import { weekDays } from "@/constants/weekDays";
 import CategoriesSheet from "./sheets/Categories";
+import { Separator } from "./ui/separator";
 
 interface RestaurantProfileProps {
   restaurant: RestaurantProps;
@@ -44,67 +45,79 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
         />
       </div>
       <div className="flex flex-col items-center justify-center gap-5 py-5 relative w-full pb-20">
-        <div className="flex flex-col items-center">
+        <div
+          className="flex gap-2 items-center border p-2 rounded"
+          style={{ borderColor: themeColor }}
+        >
           <Image
             src={restaurant.logo}
             alt="logo"
             height={0}
             width={0}
             sizes="1000px"
-            className="w-20 h-20 rounded-full object-cover"
+            className="w-20 h-20 rounded-full object-cover border"
+            style={{ borderColor: themeColor }}
           />
 
-          <p style={{ color: themeColor }}>{restaurant.title}</p>
+          <div className="flex flex-col items-center">
+            <p style={{ color: themeColor }} className="text-center">
+              {restaurant.title}
+            </p>
 
-          <Badge
-            className={`flex justify-center w-20 ${
-              isRestaurantOpened ? "bg-green-500" : "bg-red-500"
-            }`}
-          >
-            {isRestaurantOpened ? "Aberto" : "Fechado"}
-          </Badge>
-        </div>
-
-        <div className="flex justify-center gap-1 text-sm w-full max-w-[400px]">
-          <div>
-            {restaurant.workHours.map((workHour: HourProps) => (
-              <div className="flex flex-col justify-center">
-                <div className="flex flex-col justify-center">
-                  <p style={{ color: themeColor }} className="text-center">
-                    {
-                      weekDays.filter((day) => day.value == workHour.weekDay)[0]
-                        .name
-                    }
-                  </p>
-                </div>
-
-                <div className="flex justify-center gap-2">
-                  {workHour.times?.length ? (
-                    workHour.times.map((time: TimesProps, index) => (
-                      <div className="flex">
-                        <p>
-                          {time.open}-{time.close}
-                        </p>
-                        {workHour.times &&
-                          workHour.times.length - 1 !== index && (
-                            <p className="ml-2" style={{ color: themeColor }}>
-                              |
-                            </p>
-                          )}
-                      </div>
-                    ))
-                  ) : (
-                    <Badge variant="destructive">Fechado</Badge>
-                  )}
-                </div>
-              </div>
-            ))}
+            <Badge
+              className={`flex justify-center w-20 ${
+                isRestaurantOpened ? "bg-green-500" : "bg-red-500"
+              }`}
+            >
+              {isRestaurantOpened ? "Aberto" : "Fechado"}
+            </Badge>
           </div>
         </div>
 
-        <div className="flex gap-1 text-sm">
+        <div
+          className="flex flex-col justify-center gap-1 text-sm w-full max-w-[400px] border p-2 rounded"
+          style={{ borderColor: themeColor }}
+        >
+          {restaurant.workHours.map((workHour: HourProps) => (
+            <div className="flex flex-col justify-center">
+              <div className="flex flex-col justify-center">
+                <p style={{ color: themeColor }} className="text-center">
+                  {
+                    weekDays.filter((day) => day.value == workHour.weekDay)[0]
+                      .name
+                  }
+                </p>
+              </div>
+
+              <div className="flex justify-center gap-2">
+                {workHour.times?.length ? (
+                  workHour.times.map((time: TimesProps, index) => (
+                    <div className="flex">
+                      <p>
+                        {time.open}-{time.close}
+                      </p>
+                      {workHour.times &&
+                        workHour.times.length - 1 !== index && (
+                          <p className="ml-2" style={{ color: themeColor }}>
+                            |
+                          </p>
+                        )}
+                    </div>
+                  ))
+                ) : (
+                  <Badge variant="destructive">Fechado</Badge>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div
+          className="flex flex-col items-center gap-1 text-sm  border p-2 rounded w-full"
+          style={{ borderColor: themeColor }}
+        >
           <p>{restaurant.whatsapp}</p>
-          <p style={{ color: themeColor }}>|</p>
+          <Separator style={{ background: themeColor }} />
           <p>{restaurant.landline}</p>
         </div>
 
@@ -130,7 +143,7 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
               size="sm"
             >
               <p>Ver no Mapa</p>
-              <SlLocationPin size={42} />
+              <SlLocationPin size={24} />
             </Button>
           </Link>
         )}
