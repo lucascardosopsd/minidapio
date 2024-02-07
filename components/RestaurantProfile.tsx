@@ -46,7 +46,7 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
       </div>
       <div className="flex flex-col items-center justify-center gap-5 py-5 relative w-full pb-20">
         <div
-          className="flex gap-2 items-center border p-2 rounded"
+          className="flex gap-2 items-center border p-2 rounded w-full"
           style={{ borderColor: themeColor }}
         >
           <Image
