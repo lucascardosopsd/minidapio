@@ -9,6 +9,7 @@ import { FaChevronLeft } from "react-icons/fa6";
 import { useRestaurantStore } from "@/context/restaurantMenu";
 import { formatPrice } from "@/tools/formatPrice";
 import Image from "next/image";
+import { categories } from "@/mock/categories";
 
 interface CategoryItemsSheetProps {
   triggerText: string | ReactNode;
@@ -46,7 +47,16 @@ const CategoryItemsSheet = ({
         side="right"
         className="w-svw h-[100svh] overflow-y-auto"
         contentTitle={
-          <p className="text-muted-foreground text-xs">Inicio / Menu</p>
+          <div className="text-muted-foreground text-xs gap-1 flex">
+            <p>Inicio / Menu /</p>
+            <p style={{ color: themeColor }}>
+              {
+                categories.filter(
+                  (category) => category.id == currentCategory
+                )[0].title
+              }
+            </p>
+          </div>
         }
         closeIcon={<FaChevronLeft style={{ color: themeColor }} size={21} />}
       >
