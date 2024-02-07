@@ -7,11 +7,12 @@ import { Input } from "../ui/input";
 import { items } from "@/mock/items";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import Image from "next/image";
-import { FaChevronRight } from "react-icons/fa6";
+import { FaChevronLeft } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
 import { formatPrice } from "@/tools/formatPrice";
 import { categories } from "@/mock/categories";
 import { Separator } from "../ui/separator";
+import CategoryItemsSheet from "./CategoryItems";
 
 interface CategoriesSheetProps {
   triggerText: string | ReactNode;
@@ -52,7 +53,7 @@ const CategoriesSheet = ({
         contentTitle={
           <p className="text-muted-foreground text-xs">Inicio / Menu</p>
         }
-        closeIcon={<FaChevronRight style={{ color: themeColor }} size={21} />}
+        closeIcon={<FaChevronLeft style={{ color: themeColor }} size={21} />}
       >
         <div className="h-full flex flex-col mt-5 gap-5">
           <div className="flex">
@@ -94,6 +95,7 @@ const CategoriesSheet = ({
                         {item.title}
                       </p>
                       <p className="text-xs">{item.description}</p>
+
                       <p className="text-xs text-muted-foreground line-through">
                         {formatPrice(item.price, "pt-BR", "BRL")}
                       </p>
@@ -132,9 +134,12 @@ const CategoriesSheet = ({
                     style={{ background: themeColor }}
                   />
 
-                  <Button variant="outline" className="flex-1 h-full border-0">
-                    Abrir
-                  </Button>
+                  <CategoryItemsSheet
+                    themeColor={themeColor}
+                    triggerText="Abrir"
+                    triggerVariant="outline"
+                    triggerClassname="flex-1 h-full border-0"
+                  />
                 </div>
               ))}
           </div>

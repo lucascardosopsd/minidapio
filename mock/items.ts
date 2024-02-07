@@ -22,7 +22,7 @@ export const items: ItemProps[] = [
       "Irure velit irure occaecat amet velit aute quis. Duis commodo qui culpa et et dolor excepteur consectetur voluptate veniam dolor ut pariatur. Fugiat eiusmod magna sunt ex culpa.",
     price: 5,
     image: "https://i.imgur.com/PdzBxLb.png",
-    highlight: false,
+    highlight: true,
     active: true,
     sale: true,
     salePrice: 2,
