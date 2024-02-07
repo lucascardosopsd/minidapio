@@ -11,7 +11,6 @@ import { FaChevronLeft } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
 import { formatPrice } from "@/tools/formatPrice";
 import { categories } from "@/mock/categories";
-import { Separator } from "../ui/separator";
 import CategoryItemsSheet from "./CategoryItems";
 
 interface CategoriesSheetProps {
@@ -129,18 +128,11 @@ const CategoriesSheet = ({
                     }
                   </div>
 
-                  <p className="flex-[2] p-4">{category.title}</p>
-
-                  <Separator
-                    orientation="vertical"
-                    style={{ background: themeColor }}
-                  />
-
                   <CategoryItemsSheet
                     themeColor={themeColor}
-                    triggerText="Abrir"
+                    triggerText={category.title}
                     triggerVariant="outline"
-                    triggerClassname="flex-1 h-full border-0"
+                    triggerClassname="flex-1 h-full border-0 py-4 justify-start"
                   />
                 </div>
               ))}
