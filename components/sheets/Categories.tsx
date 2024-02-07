@@ -54,7 +54,7 @@ const CategoriesSheet = ({
         }
         closeIcon={<FaChevronLeft style={{ color: themeColor }} size={21} />}
       >
-        <div className="h-full flex flex-col mt-5 gap-5 relative">
+        <div className="h-full flex flex-col mt-5 relative">
           <div className="fixed w-full h-20 bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-10 cursor-none pointer-events-none" />
 
           <div className="flex">
@@ -71,7 +71,7 @@ const CategoriesSheet = ({
             </div>
           </div>
 
-          <div className="flex gap-5 w-[calc(90svw)] min-h-[calc(70svh)] overflow-x-auto">
+          <div className="flex items-center gap-5 w-[calc(90svw)] min-h-[calc(70svh)] overflow-x-auto">
             {items
               .filter((item) => item.restaurantId == restaurantId && item.sale)
               .map((item) => (
@@ -109,7 +109,7 @@ const CategoriesSheet = ({
               ))}
           </div>
 
-          <div className="flex flex-col gap-5 pb-5">
+          <div className="flex flex-col gap-5 pb-10">
             {categories
               .filter((category) => category.restaurantId == restaurantId)
               .map((category) => (
