@@ -1,8 +1,9 @@
 "use client";
 import LoginIllustration from "@/components/illustration/Login";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
+import { FaGoogle } from "react-icons/fa6";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
   return (
@@ -11,59 +12,16 @@ export default function Login() {
         <LoginIllustration />
       </div>
 
-      <div className="flex-1 flex justify-center">
-        <Tabs defaultValue="login" className="w-full max-w-[500px]">
-          <TabsList className="flex">
-            <TabsTrigger value="login" className="flex-1">
-              Entrar
-            </TabsTrigger>
-            <TabsTrigger value="register" className="flex-1">
-              Registrar
-            </TabsTrigger>
-          </TabsList>
+      <Separator orientation="vertical" />
 
-          <TabsContent value="login" className="flex flex-col gap-4">
-            <div>
-              <p>E-mail</p>
-              <Input />
-            </div>
-
-            <div>
-              <p>Senha</p>
-              <Input />
-            </div>
-
-            <Button>Entrar</Button>
-
-            <p className="text-center">ou</p>
-
-            <Button>Continuar com Google</Button>
-          </TabsContent>
-
-          <TabsContent value="register" className="flex flex-col gap-4">
-            <div>
-              <p>Nome</p>
-              <Input />
-            </div>
-
-            <div>
-              <p>E-mail</p>
-              <Input />
-            </div>
-
-            <div>
-              <p>Senha</p>
-              <Input />
-            </div>
-
-            <div>
-              <p>Confirme a senha</p>
-              <Input />
-            </div>
-
-            <Button>Cadastrar</Button>
-          </TabsContent>
-        </Tabs>
+      <div className="flex-1 flex justify-center items-center flex-col gap-2 px-4">
+        <p className="mb-4">Minidapio</p>
+        <p className="text-2xl font-bold">Vamos Começar!</p>
+        <p>Entre com a sua conta</p>
+        <Button className="w-full" onClick={() => signIn("google")}>
+          <FaGoogle className="mr-2" />
+          Continuar com Google
+        </Button>
       </div>
     </main>
   );
