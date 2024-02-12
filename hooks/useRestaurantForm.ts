@@ -1,28 +1,34 @@
 import { useForm } from "react-hook-form";
+import { RestaurantProps } from "@/types/restaurant";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { restaurantValidator } from "@/validators/restaurant";
-import { RestaurantProps, SafeRestaurantProps } from "@/types/restaurant";
 
 const mockDefault = {
-  title: "",
+  title: "teste",
   active: true,
-  phone1: "",
-  phone2: "",
-  address: "",
-  methods: ["Dinheiro", "PIX", "Crédito", "Débito"],
+  whatsapp: "+55(00)00000-0000",
+  landline: "",
+  address: "Rua XYZ, 123",
+  methods: {
+    pix: true,
+    cash: true,
+    debit: true,
+    credit: true,
+    bankCheck: false,
+  },
   workHours: [
     {
-      weekDay: "",
+      weekDay: "1",
       opened: true,
       times: {
-        open: "00:00",
-        close: "00:00",
+        open: "08:00",
+        close: "23:00",
       },
     },
   ],
-  logo: "",
-  color: "",
-  linkMaps: "",
+  logo: "https://i.imgur.com/vdz7MQb.png",
+  color: "#ffaa00",
+  linkMaps: "google.com",
   note: "",
   activeMenu: true,
 };
@@ -34,7 +40,7 @@ interface UseRestaurantFormProps {
 export const useRestaurantForm = ({
   defaultValues,
 }: UseRestaurantFormProps) => {
-  return useForm<SafeRestaurantProps>({
+  return useForm<RestaurantProps>({
     resolver: zodResolver(restaurantValidator),
     defaultValues: defaultValues ? defaultValues : mockDefault,
   });

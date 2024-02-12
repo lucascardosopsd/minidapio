@@ -1,7 +1,22 @@
 export const paymentMethods = [
-  "Dinheiro",
-  "PIX",
-  "Crédito",
-  "Débito",
-  "Cheque",
+  {
+    label: "credit",
+    title: "Crédito",
+  },
+  {
+    label: "debit",
+    title: "Débito",
+  },
+  {
+    label: "cash",
+    title: "Dinheiro",
+  },
+  {
+    label: "pix",
+    title: "PIX",
+  },
+  {
+    label: "bankCheck",
+    title: "Cheque",
+  },
 ];

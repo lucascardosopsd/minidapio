@@ -5,7 +5,7 @@ import Image from "next/image";
 interface UploadImageProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   imageFile?: string;
-  logoUrl?: string;
+  mockUrl?: string;
   defaultTitle?: string;
   activeTitle?: string;
 }
@@ -13,7 +13,7 @@ interface UploadImageProps {
 const UploadImage = ({
   onChange,
   imageFile,
-  logoUrl,
+  mockUrl,
   defaultTitle = "Clique para subir a Imagem",
   activeTitle = "Substituir imagem",
 }: UploadImageProps) => {
@@ -36,11 +36,11 @@ const UploadImage = ({
         <p className="absolute bg-background z-10 p-2 text-primary rounded">
           {imageFile ? activeTitle : defaultTitle}
         </p>
-        {(imageFile || logoUrl) && (
+        {(imageFile || mockUrl) && (
           <Image
             height={0}
             width={0}
-            src={(imageFile || logoUrl) ?? ""}
+            src={imageFile ? imageFile! : mockUrl!}
             alt="logo"
             sizes="1000px"
             className="h-full w-full absolute left-0 top-0 rounded object-cover"

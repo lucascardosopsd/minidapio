@@ -1,14 +1,13 @@
-import { ChangeEvent, useState } from "react";
 import { FormControl, FormField, FormItem, FormMessage } from "./ui/form";
-import { Control } from "react-hook-form";
+import { Control, useWatch } from "react-hook-form";
 
-interface ColorPcikerProps {
+interface ColorPickerProps {
   control: Control<any>;
   fieldName: string;
 }
 
-const ColorPciker = ({ control, fieldName }: ColorPcikerProps) => {
-  const [color, setColor] = useState("#ffaa00");
+const ColorPicker = ({ control, fieldName }: ColorPickerProps) => {
+  const watchColor = useWatch({ control, name: "color" });
 
   return (
     <FormField
@@ -17,20 +16,25 @@ const ColorPciker = ({ control, fieldName }: ColorPcikerProps) => {
       render={({ field }) => (
         <FormItem>
           <FormControl>
-            <input
-              type="color"
-              style={{
-                borderColor: color,
-                background: color,
-              }}
-              className={`h-10 w-full block disabled:opacity-50 disabled:pointer-events-none border-4 rounded`}
-              id="hs-color-input"
-              value={color}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setColor(e.target.value);
-                field.onChange(color);
-              }}
-            />
+            <>
+              <input
+                type="color"
+                className="h-10 w-full disabled:opacity-50 disabled:pointer-events-none border-4 rounded hidden"
+                id="hs-color-input"
+                {...field}
+              />
+
+              <label
+                htmlFor="hs-color-input"
+                className="w-full h-10 rounded flex items-center justify-center"
+                style={{
+                  borderColor: watchColor,
+                  background: watchColor,
+                }}
+              >
+                Selecione a cor
+              </label>
+            </>
           </FormControl>
           <p className="text-xs">Clique para mudar</p>
           <FormMessage />
@@ -40,4 +44,4 @@ const ColorPciker = ({ control, fieldName }: ColorPcikerProps) => {
   );
 };
 
-export default ColorPciker;
+export default ColorPicker;

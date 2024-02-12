@@ -11,32 +11,28 @@ const workHoursSchema = z.object({
   times: hoursSchema,
 });
 
-export const restaurantValidator = z
-  .object({
-    title: z.string().min(2, { message: "Campo Obrigatório" }),
-    active: z.boolean().default(true),
-    whatsapp: z.string().optional(),
-    landline: z.string().optional(),
-    address: z
-      .string({ required_error: "Campo Obrigatório" })
-      .min(4, { message: "Campo Obrigatório" }),
-    workHours: z
-      .array(workHoursSchema)
-      .min(1, { message: "Ao menos um horário necessário" })
-      .max(3, { message: "Apenas 3 horários permitidos" }),
-    logo: z.string().min(1, { message: "Campo Obrigatório" }),
-    color: z.string({ required_error: "Campo Obrigatório" }),
-    linkMaps: z.string().optional(),
-    note: z.string().optional(),
-    activeMenu: z.boolean().default(true),
-    methods: z.array(z.string()),
-    slug: z.string(),
-  })
-  .refine(
-    (data) => {
-      !data.whatsapp && !data.landline;
-    },
-    {
-      message: "Whatsapp ou linha fixa obrigatória.",
-    }
-  );
+const PaymentMethodSchema = z.object({
+  pix: z.boolean(),
+  cash: z.boolean(),
+  credit: z.boolean(),
+  debit: z.boolean(),
+  bankCheck: z.boolean(),
+});
+
+export const restaurantValidator = z.object({
+  title: z.string().min(2, { message: "Campo Obrigatório" }),
+  active: z.boolean().default(true),
+  whatsapp: z.string().optional(),
+  landline: z.string().optional(),
+  address: z
+    .string({ required_error: "Campo Obrigatório" })
+    .min(4, { message: "Campo Obrigatório" }),
+  workHours: z.array(workHoursSchema).optional(),
+  logo: z.string().min(1, { message: "Campo Obrigatório" }),
+  color: z.string({ required_error: "Campo Obrigatório" }),
+  linkMaps: z.string().optional(),
+  note: z.string().optional(),
+  activeMenu: z.boolean().default(true),
+  methods: PaymentMethodSchema,
+  slug: z.string(),
+});

@@ -7,7 +7,11 @@ const GoogleLoginButton = () => {
   const { status, data } = useSession();
 
   return (
-    <Button className="w-full" onClick={() => signIn("google")}>
+    <Button
+      className="w-full"
+      onClick={() => signIn("google")}
+      disabled={status == "loading"}
+    >
       {status == "loading" ? (
         <ImSpinner2 className="animate-spin h-5 w-5 text-background" />
       ) : (

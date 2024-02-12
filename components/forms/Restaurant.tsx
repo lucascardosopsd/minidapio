@@ -14,13 +14,13 @@ import { RestaurantProps } from "@/types/restaurant";
 import { paymentMethods } from "@/constants/paymentMethods";
 import FieldBuilder from "../builders/FieldBuilder";
 import UploadImage from "../UploadImage";
-import ColorPciker from "../ColorPicker";
 import SelectBuilder from "../builders/SelectBuilder";
 import { PatternFormat } from "react-number-format";
 import Fence from "../Fence";
 import { slugGen } from "@/tools/slugGen";
 import { FaRegCopy } from "react-icons/fa6";
 import { copyToClipboard } from "@/tools/copyToClipboard";
+import ColorPicker from "../ColorPicker";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
@@ -68,6 +68,8 @@ const RestaurantForm = ({
   };
 
   const handleNewRestaurant = (data: z.infer<typeof restaurantValidator>) => {
+    console.log(data);
+
     // Image upload logic
     form.setValue("logo", "/"); //URL after upload
     console.log(data);
@@ -80,7 +82,6 @@ const RestaurantForm = ({
         className="space-y-4 pb-10 relative max-w-[500px] w-full"
       >
         {/* Basic */}
-
         <FieldBuilder
           control={form.control}
           fieldElement={<Input />}
@@ -121,21 +122,24 @@ const RestaurantForm = ({
 
         <div className="flex flex-col">
           <p>Cor Principal*</p>
-          <ColorPciker control={form.control} fieldName="color" />
+          <ColorPicker control={form.control} fieldName="color" />
         </div>
 
-        <UploadImage
-          onChange={handleLogoFile}
-          imageFile={logoFile}
-          logoUrl={defaultValues?.logo}
-        />
+        <div className="flex flex-col">
+          <p>Logo*</p>
+          <UploadImage
+            onChange={handleLogoFile}
+            imageFile={logoFile}
+            mockUrl={form.getValues("logo")}
+          />
+        </div>
 
         {/* Methods */}
         <div className="border border-border p-2 rounded space-y-4 flex flex-col">
           <p>Métodos de Pagamento*</p>
 
           <div className="grid grid-cols-3 gap-2">
-            {paymentMethods.map((title, index) => (
+            {paymentMethods.map((method, index) => (
               <div
                 className="flex items-center gap-2 p-2 border border-primary rounded"
                 key={index}
@@ -144,9 +148,9 @@ const RestaurantForm = ({
                   type="checkbox"
                   control={form.control}
                   fieldElement={<Checkbox />}
-                  name={`methods.${index}`}
+                  name={`methods.${method.label}`}
                 />
-                <p>{title}</p>
+                <p>{method.title}</p>
               </div>
             ))}
           </div>
@@ -190,13 +194,15 @@ const RestaurantForm = ({
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <FieldBuilder
-                    type="checkbox"
-                    control={form.control}
-                    fieldElement={<Checkbox />}
-                    name={`workHours.${index}.opened`}
-                    defaultValue={defaultValues?.workHours[index].opened}
-                  />
+                  <div>
+                    <FieldBuilder
+                      type="checkbox"
+                      control={form.control}
+                      fieldElement={<Checkbox />}
+                      name={`workHours.${index}.opened`}
+                      defaultValue={defaultValues?.workHours[index].opened}
+                    />
+                  </div>
                   <p>Aberto</p>
                 </div>
 
@@ -217,7 +223,6 @@ const RestaurantForm = ({
         </div>
 
         {/* Others */}
-
         <div className="flex items-center gap-2">
           <div>
             <FieldBuilder
@@ -231,7 +236,12 @@ const RestaurantForm = ({
 
         <p>Link do Cardápio</p>
         <Fence className="bg-primary flex-col">
-          <input name="slug" hidden value={slugGen(watchTitle)} id="slug" />
+          <input
+            hidden
+            value={slugGen(watchTitle)}
+            id="slug"
+            {...form.register("slug")}
+          />
 
           <div className="flex gap-2 items-center">
             <p className="text-background font-semibold">
