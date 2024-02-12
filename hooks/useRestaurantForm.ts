@@ -4,11 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { restaurantValidator } from "@/validators/restaurant";
 
 const mockDefault = {
-  title: "teste",
+  title: "",
   active: true,
-  whatsapp: "+55(00)00000-0000",
+  whatsapp: "",
   landline: "",
-  address: "Rua XYZ, 123",
+  address: "",
   methods: {
     pix: true,
     cash: true,
@@ -21,14 +21,14 @@ const mockDefault = {
       weekDay: "1",
       opened: true,
       times: {
-        open: "08:00",
-        close: "23:00",
+        open: "00:00",
+        close: "00:00",
       },
     },
   ],
-  logo: "https://i.imgur.com/vdz7MQb.png",
+  logo: "",
   color: "#ffaa00",
-  linkMaps: "google.com",
+  linkMaps: "",
   note: "",
   activeMenu: true,
 };
