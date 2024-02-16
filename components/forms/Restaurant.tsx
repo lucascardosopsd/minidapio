@@ -7,7 +7,6 @@ import { useRestaurantForm } from "@/hooks/useRestaurantForm";
 import { SelectItem } from "../ui/select";
 import { Button } from "../ui/button";
 import { useFieldArray, useWatch } from "react-hook-form";
-import { ChangeEvent, useState } from "react";
 import { z } from "zod";
 import { restaurantValidator } from "@/validators/restaurant";
 import { RestaurantProps } from "@/types/restaurant";
@@ -21,6 +20,10 @@ import { slugGen } from "@/tools/slugGen";
 import { FaRegCopy } from "react-icons/fa6";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import ColorPicker from "../ColorPicker";
+import { createNewRestaurant } from "@/actions/createNewRestaurant";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
@@ -32,22 +35,16 @@ const RestaurantForm = ({
   toggleOpen = () => {},
 }: RestaurantFormProps) => {
   const userId = 80;
+  const [loading, setLoading] = useState(false);
 
   const form = useRestaurantForm({ defaultValues });
 
-  const [logoFile, setLogoFile] = useState<string>("");
+  const { data: session } = useSession();
 
   const watchTitle = useWatch({
     control: form.control,
     name: "title",
   });
-
-  const handleLogoFile = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setLogoFile(URL.createObjectURL(file));
-    }
-  };
 
   const {
     fields: workHoursFields,
@@ -67,12 +64,19 @@ const RestaurantForm = ({
     });
   };
 
-  const handleNewRestaurant = (data: z.infer<typeof restaurantValidator>) => {
-    console.log(data);
-
-    // Image upload logic
-    form.setValue("logo", "/"); //URL after upload
-    console.log(data);
+  const handleNewRestaurant = async (
+    data: z.infer<typeof restaurantValidator>
+  ) => {
+    setLoading(true);
+    try {
+      await createNewRestaurant(data, session?.user?.email!);
+      form.reset();
+      toast("Restaurante Criado");
+    } catch (error) {
+      toast("Ocorreu um erro.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -127,11 +131,7 @@ const RestaurantForm = ({
 
         <div className="flex flex-col">
           <p>Logo*</p>
-          <UploadImage
-            onChange={handleLogoFile}
-            imageFile={logoFile}
-            mockUrl={form.getValues("logo")}
-          />
+          <UploadImage control={form.control} />
         </div>
 
         {/* Methods */}
@@ -281,7 +281,13 @@ const RestaurantForm = ({
             Cancelar
           </Button>
 
-          <Button variant="default" className="w-full" type="submit">
+          <Button
+            variant="default"
+            className="w-full"
+            type="submit"
+            disabled={loading}
+            onClick={toggleOpen}
+          >
             {defaultValues ? "Atualizar" : "Criar"}
           </Button>
         </div>

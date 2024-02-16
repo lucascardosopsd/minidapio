@@ -28,6 +28,7 @@
     "@types/lodash": "^4.14.202",
     "@types/react-color": "^3.0.11",
     "@types/react-currency-format": "^1.0.4",
+    "@uploadthing/react": "^6.2.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "dayjs": "^1.11.10",
@@ -48,6 +49,7 @@
     "sonner": "^1.3.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "uploadthing": "^6.3.3",
     "vaul": "^0.8.9",
     "zod": "^3.22.4",
     "zustand": "^4.5.0"

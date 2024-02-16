@@ -8,7 +8,13 @@ export const restaurants: RestaurantProps[] = [
     whatsapp: "(00)00000-0000",
     landline: "(00)00000-0000",
     address: "Rua exemplo da silva, 123. Centro. São Paulo-SP",
-    methods: ["Dinheiro", "PIX", "Crédito", "Débito"],
+    methods: {
+      bankCheck: false,
+      cash: true,
+      credit: true,
+      debit: true,
+      pix: true,
+    },
     workHours: [
       {
         weekDay: 0,

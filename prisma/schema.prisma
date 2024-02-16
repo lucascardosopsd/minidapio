@@ -37,13 +37,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
-  email         String?   @unique
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  restaurants   Restaurant[]
 }
 
 model VerificationToken {
@@ -53,4 +54,53 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Restaurant {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  active     Boolean
+  whatsapp   String?
+  landline   String?
+  address    String
+  methods    Json?
+  workHours  Json?
+  logo       String
+  color      String
+  linkMaps   String?
+  note       String?
+  activeMenu Boolean
+  slug       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String?  @db.ObjectId
+
+  User       User?      @relation(fields: [userId], references: [id])
+  Categories Category[]
+  Items      Item[]
+}
+
+model Category {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  items        Item[]
+  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId String?     @db.ObjectId
+}
+
+model Item {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  price       Float
+  image       String
+  highLight   Boolean
+  active      Boolean
+  sale        Boolean
+  salePrice   Float
+
+  categoryId   String?     @db.ObjectId
+  Category     Category?   @relation(fields: [categoryId], references: [id])
+  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId String?     @db.ObjectId
 }

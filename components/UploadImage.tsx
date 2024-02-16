@@ -1,52 +1,62 @@
-import { ChangeEvent } from "react";
-import { Input } from "./ui/input";
+import { toast } from "sonner";
+import { UploadDropzone } from "./UploadThing";
+import { FormControl, FormField, FormItem, FormMessage } from "./ui/form";
+import { Control, useWatch } from "react-hook-form";
 import Image from "next/image";
 
 interface UploadImageProps {
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  imageFile?: string;
-  mockUrl?: string;
-  defaultTitle?: string;
-  activeTitle?: string;
+  control: Control<any>;
 }
 
-const UploadImage = ({
-  onChange,
-  imageFile,
-  mockUrl,
-  defaultTitle = "Clique para subir a Imagem",
-  activeTitle = "Substituir imagem",
-}: UploadImageProps) => {
+const UploadImage = ({ control }: UploadImageProps) => {
+  const watchLogo = useWatch({
+    control,
+    name: "logo",
+  });
+
   return (
     <div className="relative">
-      <Input
-        type="file"
-        accept="image/*"
-        id="logo"
-        onChange={onChange}
-        className="hidden"
-      />
+      {watchLogo && (
+        <Image
+          src={watchLogo}
+          alt="logo"
+          width={0}
+          height={0}
+          sizes="1000px"
+          className="h-[180px] w-full object-cover absolute bottom-0 -z-10 opacity-50 rounded"
+        />
+      )}
 
-      <label
-        htmlFor="logo"
-        className={`flex w-full h-80 border border-dashed relative items-center justify-center hover:border-primary transition cursor-pointer rounded ${
-          imageFile && "border-primary"
-        }`}
-      >
-        <p className="absolute bg-background z-10 p-2 text-primary rounded">
-          {imageFile ? activeTitle : defaultTitle}
-        </p>
-        {(imageFile || mockUrl) && (
-          <Image
-            height={0}
-            width={0}
-            src={imageFile ? imageFile! : mockUrl!}
-            alt="logo"
-            sizes="1000px"
-            className="h-full w-full absolute left-0 top-0 rounded object-cover"
-          />
+      <FormField
+        control={control}
+        name="logo"
+        render={({ field: { onChange } }) => (
+          <FormItem>
+            <FormControl>
+              <UploadDropzone
+                content={{
+                  label: "Enviar arquivo",
+                  allowedContent: "Imagem de até 1MB",
+                  button: "Confirmar",
+                }}
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => onChange(res[0].url)}
+                onUploadError={(error: Error) =>
+                  toast("Erro ao enviar a logo.")
+                }
+                appearance={{
+                  label: "text-primary hover:text-primary/60 transition",
+                  button: "bg-primary text-background",
+                  allowedContent: "text-primary/60",
+                  uploadIcon: "text-primary",
+                }}
+                className="border border-primary hover:border-primary/60"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
         )}
-      </label>
+      />
     </div>
   );
 };
