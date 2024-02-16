@@ -26,6 +26,7 @@ import { createNewRestaurant } from "@/actions/createNewRestaurant";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Session } from "@/types/session";
+import { fetchUserRestaurantsByQuery } from "@/actions/fetchUserRestaurantsByQuery";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
@@ -69,7 +70,21 @@ const RestaurantForm = ({
     data: z.infer<typeof restaurantValidator>
   ) => {
     setLoading(true);
+
+    const restaurantExists = await fetchUserRestaurantsByQuery({
+      where: {
+        title: form.getValues("title"),
+      },
+    });
+
+    if (restaurantExists) {
+      toast("Já existe um restaurante com este nome!");
+      setLoading(false);
+      return;
+    }
+
     try {
+      toggleOpen();
       await createNewRestaurant(data);
       form.reset();
       toast("Restaurante Criado");
@@ -287,7 +302,6 @@ const RestaurantForm = ({
             className="w-full"
             type="submit"
             disabled={loading}
-            onClick={toggleOpen}
           >
             {defaultValues ? "Atualizar" : "Criar"}
           </Button>
