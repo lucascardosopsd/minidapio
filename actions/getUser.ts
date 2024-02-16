@@ -2,6 +2,10 @@
 
 import prisma from "@/lib/prisma";
 
-export const getUser = async (email: string) => {
+interface GetUserProps {
+  email: string;
+}
+
+export const getUser = async ({ email }: GetUserProps) => {
   return prisma.user.findUnique({ where: { email } });
 };

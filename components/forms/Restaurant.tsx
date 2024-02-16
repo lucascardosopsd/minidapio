@@ -1,3 +1,5 @@
+"use client";
+
 import { Checkbox } from "../ui/checkbox";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -22,24 +24,23 @@ import { copyToClipboard } from "@/tools/copyToClipboard";
 import ColorPicker from "../ColorPicker";
 import { createNewRestaurant } from "@/actions/createNewRestaurant";
 import { toast } from "sonner";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { Session } from "@/types/session";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
   toggleOpen?: () => void;
+  session: Session | null;
 }
 
 const RestaurantForm = ({
   defaultValues = undefined,
   toggleOpen = () => {},
+  session,
 }: RestaurantFormProps) => {
-  const userId = 80;
   const [loading, setLoading] = useState(false);
 
   const form = useRestaurantForm({ defaultValues });
-
-  const { data: session } = useSession();
 
   const watchTitle = useWatch({
     control: form.control,
@@ -69,7 +70,7 @@ const RestaurantForm = ({
   ) => {
     setLoading(true);
     try {
-      await createNewRestaurant(data, session?.user?.email!);
+      await createNewRestaurant(data);
       form.reset();
       toast("Restaurante Criado");
     } catch (error) {
@@ -244,15 +245,15 @@ const RestaurantForm = ({
           />
 
           <div className="flex gap-2 items-center">
-            <p className="text-background font-semibold">
-              www.minidapio.com/{userId}/{slugGen(watchTitle)}
+            <p className="text-background font-semibold p-4 break-all text-center">
+              www.minidapio.com/{session?.id}/{slugGen(watchTitle)}
             </p>
             <Button
               type="button"
               variant="outline"
               onClick={() =>
                 copyToClipboard(
-                  `www.minidapio.com/${userId}/${slugGen(watchTitle)}`,
+                  `www.minidapio.com/${session?.id}/${slugGen(watchTitle)}`,
                   "slug"
                 )
               }

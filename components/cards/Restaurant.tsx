@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
@@ -9,12 +11,14 @@ import RestaurantForm from "../forms/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
 import { ImSpinner2 } from "react-icons/im";
 import { useState } from "react";
+import { Session } from "@/types/session";
 
 interface RestaurantCardProps {
   restaurant: RestaurantProps;
+  session: Session | null;
 }
 
-const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
+const RestaurantCard = ({ restaurant, session }: RestaurantCardProps) => {
   const [loading, setLoading] = useState(false);
 
   return (
@@ -62,7 +66,9 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
         </Link>
 
         <RestaurantSheet
-          restaurantForm={<RestaurantForm defaultValues={restaurant} />}
+          restaurantForm={
+            <RestaurantForm defaultValues={restaurant} session={session} />
+          }
           sheetTitle="Editar Restaurant"
           triggerText="Editar"
           triggerVariant="outline"

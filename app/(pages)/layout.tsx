@@ -10,7 +10,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   if (!data) {
     return (
       <div className="flex items-center justify-center h-svh w-svw">
-        <Card>
+        <Card className="border-none">
           <CardHeader>
             <p className="font-semibold text-lg text-center">
               {status == "unauthenticated"

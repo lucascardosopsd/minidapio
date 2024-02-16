@@ -1,15 +1,13 @@
 "use server";
-
 import { restaurantValidator } from "@/validators/restaurant";
 import { z } from "zod";
-import { getUser } from "./getUser";
 import prisma from "@/lib/prisma";
+import { useUserSession } from "@/hooks/useUserSession";
 
 export const createNewRestaurant = async (
-  data: z.infer<typeof restaurantValidator>,
-  userEmail: string
+  data: z.infer<typeof restaurantValidator>
 ) => {
-  const user = await getUser(userEmail);
+  const user = await useUserSession();
 
   if (!user?.id) {
     throw new Error("User not found");

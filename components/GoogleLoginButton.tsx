@@ -1,3 +1,5 @@
+"use client";
+
 import { signIn, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import { ImSpinner2 } from "react-icons/im";
