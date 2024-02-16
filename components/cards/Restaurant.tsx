@@ -5,13 +5,16 @@ import { Badge } from "../ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaTrash } from "react-icons/fa6";
 import RestaurantSheet from "../sheets/Restaurant";
 import RestaurantForm from "../forms/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
 import { ImSpinner2 } from "react-icons/im";
 import { useState } from "react";
 import { Session } from "@/types/session";
+import { toast } from "sonner";
+import { deleteRestaurant } from "@/actions/deleteRestaurant";
+import DeleteModal from "../DeleteModal";
 
 interface RestaurantCardProps {
   restaurant: RestaurantProps;
@@ -20,6 +23,16 @@ interface RestaurantCardProps {
 
 const RestaurantCard = ({ restaurant, session }: RestaurantCardProps) => {
   const [loading, setLoading] = useState(false);
+
+  const handleDeleteRestaurant = async () => {
+    try {
+      await deleteRestaurant(restaurant.id);
+      toast("Restaurant excluído.");
+    } catch (error) {
+      toast("Ocorreu um erro ao excluir.");
+      throw new Error("Can't delete restaurant");
+    }
+  };
 
   return (
     <Card className="w-full" key={restaurant.id}>
@@ -65,15 +78,32 @@ const RestaurantCard = ({ restaurant, session }: RestaurantCardProps) => {
           </Button>
         </Link>
 
-        <RestaurantSheet
-          restaurantForm={
-            <RestaurantForm defaultValues={restaurant} session={session} />
-          }
-          sheetTitle="Editar Restaurant"
-          triggerText="Editar"
-          triggerVariant="outline"
-          triggerClassname="w-full"
-        />
+        <div className="flex gap-2 w-full">
+          <RestaurantSheet
+            restaurantForm={
+              <RestaurantForm defaultValues={restaurant} session={session} />
+            }
+            sheetTitle="Editar Restaurant"
+            triggerText="Editar"
+            triggerVariant="outline"
+            triggerClassname="w-full"
+          />
+
+          <DeleteModal
+            action={handleDeleteRestaurant}
+            dialogTitle="Deletar Item"
+            triggerText={<FaTrash />}
+            dialogDescription={
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <p>Você está apagando o restaurante</p>
+                  <Badge>{restaurant.title}</Badge>
+                </div>
+              </div>
+            }
+            triggerVariant="destructive"
+          />
+        </div>
       </CardFooter>
     </Card>
   );
