@@ -6,22 +6,33 @@ export interface PaymentMethodProps {
   bankCheck: boolean;
 }
 
+export interface timeProps {
+  open: string;
+  close: string;
+}
+
+export interface WorkHourProps {
+  weekDay: number;
+  opened: boolean;
+  times: timeProps[];
+}
+
 export interface RestaurantProps {
-  id: number;
+  id: string;
   title: string;
   active: boolean;
-  landline?: string;
-  whatsapp?: string;
+  landline?: string | null;
+  whatsapp?: string | null;
   address: string;
   methods: PaymentMethodProps;
-  workHours: WorkHours[];
+  workHours: WorkHoursProps[];
   logo: string;
   color: string;
-  linkMaps?: string;
-  note?: string;
+  linkMaps?: string | null;
+  note?: string | null;
   activeMenu: boolean;
   slug: string;
-  createdAt: string;
-  updatedAt: string;
-  userId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string | null;
 }

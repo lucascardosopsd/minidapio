@@ -2,7 +2,7 @@ import { RestaurantProps } from "@/types/restaurant";
 
 export const restaurants: RestaurantProps[] = [
   {
-    id: 1,
+    id: "test",
     title: "Restaurante 1",
     active: true,
     whatsapp: "(00)00000-0000",
@@ -108,8 +108,8 @@ export const restaurants: RestaurantProps[] = [
     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus ante sed ligula efficitur, ac consequat odio vestibulum. In hac habitasse platea dictumst",
     activeMenu: true,
     slug: "restaurant-1",
-    createdAt: "2014-06-26 04:07:31",
-    updatedAt: "2014-06-27 04:07:31",
-    userId: 80,
+    createdAt: new Date("2014-06-26 04:07:31"),
+    updatedAt: new Date("2014-06-27 04:07:31"),
+    userId: "isdn098ws7d9",
   },
 ];
