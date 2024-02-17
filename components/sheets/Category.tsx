@@ -4,22 +4,20 @@ import { Input } from "../ui/input";
 import {
   Sheet,
   SheetContent,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
+import { Form } from "../ui/form";
 import { ButtonVariants } from "@/types/button";
 import { useCategoryForm } from "@/hooks/useCategoryForm";
 import { CategoryProps } from "@/types/category";
+import { z } from "zod";
+import { categoryValidator } from "@/validators/category";
+import { toast } from "sonner";
+import { createNewCategory } from "@/actions/category/createNewCategory";
+import { usePathname } from "next/navigation";
+import FieldBuilder from "../builders/FieldBuilder";
 
 interface CategorySheetProps {
   defaultValues?: CategoryProps | undefined;
@@ -39,6 +37,9 @@ const CategorySheet = ({
   triggerClassname,
 }: CategorySheetProps) => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const urlPath = usePathname();
 
   const toggleOpen = () => {
     setOpen(!open);
@@ -46,7 +47,21 @@ const CategorySheet = ({
 
   const form = useCategoryForm({ defaultValues });
 
-  const HandleNewCategory = async () => {};
+  const handleNewCategory = async (data: z.infer<typeof categoryValidator>) => {
+    setLoading(true);
+
+    try {
+      await createNewCategory(data, urlPath);
+      toast("Categoria criada!");
+    } catch (error) {
+      console.log(error);
+      toast("Ocorreu um erro.");
+      throw new Error("Can't create new category");
+    } finally {
+      toggleOpen();
+      setLoading(false);
+    }
+  };
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -61,33 +76,26 @@ const CategorySheet = ({
         </SheetHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(HandleNewCategory)}>
-            <FormField
+          <form
+            onSubmit={form.handleSubmit(handleNewCategory)}
+            className="space-y-2"
+          >
+            <FieldBuilder
               control={form.control}
+              fieldElement={<Input />}
               name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome*</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              title="Nome*"
             />
+            <Button
+              variant={triggerVariant}
+              type="submit"
+              className="w-full"
+              disabled={loading}
+            >
+              {defaultValues ? "Atualizar" : "Confirmar"}
+            </Button>
           </form>
         </Form>
-
-        <SheetFooter className="py-2">
-          <Button
-            variant={triggerVariant}
-            type="submit"
-            className="w-full"
-            onClick={toggleOpen}
-          >
-            {defaultValues ? "Atualizar" : "Confirmar"}
-          </Button>
-        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
