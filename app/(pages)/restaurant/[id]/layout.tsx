@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchUserRestaurantsByQuery } from "@/actions/fetchUserRestaurantsByQuery";
+import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
 import Navbar from "@/components/Navbar";
 import { BreadcrumbRouteProps } from "@/types/breacrumb";
 import { RestaurantProps } from "@/types/restaurant";

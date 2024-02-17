@@ -22,11 +22,11 @@ import { slugGen } from "@/tools/slugGen";
 import { FaRegCopy } from "react-icons/fa6";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import ColorPicker from "../ColorPicker";
-import { createNewRestaurant } from "@/actions/createNewRestaurant";
+import { createNewRestaurant } from "@/actions/restaurant/createNewRestaurant";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Session } from "@/types/session";
-import { fetchUserRestaurantsByQuery } from "@/actions/fetchUserRestaurantsByQuery";
+import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;

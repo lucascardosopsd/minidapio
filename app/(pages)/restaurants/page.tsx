@@ -4,7 +4,7 @@ import RestaurantForm from "@/components/forms/Restaurant";
 import RestaurantSheet from "@/components/sheets/Restaurant";
 import RestaurantCard from "@/components/cards/Restaurant";
 import { useUserSession } from "@/hooks/useUserSession";
-import { fetchUserRestaurants } from "@/actions/fetchUserRestaurants";
+import { fetchUserRestaurants } from "@/actions/restaurant/fetchUserRestaurants";
 
 export default async function Dashboard() {
   const session = await useUserSession();

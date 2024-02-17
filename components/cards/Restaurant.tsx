@@ -13,7 +13,7 @@ import { ImSpinner2 } from "react-icons/im";
 import { useState } from "react";
 import { Session } from "@/types/session";
 import { toast } from "sonner";
-import { deleteRestaurant } from "@/actions/deleteRestaurant";
+import { deleteRestaurant } from "@/actions/restaurant/deleteRestaurant";
 import DeleteModal from "../DeleteModal";
 
 interface RestaurantCardProps {
