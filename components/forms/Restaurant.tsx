@@ -147,7 +147,7 @@ const RestaurantForm = ({
 
         <div className="flex flex-col">
           <p>Logo*</p>
-          <UploadImage control={form.control} />
+          <UploadImage control={form.control} name="logo" />
         </div>
 
         {/* Methods */}

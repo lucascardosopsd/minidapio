@@ -1,3 +1,5 @@
+"use client";
+
 import { CategoryProps } from "@/types/category";
 import {
   AccordionContent,
