@@ -4,7 +4,7 @@ import { fetchUserRestaurantsByQuery } from "@/actions/fetchUserRestaurantsByQue
 import Navbar from "@/components/Navbar";
 import { BreadcrumbRouteProps } from "@/types/breacrumb";
 import { RestaurantProps } from "@/types/restaurant";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 interface LayoutProps {
   params: {
@@ -18,11 +18,13 @@ const Layout = ({ children, params: { id } }: LayoutProps) => {
     {} as RestaurantProps
   );
 
-  fetchUserRestaurantsByQuery({
-    where: {
-      id,
-    },
-  }).then((data) => setRestaurant(data[0]));
+  useEffect(() => {
+    fetchUserRestaurantsByQuery({
+      where: {
+        id,
+      },
+    }).then((data) => setRestaurant(data[0]));
+  }, []);
 
   const breadcrumb: BreadcrumbRouteProps[] = [
     { title: "Início", route: "/restaurants" },
