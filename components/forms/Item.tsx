@@ -1,10 +1,10 @@
+"use client";
 import { useItemFormHook } from "@/hooks/useItemForm";
 import { ItemProps } from "@/types/item";
 import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 
 import { NumericFormat } from "react-number-format";
-import { ChangeEvent, useState } from "react";
 import { categories } from "@/mock/categories";
 import { SelectItem } from "../ui/select";
 import { z } from "zod";
@@ -32,20 +32,11 @@ const ItemForm = ({
 }: ItemFormProps) => {
   const form = useItemFormHook({ defaultValues });
 
-  const [imgFile, setImgFile] = useState<string>("");
-
   const watchSale = useWatch({
     control: form.control,
     name: "sale",
     defaultValue: false,
   });
-
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setImgFile(URL.createObjectURL(file));
-    }
-  };
 
   const handleNewItem = async (data: z.infer<typeof ItemValidator>) => {};
 
@@ -83,11 +74,7 @@ const ItemForm = ({
           title="Preço*"
         />
 
-        <UploadImage
-          onChange={handleImageChange}
-          imageFile={imgFile}
-          logoUrl={defaultValues?.image}
-        />
+        <UploadImage control={form.control} name="image" />
 
         <div className="flex gap-2">
           <Fence>
