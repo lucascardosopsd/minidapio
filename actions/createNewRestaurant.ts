@@ -3,6 +3,7 @@ import { restaurantValidator } from "@/validators/restaurant";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { useUserSession } from "@/hooks/useUserSession";
+import { revalidatePath } from "next/cache";
 
 export const createNewRestaurant = async (
   data: z.infer<typeof restaurantValidator>
@@ -20,6 +21,8 @@ export const createNewRestaurant = async (
         userId: user.id,
       },
     });
+
+    revalidatePath("/restaurants");
   } catch (error) {
     throw new Error("Can't create new restaurant");
   }

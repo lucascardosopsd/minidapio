@@ -77,7 +77,7 @@ const RestaurantForm = ({
       },
     });
 
-    if (restaurantExists) {
+    if (restaurantExists[0]) {
       toast("Já existe um restaurante com este nome!");
       setLoading(false);
       return;
