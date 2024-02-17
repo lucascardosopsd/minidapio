@@ -31,7 +31,11 @@ export default async function Dashboard() {
           {restaurants.length ? (
             <div className="grid grid-cols-1 mobile:grid-cols-2 tablet:grid-cols-4 gap-4 pb-4 tablet:pb-0">
               {restaurants.map((restaurant) => (
-                <RestaurantCard restaurant={restaurant!} session={session} />
+                <RestaurantCard
+                  restaurant={restaurant!}
+                  session={session}
+                  key={restaurant.id}
+                />
               ))}
             </div>
           ) : (
