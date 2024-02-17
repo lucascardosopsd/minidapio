@@ -1,17 +1,28 @@
+"use client";
+
+import { fetchUserRestaurantsByQuery } from "@/actions/fetchUserRestaurantsByQuery";
 import Navbar from "@/components/Navbar";
-import { restaurants } from "@/mock/restaurants";
 import { BreadcrumbRouteProps } from "@/types/breacrumb";
-import { ReactNode } from "react";
+import { RestaurantProps } from "@/types/restaurant";
+import { ReactNode, useState } from "react";
 
 interface LayoutProps {
   params: {
-    id: number;
+    id: string;
   };
   children: ReactNode;
 }
 
 const Layout = ({ children, params: { id } }: LayoutProps) => {
-  const restaurant = restaurants.filter((restaurant) => restaurant.id == id)[0];
+  const [restaurant, setRestaurant] = useState<RestaurantProps>(
+    {} as RestaurantProps
+  );
+
+  fetchUserRestaurantsByQuery({
+    where: {
+      id,
+    },
+  }).then((data) => setRestaurant(data[0]));
 
   const breadcrumb: BreadcrumbRouteProps[] = [
     { title: "Início", route: "/restaurants" },
