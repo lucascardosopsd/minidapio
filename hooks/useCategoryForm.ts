@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 const mockCategory = {
   title: "",
+  restaurantId: "",
 };
 
 interface UseCategoryFormProps {

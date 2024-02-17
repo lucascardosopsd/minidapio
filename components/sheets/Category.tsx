@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode, useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -26,6 +28,7 @@ interface CategorySheetProps {
   sheetTitle: string | ReactNode;
   sheetDescription?: string;
   triggerClassname?: string;
+  restaurantId?: string;
 }
 
 const CategorySheet = ({
@@ -35,6 +38,7 @@ const CategorySheet = ({
   sheetTitle,
   sheetDescription,
   triggerClassname,
+  restaurantId,
 }: CategorySheetProps) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -49,6 +53,8 @@ const CategorySheet = ({
 
   const handleNewCategory = async (data: z.infer<typeof categoryValidator>) => {
     setLoading(true);
+
+    if (!defaultValues && restaurantId) data.restaurantId = restaurantId;
 
     try {
       await createNewCategory(data, urlPath);
@@ -86,6 +92,14 @@ const CategorySheet = ({
               name="title"
               title="Nome*"
             />
+
+            <FieldBuilder
+              control={form.control}
+              fieldElement={<input hidden />}
+              name="restaurantId"
+              defaultValue={restaurantId}
+            />
+
             <Button
               variant={triggerVariant}
               type="submit"

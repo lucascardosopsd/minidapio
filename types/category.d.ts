@@ -1,4 +1,5 @@
 export interface CategoryProps {
-  id: number;
+  id: string;
   title: string;
+  restaurantId: string;
 }

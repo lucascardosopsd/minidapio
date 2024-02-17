@@ -6,12 +6,13 @@ import Image from "next/image";
 
 interface UploadImageProps {
   control: Control<any>;
+  name: string;
 }
 
-const UploadImage = ({ control }: UploadImageProps) => {
+const UploadImage = ({ control, name }: UploadImageProps) => {
   const watchLogo = useWatch({
     control,
-    name: "logo",
+    name,
   });
 
   return (

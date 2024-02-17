@@ -1,5 +1,4 @@
-"use client";
-import { categories } from "@/mock/categories";
+"use server";
 import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,8 +6,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import CategorySheet from "@/components/sheets/Category";
 import CategoryCard from "@/components/cards/Category";
+import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
 
-export default function Restaurant() {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function Restaurant({ params: { id: restaurantId } }: PageProps) {
+  const categories = await fetchUserCategoriesByQuery({
+    where: {
+      restaurantId
+    },
+  });
+
   return (
     <main className="flex flex-col items-start justify-center gap-4 mt-5">
       <div className="flex flex-col tablet:flex-row gap-4 tablet:gap-0 py-4 tablet:p-0 justify-between w-full items-center">
@@ -27,6 +39,7 @@ export default function Restaurant() {
             triggerText="Nova Categoria"
             triggerVariant="default"
             triggerClassname="w-full tablet:w-40"
+            restaurantId={restaurantId}
           />
         </div>
       </div>
