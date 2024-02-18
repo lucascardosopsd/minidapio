@@ -127,16 +127,15 @@ const CategoryCard = ({
                 <p className="flex-1 flex justify-center">Ações</p>
               </div>
 
-              {items.length &&
-                items
-                  .filter((item) => item.categoryId == category.id)
-                  .map((item) => (
-                    <ItemCard category={category} item={item} key={item.id} />
-                  ))}
+              {category.items &&
+                category.items.map((item) => (
+                  <ItemCard category={category} item={item} key={item.id} />
+                ))}
             </div>
 
-            {items.filter((item) => item.categoryId == category.id).length ==
-              0 && <p className="text-center p-4">Categoria sem items.</p>}
+            {!category.items && (
+              <p className="text-center p-4">Categoria sem items.</p>
+            )}
           </div>
         </div>
 
