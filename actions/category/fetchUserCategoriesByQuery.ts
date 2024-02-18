@@ -2,13 +2,13 @@
 import prisma from "@/lib/prisma";
 import { useUserSession } from "@/hooks/useUserSession";
 import { Prisma } from "@prisma/client";
-import { CategoryProps } from "@/types/category";
+import { CategoriesWithItemsProps } from "@/types/category";
 
-export type CategoryQuery = Prisma.CategoryFindFirstArgs;
+export type CategoryQuery = Prisma.CategoryFindManyArgs;
 
 export const fetchUserCategoriesByQuery = async (
   query: CategoryQuery
-): Promise<CategoryProps[]> => {
+): Promise<CategoriesWithItemsProps[]> => {
   const user = await useUserSession();
 
   if (!user?.id) {
