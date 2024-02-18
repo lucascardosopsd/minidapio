@@ -10,17 +10,17 @@ interface UploadImageProps {
 }
 
 const UploadImage = ({ control, name }: UploadImageProps) => {
-  const watchLogo = useWatch({
+  const watchChange = useWatch({
     control,
     name,
   });
 
   return (
     <div className="relative">
-      {watchLogo && (
+      {watchChange && (
         <Image
-          src={watchLogo}
-          alt="logo"
+          src={watchChange}
+          alt={name}
           width={0}
           height={0}
           sizes="1000px"
@@ -30,7 +30,7 @@ const UploadImage = ({ control, name }: UploadImageProps) => {
 
       <FormField
         control={control}
-        name="logo"
+        name={name}
         render={({ field: { onChange } }) => (
           <FormItem>
             <FormControl>
