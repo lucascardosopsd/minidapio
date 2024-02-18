@@ -1,6 +1,6 @@
 "use client";
 
-import { CategoriesWithItemsProps, CategoryProps } from "@/types/category";
+import { CategoriesWithItemsProps } from "@/types/category";
 import {
   AccordionContent,
   AccordionItem,
@@ -21,7 +21,7 @@ import ItemSheet from "../sheets/Item";
 import ItemForm from "../forms/Item";
 
 interface CategoryCardProps {
-  category: CategoryProps;
+  category: CategoriesWithItemsProps;
   restaurantId: string;
   categories: CategoriesWithItemsProps[];
 }
@@ -69,8 +69,8 @@ const CategoryCard = ({
           <div className="w-[250svw] pr-20 tablet:pr-0 tablet:w-full">
             <div className="flex flex-col space-y-2 mt-2">
               <AnimatePresence>
-                {items.filter((item) => item.categoryId == category.id).length >
-                  1 &&
+                {category.items &&
+                  category.items.length > 1 &&
                   idList.length >= 1 && (
                     <motion.div
                       initial={{ opacity: 0, x: -20 }}
