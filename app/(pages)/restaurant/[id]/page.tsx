@@ -2,7 +2,6 @@
 import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import CategorySheet from "@/components/sheets/Category";
 import CategoryCard from "@/components/cards/Category";
@@ -27,7 +26,7 @@ export default async function Restaurant({
   });
 
   return (
-    <main className="flex flex-col items-start justify-center gap-4 mt-5">
+    <main className="flex flex-col gap-4 pt-5 h-[90svh] overflow-y-auto">
       <div className="flex flex-col tablet:flex-row gap-4 tablet:gap-0 py-4 tablet:p-0 justify-between w-full items-center">
         <p>Categorias</p>
 
@@ -50,8 +49,8 @@ export default async function Restaurant({
       </div>
       <Separator />
 
-      <ScrollArea className="h-[80svh] w-full mx-auto">
-        <Accordion className="space-y-2 pb-10 tablet:pb-0" type="multiple">
+      <div className="w-full mx-auto h-full tablet:h-[75svh] tablet:overflow-y-auto ">
+        <Accordion className="space-y-2 pb-10" type="multiple">
           {categories.map((category) => (
             <CategoryCard
               category={category}
@@ -61,7 +60,7 @@ export default async function Restaurant({
             />
           ))}
         </Accordion>
-      </ScrollArea>
+      </div>
     </main>
   );
 }
