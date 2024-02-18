@@ -1,6 +1,6 @@
 "use client";
 
-import { CategoryProps } from "@/types/category";
+import { CategoriesWithItemsProps, CategoryProps } from "@/types/category";
 import {
   AccordionContent,
   AccordionItem,
@@ -22,9 +22,15 @@ import ItemForm from "../forms/Item";
 
 interface CategoryCardProps {
   category: CategoryProps;
+  restaurantId: string;
+  categories: CategoriesWithItemsProps[];
 }
 
-const CategoryCard = ({ category }: CategoryCardProps) => {
+const CategoryCard = ({
+  category,
+  restaurantId,
+  categories,
+}: CategoryCardProps) => {
   const { idList, setAllIds } = useItemStore();
 
   return (
@@ -136,7 +142,13 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
 
         <div className="flex mt-2">
           <ItemSheet
-            itemForm={<ItemForm categoryId={category.id.toString()} />}
+            itemForm={
+              <ItemForm
+                categoryId={category.id.toString()}
+                restaurantId={restaurantId}
+                categories={categories}
+              />
+            }
             sheetTitle="Novo Item"
             triggerText="Novo Item"
             triggerVariant="default"
