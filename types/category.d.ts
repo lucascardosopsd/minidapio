@@ -3,3 +3,7 @@ export interface CategoryProps {
   title: string;
   restaurantId: string | null;
 }
+
+export interface CategoriesWithItemsProps extends CategoryProps {
+  items?: ItemProps[];
+}
