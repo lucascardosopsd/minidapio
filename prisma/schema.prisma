@@ -95,13 +95,13 @@ model Category {
 model Item {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   title       String
-  description String
+  description String?
   price       Float
   image       String
-  highLight   Boolean
+  highlight   Boolean
   active      Boolean
   sale        Boolean
-  salePrice   Float
+  salePrice   Float?
 
   categoryId   String?     @db.ObjectId
   Category     Category?   @relation(fields: [categoryId], references: [id])

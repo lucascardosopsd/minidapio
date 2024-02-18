@@ -44,7 +44,7 @@ const ItemSheet = ({
         {triggerText}
       </Button>
 
-      <SheetContent className="w-svw tablet:w-[30svw] h-[100svh] overflow-y-auto">
+      <SheetContent className="!h-[100svh] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>{sheetTitle}</SheetTitle>
           <SheetDescription>{sheetDescription}</SheetDescription>

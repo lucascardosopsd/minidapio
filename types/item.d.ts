@@ -1,13 +1,13 @@
 export interface ItemProps {
-  id: number;
+  id: string;
   title: string;
-  description: string;
+  description?: string;
   price: number;
   image: string;
   highlight: boolean;
   active: boolean;
   sale: boolean;
-  salePrice: number | undefined;
-  categoryId: number | undefined;
-  restaurantId: number;
+  salePrice: number | null;
+  categoryId: string;
+  restaurantId: string;
 }

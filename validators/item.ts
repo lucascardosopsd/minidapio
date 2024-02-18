@@ -1,22 +1,14 @@
 import { z } from "zod";
 
-export const ItemValidator = z
-  .object({
-    title: z.string(),
-    description: z.string(),
-    price: z.number(),
-    image: z.string(),
-    highlight: z.boolean(),
-    active: z.boolean(),
-    sale: z.boolean(),
-    salePrice: z.number().optional(),
-    categoryId: z.number().optional(),
-    restaurantId: z.number().optional(),
-  })
-  .refine(
-    (data) =>
-      data?.sale &&
-      !data.price && {
-        message: "Preço da promoção obrigatório",
-      }
-  );
+export const ItemValidator = z.object({
+  title: z.string({ required_error: "Digite o nome do item" }),
+  description: z.string().optional(),
+  price: z.number({ required_error: "Estabeleça um preço" }),
+  image: z.string({ required_error: "Adicione uma imagem" }),
+  active: z.boolean().default(true),
+  highlight: z.boolean().default(false),
+  sale: z.boolean().default(false),
+  salePrice: z.number().nullable().optional(),
+  categoryId: z.string(),
+  restaurantId: z.string().optional(),
+});

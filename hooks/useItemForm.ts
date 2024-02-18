@@ -4,15 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 const mockDefault = {
-  title: "",
-  description: "",
-  price: 0,
-  image: "",
   highlight: false,
   active: true,
   sale: false,
-  salePrice: undefined,
-  categoryId: 0,
 };
 
 interface UseItemFormHookProps {

@@ -14,10 +14,15 @@ interface PageProps {
   };
 }
 
-export default async function Restaurant({ params: { id: restaurantId } }: PageProps) {
+export default async function Restaurant({
+  params: { id: restaurantId },
+}: PageProps) {
   const categories = await fetchUserCategoriesByQuery({
     where: {
-      restaurantId
+      restaurantId,
+    },
+    include: {
+      items: true,
     },
   });
 
@@ -48,7 +53,12 @@ export default async function Restaurant({ params: { id: restaurantId } }: PageP
       <ScrollArea className="h-[80svh] w-full mx-auto">
         <Accordion className="space-y-2 pb-10 tablet:pb-0" type="multiple">
           {categories.map((category) => (
-            <CategoryCard category={category} key={category.id} />
+            <CategoryCard
+              category={category}
+              key={category.id}
+              restaurantId={restaurantId}
+              categories={categories}
+            />
           ))}
         </Accordion>
       </ScrollArea>

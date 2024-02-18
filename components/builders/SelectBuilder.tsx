@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Control } from "react-hook-form";
+import { Control, UseFormSetValue } from "react-hook-form";
 
 interface SelectBuilderProps {
   name: string;
@@ -22,6 +22,7 @@ interface SelectBuilderProps {
   placeholder?: string;
   selectItem: ReactNode | ReactNode[];
   control: Control<any>;
+  setValue?: UseFormSetValue<any>;
 }
 
 const SelectBuilder = ({
@@ -31,34 +32,35 @@ const SelectBuilder = ({
   placeholder,
   selectItem,
   control,
+  setValue,
 }: SelectBuilderProps) => {
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>{title}</FormLabel>
-          <FormControl>
-            <Select
-              onValueChange={field.onChange}
-              defaultValue={
-                !field.value
-                  ? defaultValue && defaultValue
-                  : field.value.toString()
-              }
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={placeholder} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>{selectItem}</SelectGroup>
-              </SelectContent>
-            </Select>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field }) => {
+        if (!field.value && defaultValue && setValue) {
+          field.value = defaultValue;
+          setValue(name, defaultValue);
+        }
+
+        return (
+          <FormItem>
+            <FormLabel>{title}</FormLabel>
+            <FormControl>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <SelectTrigger>
+                  <SelectValue placeholder={placeholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>{selectItem}</SelectGroup>
+                </SelectContent>
+              </Select>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 };
