@@ -17,9 +17,9 @@ import { Control, UseFormSetValue } from "react-hook-form";
 
 interface SelectBuilderProps {
   name: string;
-  title: string;
+  title?: string;
   defaultValue?: string;
-  placeholder?: string;
+  placeholder?: string | ReactNode;
   selectItem: ReactNode | ReactNode[];
   control: Control<any>;
   setValue?: UseFormSetValue<any>;
@@ -46,7 +46,7 @@ const SelectBuilder = ({
 
         return (
           <FormItem>
-            <FormLabel>{title}</FormLabel>
+            {title && <FormLabel>{title}</FormLabel>}
             <FormControl>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <SelectTrigger>

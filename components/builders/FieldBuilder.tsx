@@ -33,7 +33,7 @@ const FieldBuilder = ({
       name={name}
       render={({ field }) => (
         <FormItem className="w-full">
-          <FormLabel>{title}</FormLabel>
+          {title && <FormLabel>{title}</FormLabel>}
           <FormControl>
             {type == "checkbox"
               ? cloneElement(fieldElement, {
