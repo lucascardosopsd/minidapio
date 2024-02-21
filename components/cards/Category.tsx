@@ -40,7 +40,6 @@ const CategoryCard = ({
       await deleteCategory(category.id, restaurantId);
       toast("Categoria deletada");
     } catch (error) {
-      console.log(error);
       toast("ocorreu um erro");
       throw new Error("Error when delete category");
     }
