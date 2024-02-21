@@ -1,6 +1,5 @@
 "use server";
 import { Separator } from "@/components/ui/separator";
-import CategorySheet from "@/components/sheets/Category";
 import InputSearch from "@/components/InputSearch";
 import { fixParamsValues } from "@/tools/fixParamsValues";
 import { redirect } from "next/navigation";
@@ -41,16 +40,6 @@ export default async function Restaurant({
         <p>Items</p>
 
         <InputSearch restaurantId={restaurantId} />
-
-        <div className="flex gap-2 w-full tablet:w-auto">
-          <CategorySheet
-            sheetTitle="Criar Categoria"
-            triggerText="Nova Categoria"
-            triggerVariant="default"
-            triggerClassname="w-full tablet:w-40"
-            restaurantId={restaurantId}
-          />
-        </div>
       </div>
       <Separator />
 
