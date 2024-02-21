@@ -9,7 +9,6 @@ import {
 import CategorySheet from "../sheets/Category";
 import { FaCheck, FaPen, FaTrash } from "react-icons/fa6";
 import { Button } from "../ui/button";
-import { items } from "@/mock/items";
 import { AnimatePresence, motion } from "framer-motion";
 import { Checkbox } from "../ui/checkbox";
 import { Separator } from "../ui/separator";
@@ -49,7 +48,7 @@ const CategoryCard = ({
   return (
     <AccordionItem
       className="flex flex-col mx-4 border-none "
-      value={category.id.toString()}
+      value={category.id}
     >
       <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
         <p>{category.title}</p>
@@ -100,9 +99,9 @@ const CategoryCard = ({
                       <div className="flex gap-4 px-3">
                         <div className="flex items-center gap-2">
                           {(() => {
-                            const categoryItemsId = items
-                              .filter((item) => item.categoryId == category.id)
-                              .map((item) => item.id);
+                            const categoryItemsId = category.items.map(
+                              (item) => item.id
+                            );
 
                             return (
                               <Checkbox
@@ -123,10 +122,12 @@ const CategoryCard = ({
                           <Separator orientation="vertical" />
                         </div>
 
-                        <Button size="sm">Apagar</Button>
+                        <Button size="sm">Transferir</Button>
 
-                        <Button size="sm" variant="outline">
-                          Transferir
+                        <Button size="sm">Duplicar</Button>
+
+                        <Button size="sm" variant="destructive">
+                          Apagar
                         </Button>
                       </div>
                     </motion.div>
