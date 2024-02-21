@@ -8,6 +8,7 @@ import TransferItemsDialog from "./dialogs/TransferItems";
 import { CategoriesWithItemsProps } from "@/types/category";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
+import DeleteItemsDialog from "./dialogs/DeleteItems";
 
 interface ItemsActionsProps {
   items: ItemProps[];
@@ -46,9 +47,7 @@ const ItemsActions = ({ items, categories }: ItemsActionsProps) => {
 
             <Button size="sm">Duplicar</Button>
 
-            <Button size="sm" variant="destructive">
-              Apagar
-            </Button>
+            <DeleteItemsDialog />
           </div>
         </motion.div>
       )}

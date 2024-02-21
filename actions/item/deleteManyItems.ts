@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { useUserSession } from "@/hooks/useUserSession";
 import { revalidatePath } from "next/cache";
 
-export const deleteItem = async (id: string, restaurantId: string) => {
+export const deleteManyItems = async (ids: string[], path?: string) => {
   const user = await useUserSession();
 
   if (!user?.id) {
@@ -11,14 +11,16 @@ export const deleteItem = async (id: string, restaurantId: string) => {
   }
 
   try {
-    await prisma.item.delete({
+    await prisma.item.deleteMany({
       where: {
-        id,
+        id: {
+          in: ids,
+        },
       },
     });
 
-    revalidatePath("/restaurant/" + restaurantId);
+    if (path) revalidatePath(path);
   } catch (error) {
-    throw new Error("Can't delete restaurant");
+    throw new Error("Can't delete items");
   }
 };

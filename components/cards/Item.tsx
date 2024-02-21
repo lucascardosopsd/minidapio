@@ -1,13 +1,11 @@
 "use client";
-
 import { ItemProps } from "@/types/item";
 import { Checkbox } from "../ui/checkbox";
-import { FaPen, FaTrash } from "react-icons/fa6";
+import { FaPen } from "react-icons/fa6";
 import ItemSheet from "../sheets/Item";
 import ItemForm from "../forms/Item";
 import { useItemStore } from "@/context/item";
 import { Badge } from "../ui/badge";
-import DeleteModal from "../DeleteModal";
 import { CategoryProps } from "@/types/category";
 import { deleteItem } from "@/actions/item/deleteItem";
 import { toast } from "sonner";
@@ -126,21 +124,6 @@ const ItemCard = ({ item, categories, restaurantId }: ItemCardProps) => {
           sheetTitle="Editar Item"
           triggerText={<FaPen />}
           triggerVariant="default"
-        />
-
-        <DeleteModal
-          action={handleDeleteItem}
-          dialogTitle="Deletar Item"
-          triggerText={<FaTrash />}
-          dialogDescription={
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <p>Você está apagando o item</p>
-                <Badge>{item.title}</Badge>
-              </div>
-            </div>
-          }
-          triggerVariant="destructive"
         />
       </div>
     </div>
