@@ -16,9 +16,9 @@ import { Form } from "../ui/form";
 import SelectBuilder from "../builders/SelectBuilder";
 import { SelectItem } from "../ui/select";
 import { toast } from "sonner";
-import { updateItem } from "@/actions/item/updateItem";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { updateManyItems } from "@/actions/item/updateManyItems";
 
 interface TransferItemsProps {
   categories: CategoryProps[];
@@ -41,9 +41,7 @@ const TransferItemsDialog = ({ categories }: TransferItemsProps) => {
   const handleTransfer = async (data: z.infer<typeof transferResolver>) => {
     setLoading(true);
     try {
-      idList.forEach(async (itemId) => {
-        await updateItem(data, itemId, pathname);
-      });
+      await updateManyItems(data, idList, pathname);
       toast("Itens transferidos!");
     } catch (error) {
       toast("Erro ao transferir itens");
