@@ -19,6 +19,8 @@ import { Badge } from "../ui/badge";
 import DeleteModal from "../DeleteModal";
 import ItemSheet from "../sheets/Item";
 import ItemForm from "../forms/Item";
+import { deleteCategory } from "@/actions/category/deleteCategory";
+import { toast } from "sonner";
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
@@ -32,6 +34,17 @@ const CategoryCard = ({
   categories,
 }: CategoryCardProps) => {
   const { idList, setAllIds } = useItemStore();
+
+  const handleDeleteCategory = async () => {
+    try {
+      await deleteCategory(category.id, restaurantId);
+      toast("Categoria deletada");
+    } catch (error) {
+      console.log(error);
+      toast("ocorreu um erro");
+      throw new Error("Error when delete category");
+    }
+  };
 
   return (
     <AccordionItem
@@ -49,8 +62,8 @@ const CategoryCard = ({
           />
 
           <DeleteModal
-            action={() => {}}
-            dialogTitle="Deletar Item"
+            action={handleDeleteCategory}
+            dialogTitle="Deletar Categoria"
             triggerText={<FaTrash />}
             dialogDescription={
               <div className="flex flex-col gap-2">
