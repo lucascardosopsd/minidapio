@@ -6,6 +6,7 @@ import CategoryCard from "@/components/cards/Category";
 import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
 import InputSearch from "@/components/InputSearch";
 import CategoryForm from "@/components/forms/Category";
+import ItemsActions from "@/components/ItemsActions";
 
 interface PageProps {
   params: {
@@ -26,6 +27,10 @@ export default async function Restaurant({
     },
   });
 
+  const items = categories.flatMap(
+    (category) => category.items && category.items
+  );
+
   return (
     <main className="flex flex-col gap-4 pt-5 h-[90svh] overflow-y-auto">
       <div className="flex flex-col tablet:flex-row gap-4 tablet:gap-0 py-4 tablet:p-0 justify-between w-full items-center">
@@ -45,6 +50,8 @@ export default async function Restaurant({
         </div>
       </div>
       <Separator />
+
+      <ItemsActions categories={categories} items={items} />
 
       <div className="w-full mx-auto h-full tablet:h-[75svh] tablet:overflow-y-auto ">
         <Accordion className="space-y-2 pb-10" type="multiple">

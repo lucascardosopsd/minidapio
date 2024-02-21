@@ -1,5 +1,4 @@
 "use client";
-
 import { CategoriesWithItemsProps } from "@/types/category";
 import {
   AccordionContent,
@@ -8,10 +7,6 @@ import {
 } from "../ui/accordion";
 import CategorySheet from "../sheets/Category";
 import { FaCheck, FaPen, FaTrash } from "react-icons/fa6";
-import { Button } from "../ui/button";
-import { AnimatePresence, motion } from "framer-motion";
-import { Checkbox } from "../ui/checkbox";
-import { Separator } from "../ui/separator";
 import ItemCard from "./Item";
 import { useItemStore } from "@/context/item";
 import { Badge } from "../ui/badge";
@@ -87,53 +82,6 @@ const CategoryCard = ({
         <div className="overflow-x-auto w-[calc(100svw-60px)] tablet:w-full">
           <div className="w-[250svw] pr-20 tablet:pr-0 tablet:w-full">
             <div className="flex flex-col space-y-2 mt-2">
-              <AnimatePresence>
-                {category.items &&
-                  category.items.length > 1 &&
-                  idList.length >= 1 && (
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                    >
-                      <div className="flex gap-4 px-3">
-                        <div className="flex items-center gap-2">
-                          {(() => {
-                            const categoryItemsId = category.items.map(
-                              (item) => item.id
-                            );
-
-                            return (
-                              <Checkbox
-                                checked={
-                                  idList.length == categoryItemsId.length
-                                }
-                                onClick={() => {
-                                  idList.length !== categoryItemsId.length
-                                    ? setAllIds(categoryItemsId)
-                                    : setAllIds([]);
-                                }}
-                              />
-                            );
-                          })()}
-
-                          <p className="text-mutted">Todos</p>
-
-                          <Separator orientation="vertical" />
-                        </div>
-
-                        <Button size="sm">Transferir</Button>
-
-                        <Button size="sm">Duplicar</Button>
-
-                        <Button size="sm" variant="destructive">
-                          Apagar
-                        </Button>
-                      </div>
-                    </motion.div>
-                  )}
-              </AnimatePresence>
-
               <div className="flex items-center pl-3 text-foreground/50 ">
                 <div className="flex gap-2 flex-[2]">
                   <p>
