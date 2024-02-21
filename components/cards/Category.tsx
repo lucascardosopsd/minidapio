@@ -21,6 +21,7 @@ import ItemSheet from "../sheets/Item";
 import ItemForm from "../forms/Item";
 import { deleteCategory } from "@/actions/category/deleteCategory";
 import { toast } from "sonner";
+import CategoryForm from "../forms/Category";
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
@@ -58,6 +59,13 @@ const CategoryCard = ({
             triggerText={<FaPen />}
             triggerVariant="default"
             defaultValues={category}
+            categoryForm={
+              <CategoryForm
+                defaultValues={category}
+                categoryId={category.id}
+                restaurantId={restaurantId}
+              />
+            }
           />
 
           <DeleteModal

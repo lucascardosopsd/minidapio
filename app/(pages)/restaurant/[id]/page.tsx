@@ -5,7 +5,7 @@ import CategorySheet from "@/components/sheets/Category";
 import CategoryCard from "@/components/cards/Category";
 import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
 import InputSearch from "@/components/InputSearch";
-import { ItemProps } from "@/types/item";
+import CategoryForm from "@/components/forms/Category";
 
 interface PageProps {
   params: {
@@ -16,7 +16,6 @@ interface PageProps {
 
 export default async function Restaurant({
   params: { id: restaurantId },
-  searchParams,
 }: PageProps) {
   const categories = await fetchUserCategoriesByQuery({
     where: {
@@ -26,12 +25,6 @@ export default async function Restaurant({
       items: true,
     },
   });
-
-  let items: ItemProps[] = [];
-
-  categories.map(
-    (category) => category?.items && (items = [...items, ...category.items])
-  );
 
   return (
     <main className="flex flex-col gap-4 pt-5 h-[90svh] overflow-y-auto">
@@ -47,24 +40,23 @@ export default async function Restaurant({
             triggerVariant="default"
             triggerClassname="w-full tablet:w-40"
             restaurantId={restaurantId}
+            categoryForm={<CategoryForm restaurantId={restaurantId} />}
           />
         </div>
       </div>
       <Separator />
 
       <div className="w-full mx-auto h-full tablet:h-[75svh] tablet:overflow-y-auto ">
-        {!searchParams?.term && (
-          <Accordion className="space-y-2 pb-10" type="multiple">
-            {categories.map((category) => (
-              <CategoryCard
-                category={category}
-                key={category.id}
-                restaurantId={restaurantId}
-                categories={categories}
-              />
-            ))}
-          </Accordion>
-        )}
+        <Accordion className="space-y-2 pb-10" type="multiple">
+          {categories.map((category) => (
+            <CategoryCard
+              category={category}
+              key={category.id}
+              restaurantId={restaurantId}
+              categories={categories}
+            />
+          ))}
+        </Accordion>
       </div>
     </main>
   );

@@ -3,18 +3,13 @@ import { categoryValidator } from "@/validators/category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-const mockCategory = {
-  title: "",
-  restaurantId: "",
-};
-
 interface UseCategoryFormProps {
-  defaultValues?: CategoryProps | undefined;
+  defaultValues?: Partial<CategoryProps> | undefined;
 }
 
 export const useCategoryForm = ({ defaultValues }: UseCategoryFormProps) => {
-  return useForm({
-    defaultValues: defaultValues ? defaultValues : mockCategory,
+  return useForm<CategoryProps>({
+    defaultValues,
     resolver: zodResolver(categoryValidator),
   });
 };

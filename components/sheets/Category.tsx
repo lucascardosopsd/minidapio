@@ -1,8 +1,6 @@
 "use client";
-
-import { ReactNode, useState } from "react";
+import { ReactElement, ReactNode, cloneElement, useState } from "react";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import {
   Sheet,
   SheetContent,
@@ -10,16 +8,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { Form } from "../ui/form";
 import { ButtonVariants } from "@/types/button";
-import { useCategoryForm } from "@/hooks/useCategoryForm";
 import { CategoryProps } from "@/types/category";
-import { z } from "zod";
-import { categoryValidator } from "@/validators/category";
-import { toast } from "sonner";
-import { createNewCategory } from "@/actions/category/createNewCategory";
-import { usePathname } from "next/navigation";
-import FieldBuilder from "../builders/FieldBuilder";
 
 interface CategorySheetProps {
   defaultValues?: CategoryProps | undefined;
@@ -29,44 +19,20 @@ interface CategorySheetProps {
   sheetDescription?: string;
   triggerClassname?: string;
   restaurantId?: string;
+  categoryForm: ReactElement;
 }
 
 const CategorySheet = ({
-  defaultValues,
   triggerText,
-  triggerVariant,
   sheetTitle,
   sheetDescription,
   triggerClassname,
-  restaurantId,
+  categoryForm,
 }: CategorySheetProps) => {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const urlPath = usePathname();
 
   const toggleOpen = () => {
     setOpen(!open);
-  };
-
-  const form = useCategoryForm({ defaultValues });
-
-  const handleNewCategory = async (data: z.infer<typeof categoryValidator>) => {
-    setLoading(true);
-
-    if (!defaultValues && restaurantId) data.restaurantId = restaurantId;
-
-    try {
-      await createNewCategory(data, urlPath);
-      toast("Categoria criada!");
-    } catch (error) {
-      console.log(error);
-      toast("Ocorreu um erro.");
-      throw new Error("Can't create new category");
-    } finally {
-      toggleOpen();
-      setLoading(false);
-    }
   };
 
   return (
@@ -81,35 +47,7 @@ const CategorySheet = ({
           <SheetTitle>{sheetDescription}</SheetTitle>
         </SheetHeader>
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleNewCategory)}
-            className="space-y-2"
-          >
-            <FieldBuilder
-              control={form.control}
-              fieldElement={<Input />}
-              name="title"
-              title="Nome*"
-            />
-
-            <FieldBuilder
-              control={form.control}
-              fieldElement={<input hidden />}
-              name="restaurantId"
-              defaultValue={restaurantId}
-            />
-
-            <Button
-              variant={triggerVariant}
-              type="submit"
-              className="w-full"
-              disabled={loading}
-            >
-              {defaultValues ? "Atualizar" : "Confirmar"}
-            </Button>
-          </form>
-        </Form>
+        {cloneElement(categoryForm, { toggleOpen: toggleOpen })}
       </SheetContent>
     </Sheet>
   );
