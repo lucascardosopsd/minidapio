@@ -1,3 +1,5 @@
+"use client";
+
 import { ItemProps } from "@/types/item";
 import { Checkbox } from "../ui/checkbox";
 import { FaPen, FaTrash } from "react-icons/fa6";
@@ -10,10 +12,11 @@ import { CategoryProps } from "@/types/category";
 
 interface ItemCardProps {
   item: ItemProps;
-  category: CategoryProps;
+  categories: CategoryProps[];
+  restaurantId: string;
 }
 
-const ItemCard = ({ item, category }: ItemCardProps) => {
+const ItemCard = ({ item, categories, restaurantId }: ItemCardProps) => {
   const { toggleId, idList } = useItemStore();
 
   return (
@@ -98,8 +101,14 @@ const ItemCard = ({ item, category }: ItemCardProps) => {
 
       <div className="flex gap-2 justify-end flex-1">
         <ItemSheet
-          itemForm={<ItemForm defaultValues={item} />}
-          sheetTitle="Novo Item"
+          itemForm={
+            <ItemForm
+              defaultValues={item}
+              categories={categories}
+              restaurantId={restaurantId}
+            />
+          }
+          sheetTitle="Editar Item"
           triggerText={<FaPen />}
           triggerVariant="default"
         />
@@ -113,11 +122,6 @@ const ItemCard = ({ item, category }: ItemCardProps) => {
               <div className="flex gap-2">
                 <p>Você está apagando o item</p>
                 <Badge>{item.title}</Badge>
-              </div>
-
-              <div className="flex gap-2">
-                <p>Da categoria</p>
-                <Badge variant="destructive">{category.title}</Badge>
               </div>
             </div>
           }

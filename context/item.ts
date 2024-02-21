@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 interface ItemStoreProps {
-  idList: number[];
-  toggleId: (id: number) => void;
-  setAllIds: (ids: number[]) => void;
+  idList: string[];
+  toggleId: (id: string) => void;
+  setAllIds: (ids: string[]) => void;
 }
 
 export const useItemStore = create<ItemStoreProps>((set) => ({

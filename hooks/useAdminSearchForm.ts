@@ -5,8 +5,13 @@ import { useForm } from "react-hook-form";
 export const useAdminSearchForm = () => {
   return useForm({
     defaultValues: {
-      term: "",
-      filter: "",
+      filter: {
+        title: undefined,
+        description: undefined,
+        price: undefined,
+        active: undefined,
+        categoryId: undefined,
+      },
     },
     resolver: zodResolver(searchValidation),
   });

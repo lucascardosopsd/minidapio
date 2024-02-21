@@ -1,44 +1,46 @@
 "use server";
-import { Accordion } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import CategorySheet from "@/components/sheets/Category";
-import CategoryCard from "@/components/cards/Category";
-import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
 import InputSearch from "@/components/InputSearch";
-import { ItemProps } from "@/types/item";
+import { fixParamsValues } from "@/tools/fixParamsValues";
+import { redirect } from "next/navigation";
+import { fetchUserItemsByQuery } from "@/actions/item/fetchUserItemsByQuery";
+import ItemCard from "@/components/cards/Item";
+import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
 
 interface PageProps {
   params: {
-    id: string;
+    restaurantId: string;
   };
   searchParams?: { [key: string]: string };
 }
 
 export default async function Restaurant({
-  params: { id: restaurantId },
+  params: { restaurantId },
   searchParams,
 }: PageProps) {
+  if (!searchParams) {
+    redirect("/restaurant/" + restaurantId);
+  }
+
   const categories = await fetchUserCategoriesByQuery({
     where: {
       restaurantId,
     },
-    include: {
-      items: true,
-    },
   });
 
-  let items: ItemProps[] = [];
-
-  categories.map(
-    (category) => category?.items && (items = [...items, ...category.items])
-  );
+  const items = await fetchUserItemsByQuery({
+    where: {
+      ...fixParamsValues(searchParams),
+    },
+  });
 
   return (
     <main className="flex flex-col gap-4 pt-5 h-[90svh] overflow-y-auto">
       <div className="flex flex-col tablet:flex-row gap-4 tablet:gap-0 py-4 tablet:p-0 justify-between w-full items-center">
-        <p>Categorias</p>
+        <p>Items</p>
 
-        <InputSearch restaurantId={restaurantId} disableParams />
+        <InputSearch restaurantId={restaurantId} />
 
         <div className="flex gap-2 w-full tablet:w-auto">
           <CategorySheet
@@ -52,19 +54,17 @@ export default async function Restaurant({
       </div>
       <Separator />
 
-      <div className="w-full mx-auto h-full tablet:h-[75svh] tablet:overflow-y-auto ">
-        {!searchParams?.term && (
-          <Accordion className="space-y-2 pb-10" type="multiple">
-            {categories.map((category) => (
-              <CategoryCard
-                category={category}
-                key={category.id}
-                restaurantId={restaurantId}
-                categories={categories}
-              />
-            ))}
-          </Accordion>
-        )}
+      <div className="w-full mx-auto h-full tablet:h-[75svh] tablet:overflow-y-auto space-y-2">
+        {items.map((item) => (
+          <ItemCard
+            key={item.id}
+            item={item}
+            restaurantId={restaurantId}
+            categories={categories}
+          />
+        ))}
+
+        {!items.length && <p>Nenhum item encontrado.</p>}
       </div>
     </main>
   );
