@@ -23,6 +23,7 @@ interface SelectBuilderProps {
   selectItem: ReactNode | ReactNode[];
   control: Control<any>;
   setValue?: UseFormSetValue<any>;
+  triggerClassName?: string;
 }
 
 const SelectBuilder = ({
@@ -33,6 +34,7 @@ const SelectBuilder = ({
   selectItem,
   control,
   setValue,
+  triggerClassName,
 }: SelectBuilderProps) => {
   return (
     <FormField
@@ -49,7 +51,7 @@ const SelectBuilder = ({
             {title && <FormLabel>{title}</FormLabel>}
             <FormControl>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <SelectTrigger>
+                <SelectTrigger className={triggerClassName || ""}>
                   <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
                 <SelectContent>

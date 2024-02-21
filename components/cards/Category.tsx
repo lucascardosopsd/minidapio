@@ -129,7 +129,12 @@ const CategoryCard = ({
 
               {category.items &&
                 category.items.map((item) => (
-                  <ItemCard category={category} item={item} key={item.id} />
+                  <ItemCard
+                    categories={categories}
+                    item={item}
+                    key={item.id}
+                    restaurantId={restaurantId}
+                  />
                 ))}
             </div>
 

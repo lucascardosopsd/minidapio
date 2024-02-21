@@ -1,37 +1,49 @@
 "use client";
 import { Input } from "./ui/input";
 import { SelectItem } from "./ui/select";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Separator } from "./ui/separator";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./ui/button";
-import { Form } from "./ui/form";
-import SelectBuilder from "./builders/SelectBuilder";
-import { FaFilter } from "react-icons/fa6";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import FieldBuilder from "./builders/FieldBuilder";
 import { z } from "zod";
 import { useAdminSearchForm } from "@/hooks/useAdminSearchForm";
 import { searchValidation } from "@/validators/adminSearch";
+import { NumericFormat } from "react-number-format";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
+import { Textarea } from "./ui/textarea";
+import SelectBuilder from "./builders/SelectBuilder";
+import { useState } from "react";
 
-const InputSearch = () => {
+interface InputSearchProps {
+  restaurantId: string;
+  disableParams?: boolean;
+}
+
+const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const router = useRouter();
-  const params = new URLSearchParams(searchParams);
-
+  const [params, setParams] = useState(
+    new URLSearchParams(searchParams.toString())
+  );
   const form = useAdminSearchForm();
 
   const handleSearch = (data: z.infer<typeof searchValidation>) => {
-    Object.entries(data).map(([key, value]: [string, string]) =>
-      params.set(key, value)
-    );
+    setParams(new URLSearchParams());
 
-    router.replace(`${pathname}?${params.toString()}`);
-  };
+    // @ts-ignore
+    Object.entries(data.filter).map(([key, value]: [string, string]) => {
+      if (value) params.set(key, value);
+    });
 
-  const handleClearParams = () => {
-    searchParams.forEach((_, key) => params.delete(key));
-    router.replace(`${pathname}?${params.toString()}`);
-    form.reset();
+    router.push(`/item/search/${restaurantId}?${params.toString()}`);
   };
 
   return (
@@ -40,34 +52,106 @@ const InputSearch = () => {
         className="flex mx-8 w-full gap-2"
         onSubmit={form.handleSubmit(handleSearch)}
       >
-        <SelectBuilder
-          control={form.control}
-          name="filter"
-          defaultValue={searchParams.get("filter"?.toString()) || "name"}
-          placeholder={<FaFilter />}
-          selectItem={
-            <>
-              <p className="ml-8 text-primary">Filtro</p>
-              <Separator />
-              <SelectItem value="title">Nome</SelectItem>
-              <SelectItem value="category">Categoria</SelectItem>
-              <SelectItem value="price">Preço</SelectItem>
-              <SelectItem value="status">Status</SelectItem>
-            </>
-          }
-        />
         <FieldBuilder
           control={form.control}
-          fieldElement={<Input />}
-          name="term"
-          defaultValue={searchParams.get("term"?.toString()) || ""}
+          fieldElement={
+            <Input
+              placeholder="Nome do item"
+              onKeyDown={(e) =>
+                e.key == "Enter" && form.handleSubmit(handleSearch)
+              }
+              defaultValue={
+                (!disableParams && searchParams.get("title"?.toString())) || ""
+              }
+            />
+          }
+          name="filter.title"
         />
-        <Button
-          type={params.size ? "button" : "submit"}
-          variant="outline"
-          onClick={() => params.size && handleClearParams()}
-        >
-          {searchParams.get("filter"?.toString()) ? "Limpar" : "Buscar"}
+
+        <Sheet>
+          <SheetTrigger>
+            <Button type="button">Filtros</Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Filtros de pesquisa</SheetTitle>
+              <SheetDescription>
+                <div className="flex flex-col gap-2">
+                  <FormField
+                    control={form.control}
+                    name="filter.price"
+                    render={({ field: { onChange } }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>Preço</FormLabel>
+                        <FormControl>
+                          <NumericFormat
+                            decimalSeparator=","
+                            maxLength={8}
+                            prefix="R$"
+                            placeholder="R$0,00"
+                            onValueChange={(values) =>
+                              onChange(values.floatValue)
+                            }
+                            defaultValue={
+                              !disableParams &&
+                              searchParams.get("price"?.toString())
+                                ? parseFloat(
+                                    searchParams.get("price"?.toString())!
+                                  )
+                                : 0.0
+                            }
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <SelectBuilder
+                    name="filter.active"
+                    title="Status"
+                    control={form.control}
+                    defaultValue={
+                      (!disableParams &&
+                        searchParams.get("status"?.toString())) ||
+                      "active"
+                    }
+                    selectItem={
+                      <>
+                        <SelectItem value="true">Ativo</SelectItem>
+                        <SelectItem value="false">Inativo</SelectItem>
+                      </>
+                    }
+                  />
+
+                  <FieldBuilder
+                    name="filter.description"
+                    title="Descrição"
+                    control={form.control}
+                    fieldElement={
+                      <Textarea
+                        defaultValue={
+                          (!disableParams &&
+                            searchParams.get("description"?.toString())) ||
+                          ""
+                        }
+                      />
+                    }
+                  />
+
+                  <div className="flex gap-2">
+                    <SheetClose className="w-full">
+                      <Button className="w-full" type="button">
+                        Fechar
+                      </Button>
+                    </SheetClose>
+                  </div>
+                </div>
+              </SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
+        <Button type="submit" variant="outline">
+          Buscar
         </Button>
       </form>
     </Form>
