@@ -83,7 +83,7 @@ const RestaurantCard = ({ restaurant, session }: RestaurantCardProps) => {
             restaurantForm={
               <RestaurantForm defaultValues={restaurant} session={session} />
             }
-            sheetTitle="Editar Restaurant"
+            sheetTitle="Editar Restaurante"
             triggerText="Editar"
             triggerVariant="outline"
             triggerClassname="w-full"
