@@ -9,7 +9,7 @@ import { useItemStore } from "@/context/item";
 import { Badge } from "../ui/badge";
 import DeleteModal from "../DeleteModal";
 import { CategoryProps } from "@/types/category";
-import { deleteItem } from "@/actions/item/deleteCategory";
+import { deleteItem } from "@/actions/item/deleteItem";
 import { toast } from "sonner";
 
 interface ItemCardProps {
