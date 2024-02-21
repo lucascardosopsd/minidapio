@@ -45,7 +45,7 @@ const ItemForm = ({
   toggleOpen = () => {},
   restaurantId,
   categories,
-  itemId,
+  itemId = "",
 }: ItemFormProps) => {
   const form = useItemFormHook({ defaultValues });
   const [loading, setLoading] = useState(false);
@@ -57,18 +57,29 @@ const ItemForm = ({
     defaultValue: false,
   });
 
+  const handleUpdateItem = async (
+    data: Partial<z.infer<typeof ItemValidator>>
+  ) => {
+    setLoading(true);
+    try {
+      await updateItem(data, itemId, path);
+      toast("Item Atualizado!");
+      toggleOpen();
+    } catch (error) {
+      toast("Ocorreu um erro.");
+      throw new Error("Error when create/update new item");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleNewItem = async (data: z.infer<typeof ItemValidator>) => {
     data.restaurantId = restaurantId;
 
     setLoading(true);
     try {
-      if (itemId) {
-        await updateItem(data, itemId, path);
-        toast("Item Atualizado!");
-      } else {
-        await createNewItem(data, path);
-        toast("Item criado!");
-      }
+      await createNewItem(data, path);
+      toast("Item criado!");
       toggleOpen();
     } catch (error) {
       toast("Ocorreu um erro.");
@@ -82,7 +93,11 @@ const ItemForm = ({
     <Form {...form}>
       <form
         className="flex flex-col gap-4"
-        onSubmit={form.handleSubmit(handleNewItem)}
+        onSubmit={
+          !itemId
+            ? form.handleSubmit(handleNewItem)
+            : form.handleSubmit(handleUpdateItem)
+        }
       >
         <FieldBuilder
           control={form.control}

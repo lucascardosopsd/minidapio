@@ -10,5 +10,5 @@ export const ItemValidator = z.object({
   sale: z.boolean().default(false),
   salePrice: z.number().nullable().optional(),
   categoryId: z.string().nullable(),
-  restaurantId: z.string().nullable(),
+  restaurantId: z.string().nullable().optional(),
 });
