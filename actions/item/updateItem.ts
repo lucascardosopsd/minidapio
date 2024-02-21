@@ -5,8 +5,9 @@ import { useUserSession } from "@/hooks/useUserSession";
 import { revalidatePath } from "next/cache";
 import { ItemValidator } from "@/validators/item";
 
-export const createNewItem = async (
-  data: z.infer<typeof ItemValidator>,
+export const updateItem = async (
+  data: Partial<z.infer<typeof ItemValidator>>,
+  id: string,
   path?: string
 ) => {
   const user = await useUserSession();
@@ -16,7 +17,10 @@ export const createNewItem = async (
   }
 
   try {
-    await prisma.item.create({
+    await prisma.item.update({
+      where: {
+        id,
+      },
       data: {
         ...data,
         userId: user.id,
@@ -25,6 +29,6 @@ export const createNewItem = async (
 
     if (path) revalidatePath(path);
   } catch (error) {
-    throw new Error("Can't create new item");
+    throw new Error("Can't update item");
   }
 };

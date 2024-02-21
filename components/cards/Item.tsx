@@ -118,6 +118,7 @@ const ItemCard = ({ item, categories, restaurantId }: ItemCardProps) => {
               defaultValues={item}
               categories={categories}
               restaurantId={restaurantId}
+              itemId={item.id}
             />
           }
           sheetTitle="Editar Item"

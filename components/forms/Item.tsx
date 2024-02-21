@@ -28,6 +28,7 @@ import { usePathname } from "next/navigation";
 import { CategoriesWithItemsProps } from "@/types/category";
 import { createNewItem } from "@/actions/item/createNewItem";
 import { toast } from "sonner";
+import { updateItem } from "@/actions/item/updateItem";
 
 interface ItemFormProps {
   defaultValues?: Partial<ItemProps>;
@@ -35,6 +36,7 @@ interface ItemFormProps {
   categoryId?: string;
   restaurantId: string;
   categories: CategoriesWithItemsProps[];
+  itemId?: string;
 }
 
 const ItemForm = ({
@@ -43,6 +45,7 @@ const ItemForm = ({
   toggleOpen = () => {},
   restaurantId,
   categories,
+  itemId,
 }: ItemFormProps) => {
   const form = useItemFormHook({ defaultValues });
   const [loading, setLoading] = useState(false);
@@ -59,12 +62,17 @@ const ItemForm = ({
 
     setLoading(true);
     try {
-      await createNewItem(data, path);
-      toast("Item criado!");
+      if (itemId) {
+        await updateItem(data, itemId, path);
+        toast("Item Atualizado!");
+      } else {
+        await createNewItem(data, path);
+        toast("Item criado!");
+      }
       toggleOpen();
     } catch (error) {
       toast("Ocorreu um erro.");
-      throw new Error("Error when create new item");
+      throw new Error("Error when create/update new item");
     } finally {
       setLoading(false);
     }
