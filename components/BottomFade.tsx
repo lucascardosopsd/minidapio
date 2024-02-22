@@ -1,6 +1,11 @@
-const BottomFade = () => {
+const BottomFade = ({ className }: { className?: string }) => {
   return (
-    <div className="fixed bottom-0 left-0 h-20 w-full bg-gradient-to-t from-background to-transparent cursor-none pointer-events-none" />
+    <div
+      className={
+        "absolute bottom-0 left-0 h-20 w-full bg-gradient-to-t from-background to-transparent cursor-none pointer-events-none" +
+        className
+      }
+    />
   );
 };
 

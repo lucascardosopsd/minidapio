@@ -45,7 +45,11 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
       if (value) params.set(key, value);
     });
 
-    router.push(`/item/search/${restaurantId}?${params.toString()}`);
+    router.push(
+      `/item/search/${restaurantId}?${params.toString()}${
+        Object.entries(data).length ? "&" : ""
+      }page=1`
+    );
   };
 
   return (
@@ -112,6 +116,7 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
                     name="filter.active"
                     title="Status"
                     control={form.control}
+                    setValue={form.setValue}
                     defaultValue={
                       (!disableParams &&
                         searchParams.get("active"?.toString())) ||

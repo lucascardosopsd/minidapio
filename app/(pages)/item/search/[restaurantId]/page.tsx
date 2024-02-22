@@ -5,6 +5,9 @@ import { redirect } from "next/navigation";
 import { fetchUserItemsByQuery } from "@/actions/item/fetchUserItemsByQuery";
 import ItemCard from "@/components/cards/Item";
 import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
+import Paginate from "@/components/Pagination";
+import BottomFade from "@/components/BottomFade";
+import ItemsActions from "@/components/ItemsActions";
 
 interface PageProps {
   params: {
@@ -27,14 +30,24 @@ export default async function Restaurant({
     },
   });
 
-  const items = await fetchUserItemsByQuery({
+  const itemsPerPage = 2;
+
+  const { items, count } = await fetchUserItemsByQuery({
     where: {
-      ...searchParams,
+      title: searchParams.title,
+      description: searchParams.description,
+      active:
+        searchParams.active && searchParams.active == "true" ? true : false,
+      price: searchParams.price ? parseFloat(searchParams.price!) : undefined,
+      sale: searchParams.sale && searchParams.sale == "true" ? true : false,
+      categoryId: searchParams.categoryId,
     },
+    skip: (Number(searchParams.page) - 1) * itemsPerPage,
+    take: itemsPerPage,
   });
 
   return (
-    <main className="flex flex-col gap-4 pt-5 h-[90svh] overflow-y-auto">
+    <main className="flex flex-col gap-4 pt-5 h-[90svh] ">
       <div className="flex flex-col tablet:flex-row gap-4 tablet:gap-0 py-4 tablet:p-0 justify-between w-full items-center">
         <p>Items</p>
 
@@ -42,18 +55,31 @@ export default async function Restaurant({
       </div>
       <Separator />
 
-      <div className="w-full mx-auto h-full tablet:h-[75svh] tablet:overflow-y-auto space-y-2">
-        {items.map((item) => (
-          <ItemCard
-            key={item.id}
-            item={item}
-            restaurantId={restaurantId}
-            categories={categories}
-          />
-        ))}
+      <ItemsActions categories={categories} items={items} visible />
 
-        {!items.length && <p>Nenhum item encontrado.</p>}
+      <div className="relative">
+        <div
+          className={`w-full mx-auto h-full tablet:h-[58svh] tablet:overflow-y-auto space-y-2 pb-10`}
+        >
+          {items.map((item) => (
+            <ItemCard
+              key={item.id}
+              item={item}
+              restaurantId={restaurantId}
+              categories={categories}
+            />
+          ))}
+
+          {!items.length && <p>Nenhum item encontrado.</p>}
+        </div>
+        <BottomFade />
       </div>
+
+      <Paginate
+        initialPage={Number(searchParams.page)}
+        totalItems={count}
+        itemsPerPage={itemsPerPage}
+      />
     </main>
   );
 }

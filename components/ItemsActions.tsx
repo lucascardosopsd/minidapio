@@ -13,15 +13,16 @@ import DeleteItemsDialog from "./dialogs/DeleteItems";
 interface ItemsActionsProps {
   items: ItemProps[];
   categories: CategoriesWithItemsProps[];
+  visible?: boolean;
 }
 
-const ItemsActions = ({ items, categories }: ItemsActionsProps) => {
+const ItemsActions = ({ items, categories, visible }: ItemsActionsProps) => {
   const { idList, setAllIds } = useItemStore();
   const itemIds = items.map((item) => item.id);
 
   return (
     <AnimatePresence>
-      {idList.length >= 1 && (
+      {(idList.length >= 1 || visible) && (
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}

@@ -1,7 +1,5 @@
 "use client";
-
 import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
-import BottomFade from "@/components/BottomFade";
 import Navbar from "@/components/Navbar";
 import { BreadcrumbRouteProps } from "@/types/breacrumb";
 import { RestaurantProps } from "@/types/restaurant";
@@ -37,7 +35,6 @@ const Layout = ({ children, params: { restaurantId } }: LayoutProps) => {
     <div className="flex flex-col h-full">
       <Navbar breadcrumb={breadcrumb} />
       <div className="container">{children}</div>
-      <BottomFade />
     </div>
   );
 };
