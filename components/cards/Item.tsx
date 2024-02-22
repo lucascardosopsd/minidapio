@@ -7,8 +7,6 @@ import ItemForm from "../forms/Item";
 import { useItemStore } from "@/context/item";
 import { Badge } from "../ui/badge";
 import { CategoryProps } from "@/types/category";
-import { deleteItem } from "@/actions/item/deleteItem";
-import { toast } from "sonner";
 
 interface ItemCardProps {
   item: ItemProps;
@@ -18,16 +16,6 @@ interface ItemCardProps {
 
 const ItemCard = ({ item, categories, restaurantId }: ItemCardProps) => {
   const { toggleId, idList } = useItemStore();
-
-  const handleDeleteItem = async () => {
-    try {
-      await deleteItem(item.id, restaurantId);
-      toast("Item deletado");
-    } catch (error) {
-      toast("ocorreu um erro");
-      throw new Error("Error when delete item");
-    }
-  };
 
   return (
     <div
