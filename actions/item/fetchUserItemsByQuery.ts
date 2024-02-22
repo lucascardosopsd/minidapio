@@ -43,7 +43,6 @@ export const fetchUserItemsByQuery = async (
   try {
     return await prisma.item.findMany(includeUserQuery);
   } catch (error) {
-    console.log(error);
     throw new Error("Can't fetch items");
   }
 };

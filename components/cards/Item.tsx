@@ -19,8 +19,6 @@ interface ItemCardProps {
 const ItemCard = ({ item, categories, restaurantId }: ItemCardProps) => {
   const { toggleId, idList } = useItemStore();
 
-  console.log(idList);
-
   const handleDeleteItem = async () => {
     try {
       await deleteItem(item.id, restaurantId);
