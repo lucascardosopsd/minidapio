@@ -1,7 +1,6 @@
 "use server";
 import { Separator } from "@/components/ui/separator";
 import InputSearch from "@/components/InputSearch";
-import { fixParamsValues } from "@/tools/fixParamsValues";
 import { redirect } from "next/navigation";
 import { fetchUserItemsByQuery } from "@/actions/item/fetchUserItemsByQuery";
 import ItemCard from "@/components/cards/Item";
@@ -30,7 +29,7 @@ export default async function Restaurant({
 
   const items = await fetchUserItemsByQuery({
     where: {
-      ...fixParamsValues(searchParams),
+      ...searchParams,
     },
   });
 

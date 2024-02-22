@@ -19,14 +19,23 @@ export const fetchUserItemsByQuery = async (
     ...query,
     where: {
       ...query.where,
-      title: {
-        contains: query.where?.title as string,
+      title: query.where?.title && {
+        contains: String(query.where?.title),
         mode: "insensitive",
       },
-      description: {
-        contains: query.where?.description as string,
+      description: query.where?.description && {
+        contains: String(query.where?.description),
         mode: "insensitive",
       },
+      price: query.where?.price && Number(query.where?.price),
+      active:
+        query.where?.active && String(query.where?.active) === "true"
+          ? true
+          : false,
+      sale:
+        query.where?.sale && String(query.where?.sale) === "true"
+          ? true
+          : false,
       userId: user.id,
     },
   } satisfies ItemsQuery;

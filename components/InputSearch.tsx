@@ -21,6 +21,8 @@ import {
 import { Textarea } from "./ui/textarea";
 import SelectBuilder from "./builders/SelectBuilder";
 import { useState } from "react";
+import Fence from "./Fence";
+import { Checkbox } from "./ui/checkbox";
 
 interface InputSearchProps {
   restaurantId: string;
@@ -112,8 +114,8 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
                     control={form.control}
                     defaultValue={
                       (!disableParams &&
-                        searchParams.get("status"?.toString())) ||
-                      "active"
+                        searchParams.get("active"?.toString())) ||
+                      "true"
                     }
                     selectItem={
                       <>
@@ -137,6 +139,18 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
                       />
                     }
                   />
+
+                  <Fence className="!justify-start">
+                    <div>
+                      <FieldBuilder
+                        control={form.control}
+                        fieldElement={<Checkbox />}
+                        name="sale"
+                        type="checkbox"
+                      />
+                    </div>
+                    <p>Promoção?</p>
+                  </Fence>
 
                   <div className="flex gap-2">
                     <SheetClose className="w-full">

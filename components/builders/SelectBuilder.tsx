@@ -41,11 +41,7 @@ const SelectBuilder = ({
       control={control}
       name={name}
       render={({ field }) => {
-        if (!field.value && defaultValue && setValue) {
-          field.value = defaultValue;
-          setValue(name, defaultValue);
-        }
-
+        field.value = defaultValue;
         return (
           <FormItem>
             {title && <FormLabel>{title}</FormLabel>}
