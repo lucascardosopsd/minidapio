@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { useUserSession } from "@/hooks/useUserSession";
 import { Prisma } from "@prisma/client";
 import { ItemProps } from "@/types/item";
+import { revalidatePath } from "next/cache";
 
 export type ItemsQuery = Prisma.ItemFindManyArgs;
 
@@ -12,7 +13,8 @@ interface fetchUserItemsByQueryReturnProps {
 }
 
 export const fetchUserItemsByQuery = async (
-  query: ItemsQuery
+  query: ItemsQuery,
+  path?: string
 ): Promise<fetchUserItemsByQueryReturnProps> => {
   const user = await useUserSession();
 
@@ -50,7 +52,7 @@ export const fetchUserItemsByQuery = async (
     });
     const items = await prisma.item.findMany(safeQuery);
 
-    // Retornar os resultados da transação
+    if (path) revalidatePath(path);
     return { count, items };
   } catch (error) {
     throw new Error("Can't fetch items");

@@ -25,6 +25,7 @@ export const createNewItem = async (
 
     if (path) revalidatePath(path);
   } catch (error) {
+    console.log(error);
     throw new Error("Can't create new item");
   }
 };

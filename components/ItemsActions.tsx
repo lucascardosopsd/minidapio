@@ -1,14 +1,13 @@
 "use client";
-
 import { useItemStore } from "@/context/item";
 import { ItemProps } from "@/types/item";
 import { AnimatePresence, motion } from "framer-motion";
 import { Separator } from "./ui/separator";
 import TransferItemsDialog from "./dialogs/TransferItems";
 import { CategoriesWithItemsProps } from "@/types/category";
-import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import DeleteItemsDialog from "./dialogs/DeleteItems";
+import DuplicateItemsDialog from "./dialogs/DuplicateItems";
 
 interface ItemsActionsProps {
   items: ItemProps[];
@@ -16,13 +15,17 @@ interface ItemsActionsProps {
   visible?: boolean;
 }
 
-const ItemsActions = ({ items, categories, visible }: ItemsActionsProps) => {
+const ItemsActions = ({
+  items,
+  categories,
+  visible = false,
+}: ItemsActionsProps) => {
   const { idList, setAllIds } = useItemStore();
   const itemIds = items.map((item) => item.id);
 
   return (
     <AnimatePresence>
-      {(idList.length >= 1 || visible) && (
+      {(visible || idList.length >= 1) && (
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -46,7 +49,7 @@ const ItemsActions = ({ items, categories, visible }: ItemsActionsProps) => {
 
             <TransferItemsDialog categories={categories} />
 
-            <Button size="sm">Duplicar</Button>
+            <DuplicateItemsDialog />
 
             <DeleteItemsDialog />
           </div>
