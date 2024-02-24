@@ -30,7 +30,7 @@ export default async function Restaurant({
     },
   });
 
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   const { items, count } = await fetchUserItemsByQuery({
     where: {
