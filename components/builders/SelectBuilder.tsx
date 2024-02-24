@@ -36,14 +36,11 @@ const SelectBuilder = ({
   setValue,
   triggerClassName,
 }: SelectBuilderProps) => {
-  if (setValue) setValue(name, defaultValue);
-
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => {
-        field.value = defaultValue;
         return (
           <FormItem>
             {title && <FormLabel>{title}</FormLabel>}

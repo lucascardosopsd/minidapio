@@ -9,8 +9,9 @@ export const useAdminSearchForm = () => {
         title: undefined,
         description: undefined,
         price: undefined,
-        active: undefined,
+        active: "true",
         categoryId: undefined,
+        page: "1"
       },
     },
     resolver: zodResolver(searchValidation),

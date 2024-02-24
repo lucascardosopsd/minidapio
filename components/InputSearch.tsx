@@ -23,6 +23,7 @@ import SelectBuilder from "./builders/SelectBuilder";
 import { useState } from "react";
 import Fence from "./Fence";
 import { Checkbox } from "./ui/checkbox";
+import { ImSpinner2 } from "react-icons/im";
 
 interface InputSearchProps {
   restaurantId: string;
@@ -36,8 +37,13 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
     new URLSearchParams(searchParams.toString())
   );
   const form = useAdminSearchForm();
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = (data: z.infer<typeof searchValidation>) => {
+    console.log(data);
+
+    setLoading(true);
+
     setParams(new URLSearchParams());
 
     // @ts-ignore
@@ -45,11 +51,9 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
       if (value) params.set(key, value);
     });
 
-    router.push(
-      `/item/search/${restaurantId}?${params.toString()}${
-        Object.entries(data).length ? "&" : ""
-      }page=1`
-    );
+    router.push(`/item/search/${restaurantId}?${params.toString()}`);
+
+    setLoading(false);
   };
 
   return (
@@ -117,11 +121,7 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
                     title="Status"
                     control={form.control}
                     setValue={form.setValue}
-                    defaultValue={
-                      (!disableParams &&
-                        searchParams.get("active"?.toString())) ||
-                      "true"
-                    }
+                    defaultValue={"true"}
                     selectItem={
                       <>
                         <SelectItem value="true">Ativo</SelectItem>
@@ -170,7 +170,7 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
           </SheetContent>
         </Sheet>
         <Button type="submit" variant="outline">
-          Buscar
+          {!loading ? "Buscar" : <ImSpinner2 className="animate-spin" />}
         </Button>
       </form>
     </Form>

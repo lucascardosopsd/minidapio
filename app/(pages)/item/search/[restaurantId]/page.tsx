@@ -34,13 +34,13 @@ export default async function Restaurant({
 
   const { items, count } = await fetchUserItemsByQuery({
     where: {
-      title: searchParams.title,
-      description: searchParams.description,
+      title: searchParams.title && searchParams.title,
+      description: searchParams.description && searchParams.description,
       active:
         searchParams.active && searchParams.active == "true" ? true : false,
       price: searchParams.price ? parseFloat(searchParams.price!) : undefined,
       sale: searchParams.sale && searchParams.sale == "true" ? true : false,
-      categoryId: searchParams.categoryId,
+      categoryId: searchParams.categoryId && searchParams.categoryId,
     },
     skip: (Number(searchParams.page) - 1) * itemsPerPage,
     take: itemsPerPage,

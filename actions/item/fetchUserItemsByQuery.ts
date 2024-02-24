@@ -55,6 +55,7 @@ export const fetchUserItemsByQuery = async (
     if (path) revalidatePath(path);
     return { count, items };
   } catch (error) {
+    console.log(error);
     throw new Error("Can't fetch items");
   }
 };

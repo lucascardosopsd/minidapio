@@ -7,5 +7,6 @@ export const searchValidation = z.object({
     price: z.number().optional(),
     active: z.string().optional(),
     categoryId: z.string().optional(),
+    page: z.string().optional(),
   }),
 });
