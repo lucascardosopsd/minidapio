@@ -22,7 +22,7 @@ const Paginate = ({ initialPage, itemsCount, itemsPerPage }: PaginateProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const totalPages = itemsCount / itemsPerPage - 1;
+  const totalPages = itemsCount / itemsPerPage;
 
   const handleNextPage = () => {
     if (page > totalPages) {
@@ -47,13 +47,6 @@ const Paginate = ({ initialPage, itemsCount, itemsPerPage }: PaginateProps) => {
     router.push(`${pathname}?${params}`);
   };
 
-  const handleSetPage = (page: number) => {
-    setPage(page);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", page.toString());
-    router.push(`${pathname}?${params}`);
-  };
-
   return (
     <Pagination>
       <PaginationContent>
@@ -69,9 +62,7 @@ const Paginate = ({ initialPage, itemsCount, itemsPerPage }: PaginateProps) => {
 
         {page > 1 && totalPages > 1 && (
           <PaginationItem>
-            <PaginationLink onClick={() => handleSetPage(page - 1)}>
-              {page - 1}
-            </PaginationLink>
+            <PaginationLink>{page - 1}</PaginationLink>
           </PaginationItem>
         )}
 
@@ -81,10 +72,7 @@ const Paginate = ({ initialPage, itemsCount, itemsPerPage }: PaginateProps) => {
 
         {totalPages > 0 && (
           <PaginationItem>
-            <PaginationLink
-              onClick={() => handleSetPage(page + 1)}
-              className={page > totalPages ? "text-accent" : ""}
-            >
+            <PaginationLink className={page > totalPages ? "text-accent" : ""}>
               {page + 1}
             </PaginationLink>
           </PaginationItem>
