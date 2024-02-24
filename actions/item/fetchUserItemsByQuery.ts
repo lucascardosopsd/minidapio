@@ -29,11 +29,11 @@ export const fetchUserItemsByQuery = async (
     },
     where: {
       ...query.where,
-      title: {
+      title: query.where?.title && {
         contains: query.where?.title as string,
         mode: "insensitive",
       },
-      description: {
+      description: query.where?.description && {
         contains: query.where?.description as string,
         mode: "insensitive",
       },
@@ -45,15 +45,13 @@ export const fetchUserItemsByQuery = async (
   } satisfies ItemsQuery;
 
   try {
-    const count = await prisma.item.count({
-      where: {
-        userId: user.id,
-      },
-    });
-    const items = await prisma.item.findMany(safeQuery);
+    const [count, items] = await prisma.$transaction([
+      prisma.item.count(),
+      prisma.item.findMany(safeQuery),
+    ]);
 
     if (path) revalidatePath(path);
-    return { count, items };
+    return { items, count };
   } catch (error) {
     console.log(error);
     throw new Error("Can't fetch items");

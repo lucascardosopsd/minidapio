@@ -30,7 +30,7 @@ export default async function Restaurant({
     },
   });
 
-  const itemsPerPage = 2;
+  const itemsPerPage = 5;
 
   const { items, count } = await fetchUserItemsByQuery({
     where: {
@@ -42,9 +42,12 @@ export default async function Restaurant({
       sale: searchParams.sale && searchParams.sale == "true" ? true : false,
       categoryId: searchParams.categoryId && searchParams.categoryId,
     },
-    skip: (Number(searchParams.page) - 1) * itemsPerPage,
-    take: itemsPerPage,
   });
+
+  const pageItems = items.slice(
+    (Number(searchParams.page) - 1) * itemsPerPage,
+    itemsPerPage * Number(searchParams.page)
+  );
 
   return (
     <main className="flex flex-col gap-4 pt-5 h-[90svh] ">
@@ -61,7 +64,7 @@ export default async function Restaurant({
         <div
           className={`w-full mx-auto h-full tablet:h-[58svh] tablet:overflow-y-auto space-y-2 pb-10`}
         >
-          {items.map((item) => (
+          {pageItems.map((item) => (
             <ItemCard
               key={item.id}
               item={item}
@@ -77,7 +80,7 @@ export default async function Restaurant({
 
       <Paginate
         initialPage={Number(searchParams.page)}
-        totalItems={count}
+        itemsCount={count}
         itemsPerPage={itemsPerPage}
       />
     </main>

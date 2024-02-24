@@ -7,23 +7,25 @@ import {
   PaginationPrevious,
   PaginationLink,
   PaginationNext,
+  PaginationEllipsis,
 } from "./ui/pagination";
 import { useState } from "react";
 
 interface PaginateProps {
   initialPage?: number;
-  totalItems: number;
+  itemsCount: number;
   itemsPerPage: number;
 }
 
-const Paginate = ({ initialPage, totalItems, itemsPerPage }: PaginateProps) => {
+const Paginate = ({ initialPage, itemsCount, itemsPerPage }: PaginateProps) => {
   const [page, setPage] = useState(initialPage || 1);
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+  const totalPages = itemsCount / itemsPerPage - 1;
 
   const handleNextPage = () => {
-    if (page > totalItems / itemsPerPage) {
+    if (page > totalPages) {
       return;
     }
 
@@ -61,6 +63,12 @@ const Paginate = ({ initialPage, totalItems, itemsPerPage }: PaginateProps) => {
 
         {page > 1 && (
           <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+        )}
+
+        {page > 1 && totalPages > 1 && (
+          <PaginationItem>
             <PaginationLink onClick={() => handleSetPage(page - 1)}>
               {page - 1}
             </PaginationLink>
@@ -71,11 +79,20 @@ const Paginate = ({ initialPage, totalItems, itemsPerPage }: PaginateProps) => {
           <PaginationLink className="text-primary">{page}</PaginationLink>
         </PaginationItem>
 
-        {page <= totalItems / itemsPerPage - 1 && (
+        {totalPages > 0 && (
           <PaginationItem>
-            <PaginationLink onClick={() => handleSetPage(page + 1)}>
+            <PaginationLink
+              onClick={() => handleSetPage(page + 1)}
+              className={page > totalPages ? "text-accent" : ""}
+            >
               {page + 1}
             </PaginationLink>
+          </PaginationItem>
+        )}
+
+        {page <= totalPages && (
+          <PaginationItem>
+            <PaginationEllipsis />
           </PaginationItem>
         )}
 
