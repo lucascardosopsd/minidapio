@@ -24,6 +24,7 @@ import { useState } from "react";
 import Fence from "./Fence";
 import { Checkbox } from "./ui/checkbox";
 import { ImSpinner2 } from "react-icons/im";
+import { paramsToObject } from "@/tools/paramsToObject";
 
 interface InputSearchProps {
   restaurantId: string;
@@ -36,12 +37,17 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
   const [params, setParams] = useState(
     new URLSearchParams(searchParams.toString())
   );
-  const form = useAdminSearchForm();
+
+  const form = useAdminSearchForm({
+    defaultValues: disableParams
+      ? { filter: {} }
+      : {
+          filter: paramsToObject(),
+        },
+  });
   const [loading, setLoading] = useState(false);
 
   const handleSearch = (data: z.infer<typeof searchValidation>) => {
-    console.log(data);
-
     setLoading(true);
 
     setParams(new URLSearchParams());
@@ -69,9 +75,6 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
               placeholder="Nome do item"
               onKeyDown={(e) =>
                 e.key == "Enter" && form.handleSubmit(handleSearch)
-              }
-              defaultValue={
-                (!disableParams && searchParams.get("title"?.toString())) || ""
               }
             />
           }
@@ -102,14 +105,6 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
                             onValueChange={(values) =>
                               onChange(values.floatValue)
                             }
-                            defaultValue={
-                              !disableParams &&
-                              searchParams.get("price"?.toString())
-                                ? parseFloat(
-                                    searchParams.get("price"?.toString())!
-                                  )
-                                : 0.0
-                            }
                           />
                         </FormControl>
                       </FormItem>
@@ -121,7 +116,6 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
                     title="Status"
                     control={form.control}
                     setValue={form.setValue}
-                    defaultValue={"true"}
                     selectItem={
                       <>
                         <SelectItem value="true">Ativo</SelectItem>
@@ -134,15 +128,7 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
                     name="filter.description"
                     title="Descrição"
                     control={form.control}
-                    fieldElement={
-                      <Textarea
-                        defaultValue={
-                          (!disableParams &&
-                            searchParams.get("description"?.toString())) ||
-                          ""
-                        }
-                      />
-                    }
+                    fieldElement={<Textarea />}
                   />
 
                   <Fence className="!justify-start">
