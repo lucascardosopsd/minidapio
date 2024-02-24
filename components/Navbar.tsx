@@ -4,18 +4,22 @@ import { ThemeToggle } from "./ThemeToggle";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface NavbarProps {
   breadcrumb?: BreadcrumbRouteProps[];
 }
 
 const Navbar = ({ breadcrumb }: NavbarProps) => {
+  const router = useRouter();
+
   return (
     <div className="container flex justify-between items-center p-4 border-b border-border h-16">
       <div className="flex gap-2">
         {breadcrumb?.map((route, index) => (
           <Link
             href={route.route}
+            onClick={() => router.push(route.route)}
             className="flex gap-2 text-muted-foreground "
             key={index}
           >
