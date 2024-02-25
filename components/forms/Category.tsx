@@ -28,7 +28,9 @@ const CategoryForm = ({
 }: CategoryFormProps) => {
   const [loading, setLoading] = useState(false);
 
-  const form = useCategoryForm({ defaultValues });
+  const form = useCategoryForm({
+    defaultValues: defaultValues || { restaurantId },
+  });
   const pathname = usePathname();
 
   const handleUpdateCategory = async (
@@ -52,13 +54,11 @@ const CategoryForm = ({
   const handleNewCategory = async (data: z.infer<typeof categoryValidator>) => {
     setLoading(true);
 
-    data.restaurantId = restaurantId;
-
     try {
       await createNewCategory(data, pathname);
       toast("Categoria criada");
 
-      toggleOpen()
+      toggleOpen();
     } catch (error) {
       toast("Ocorreu um erro.");
       throw new Error("Can't create new category");
