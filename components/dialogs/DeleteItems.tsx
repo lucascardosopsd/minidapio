@@ -15,7 +15,7 @@ import { useState } from "react";
 import { deleteManyItems } from "@/actions/item/deleteManyItems";
 
 const DeleteItemsDialog = () => {
-  const { idList } = useItemStore();
+  const { idList, setAllIds } = useItemStore();
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -29,6 +29,7 @@ const DeleteItemsDialog = () => {
       toast("Erro ao deletar itens");
       throw new Error("Error when delete items");
     } finally {
+      setAllIds([]);
       setLoading(false);
       setOpen(false);
     }
