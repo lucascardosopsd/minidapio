@@ -22,10 +22,10 @@ const Paginate = ({ initialPage, itemsCount, itemsPerPage }: PaginateProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const totalPages = itemsCount / itemsPerPage;
+  const totalPages = Math.round(itemsCount / itemsPerPage);
 
   const handleNextPage = () => {
-    if (page > totalPages) {
+    if (page + 1 > totalPages) {
       return;
     }
 
@@ -70,15 +70,17 @@ const Paginate = ({ initialPage, itemsCount, itemsPerPage }: PaginateProps) => {
           <PaginationLink className="text-primary">{page}</PaginationLink>
         </PaginationItem>
 
-        {totalPages > 0 && (
+        {totalPages > 1 && (
           <PaginationItem>
-            <PaginationLink className={page > totalPages ? "text-accent" : ""}>
+            <PaginationLink
+              className={page + 1 > totalPages ? "text-accent" : ""}
+            >
               {page + 1}
             </PaginationLink>
           </PaginationItem>
         )}
 
-        {page <= totalPages && (
+        {page <= totalPages && totalPages > 1 && (
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>
