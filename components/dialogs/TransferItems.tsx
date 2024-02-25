@@ -25,7 +25,7 @@ interface TransferItemsProps {
 }
 
 const TransferItemsDialog = ({ categories }: TransferItemsProps) => {
-  const { idList } = useItemStore();
+  const { idList, setAllIds } = useItemStore();
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -47,6 +47,7 @@ const TransferItemsDialog = ({ categories }: TransferItemsProps) => {
       toast("Erro ao transferir itens");
       throw new Error("Error when transfer items");
     } finally {
+      setAllIds([]);
       setLoading(false);
       setOpen(false);
     }
