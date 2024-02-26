@@ -40,14 +40,16 @@ interface ItemFormProps {
 }
 
 const ItemForm = ({
-  defaultValues,
+  defaultValues = undefined,
   categoryId,
   toggleOpen = () => {},
   restaurantId,
   categories,
   itemId = "",
 }: ItemFormProps) => {
-  const form = useItemFormHook({ defaultValues });
+  const form = useItemFormHook({
+    defaultValues: defaultValues || { categoryId, active: true },
+  });
   const [loading, setLoading] = useState(false);
   const path = usePathname();
 
