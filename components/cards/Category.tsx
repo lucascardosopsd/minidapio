@@ -16,6 +16,7 @@ import { deleteCategory } from "@/actions/category/deleteCategory";
 import { toast } from "sonner";
 import CategoryForm from "../forms/Category";
 import { usePathname } from "next/navigation";
+import { MdDragIndicator } from "react-icons/md";
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
@@ -46,6 +47,10 @@ const CategoryCard = ({
       value={category.id}
     >
       <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
+        <MdDragIndicator
+          size={24}
+          className="text-accent mr-2 hover:cursor-grabbing"
+        />
         <p>{category.title}</p>
         <div className="flex gap-4 ml-auto">
           <CategorySheet

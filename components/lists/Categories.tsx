@@ -21,8 +21,6 @@ const CategoriesList = ({
     setNewOrder(originalCategories);
   }, [originalCategories]);
 
-  console.log(originalCategories);
-
   const handleNewOrderToDb = async () => {
     try {
       // Check if order realy changes
