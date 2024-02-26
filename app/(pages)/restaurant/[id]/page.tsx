@@ -2,11 +2,12 @@
 import { Accordion } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import CategorySheet from "@/components/sheets/Category";
-import CategoryCard from "@/components/cards/Category";
 import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
 import InputSearch from "@/components/InputSearch";
 import CategoryForm from "@/components/forms/Category";
 import ItemsActions from "@/components/ItemsActions";
+import CategoriesList from "@/components/lists/Categories";
+import { CategoriesWithItemsProps } from "@/types/category";
 
 interface PageProps {
   params: {
@@ -18,14 +19,15 @@ interface PageProps {
 export default async function Restaurant({
   params: { id: restaurantId },
 }: PageProps) {
-  const categories = await fetchUserCategoriesByQuery({
-    where: {
-      restaurantId,
-    },
-    include: {
-      items: true,
-    },
-  });
+  const categories: CategoriesWithItemsProps[] =
+    await fetchUserCategoriesByQuery({
+      where: {
+        restaurantId,
+      },
+      include: {
+        items: true,
+      },
+    });
 
   const items = categories.flatMap(
     (category) => category.items && category.items
@@ -54,15 +56,8 @@ export default async function Restaurant({
       <ItemsActions categories={categories} items={items} />
 
       <div className="w-full mx-auto h-full tablet:h-[75svh] tablet:overflow-y-auto ">
-        <Accordion className="space-y-2 pb-10" type="multiple">
-          {categories.map((category) => (
-            <CategoryCard
-              category={category}
-              key={category.id}
-              restaurantId={restaurantId}
-              categories={categories}
-            />
-          ))}
+        <Accordion type="multiple">
+          <CategoriesList categories={categories} />
         </Accordion>
       </div>
     </main>

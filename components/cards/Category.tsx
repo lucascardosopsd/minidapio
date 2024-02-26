@@ -8,7 +8,6 @@ import {
 import CategorySheet from "../sheets/Category";
 import { FaCheck, FaPen, FaTrash } from "react-icons/fa6";
 import ItemCard from "./Item";
-import { useItemStore } from "@/context/item";
 import { Badge } from "../ui/badge";
 import DeleteModal from "../DeleteModal";
 import ItemSheet from "../sheets/Item";
@@ -16,6 +15,7 @@ import ItemForm from "../forms/Item";
 import { deleteCategory } from "@/actions/category/deleteCategory";
 import { toast } from "sonner";
 import CategoryForm from "../forms/Category";
+import { usePathname } from "next/navigation";
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
@@ -28,11 +28,11 @@ const CategoryCard = ({
   restaurantId,
   categories,
 }: CategoryCardProps) => {
-  const { idList, setAllIds } = useItemStore();
+  const pathname = usePathname();
 
   const handleDeleteCategory = async () => {
     try {
-      await deleteCategory(category.id, restaurantId);
+      await deleteCategory(category.id, restaurantId, pathname);
       toast("Categoria deletada");
     } catch (error) {
       toast("ocorreu um erro");
@@ -42,7 +42,7 @@ const CategoryCard = ({
 
   return (
     <AccordionItem
-      className="flex flex-col mx-4 border-none "
+      className="flex flex-col mx-4 border-none bg-background"
       value={category.id}
     >
       <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">

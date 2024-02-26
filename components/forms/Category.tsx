@@ -14,14 +14,14 @@ import { updateCategory } from "@/actions/category/updateCategory";
 import { CategoryProps } from "@/types/category";
 
 interface CategoryFormProps {
-  defaultValues?: Partial<CategoryProps>;
+  defaultValues?: Partial<CategoryProps> | undefined;
   categoryId?: string;
   restaurantId: string;
   toggleOpen?: () => void;
 }
 
 const CategoryForm = ({
-  defaultValues = {},
+  defaultValues = undefined,
   toggleOpen = () => {},
   restaurantId,
   categoryId = "",
@@ -29,7 +29,7 @@ const CategoryForm = ({
   const [loading, setLoading] = useState(false);
 
   const form = useCategoryForm({
-    defaultValues: defaultValues || { restaurantId },
+    defaultValues: defaultValues || { title: "", order: 0, restaurantId },
   });
   const pathname = usePathname();
 
@@ -56,9 +56,8 @@ const CategoryForm = ({
 
     try {
       await createNewCategory(data, pathname);
-      toast("Categoria criada");
-
       toggleOpen();
+      toast("Categoria criada");
     } catch (error) {
       toast("Ocorreu um erro.");
       throw new Error("Can't create new category");

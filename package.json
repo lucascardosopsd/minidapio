@@ -32,6 +32,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "dayjs": "^1.11.10",
+    "debounce": "^2.0.0",
     "embla-carousel-react": "^8.0.0-rc21",
     "filestack-js": "^3.30.0",
     "filestack-react": "^5.0.0",

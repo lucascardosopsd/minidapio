@@ -2,8 +2,8 @@
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { useUserSession } from "@/hooks/useUserSession";
-import { revalidatePath } from "next/cache";
 import { categoryValidator } from "@/validators/category";
+import { revalidatePath } from "next/cache";
 
 export const createNewCategory = async (
   data: z.infer<typeof categoryValidator>,
