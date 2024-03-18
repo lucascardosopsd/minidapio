@@ -12,6 +12,7 @@ import { useState } from "react";
 import { createNewCategory } from "@/actions/category/createNewCategory";
 import { updateCategory } from "@/actions/category/updateCategory";
 import { CategoryProps } from "@/types/category";
+import { isEmpty } from "@/tools/isEmpty";
 
 interface CategoryFormProps {
   defaultValues?: Partial<CategoryProps> | undefined;
@@ -44,8 +45,9 @@ const CategoryForm = ({
 
       toggleOpen();
     } catch (error) {
+      console.log(error);
       toast("Ocorreu um erro.");
-      throw new Error("Can't create new category");
+      throw new Error("Can't update category");
     } finally {
       setLoading(false);
     }
@@ -81,6 +83,14 @@ const CategoryForm = ({
           fieldElement={<Input />}
           name="title"
           title="Nome*"
+        />
+
+        <p>Ordem</p>
+        <Input
+          type="number"
+          {...form.register("order", {
+            valueAsNumber: !isEmpty("order"),
+          })}
         />
 
         <Button type="submit" className="w-full" disabled={loading}>

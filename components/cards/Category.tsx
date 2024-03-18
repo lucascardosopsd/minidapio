@@ -7,7 +7,6 @@ import {
 } from "../ui/accordion";
 import CategorySheet from "../sheets/Category";
 import { FaCheck, FaPen, FaTrash } from "react-icons/fa6";
-import ItemCard from "./Item";
 import { Badge } from "../ui/badge";
 import DeleteModal from "../DeleteModal";
 import ItemSheet from "../sheets/Item";
@@ -16,18 +15,21 @@ import { deleteCategory } from "@/actions/category/deleteCategory";
 import { toast } from "sonner";
 import CategoryForm from "../forms/Category";
 import { usePathname } from "next/navigation";
-import { MdDragIndicator } from "react-icons/md";
+import CategoryItemsList from "../lists/Items";
+import { DragControls } from "framer-motion";
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
   restaurantId: string;
   categories: CategoriesWithItemsProps[];
+  controls: DragControls;
 }
 
 const CategoryCard = ({
   category,
   restaurantId,
   categories,
+  controls,
 }: CategoryCardProps) => {
   const pathname = usePathname();
 
@@ -47,10 +49,6 @@ const CategoryCard = ({
       value={category.id}
     >
       <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
-        <MdDragIndicator
-          size={24}
-          className="text-accent mr-2 hover:cursor-grabbing"
-        />
         <p>{category.title}</p>
         <div className="flex gap-4 ml-auto">
           <CategorySheet
@@ -101,15 +99,12 @@ const CategoryCard = ({
                 <p className="flex-1 flex justify-center">Ações</p>
               </div>
 
-              {category.items &&
-                category.items.map((item) => (
-                  <ItemCard
-                    categories={categories}
-                    item={item}
-                    key={item.id}
-                    restaurantId={restaurantId}
-                  />
-                ))}
+              {category.items && (
+                <CategoryItemsList
+                  categories={categories}
+                  originalItems={category.items}
+                />
+              )}
             </div>
 
             {!category.items && (

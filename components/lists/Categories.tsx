@@ -1,5 +1,5 @@
 "use client";
-import { Reorder } from "framer-motion";
+import { Reorder, useDragControls } from "framer-motion";
 import CategoryCard from "../cards/Category";
 import { CategoriesWithItemsProps } from "@/types/category";
 import { useEffect, useState } from "react";
@@ -16,6 +16,7 @@ const CategoriesList = ({
   categories: originalCategories,
 }: CategoriesListProps) => {
   const [newOrder, setNewOrder] = useState<CategoriesWithItemsProps[]>([]);
+  const controls = useDragControls();
 
   useEffect(() => {
     setNewOrder(originalCategories);
@@ -61,17 +62,17 @@ const CategoriesList = ({
       values={newOrder}
       onReorder={handleReorder}
       className="space-y-2 pb-10"
+      draggable={false}
     >
       {newOrder
         .sort((categoryA, categoryB) => categoryA.order - categoryB.order)
         .map((category) => (
-          <Reorder.Item key={category.id} value={category}>
-            <CategoryCard
-              category={category}
-              restaurantId={category.restaurantId!}
-              categories={newOrder}
-            />
-          </Reorder.Item>
+          <CategoryCard
+            category={category}
+            restaurantId={category.restaurantId!}
+            categories={newOrder}
+            controls={controls}
+          />
         ))}
     </Reorder.Group>
   );
