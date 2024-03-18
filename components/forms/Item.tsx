@@ -29,6 +29,7 @@ import { CategoriesWithItemsProps } from "@/types/category";
 import { createNewItem } from "@/actions/item/createNewItem";
 import { toast } from "sonner";
 import { updateItem } from "@/actions/item/updateItem";
+import { isEmpty } from "@/tools/isEmpty";
 
 interface ItemFormProps {
   defaultValues?: Partial<ItemProps>;
@@ -48,7 +49,7 @@ const ItemForm = ({
   itemId = "",
 }: ItemFormProps) => {
   const form = useItemFormHook({
-    defaultValues: defaultValues || { categoryId, active: true },
+    defaultValues: defaultValues || { categoryId, active: true, order: 0 },
   });
   const [loading, setLoading] = useState(false);
   const path = usePathname();
@@ -221,6 +222,14 @@ const ItemForm = ({
             </motion.div>
           )}
         </AnimatePresence>
+
+        <p>Ordem</p>
+        <Input
+          type="number"
+          {...form.register("order", {
+            valueAsNumber: !isEmpty("order"),
+          })}
+        />
 
         <div className="flex flex-col gap-1">
           <SelectBuilder

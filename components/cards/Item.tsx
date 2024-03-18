@@ -7,19 +7,26 @@ import ItemForm from "../forms/Item";
 import { useItemStore } from "@/context/item";
 import { Badge } from "../ui/badge";
 import { CategoryProps } from "@/types/category";
+import { DragControls } from "framer-motion";
 
 interface ItemCardProps {
   item: ItemProps;
   categories: CategoryProps[];
   restaurantId: string;
+  controls: DragControls;
 }
 
-const ItemCard = ({ item, categories, restaurantId }: ItemCardProps) => {
+const ItemCard = ({
+  item,
+  categories,
+  restaurantId,
+  controls,
+}: ItemCardProps) => {
   const { toggleId, idList } = useItemStore();
 
   return (
     <div
-      className="flex items-center justify-between h-16 w-full border border-primary rounded px-2"
+      className="flex items-center justify-between h-16 w-full border border-primary rounded px-2 bg-background"
       key={item.id}
     >
       <div className="flex-[0.1] mr-2">

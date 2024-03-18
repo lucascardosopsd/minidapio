@@ -103,6 +103,7 @@ model Item {
   active      Boolean
   sale        Boolean
   salePrice   Float?
+  order       Int?    @default(0)
 
   categoryId   String?     @db.ObjectId
   Category     Category?   @relation(fields: [categoryId], references: [id])

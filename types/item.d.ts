@@ -8,6 +8,7 @@ export interface ItemProps {
   active: boolean;
   sale: boolean;
   salePrice: number | null;
+  order: number;
   categoryId: string | null;
   restaurantId: string | null;
 }
