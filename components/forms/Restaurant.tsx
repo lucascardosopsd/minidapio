@@ -261,14 +261,16 @@ const RestaurantForm = ({
 
           <div className="flex gap-2 items-center">
             <p className="text-background font-semibold p-4 break-all text-center">
-              www.minidapio.com/{session?.id}/{slugGen(watchTitle)}
+              www.minidapio.com/menu/{session?.id}/{slugGen(watchTitle)}
             </p>
             <Button
               type="button"
               variant="outline"
               onClick={() =>
                 copyToClipboard(
-                  `www.minidapio.com/${session?.id}/${slugGen(watchTitle)}`,
+                  `www.minidapio.com/menu/${session?.id}/${slugGen(
+                    watchTitle
+                  )}`,
                   "slug"
                 )
               }
