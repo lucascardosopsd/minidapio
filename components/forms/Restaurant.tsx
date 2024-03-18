@@ -69,6 +69,8 @@ const RestaurantForm = ({
   const handleNewRestaurant = async (
     data: z.infer<typeof restaurantValidator>
   ) => {
+    console.log(data);
+
     setLoading(true);
 
     const restaurantExists = await fetchUserRestaurantsByQuery({
@@ -84,8 +86,12 @@ const RestaurantForm = ({
     }
 
     try {
+      const slug = slugGen(form.getValues("title"));
       toggleOpen();
-      await createNewRestaurant(data);
+      await createNewRestaurant({
+        ...data,
+        slug,
+      });
       form.reset();
       toast("Restaurante Criado");
     } catch (error) {

@@ -34,5 +34,4 @@ export const restaurantValidator = z.object({
   note: z.string().nullable(),
   activeMenu: z.boolean().default(true),
   methods: PaymentMethodSchema,
-  slug: z.string(),
 });
