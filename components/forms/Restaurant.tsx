@@ -73,16 +73,18 @@ const RestaurantForm = ({
 
     setLoading(true);
 
-    const restaurantExists = await fetchUserRestaurantsByQuery({
-      where: {
-        title: form.getValues("title"),
-      },
-    });
+    if (!defaultValues) {
+      const restaurantExists = await fetchUserRestaurantsByQuery({
+        where: {
+          title: form.getValues("title"),
+        },
+      });
 
-    if (restaurantExists[0]) {
-      toast("Já existe um restaurante com este nome!");
-      setLoading(false);
-      return;
+      if (restaurantExists[0]) {
+        toast("Já existe um restaurante com este nome!");
+        setLoading(false);
+        return;
+      }
     }
 
     try {
