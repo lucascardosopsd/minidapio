@@ -27,6 +27,8 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Session } from "@/types/session";
 import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
+import { updateRestaurant } from "@/actions/restaurant/updateRestaurant";
+import { usePathname } from "next/navigation";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
@@ -40,6 +42,7 @@ const RestaurantForm = ({
   session,
 }: RestaurantFormProps) => {
   const [loading, setLoading] = useState(false);
+  const pathname = usePathname();
 
   const form = useRestaurantForm({ defaultValues });
 
@@ -66,30 +69,53 @@ const RestaurantForm = ({
     });
   };
 
+  const handleUpdateRestaurant = async (
+    data: z.infer<typeof restaurantValidator>
+  ) => {
+    setLoading(true);
+
+    const restaurantExists = await fetchUserRestaurantsByQuery({
+      where: {
+        title: form.getValues("title"),
+      },
+    });
+
+    if (!restaurantExists[0]) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await updateRestaurant(data, defaultValues?.id || "", pathname);
+      form.reset();
+      toast("Restaurante Atualizado");
+    } catch (error) {
+      toast("Ocorreu um erro.");
+    } finally {
+      toggleOpen();
+      setLoading(false);
+    }
+  };
+
   const handleNewRestaurant = async (
     data: z.infer<typeof restaurantValidator>
   ) => {
-    console.log(data);
-
     setLoading(true);
 
-    if (!defaultValues) {
-      const restaurantExists = await fetchUserRestaurantsByQuery({
-        where: {
-          title: form.getValues("title"),
-        },
-      });
+    const restaurantExists = await fetchUserRestaurantsByQuery({
+      where: {
+        title: form.getValues("title"),
+      },
+    });
 
-      if (restaurantExists[0]) {
-        toast("Já existe um restaurante com este nome!");
-        setLoading(false);
-        return;
-      }
+    if (restaurantExists[0]) {
+      toast("Já existe um restaurante com este nome!");
+      setLoading(false);
+      return;
     }
 
     try {
       const slug = slugGen(form.getValues("title"));
-      toggleOpen();
       await createNewRestaurant({
         ...data,
         slug,
@@ -99,6 +125,7 @@ const RestaurantForm = ({
     } catch (error) {
       toast("Ocorreu um erro.");
     } finally {
+      toggleOpen();
       setLoading(false);
     }
   };
@@ -106,7 +133,9 @@ const RestaurantForm = ({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleNewRestaurant)}
+        onSubmit={form.handleSubmit(
+          !defaultValues ? handleNewRestaurant : handleUpdateRestaurant
+        )}
         className="space-y-4 pb-10 relative max-w-[500px] w-full"
       >
         {/* Basic */}
