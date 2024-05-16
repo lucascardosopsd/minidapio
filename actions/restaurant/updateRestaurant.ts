@@ -14,16 +14,21 @@ export const updateRestaurant = async (
     throw new Error("User not found");
   }
 
+  const restaurantId = data.id;
+
+  delete data.id;
+
   try {
     await prisma.restaurant.update({
       where: {
-        id: data.id!,
+        id: restaurantId,
       },
       data,
     });
 
     revalidatePath("/restaurants");
   } catch (error) {
+    console.log(error);
     throw new Error("Can't update restaurant");
   }
 };
