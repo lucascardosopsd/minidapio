@@ -144,9 +144,11 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
         <p className="text-center text-sm">{restaurant.address}</p>
 
         <div className="flex flex-col items-center text-sm">
-          <p className="text-yellow-500 font-semibold">Atenção!</p>
           {restaurant.note && (
-            <p className="text-justify ">{restaurant.note}</p>
+            <>
+              <p className="text-yellow-500 font-semibold">Atenção!</p>
+              <p className="text-justify ">{restaurant.note}</p>
+            </>
           )}
         </div>
       </div>
