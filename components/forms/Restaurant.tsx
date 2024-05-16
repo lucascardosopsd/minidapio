@@ -27,8 +27,8 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Session } from "@/types/session";
 import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
-import { updateRestaurant } from "@/actions/restaurant/updateRestaurant";
 import { usePathname } from "next/navigation";
+import { updateRestaurant } from "@/actions/restaurant/updateRestaurant";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
@@ -86,7 +86,7 @@ const RestaurantForm = ({
     }
 
     try {
-      await updateRestaurant(data, defaultValues?.id || "", pathname);
+      await updateRestaurant(data);
       form.reset();
       toast("Restaurante Atualizado");
     } catch (error) {
