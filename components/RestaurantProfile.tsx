@@ -72,33 +72,38 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
         </div>
 
         <div className="flex flex-col justify-center gap-1 text-sm w-full max-w-[400px] p-2 rounded">
-          {restaurant.workHours.map((workHour: HourProps) => (
-            <div
-              className="flex flex-col justify-center"
-              key={workHour.weekDay}
-            >
-              <div className="flex flex-col justify-center">
-                <p style={{ color: themeColor }} className="text-center">
-                  {
-                    weekDays.filter((day) => day.value == workHour.weekDay)[0]
-                      .name
-                  }
-                </p>
-              </div>
+          {restaurant.workHours
+            .sort(
+              (workHour: HourProps) =>
+                Number(workHour.weekDay) - Number(workHour.weekDay)
+            )
+            .map((workHour: HourProps) => (
+              <div
+                className="flex flex-col justify-center"
+                key={workHour.weekDay}
+              >
+                <div className="flex flex-col justify-center">
+                  <p style={{ color: themeColor }} className="text-center">
+                    {
+                      weekDays.filter((day) => day.value == workHour.weekDay)[0]
+                        .name
+                    }
+                  </p>
+                </div>
 
-              <div className="flex justify-center gap-2">
-                {workHour.times!.open ? (
-                  <div className="flex">
-                    <p>
-                      {workHour.times!.open}-{workHour.times!.close}
-                    </p>
-                  </div>
-                ) : (
-                  <Badge variant="destructive">Fechado</Badge>
-                )}
+                <div className="flex justify-center gap-2">
+                  {workHour.times!.open ? (
+                    <div className="flex">
+                      <p>
+                        {workHour.times!.open}-{workHour.times!.close}
+                      </p>
+                    </div>
+                  ) : (
+                    <Badge variant="destructive">Fechado</Badge>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
 
         <div className="flex flex-col items-center gap-1 text-sm  p-2 rounded w-full">
