@@ -20,6 +20,7 @@ const PaymentMethodSchema = z.object({
 });
 
 export const restaurantValidator = z.object({
+  id: z.string().optional(),
   title: z.string().min(2, { message: "Campo Obrigatório" }),
   active: z.boolean().default(true),
   whatsapp: z.string().nullable(),
@@ -34,4 +35,5 @@ export const restaurantValidator = z.object({
   note: z.string().nullable(),
   activeMenu: z.boolean().default(true),
   methods: PaymentMethodSchema,
+  slug: z.string(),
 });
