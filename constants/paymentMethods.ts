@@ -1,4 +1,9 @@
-export const paymentMethods = [
+interface PaymentMethodsProps {
+  label: string;
+  title: string;
+}
+
+export const paymentMethods: PaymentMethodsProps[] = [
   {
     label: "credit",
     title: "Crédito",

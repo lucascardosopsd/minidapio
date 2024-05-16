@@ -14,7 +14,7 @@ export interface timeProps {
 export interface WorkHourProps {
   weekDay: number;
   opened: boolean;
-  times: timeProps[];
+  times: timeProps;
 }
 
 export interface RestaurantProps {

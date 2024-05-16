@@ -1,15 +1,16 @@
 "use client";
 import { RestaurantProps } from "@/types/restaurant";
 import Image from "next/image";
-import { HourProps, TimesProps } from "@/types/hours";
 import { Badge } from "./ui/badge";
-import { isBetweenHour } from "@/tools/isBetweenHour";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { SlLocationPin } from "react-icons/sl";
-import { weekDays } from "@/constants/weekDays";
 import CategoriesSheet from "./sheets/Categories";
 import { Separator } from "./ui/separator";
+import { HourProps } from "@/types/hours";
+import { isBetweenHour } from "@/tools/isBetweenHour";
+import { weekDays } from "@/constants/weekDays";
+import { paymentMethods } from "@/constants/paymentMethods";
 
 interface RestaurantProfileProps {
   restaurant: RestaurantProps;
@@ -27,36 +28,32 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
   )[0];
 
   if (hoursOfDay.times) {
-    hoursOfDay.times.forEach((time: TimesProps) => {
-      isRestaurantOpened = isBetweenHour(time.open, time.close);
-    });
+    isRestaurantOpened = isBetweenHour(
+      hoursOfDay.times.open,
+      hoursOfDay.times.close
+    );
   }
 
   return (
     <>
-      <div className="flex justify-center absolute bottom-0 m-0 left-0 right-0 w-full z-10">
+      <div className="flex justify-center absolute left-0 bottom-0 w-full z-10">
         <CategoriesSheet
           triggerVariant="outline"
           triggerText="Toque para ver o cardápio"
           themeColor={themeColor}
-          restaurantId={restaurant.id}
           triggerClassname="w-full rounded-none py-6"
           triggerStyle={{ backgroundColor: themeColor }}
         />
       </div>
       <div className="flex flex-col items-center justify-center gap-5 py-5 relative w-full pb-20">
-        <div
-          className="flex gap-2 items-center border p-2 rounded w-full"
-          style={{ borderColor: themeColor }}
-        >
+        <div className="flex gap-2 items-center justify-center p-2 rounded w-full">
           <Image
             src={restaurant.logo}
             alt="logo"
             height={0}
             width={0}
             sizes="1000px"
-            className="w-20 h-20 rounded-full object-cover border"
-            style={{ borderColor: themeColor }}
+            className="w-20 h-20 rounded-full object-cover"
           />
 
           <div className="flex flex-col items-center">
@@ -74,12 +71,12 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
           </div>
         </div>
 
-        <div
-          className="flex flex-col justify-center gap-1 text-sm w-full max-w-[400px] border p-2 rounded"
-          style={{ borderColor: themeColor }}
-        >
+        <div className="flex flex-col justify-center gap-1 text-sm w-full max-w-[400px] p-2 rounded">
           {restaurant.workHours.map((workHour: HourProps) => (
-            <div className="flex flex-col justify-center">
+            <div
+              className="flex flex-col justify-center"
+              key={workHour.weekDay}
+            >
               <div className="flex flex-col justify-center">
                 <p style={{ color: themeColor }} className="text-center">
                   {
@@ -90,20 +87,12 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
               </div>
 
               <div className="flex justify-center gap-2">
-                {workHour.times?.length ? (
-                  workHour.times.map((time: TimesProps, index) => (
-                    <div className="flex">
-                      <p>
-                        {time.open}-{time.close}
-                      </p>
-                      {workHour.times &&
-                        workHour.times.length - 1 !== index && (
-                          <p className="ml-2" style={{ color: themeColor }}>
-                            |
-                          </p>
-                        )}
-                    </div>
-                  ))
+                {workHour.times!.open ? (
+                  <div className="flex">
+                    <p>
+                      {workHour.times!.open}-{workHour.times!.close}
+                    </p>
+                  </div>
                 ) : (
                   <Badge variant="destructive">Fechado</Badge>
                 )}
@@ -112,21 +101,20 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
           ))}
         </div>
 
-        <div
-          className="flex flex-col items-center gap-1 text-sm  border p-2 rounded w-full"
-          style={{ borderColor: themeColor }}
-        >
+        <div className="flex flex-col items-center gap-1 text-sm  p-2 rounded w-full">
           <p>{restaurant.whatsapp}</p>
           <Separator style={{ background: themeColor }} />
           <p>{restaurant.landline}</p>
         </div>
 
         <div className="flex gap-1 text-sm">
-          {restaurant.methods.map((method: string, index) => (
+          {Object.entries(restaurant.methods).map(([key, value], index) => (
             <>
-              <p>{method}</p>
+              {paymentMethods.map(
+                (payment) => key == payment.label && <p>{payment.title}</p>
+              )}
 
-              {index !== restaurant.methods.length! - 1 && (
+              {index !== Object.entries(restaurant.methods).length! - 1 && (
                 <p className="mr-1" style={{ color: themeColor }}>
                   |
                 </p>

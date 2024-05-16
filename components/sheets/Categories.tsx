@@ -4,14 +4,8 @@ import { Button } from "../ui/button";
 import { ButtonVariants } from "@/types/button";
 import { CustomSheetContent } from "../ui/customSheetContent";
 import { Input } from "../ui/input";
-import { items } from "@/mock/items";
-import { Card, CardContent, CardFooter } from "../ui/card";
-import Image from "next/image";
 import { FaChevronLeft } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
-import { formatPrice } from "@/tools/formatPrice";
-import { categories } from "@/mock/categories";
-import CategoryItemsSheet from "./CategoryItems";
 
 interface CategoriesSheetProps {
   triggerText: string | ReactNode;
@@ -19,7 +13,6 @@ interface CategoriesSheetProps {
   triggerClassname?: string;
   triggerStyle?: CSSProperties;
   themeColor: string;
-  restaurantId: number;
 }
 
 const CategoriesSheet = ({
@@ -27,7 +20,6 @@ const CategoriesSheet = ({
   triggerVariant,
   triggerClassname,
   themeColor,
-  restaurantId,
   triggerStyle,
 }: CategoriesSheetProps) => {
   const [open, setOpen] = useState(false);
@@ -71,7 +63,7 @@ const CategoriesSheet = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-5 w-[calc(90svw)] min-h-[calc(70svh)] overflow-x-auto">
+          {/* <div className="flex items-center gap-5 w-[calc(90svw)] min-h-[calc(70svh)] overflow-x-auto">
             {items
               .filter((item) => item.restaurantId == restaurantId && item.sale)
               .map((item) => (
@@ -107,9 +99,9 @@ const CategoriesSheet = ({
                   </CardFooter>
                 </Card>
               ))}
-          </div>
+          </div> */}
 
-          <div className="flex flex-col gap-5 pb-10">
+          {/* <div className="flex flex-col gap-5 pb-10">
             {categories
               .filter((category) => category.restaurantId == restaurantId)
               .map((category) => (
@@ -136,7 +128,7 @@ const CategoriesSheet = ({
                   />
                 </div>
               ))}
-          </div>
+          </div> */}
         </div>
       </CustomSheetContent>
     </Sheet>

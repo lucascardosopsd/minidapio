@@ -6,5 +6,5 @@ export interface TimesProps {
 export interface HourProps {
   weekDay: string;
   opened: boolean;
-  times?: TimesProps[];
+  times?: TimesProps;
 }

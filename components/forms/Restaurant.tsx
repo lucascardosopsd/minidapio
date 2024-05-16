@@ -253,7 +253,9 @@ const RestaurantForm = ({
                       control={form.control}
                       fieldElement={<Checkbox />}
                       name={`workHours.${index}.opened`}
-                      defaultValue={defaultValues?.workHours[index].opened}
+                      defaultValue={
+                        defaultValues ?? defaultValues?.workHours[index].opened
+                      }
                     />
                   </div>
                   <p>Aberto</p>

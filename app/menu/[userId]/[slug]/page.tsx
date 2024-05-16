@@ -1,5 +1,5 @@
+import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
 import RestaurantProfile from "@/components/RestaurantProfile";
-import { restaurants } from "@/mock/restaurants";
 
 interface MenuProps {
   params: {
@@ -8,14 +8,16 @@ interface MenuProps {
   };
 }
 
-const Menu = ({ params: { userId, slug } }: MenuProps) => {
-  const restaurant = restaurants.filter(
-    (data) => data.slug == slug && data.userId == Number(userId)
-  )[0];
+const Menu = async ({ params: { userId, slug } }: MenuProps) => {
+  const restaurant = await fetchUserRestaurantsByQuery({
+    where: { slug, userId },
+  });
+
+  console.log(restaurant[0].workHours);
 
   return (
-    <div className="px-10 h-[100svh] overflow-y-auto">
-      <RestaurantProfile restaurant={restaurant} />
+    <div className="px-10 h-[100svh] overflow-y-auto max-w-[600px] flex items-start mx-auto antialiased">
+      <RestaurantProfile restaurant={restaurant[0]} />
     </div>
   );
 };
