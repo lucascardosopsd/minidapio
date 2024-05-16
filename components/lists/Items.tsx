@@ -23,13 +23,12 @@ const CategoryItemsList = ({
   return (
     <>
       {newOrder
-        .sort((itemA, itemB) => itemA.order - itemB.order)
+        .sort((itemA, itemB) => itemA.order! - itemB.order!)
         .map((item) => (
           <ItemCard
             categories={categories}
             item={item}
             restaurantId={item.restaurantId!}
-            controls={controls}
           />
         ))}
     </>

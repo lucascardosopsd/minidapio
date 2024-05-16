@@ -17,6 +17,9 @@ export const fetchUserCategoriesByQuery = async (
 
   const includeUserQuery = {
     ...query,
+    include: {
+      items: true,
+    },
     where: {
       ...query.where,
       userId: user.id,

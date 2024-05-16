@@ -65,7 +65,7 @@ const CategoriesList = ({
       draggable={false}
     >
       {newOrder
-        .sort((categoryA, categoryB) => categoryA.order - categoryB.order)
+        .sort((categoryA, categoryB) => categoryA.order! - categoryB.order!)
         .map((category) => (
           <CategoryCard
             category={category}

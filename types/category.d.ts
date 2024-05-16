@@ -1,7 +1,7 @@
 export interface CategoryProps {
   id: string;
   title: string;
-  order: number;
+  order: number | null;
   restaurantId: string | null;
 }
 
