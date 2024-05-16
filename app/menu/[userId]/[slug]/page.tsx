@@ -1,5 +1,6 @@
-import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
+import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import RestaurantProfile from "@/components/RestaurantProfile";
+import { FullRestaurantProps } from "@/types/restaurant";
 
 interface MenuProps {
   params: {
@@ -9,11 +10,16 @@ interface MenuProps {
 }
 
 const Menu = async ({ params: { userId, slug } }: MenuProps) => {
-  const restaurant = await fetchUserRestaurantsByQuery({
-    where: { slug, userId },
-  });
-
-  console.log(restaurant[0].workHours);
+  const restaurant = (await fetchRestaurantsByQuery(
+    {
+      where: { slug, userId },
+      include: {
+        Items: true,
+        Categories: true,
+      },
+    },
+    userId
+  )) as FullRestaurantProps[];
 
   return (
     <div className="px-10 h-[100svh] overflow-y-auto max-w-[600px] flex items-start mx-auto antialiased">

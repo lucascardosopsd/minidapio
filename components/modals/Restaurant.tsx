@@ -44,10 +44,7 @@ const RestaurantSheet = ({
         {triggerText}
       </Button>
 
-      <SheetContent
-        className="flex flex-col items-center gap-2 overflow-y-auto w-full h-[100svh]"
-        side="bottom"
-      >
+      <SheetContent className="flex flex-col items-center gap-2 overflow-y-auto w-full h-[100svh]">
         <SheetHeader>
           <SheetTitle>{sheetTitle}</SheetTitle>
           <SheetDescription>{sheetDescription}</SheetDescription>

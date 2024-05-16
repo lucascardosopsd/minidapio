@@ -2,7 +2,7 @@
 import { ItemProps } from "@/types/item";
 import { Checkbox } from "../ui/checkbox";
 import { FaPen } from "react-icons/fa6";
-import ItemSheet from "../sheets/Item";
+import ItemSheet from "../modals/Item";
 import ItemForm from "../forms/Item";
 import { useItemStore } from "@/context/item";
 import { Badge } from "../ui/badge";

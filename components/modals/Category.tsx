@@ -41,7 +41,7 @@ const CategorySheet = ({
         <Button>{triggerText}</Button>
       </SheetTrigger>
 
-      <SheetContent className="w-svw tablet:w-[50svw]">
+      <SheetContent>
         <SheetHeader>
           <SheetTitle>{sheetTitle}</SheetTitle>
           <SheetTitle>{sheetDescription}</SheetTitle>

@@ -1,11 +1,11 @@
 "use client";
-import { RestaurantProps } from "@/types/restaurant";
+import { FullRestaurantProps } from "@/types/restaurant";
 import Image from "next/image";
 import { Badge } from "./ui/badge";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { SlLocationPin } from "react-icons/sl";
-import CategoriesSheet from "./sheets/Categories";
+import CategoriesSheet from "./modals/Categories";
 import { Separator } from "./ui/separator";
 import { HourProps } from "@/types/hours";
 import { isBetweenHour } from "@/tools/isBetweenHour";
@@ -13,7 +13,7 @@ import { weekDays } from "@/constants/weekDays";
 import { paymentMethods } from "@/constants/paymentMethods";
 
 interface RestaurantProfileProps {
-  restaurant: RestaurantProps;
+  restaurant: FullRestaurantProps;
 }
 
 const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
@@ -41,10 +41,12 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
           triggerVariant="outline"
           triggerText="Toque para ver o cardápio"
           themeColor={themeColor}
-          triggerClassname="w-full rounded-none py-6"
-          triggerStyle={{ backgroundColor: themeColor }}
+          triggerClassname="w-full rounded-none py-6 border-none"
+          triggerStyle={{ color: themeColor }}
+          restaurant={restaurant}
         />
       </div>
+
       <div className="flex flex-col items-center justify-center gap-5 py-5 relative w-full pb-20">
         <div className="flex gap-2 items-center justify-center p-2 rounded w-full">
           <Image

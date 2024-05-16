@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { FaArrowRight, FaTrash } from "react-icons/fa6";
-import RestaurantSheet from "../sheets/Restaurant";
+import RestaurantSheet from "../modals/Restaurant";
 import RestaurantForm from "../forms/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
 import { ImSpinner2 } from "react-icons/im";

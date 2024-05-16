@@ -1,7 +1,7 @@
 "use server";
 import { Accordion } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-import CategorySheet from "@/components/sheets/Category";
+import CategorySheet from "@/components/modals/Category";
 import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
 import InputSearch from "@/components/InputSearch";
 import CategoryForm from "@/components/forms/Category";

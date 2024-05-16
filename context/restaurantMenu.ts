@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
 interface RestaurantMenuStoreProps {
-  currentCategory: number;
-  setCurrentCategory: (id: number) => void;
+  currentCategory: string;
+  setCurrentCategory: (id: string) => void;
 }
 
 export const useRestaurantStore = create<RestaurantMenuStoreProps>((set) => ({
-  currentCategory: 1,
+  currentCategory: "",
   setCurrentCategory: (id) => set({ currentCategory: id }),
 }));

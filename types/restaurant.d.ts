@@ -1,3 +1,6 @@
+import { CategoryProps } from "./category";
+import { ItemProps } from "./item";
+
 export interface PaymentMethodProps {
   pix: boolean;
   cash: boolean;
@@ -35,4 +38,9 @@ export interface RestaurantProps {
   createdAt: Date;
   updatedAt: Date;
   userId: string | null;
+}
+
+export interface FullRestaurantProps extends RestaurantProps {
+  Items: ItemProps[];
+  Categories: CategoryProps[];
 }

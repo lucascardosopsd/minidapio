@@ -5,11 +5,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
-import CategorySheet from "../sheets/Category";
+import CategorySheet from "../modals/Category";
 import { FaCheck, FaPen, FaTrash } from "react-icons/fa6";
 import { Badge } from "../ui/badge";
 import DeleteModal from "../DeleteModal";
-import ItemSheet from "../sheets/Item";
+import ItemSheet from "../modals/Item";
 import ItemForm from "../forms/Item";
 import { deleteCategory } from "@/actions/category/deleteCategory";
 import { toast } from "sonner";
