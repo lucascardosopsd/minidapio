@@ -2,7 +2,7 @@
 import { ReactNode } from "react";
 import { useSession } from "next-auth/react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import GoogleLoginButton from "@/components/GoogleLoginButton";
+import GoogleLoginButton from "@/components/misc/GoogleLoginButton";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { data, status } = useSession();

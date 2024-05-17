@@ -1,8 +1,8 @@
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import RestaurantForm from "@/components/forms/Restaurant";
-import RestaurantSheet from "@/components/modals/Restaurant";
-import RestaurantCard from "@/components/cards/Restaurant";
+import RestaurantForm from "@/components/restaurant/forms/Restaurant";
+import RestaurantSheet from "@/components/restaurant/modals/Restaurant";
+import RestaurantCard from "@/components/restaurant/cards/Restaurant";
 import { useUserSession } from "@/hooks/useUserSession";
 import { fetchUserRestaurants } from "@/actions/restaurant/fetchUserRestaurants";
 

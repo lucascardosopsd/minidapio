@@ -1,5 +1,5 @@
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
-import RestaurantProfile from "@/components/RestaurantProfile";
+import RestaurantProfile from "@/components/restaurant/RestaurantProfile";
 import { FullRestaurantProps } from "@/types/restaurant";
 
 interface MenuProps {

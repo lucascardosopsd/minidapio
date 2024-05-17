@@ -1,8 +1,8 @@
 "use client";
 
 import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
-import BottomFade from "@/components/BottomFade";
-import Navbar from "@/components/Navbar";
+import BottomFade from "@/components/restaurant/BottomFade";
+import Navbar from "@/components/restaurant/Navbar";
 import { BreadcrumbRouteProps } from "@/types/breacrumb";
 import { RestaurantProps } from "@/types/restaurant";
 import { ReactNode, useEffect, useState } from "react";
