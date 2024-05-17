@@ -191,19 +191,21 @@ const RestaurantForm = ({
         <div className="border border-border p-2 rounded space-y-4 flex flex-col">
           <p>Métodos de Pagamento*</p>
 
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {paymentMethods.map((method, index) => (
               <div
-                className="flex items-center gap-2 p-2 border border-primary rounded"
+                className="flex items-center gap-2 p-2 border border-primary rounded "
                 key={index}
               >
-                <FieldBuilder
-                  type="checkbox"
-                  control={form.control}
-                  fieldElement={<Checkbox />}
-                  name={`methods.${method.label}`}
-                />
-                <p>{method.title}</p>
+                <div className="mt-1">
+                  <FieldBuilder
+                    type="checkbox"
+                    control={form.control}
+                    fieldElement={<Checkbox />}
+                    name={`methods.${method.label}`}
+                  />
+                </div>
+                <p className="w-full text-start flex-1">{method.title}</p>
               </div>
             ))}
           </div>
@@ -247,7 +249,7 @@ const RestaurantForm = ({
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div>
+                  <div className="mt-1">
                     <FieldBuilder
                       type="checkbox"
                       control={form.control}
@@ -290,36 +292,6 @@ const RestaurantForm = ({
           <p>Cardápio ativo?</p>
         </div>
 
-        <p>Link do Cardápio</p>
-        <Fence className="bg-primary flex-col">
-          <input
-            hidden
-            value={slugGen(watchTitle)}
-            id="slug"
-            {...form.register("slug")}
-          />
-
-          <div className="flex gap-2 items-center">
-            <p className="text-background font-semibold p-4 break-all text-center">
-              www.minidapio.com/menu/{session?.id}/{slugGen(watchTitle)}
-            </p>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() =>
-                copyToClipboard(
-                  `www.minidapio.com/menu/${session?.id}/${slugGen(
-                    watchTitle
-                  )}`,
-                  "slug"
-                )
-              }
-            >
-              <FaRegCopy className="text-primary" />
-            </Button>
-          </div>
-        </Fence>
-
         <FieldBuilder
           control={form.control}
           fieldElement={
@@ -327,6 +299,29 @@ const RestaurantForm = ({
           }
           name="note"
           title="Observação"
+        />
+
+        <div className="flex gap-2 items-center">
+          <Button
+            type="button"
+            className="gap-2 w-full font-semibold"
+            onClick={() =>
+              copyToClipboard(
+                `www.minidapio.com/menu/${session?.id}/${slugGen(watchTitle)}`,
+                "slug"
+              )
+            }
+          >
+            Copiar link do cardápio
+            <FaRegCopy strokeWidth={15} />
+          </Button>
+        </div>
+
+        <input
+          hidden
+          value={slugGen(watchTitle)}
+          id="slug"
+          {...form.register("slug")}
         />
 
         <div className="flex gap-2 items-center">

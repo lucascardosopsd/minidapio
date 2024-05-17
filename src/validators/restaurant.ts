@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 const hoursSchema = z.object({
-  open: z.string().nullable(),
-  close: z.string().nullable(),
+  open: z.string().nullable().optional(),
+  close: z.string().nullable().optional(),
 });
 
 const workHoursSchema = z.object({
