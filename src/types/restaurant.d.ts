@@ -10,8 +10,8 @@ export interface PaymentMethodProps {
 }
 
 export interface timeProps {
-  open: string;
-  close: string;
+  open: string | null;
+  close: string | null;
 }
 
 export interface WorkHourProps {

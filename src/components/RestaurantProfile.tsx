@@ -27,7 +27,7 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
     (hour: HourProps) => Number(hour.weekDay) == weekDayToday
   )[0];
 
-  if (hoursOfDay.times) {
+  if (hoursOfDay?.times) {
     isRestaurantOpened = isBetweenHour(
       hoursOfDay.times.open,
       hoursOfDay.times.close

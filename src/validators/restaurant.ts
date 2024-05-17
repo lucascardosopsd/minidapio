@@ -1,13 +1,16 @@
 import { z } from "zod";
 
 const hoursSchema = z.object({
-  open: z.string({ required_error: "Hora da abertura obrigatória" }),
-  close: z.string({ required_error: "Hora do fechamento obrigatória" }),
+  open: z.string().nullable(),
+  close: z.string().nullable(),
 });
 
 const workHoursSchema = z.object({
-  weekDay: z.string({ required_error: "Dia Obrigatório" }),
-  opened: z.boolean().default(true),
+  weekDay: z.string({
+    required_error: "Dia Obrigatório",
+    invalid_type_error: "Dia obrigatório",
+  }),
+  opened: z.boolean().default(true).nullable(),
   times: hoursSchema,
 });
 
