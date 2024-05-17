@@ -2,11 +2,15 @@
 
 import { toast } from "sonner";
 
-export const copyToClipboard = (text: string, elementId: string) => {
+export const copyToClipboard = (
+  text: string,
+  elementId: string,
+  message = "Copiado com sucesso"
+) => {
   if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
 
-    toast("Copiado com Sucesso");
+    toast(message || "Copiado com Sucesso");
   } else {
     const textarea = document.createElement(elementId) as HTMLInputElement;
 

@@ -1,11 +1,10 @@
 "use client";
-
 import Image from "next/image";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { FaArrowRight, FaTrash } from "react-icons/fa6";
+import { FaArrowRight, FaRegCopy, FaTrash } from "react-icons/fa6";
 import RestaurantSheet from "../modals/Restaurant";
 import RestaurantForm from "../forms/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
@@ -15,6 +14,7 @@ import { Session } from "@/types/session";
 import { toast } from "sonner";
 import { deleteRestaurant } from "@/actions/restaurant/deleteRestaurant";
 import DeleteModal from "../DeleteModal";
+import { copyToClipboard } from "@/tools/copyToClipboard";
 
 interface RestaurantCardProps {
   restaurant: RestaurantProps;
@@ -88,6 +88,20 @@ const RestaurantCard = ({ restaurant, session }: RestaurantCardProps) => {
             triggerVariant="outline"
             triggerClassname="w-full"
           />
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() =>
+              copyToClipboard(
+                `www.minidapio.com/menu/${session?.id}/${restaurant.slug}`,
+                "slug",
+                "Link do restaurante copiado!"
+              )
+            }
+          >
+            <FaRegCopy className="text-primary" />
+          </Button>
 
           <DeleteModal
             action={handleDeleteRestaurant}
