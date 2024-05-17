@@ -197,7 +197,7 @@ const RestaurantForm = ({
                 className="flex items-center gap-2 p-2 border border-primary rounded "
                 key={index}
               >
-                <div className="mt-1">
+                <div>
                   <FieldBuilder
                     type="checkbox"
                     control={form.control}
@@ -249,7 +249,7 @@ const RestaurantForm = ({
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className="mt-1">
+                  <div>
                     <FieldBuilder
                       type="checkbox"
                       control={form.control}

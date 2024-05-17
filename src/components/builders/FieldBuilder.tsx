@@ -36,7 +36,7 @@ const FieldBuilder = ({
       render={({ field }) => (
         <FormItem className="w-full">
           {title && <FormLabel>{title}</FormLabel>}
-          <FormControl>
+          <FormControl className="flex items-center">
             {type == "checkbox"
               ? cloneElement(fieldElement, {
                   ...field,
