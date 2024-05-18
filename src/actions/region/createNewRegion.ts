@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { regionValidator } from "@/validators/region";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 interface CreateNewRegionProps {
@@ -9,5 +10,7 @@ interface CreateNewRegionProps {
 }
 
 export const createNewRegion = async ({ data }: CreateNewRegionProps) => {
-  return prisma.region.create({ data });
+  await prisma.region.create({ data });
+  revalidatePath("/advertiser/dashboard/regions");
+  return;
 };
