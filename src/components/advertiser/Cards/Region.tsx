@@ -2,7 +2,7 @@
 import ReusableDialog from "@/components/misc/ReusableDialog";
 import { Card, CardHeader } from "@/components/ui/card";
 import { RegionProps } from "@/types/region";
-import RegionModalContent from "../modals/content/region";
+import RegionModalContent from "../forms/content/region";
 import { useState } from "react";
 import { z } from "zod";
 import { regionValidator } from "@/validators/region";

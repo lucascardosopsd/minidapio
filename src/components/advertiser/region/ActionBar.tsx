@@ -1,7 +1,7 @@
 "use client";
 
 import ReusableDialog from "@/components/misc/ReusableDialog";
-import RegionModalContent from "../modals/content/region";
+import RegionModalContent from "../forms/content/region";
 import { createNewRegion } from "@/actions/region/createNewRegion";
 import { useState } from "react";
 import { regionValidator } from "@/validators/region";
