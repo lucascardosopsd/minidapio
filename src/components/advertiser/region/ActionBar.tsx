@@ -1,12 +1,12 @@
 "use client";
 
 import ReusableDialog from "@/components/misc/ReusableDialog";
-import RegionModalContent from "../forms/content/region";
 import { createNewRegion } from "@/actions/region/createNewRegion";
 import { useState } from "react";
 import { regionValidator } from "@/validators/region";
 import { toast } from "sonner";
 import { z } from "zod";
+import RegionModalContent from "../forms/region";
 
 const RegionsActionBar = () => {
   const [loading, setLoading] = useState(false);
