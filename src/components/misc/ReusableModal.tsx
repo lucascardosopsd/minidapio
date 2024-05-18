@@ -18,8 +18,8 @@ interface ReusableModalProps {
   content: string | ReactNode;
   description?: string;
   footer?: string | ReactNode;
-  isOpen: boolean;
-  onOpen: (open: boolean) => void;
+  isOpen?: boolean;
+  onOpen?: (open: boolean) => void;
   triggerClassName?: string;
   triggerVariant?: ButtonVariants;
   triggerStyle?: CSSProperties;
@@ -56,7 +56,9 @@ const ReusableModal = ({
             </DrawerClose>
             {title}
           </DrawerTitle>
-          <DrawerDescription>{description}</DrawerDescription>
+          <DrawerDescription className="w-full text-end">
+            {description}
+          </DrawerDescription>
         </DrawerHeader>
 
         <div className="px-8 h-svh overflow-y-auto">{content}</div>
