@@ -1,3 +1,5 @@
+"use client";
+
 import { adsSidebarOptions } from "@/constants/adsSidebar";
 import {
   Tooltip,
@@ -9,6 +11,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { LogOutIcon } from "lucide-react";
 import { Separator } from "../ui/separator";
+import { signOut } from "next-auth/react";
 
 const Sidebar = ({ userRole }: { userRole: string }) => {
   const options = adsSidebarOptions({ userRole });
@@ -30,7 +33,14 @@ const Sidebar = ({ userRole }: { userRole: string }) => {
 
       <div className="flex flex-col gap-5 mt-auto">
         <Separator />
-        <Button size="icon">
+        <Button
+          size="icon"
+          onClick={() => {
+            signOut({
+              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/advertiser/login`,
+            });
+          }}
+        >
           <LogOutIcon />
         </Button>
       </div>
