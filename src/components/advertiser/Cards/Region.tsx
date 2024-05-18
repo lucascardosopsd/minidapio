@@ -1,123 +1,66 @@
 "use client";
-import { ItemProps } from "@/types/item";
-import { Checkbox } from "../../ui/checkbox";
+import ReusableDialog from "@/components/misc/ReusableDialog";
+import { Card, CardHeader } from "@/components/ui/card";
+import { RegionProps } from "@/types/region";
+import RegionModalContent from "../modals/content/region";
+import { useState } from "react";
+import { z } from "zod";
+import { regionValidator } from "@/validators/region";
+import { toast } from "sonner";
 import { FaPen } from "react-icons/fa6";
-import ItemSheet from "../modals/Item";
-import ItemForm from "../forms/Item";
-import { useItemStore } from "@/context/item";
-import { Badge } from "../../ui/badge";
-import { CategoryProps } from "@/types/category";
+import { updateRegion } from "@/actions/region/updateRegion";
 
-interface ItemCardProps {
-  item: ItemProps;
-  categories: CategoryProps[];
-  restaurantId: string;
+interface RegionCardProps {
+  region: RegionProps;
 }
 
-const ItemCard = ({ item, categories, restaurantId }: ItemCardProps) => {
-  const { toggleId, idList } = useItemStore();
+const RegionCard = ({ region }: RegionCardProps) => {
+  const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOnSubmit = async (data: z.infer<typeof regionValidator>) => {
+    try {
+      setLoading(true);
+
+      await updateRegion({ id: region.id, data });
+
+      toast.success("Região atualizada");
+
+      setIsModalOpen(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Ocorreu um erro");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div
-      className="flex items-center justify-between h-16 w-full border border-primary rounded px-2 bg-background"
-      key={item.id}
-    >
-      <div className="flex-[0.1] mr-2">
-        <Checkbox
-          onClick={() => toggleId(item.id)}
-          checked={idList.some((id) => item.id == id)}
-        />
-      </div>
+    <Card>
+      <CardHeader className="flex-row items-center justify-between">
+        <div className="flex items-center">
+          <p>{region.title}</p>
+          <p>-</p>
+          <p>{region.state}</p>
+        </div>
 
-      <div className="flex-[1.9] flex">
-        <p>{item.title}</p>
-
-        <p className="text-primary text-xs ml-1">[{item.order!}]</p>
-      </div>
-
-      <div className="flex justify-center flex-col flex-1">
-        <p
-          className={item.salePrice ? "line-through text-muted-foreground" : ""}
-        >
-          {item.price.toLocaleString("pt-br", {
-            style: "currency",
-            currency: "BRL",
-          })}
-        </p>
-        {item.sale && (
-          <p className="text-primary">
-            {item?.salePrice &&
-              item?.salePrice > 0 &&
-              item?.salePrice.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })}
-          </p>
-        )}
-      </div>
-
-      <div className="flex items-center gap-2 flex-1">
-        {item.sale ? (
-          <Badge className="w-full max-w-[100px] flex justify-center">
-            Promoção
-          </Badge>
-        ) : (
-          <Badge
-            variant="outline"
-            className="w-full max-w-[100px] flex justify-center"
-          >
-            Preço
-          </Badge>
-        )}
-      </div>
-
-      <div className="flex items-center gap-2 flex-1">
-        {item.highlight ? (
-          <Badge className="w-full max-w-[100px] flex justify-center">
-            Destaque
-          </Badge>
-        ) : (
-          <Badge
-            variant="outline"
-            className="w-full max-w-[100px] flex justify-center"
-          >
-            Normal
-          </Badge>
-        )}
-      </div>
-
-      <div className="flex items-center gap-2 flex-1">
-        {item.active ? (
-          <Badge className="w-full max-w-[100px] flex justify-center">
-            Ativo
-          </Badge>
-        ) : (
-          <Badge
-            variant="outline"
-            className="w-full max-w-[100px] flex justify-center"
-          >
-            Inativo
-          </Badge>
-        )}
-      </div>
-
-      <div className="flex gap-2 justify-end flex-1">
-        <ItemSheet
-          itemForm={
-            <ItemForm
-              defaultValues={item}
-              categories={categories}
-              restaurantId={restaurantId}
-              itemId={item.id}
+        <ReusableDialog
+          title="Editar Região"
+          content={
+            <RegionModalContent
+              onSubmit={handleOnSubmit}
+              defaultValues={region}
             />
           }
-          sheetTitle="Editar Item"
-          triggerText={<FaPen />}
-          triggerVariant="default"
+          trigger={<FaPen />}
+          description="Atualize os dados da região"
+          loading={loading}
+          onOpen={setIsModalOpen}
+          isOpen={isModalOpen}
         />
-      </div>
-    </div>
+      </CardHeader>
+    </Card>
   );
 };
 
-export default ItemCard;
+export default RegionCard;
