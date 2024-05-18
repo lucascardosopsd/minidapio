@@ -1,5 +1,4 @@
 "use client";
-
 import { weekDays } from "@/constants/weekDays";
 import { useRestaurantForm } from "@/hooks/useRestaurantForm";
 import { useFieldArray, useWatch } from "react-hook-form";
@@ -21,7 +20,6 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Session } from "@/types/session";
 import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
-import { usePathname } from "next/navigation";
 import { updateRestaurant } from "@/actions/restaurant/updateRestaurant";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -29,22 +27,29 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { RegionProps } from "@/types/region";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
   toggleOpen?: () => void;
   session: Session | null;
+  regions: RegionProps[];
 }
 
 const RestaurantForm = ({
   defaultValues = undefined,
   toggleOpen = () => {},
   session,
+  regions,
 }: RestaurantFormProps) => {
   const [loading, setLoading] = useState(false);
-  const pathname = usePathname();
 
   const form = useRestaurantForm({ defaultValues });
+
+  const regionsOptions = regions.map((region: RegionProps) => ({
+    label: region.title,
+    value: region.id,
+  }));
 
   const watchTitle = useWatch({
     control: form.control,
@@ -210,6 +215,15 @@ const RestaurantForm = ({
             ))}
           </div>
         </div>
+
+        <SelectBuilder
+          title="Região"
+          control={form.control}
+          name="regionId"
+          selectItem={regionsOptions.map((option) => (
+            <SelectItem value={option.value}>{option.label}</SelectItem>
+          ))}
+        />
 
         {/* Hours */}
         <div className="border border-border p-2 rounded space-y-4 flex flex-col">

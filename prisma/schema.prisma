@@ -76,8 +76,10 @@ model Restaurant {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   userId     String?  @db.ObjectId
+  regionId   String?  @db.ObjectId
 
   User       User?      @relation(fields: [userId], references: [id])
+  region     Region?    @relation(fields: [regionId], references: [id])
   Categories Category[]
   Items      Item[]
   Ads        Ad[]
@@ -115,11 +117,12 @@ model Item {
 }
 
 model Region {
-  id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  title  String
-  state  String
-  active Boolean
-  ads    Ad[]
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  state      String
+  active     Boolean
+  ads        Ad[]
+  Restaurant Restaurant[]
 }
 
 model Ad {

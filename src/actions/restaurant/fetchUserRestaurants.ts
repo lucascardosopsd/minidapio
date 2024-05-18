@@ -23,6 +23,7 @@ export const fetchUserRestaurants = async () => {
       methods: restaurant.methods as unknown as PaymentMethodProps,
     }));
   } catch (error) {
+    console.log(error);
     throw new Error("Can't fetch restaurants");
   }
 };

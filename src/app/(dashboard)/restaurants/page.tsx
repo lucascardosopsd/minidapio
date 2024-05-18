@@ -5,10 +5,12 @@ import RestaurantSheet from "@/components/restaurant/modals/Restaurant";
 import RestaurantCard from "@/components/restaurant/cards/Restaurant";
 import { useUserSession } from "@/hooks/useUserSession";
 import { fetchUserRestaurants } from "@/actions/restaurant/fetchUserRestaurants";
+import { fetchRegions } from "@/actions/region/fetchRegions";
 
 export default async function Dashboard() {
   const session = await useUserSession();
   const restaurants = await fetchUserRestaurants();
+  const regions = await fetchRegions();
 
   return (
     <main className="flex items-center justify-center h-[calc(100svh-4rem)] gap-8 ">
@@ -17,7 +19,9 @@ export default async function Dashboard() {
 
         <div>
           <RestaurantSheet
-            restaurantForm={<RestaurantForm session={session} />}
+            restaurantForm={
+              <RestaurantForm session={session} regions={regions} />
+            }
             sheetTitle="Novo Restaurante"
             triggerText="Novo Restaurante"
             triggerVariant="default"
@@ -35,6 +39,7 @@ export default async function Dashboard() {
                   restaurant={restaurant!}
                   session={session}
                   key={restaurant.id}
+                  regions={regions}
                 />
               ))}
             </div>

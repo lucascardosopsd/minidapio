@@ -15,13 +15,19 @@ import { toast } from "sonner";
 import { deleteRestaurant } from "@/actions/restaurant/deleteRestaurant";
 import DeleteModal from "../DeleteModal";
 import { copyToClipboard } from "@/tools/copyToClipboard";
+import { RegionProps } from "@/types/region";
 
 interface RestaurantCardProps {
   restaurant: RestaurantProps;
   session: Session | null;
+  regions: RegionProps[];
 }
 
-const RestaurantCard = ({ restaurant, session }: RestaurantCardProps) => {
+const RestaurantCard = ({
+  restaurant,
+  session,
+  regions,
+}: RestaurantCardProps) => {
   const [loading, setLoading] = useState(false);
 
   const handleDeleteRestaurant = async () => {
@@ -81,7 +87,11 @@ const RestaurantCard = ({ restaurant, session }: RestaurantCardProps) => {
         <div className="flex gap-2 w-full">
           <RestaurantSheet
             restaurantForm={
-              <RestaurantForm defaultValues={restaurant} session={session} />
+              <RestaurantForm
+                defaultValues={restaurant}
+                session={session}
+                regions={regions}
+              />
             }
             sheetTitle="Editar Restaurante"
             triggerText="Editar"
