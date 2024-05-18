@@ -16,7 +16,7 @@ import { Button } from "../ui/button";
 
 interface DeleteModalProps {
   triggerText: string | ReactNode;
-  triggerVariant: ButtonVariants;
+  triggerVariant?: ButtonVariants;
   dialogTitle: string;
   dialogDescription?: string | ReactNode;
   action: () => void;
@@ -24,7 +24,7 @@ interface DeleteModalProps {
 
 const DeleteModal = ({
   triggerText,
-  triggerVariant,
+  triggerVariant = "destructive",
   dialogTitle,
   dialogDescription,
   action,
@@ -47,7 +47,11 @@ const DeleteModal = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction onClick={action}>Confirmar</AlertDialogAction>
+          <AlertDialogAction onClick={action} asChild>
+            <Button variant={triggerVariant} className="bg-red-500">
+              Confirmar
+            </Button>
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

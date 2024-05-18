@@ -13,23 +13,9 @@ const RegionsPage = async () => {
       <Separator />
 
       <div className="flex flex-col h-[calc(100svh-170px)] overflow-y-auto gap-5">
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
-        <RegionCard region={regions[0]} />
+        {regions.map((region) => (
+          <RegionCard region={region} />
+        ))}
       </div>
     </section>
   );

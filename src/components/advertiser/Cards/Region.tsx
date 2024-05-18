@@ -7,8 +7,10 @@ import { useState } from "react";
 import { z } from "zod";
 import { regionValidator } from "@/validators/region";
 import { toast } from "sonner";
-import { FaPen } from "react-icons/fa6";
+import { FaPen, FaTrash } from "react-icons/fa6";
 import { updateRegion } from "@/actions/region/updateRegion";
+import DeleteModal from "@/components/restaurant/DeleteModal";
+import { deleteRegion } from "@/actions/region/deleteRegion";
 
 interface RegionCardProps {
   region: RegionProps;
@@ -35,6 +37,23 @@ const RegionCard = ({ region }: RegionCardProps) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+
+      await deleteRegion({ id: region.id });
+
+      toast.success("Região deletada");
+
+      setIsModalOpen(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Ocorreu um erro");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Card>
       <CardHeader className="flex-row items-center justify-between">
@@ -44,20 +63,37 @@ const RegionCard = ({ region }: RegionCardProps) => {
           <p>{region.state}</p>
         </div>
 
-        <ReusableDialog
-          title="Editar Região"
-          content={
-            <RegionModalContent
-              onSubmit={handleOnSubmit}
-              defaultValues={region}
-            />
-          }
-          trigger={<FaPen />}
-          description="Atualize os dados da região"
-          loading={loading}
-          onOpen={setIsModalOpen}
-          isOpen={isModalOpen}
-        />
+        <div className="flex gap-5">
+          <ReusableDialog
+            title="Editar Região"
+            content={
+              <RegionModalContent
+                onSubmit={handleOnSubmit}
+                defaultValues={region}
+              />
+            }
+            trigger={<FaPen />}
+            description="Atualize os dados da região"
+            loading={loading}
+            onOpen={setIsModalOpen}
+            isOpen={isModalOpen}
+          />
+
+          <DeleteModal
+            action={handleDelete}
+            dialogTitle="Apagar região"
+            triggerText={<FaTrash />}
+            dialogDescription={
+              <>
+                <p>
+                  Você está apagando a região:{" "}
+                  <span className="text-red-500">{region.title}</span>
+                </p>
+                <p>Deseja continuar?</p>
+              </>
+            }
+          />
+        </div>
       </CardHeader>
     </Card>
   );
