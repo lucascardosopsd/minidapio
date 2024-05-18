@@ -35,7 +35,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Navbar />
-      <div className="flex flex-col max-w-screen-desktop px-10 items-center justify-center h-[calc(100svh-80px)]">
+      <div className="flex flex-col container px-10 items-center justify-center h-[calc(100svh-80px)]">
         {children}
       </div>
     </>
