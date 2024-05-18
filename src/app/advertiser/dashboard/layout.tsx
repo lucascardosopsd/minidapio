@@ -1,14 +1,20 @@
-"use client";
 import { ReactNode } from "react";
-import { useSession } from "next-auth/react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import GoogleLoginButton from "@/components/misc/GoogleLoginButton";
 import Navbar from "@/components/advertiser/Navbar";
+import Sidebar from "@/components/advertiser/Sidebar";
+import { getServerSession } from "next-auth";
+import prisma from "@/lib/prisma";
+import { nextAuthOptions } from "@/lib/authProviders";
 
-const Layout = ({ children }: { children: ReactNode }) => {
-  const { data, status } = useSession();
+const Layout = async ({ children }: { children: ReactNode }) => {
+  const session = await getServerSession(nextAuthOptions);
 
-  if (!data) {
+  const user = await prisma.user.findUnique({
+    where: { email: session?.user?.email! },
+  });
+
+  if (!session) {
     return (
       <div className="flex items-center justify-center h-svh w-svw">
         <Card className="border-none">
@@ -33,12 +39,15 @@ const Layout = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <>
-      <Navbar />
-      <div className="flex flex-col container px-10 items-center justify-center h-[calc(100svh-80px)]">
-        {children}
+    <div className="flex h-svh w-full">
+      <Sidebar userRole={user?.role!} />
+      <div className="w-full">
+        <Navbar />
+        <div className="flex flex-col container px-10 items-center justify-center h-[calc(100svh-80px)]">
+          {children}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
