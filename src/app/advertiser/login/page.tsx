@@ -1,16 +1,14 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import GoogleLoginButton from "@/components/misc/GoogleLoginButton";
 
 export default function Login() {
   const { data: session } = useSession();
-  const router = useRouter();
 
   if (session) {
-    router.push("/advertiser/dashboard");
-    return <></>;
+    redirect("/advertiser/dashboard");
   }
 
   return (

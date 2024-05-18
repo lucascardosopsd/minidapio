@@ -1,48 +1,35 @@
+"use server";
+
 import { ReactNode } from "react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import GoogleLoginButton from "@/components/misc/GoogleLoginButton";
 import Navbar from "@/components/advertiser/Navbar";
 import Sidebar from "@/components/advertiser/Sidebar";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 import { nextAuthOptions } from "@/lib/authProviders";
+import { redirect } from "next/navigation";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
+
+  if (!session) {
+    return redirect("/advertiser/login");
+  }
 
   const user = await prisma.user.findUnique({
     where: { email: session?.user?.email! },
   });
 
-  if (!session) {
-    return (
-      <div className="flex items-center justify-center h-svh w-svw">
-        <Card className="border-none">
-          <CardHeader>
-            <p className="font-semibold text-lg text-center">
-              {status == "unauthenticated"
-                ? "Você não está logado 😕"
-                : "Carregando sessão"}
-            </p>
-          </CardHeader>
-          <CardContent>
-            <p className="text-center">
-              {status == "unauthenticated"
-                ? "Por favor, faça login."
-                : "Por favor, aguarde."}
-            </p>
-            <GoogleLoginButton />
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  if (!user) return redirect("/advertiser/login");
 
   return (
     <div className="flex h-svh w-full">
       <Sidebar userRole={user?.role!} />
       <div className="w-full">
-        <Navbar />
+        <Navbar
+          signOutcallbackUrl={
+            process.env.NEXT_PUBLIC_HOST! + "/advertiser/login"
+          }
+        />
         <div className="flex flex-col container px-10 items-center justify-center h-[calc(100svh-80px)]">
           {children}
         </div>
