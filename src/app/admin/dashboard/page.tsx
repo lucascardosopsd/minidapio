@@ -1,8 +1,8 @@
-import ActionBar from "@/components/advertiser/ActionBar";
+import ActionBar from "@/components/admin/ActionBar";
 import { Separator } from "@/components/ui/separator";
 import { fetchRegions } from "@/actions/region/fetchRegions";
 import { fetchAds } from "@/actions/ad/fetchAds";
-import AdCard from "@/components/advertiser/Cards/Ad";
+import AdCard from "@/components/admin/Cards/Ad";
 
 const AdvertiserDashboard = async () => {
   const regions = await fetchRegions();

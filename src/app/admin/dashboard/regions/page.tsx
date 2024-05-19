@@ -1,6 +1,6 @@
 import { fetchRegions } from "@/actions/region/fetchRegions";
-import RegionCard from "@/components/advertiser/Cards/Region";
-import RegionsActionBar from "@/components/advertiser/region/ActionBar";
+import RegionCard from "@/components/admin/Cards/Region";
+import RegionsActionBar from "@/components/admin/region/ActionBar";
 import { Separator } from "@/components/ui/separator";
 
 const RegionsPage = async () => {
