@@ -12,23 +12,21 @@ const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
 
   if (!session) {
-    return redirect("/advertiser/login");
+    return redirect("/admin/login");
   }
 
   const user = await prisma.user.findUnique({
     where: { email: session?.user?.email! },
   });
 
-  if (!user) return redirect("/advertiser/login");
+  if (!user) return redirect("/admin/login");
 
   return (
     <div className="flex h-svh w-full">
-      <Sidebar userRole={user?.role!} />
+      <Sidebar />
       <div className="w-full">
         <Navbar
-          signOutcallbackUrl={
-            process.env.NEXT_PUBLIC_HOST! + "/advertiser/login"
-          }
+          signOutcallbackUrl={process.env.NEXT_PUBLIC_HOST! + "/admin/login"}
         />
         <div className="flex flex-col container px-10 items-center justify-center h-[calc(100svh-80px)]">
           {children}

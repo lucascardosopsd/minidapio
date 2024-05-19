@@ -13,12 +13,10 @@ import { LogOutIcon } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { signOut } from "next-auth/react";
 
-const Sidebar = ({ userRole }: { userRole: string }) => {
-  const options = adsSidebarOptions({ userRole });
-
+const Sidebar = () => {
   return (
     <div className="h-full w-20 flex flex-col items-center border border-r gap-10 py-10">
-      {options.map((option, index) => (
+      {adsSidebarOptions.map((option, index) => (
         <TooltipProvider key={index}>
           <Tooltip>
             <TooltipTrigger>
@@ -37,7 +35,7 @@ const Sidebar = ({ userRole }: { userRole: string }) => {
           size="icon"
           onClick={() => {
             signOut({
-              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/advertiser/login`,
+              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/admin/login`,
             });
           }}
         >

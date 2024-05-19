@@ -1,16 +1,8 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 import GoogleLoginButton from "@/components/misc/GoogleLoginButton";
 
 export default function Login() {
-  const { data: session } = useSession();
-
-  if (session) {
-    redirect("/advertiser/dashboard");
-  }
-
   return (
     <main className="flex items-center justify-center h-svh gap-8">
       <div className="flex-1 items-center justify-center relative hidden tablet:flex flex-col">

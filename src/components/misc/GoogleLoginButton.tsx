@@ -6,7 +6,7 @@ import { ImSpinner2 } from "react-icons/im";
 import { FaGoogle } from "react-icons/fa6";
 
 const GoogleLoginButton = () => {
-  const { status, data } = useSession();
+  const { status } = useSession();
 
   return (
     <Button
