@@ -11,6 +11,7 @@ import { adValidator } from "@/validators/ad";
 import { RegionProps } from "@/types/region";
 import { updateAd } from "@/actions/ad/updateAd";
 import { toast } from "sonner";
+import { deleteAd } from "@/actions/ad/deleteAd";
 
 interface AdCardProps {
   ad: AdProps;
@@ -38,7 +39,22 @@ const AdCard = ({ ad, regions }: AdCardProps) => {
     }
   };
 
-  const handleDelete = async () => {};
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+
+      await deleteAd({ id: ad.id });
+
+      toast.success("Anúncio deletado");
+
+      setIsModalOpen(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Ocorreu um erro");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Card>
