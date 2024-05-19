@@ -14,7 +14,7 @@ const RegionsPage = async () => {
 
       <div className="flex flex-col h-[calc(100svh-170px)] overflow-y-auto gap-5">
         {regions.map((region) => (
-          <RegionCard region={region} />
+          <RegionCard region={region} key={region.id} />
         ))}
       </div>
     </section>
