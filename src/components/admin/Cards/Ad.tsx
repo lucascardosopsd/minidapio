@@ -13,6 +13,7 @@ import { updateAd } from "@/actions/ad/updateAd";
 import { toast } from "sonner";
 import { deleteAd } from "@/actions/ad/deleteAd";
 import { revalidateRoute } from "@/actions/revalidateRoute";
+import Image from "next/image";
 
 interface AdCardProps {
   ad: AdProps;
@@ -62,7 +63,16 @@ const AdCard = ({ ad, regions }: AdCardProps) => {
   return (
     <Card>
       <CardHeader className="flex-row items-center justify-between">
-        <div className="flex items-center">{ad.title}</div>
+        <div className="flex gap-5">
+          <Image
+            src={ad.image}
+            width={300}
+            height={300}
+            alt={ad.title}
+            className="w-16 h-16 rounded-full border border-2"
+          />
+          <div className="flex items-center">{ad.title}</div>
+        </div>
 
         <div className="flex gap-5">
           <ReusableDialog
