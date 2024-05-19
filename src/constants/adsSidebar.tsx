@@ -1,4 +1,4 @@
-import { Grip, MapPinned } from "lucide-react";
+import { Grip, MapPinned, User } from "lucide-react";
 import { ReactNode } from "react";
 
 interface AdsSidebarProps {
@@ -11,11 +11,16 @@ export const adsSidebarOptions: AdsSidebarProps[] = [
   {
     label: "Anúncios",
     icon: <Grip />,
-    href: "/advertiser/dashboard",
+    href: "/admin/dashboard",
   },
   {
     label: "Regiões",
     icon: <MapPinned />,
-    href: "/advertiser/dashboard/regions",
+    href: "/admin/dashboard/regions",
+  },
+  {
+    label: "Usuários",
+    icon: <User />,
+    href: "/admin/dashboard/users",
   },
 ];

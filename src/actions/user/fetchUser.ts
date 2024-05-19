@@ -6,6 +6,6 @@ interface GetUserProps {
   email: string;
 }
 
-export const getUser = async ({ email }: GetUserProps) => {
+export const fetchUser = async ({ email }: GetUserProps) => {
   return prisma.user.findUnique({ where: { email } });
 };
