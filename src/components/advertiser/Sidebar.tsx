@@ -1,6 +1,6 @@
 "use client";
 
-import { adsSidebarOptions } from "@/constants/adsSidebar";
+import { adminSidebarOptions } from "@/constants/adminSidebar";
 import {
   Tooltip,
   TooltipContent,
@@ -16,7 +16,7 @@ import { signOut } from "next-auth/react";
 const Sidebar = () => {
   return (
     <div className="h-full w-20 flex flex-col items-center border border-r gap-10 py-10">
-      {adsSidebarOptions.map((option, index) => (
+      {adminSidebarOptions.map((option, index) => (
         <TooltipProvider key={index}>
           <Tooltip>
             <TooltipTrigger>

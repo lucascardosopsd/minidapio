@@ -7,7 +7,7 @@ interface AdsSidebarProps {
   href: string;
 }
 
-export const adsSidebarOptions: AdsSidebarProps[] = [
+export const adminSidebarOptions: AdsSidebarProps[] = [
   {
     label: "Anúncios",
     icon: <Grip />,
@@ -21,6 +21,6 @@ export const adsSidebarOptions: AdsSidebarProps[] = [
   {
     label: "Usuários",
     icon: <User />,
-    href: "/admin/dashboard/users",
+    href: "/admin/dashboard/users?page=1",
   },
 ];

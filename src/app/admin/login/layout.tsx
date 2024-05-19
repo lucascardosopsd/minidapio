@@ -1,5 +1,3 @@
-"use client";
-
 import { nextAuthOptions } from "@/lib/authProviders";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";

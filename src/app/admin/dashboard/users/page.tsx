@@ -1,27 +1,33 @@
-import { fetchManyUsers } from "@/actions/user/fetchManyUsers";
-import UserCard from "@/components/advertiser/Cards/User";
+import UserPagination from "@/components/advertiser/users/userPagination";
 import { Separator } from "@/components/ui/separator";
+import { Suspense } from "react";
 
 interface UsersPageProps {
-  params?: {
+  searchParams?: {
     page: string;
   };
 }
 
-const UsersPage = async ({ params }: UsersPageProps) => {
-  const page = Number(params?.page || 0);
+const UsersPage = async ({ searchParams }: UsersPageProps) => {
+  const page = Number(searchParams?.page || 1);
 
-  const users = await fetchManyUsers({ page, take: 20 });
-
-  return (
-    <div className="flex flex-col gap-5 w-full h-full py-10">
+  const fallback = (
+    <div className="flex items-center gap-5  h-[calc(100svh-120px)]">
       <p className="text-2xl">Usuários</p>
 
       <Separator />
 
-      {users.map((user) => (
-        <UserCard user={user} />
-      ))}
+      <div className="w-full h-32 bg-mutted rounded border" />
+      <div className="w-full h-32 bg-mutted rounded border" />
+      <div className="w-full h-32 bg-mutted rounded border" />
+    </div>
+  );
+
+  return (
+    <div className="relative w-full">
+      <Suspense fallback={fallback}>
+        <UserPagination page={page} />
+      </Suspense>
     </div>
   );
 };

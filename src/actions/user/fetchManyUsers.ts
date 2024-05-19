@@ -1,27 +1,33 @@
 "use server";
-
 import prisma from "@/lib/prisma";
+import { UserProps } from "@/types/user";
+
+interface FetchManyUsersResProps {
+  users: UserProps[];
+  pages: number;
+}
 
 interface FetchManyUsersProps {
   take: number;
   page: number;
 }
 
-export const fetchManyUsers = async ({ page, take }: FetchManyUsersProps) => {
+export const fetchManyUsers = async ({
+  page,
+  take,
+}: FetchManyUsersProps): Promise<FetchManyUsersResProps> => {
   const count = await prisma.user.count();
-  const totalPages = Math.round(count / take);
+  const pages = Math.round(count / take);
 
   const skip = page * take;
 
-  console.log(skip);
-
-  const users = prisma.user.findMany({
+  const users = await prisma.user.findMany({
     skip,
     take,
   });
 
   return {
-    ...users,
-    totalPages,
+    users,
+    pages,
   };
 };
