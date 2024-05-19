@@ -78,7 +78,7 @@ model Restaurant {
   userId     String?  @db.ObjectId
   regionId   String?  @db.ObjectId
 
-  User       User?      @relation(fields: [userId], references: [id])
+  User       User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
   region     Region?    @relation(fields: [regionId], references: [id])
   Categories Category[]
   Items      Item[]
@@ -92,7 +92,7 @@ model Category {
   items        Item[]
   Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
   restaurantId String?     @db.ObjectId
-  User         User?       @relation(fields: [userId], references: [id])
+  User         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String?     @db.ObjectId
 }
 
@@ -112,7 +112,7 @@ model Item {
   Category     Category?   @relation(fields: [categoryId], references: [id])
   Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
   restaurantId String?     @db.ObjectId
-  User         User?       @relation(fields: [userId], references: [id])
+  User         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String?     @db.ObjectId
 }
 
