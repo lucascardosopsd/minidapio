@@ -3,15 +3,19 @@ import { Separator } from "@/components/ui/separator";
 import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
 import RestaurantCard from "../Cards/Restaurant";
 import { fetchRegions } from "@/actions/region/fetchRegions";
+import { Prisma } from "@prisma/client";
+import SearchField from "@/components/misc/SearchField";
 
 interface UserPaginationprops {
   page: number;
+  query: Prisma.RestaurantFindManyArgs;
 }
 
-const RestaurantsPagination = async ({ page }: UserPaginationprops) => {
+const RestaurantsPagination = async ({ page, query }: UserPaginationprops) => {
   const { restaurants, pages } = await fetchManyRestaurants({
     page: page - 1,
     take: 2,
+    query,
   });
 
   const regions = await fetchRegions();
@@ -19,7 +23,10 @@ const RestaurantsPagination = async ({ page }: UserPaginationprops) => {
   return (
     <>
       <div className="w-full h-full py-10 flex gap-5 flex-col">
-        <p className="text-2xl">Restaurantes</p>
+        <div className="flex justify-between w-full gap-5 items-center">
+          <p className="text-2xl">Restaurantes</p>
+          <SearchField keyName="title" placeholder="Busque um restaurante" />
+        </div>
 
         <Separator />
 

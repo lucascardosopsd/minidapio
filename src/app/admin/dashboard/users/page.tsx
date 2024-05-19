@@ -5,7 +5,7 @@ import { Suspense } from "react";
 interface UsersPageProps {
   searchParams?: {
     page: string;
-    name: string;
+    name?: string;
   };
 }
 

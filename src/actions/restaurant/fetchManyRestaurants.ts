@@ -5,6 +5,9 @@ import {
   RestaurantProps,
   WorkHourProps,
 } from "@/types/restaurant";
+import { Prisma } from "@prisma/client";
+
+type QueryProps = Prisma.RestaurantFindManyArgs;
 
 interface FetchManyRestaurantsResProps {
   restaurants: RestaurantProps[];
@@ -14,11 +17,13 @@ interface FetchManyRestaurantsResProps {
 interface FetchManyRestaurantsProps {
   take: number;
   page: number;
+  query?: QueryProps;
 }
 
 export const fetchManyRestaurants = async ({
   page,
   take,
+  query = {},
 }: FetchManyRestaurantsProps): Promise<FetchManyRestaurantsResProps> => {
   const count = await prisma.user.count();
   const pages = Math.round(count / take);
@@ -28,6 +33,7 @@ export const fetchManyRestaurants = async ({
   const restaurants = await prisma.restaurant.findMany({
     skip,
     take,
+    ...query,
   });
 
   return {
