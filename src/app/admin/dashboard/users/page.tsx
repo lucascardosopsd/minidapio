@@ -24,7 +24,7 @@ const UsersPage = async ({ searchParams }: UsersPageProps) => {
   );
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full ">
       <Suspense fallback={fallback}>
         <UserPagination page={page} />
       </Suspense>

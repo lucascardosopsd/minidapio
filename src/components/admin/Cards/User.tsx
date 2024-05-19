@@ -8,6 +8,9 @@ import { adValidator } from "@/validators/ad";
 import { toast } from "sonner";
 import { UserProps } from "@/types/user";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { deleteUser } from "@/actions/user/deleteUser";
+import { usePathname, useSearchParams } from "next/navigation";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 
 interface UserCardProps {
   user: UserProps;
@@ -16,6 +19,8 @@ interface UserCardProps {
 const UserCard = ({ user }: UserCardProps) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const pathname = usePathname();
+  const params = useSearchParams();
 
   const handleOnSubmit = async (data: z.infer<typeof adValidator>) => {
     try {
@@ -36,7 +41,11 @@ const UserCard = ({ user }: UserCardProps) => {
     try {
       setLoading(true);
 
-      toast.success("Anúncio deletado");
+      await deleteUser({ id: user.id });
+
+      revalidateRoute({ fullPath: `${pathname}?${params}` });
+
+      toast.success("Usuário deletado");
 
       setIsModalOpen(false);
     } catch (error) {

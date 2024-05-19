@@ -12,14 +12,16 @@ const UserPagination = async ({ page }: UserPaginationprops) => {
 
   return (
     <>
-      <div className="flex flex-col gap-5 w-full h-full py-10 h-[calc(100svh-120px)]">
+      <div className="w-full h-full py-10 flex gap-5 flex-col">
         <p className="text-2xl">Usuários</p>
 
         <Separator />
 
-        {users.map((user) => (
-          <UserCard user={user} key={user.id} />
-        ))}
+        <div className="flex flex-col gap-5 h-[calc(100svh-220px)] overflow-y-auto">
+          {users.map((user) => (
+            <UserCard user={user} key={user.id} />
+          ))}
+        </div>
       </div>
       <div className="absolute bottom-0 left-0 w-full flex items-center bg-background">
         <Paginate pages={pages} current={page} />
