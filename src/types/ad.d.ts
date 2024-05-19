@@ -1,16 +1,15 @@
-interface Ad {
+export interface AdProps {
   id: string;
   title: string;
   description: string;
   image: string;
-  link?: string;
-  expiration?: Date;
+  link?: string | null;
+  expiration?: Date | null;
   active: boolean;
   regionId: string;
-  views: View[];
-  region: Region;
-  restaurantId?: string;
-  restaurant?: Restaurant;
+  regionId: string;
+  restaurantId?: string | null;
+  restaurant?: Restaurant | null;
   createdAt: Date;
   updatedAt: Date;
 }

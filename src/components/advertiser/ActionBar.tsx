@@ -6,7 +6,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { RegionProps } from "@/types/region";
 import ReusableModal from "../misc/ReusableModal";
-import { createNewAd } from "@/actions/ad/createNewRegion";
+import { createNewAd } from "@/actions/ad/createNewAd";
 
 const ActionBar = ({ regions }: { regions: RegionProps[] }) => {
   const [loading, setLoading] = useState(false);

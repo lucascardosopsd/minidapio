@@ -1,4 +1,4 @@
-interface View {
+export interface View {
   id: string;
   date: Date;
   adId: string;
