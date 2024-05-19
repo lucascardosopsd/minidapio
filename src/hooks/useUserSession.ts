@@ -13,6 +13,8 @@ interface userSessionProps {
 export const useUserSession = async () => {
   const session = await getServerSession(nextAuthOptions);
 
+  if (!session) return null;
+
   return (await prisma.user.findUnique({
     where: { email: session?.user?.email! },
     select: {
