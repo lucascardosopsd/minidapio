@@ -38,7 +38,7 @@ const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
 
       <Separator />
 
-      <div className="flex flex-col gap-5 h-[calc(100svh-120px)]">
+      <div className="flex flex-col gap-5 h-[calc(100svh-120px)] overflow-y-auto pb-20">
         {ads.map((ad) => (
           <AdCard ad={ad} regions={regions} key={ad.id} />
         ))}
