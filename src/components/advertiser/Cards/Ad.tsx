@@ -9,6 +9,8 @@ import { AdProps } from "@/types/ad";
 import AdForm from "../forms/ad";
 import { adValidator } from "@/validators/ad";
 import { RegionProps } from "@/types/region";
+import { updateAd } from "@/actions/ad/updateAd";
+import { toast } from "sonner";
 
 interface AdCardProps {
   ad: AdProps;
@@ -19,7 +21,22 @@ const AdCard = ({ ad, regions }: AdCardProps) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOnSubmit = async (data: z.infer<typeof adValidator>) => {};
+  const handleOnSubmit = async (data: z.infer<typeof adValidator>) => {
+    try {
+      setLoading(true);
+
+      await updateAd({ id: ad.id, data });
+
+      toast.success("Anúncio atualizado");
+
+      setIsModalOpen(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Ocorreu um erro");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleDelete = async () => {};
 

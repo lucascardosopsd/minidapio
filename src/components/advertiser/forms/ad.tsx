@@ -75,7 +75,7 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
 
         <SelectBuilder
           control={form.control}
-          name="region"
+          name="regionId"
           title="Região"
           selectItem={regionsOptions.map((option) => (
             <SelectItem value={option.value} key={option.label}>
