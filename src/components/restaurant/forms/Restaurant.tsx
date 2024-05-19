@@ -18,13 +18,25 @@ import ColorPicker from "../ColorPicker";
 import { createNewRestaurant } from "@/actions/restaurant/createNewRestaurant";
 import { toast } from "sonner";
 import { useState } from "react";
-import { Session } from "@/types/session";
 import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
 import { updateRestaurant } from "@/actions/restaurant/updateRestaurant";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RegionProps } from "@/types/region";
@@ -32,15 +44,15 @@ import { RegionProps } from "@/types/region";
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
   toggleOpen?: () => void;
-  session: Session | null;
   regions: RegionProps[];
+  userId?: string;
 }
 
 const RestaurantForm = ({
   defaultValues = undefined,
   toggleOpen = () => {},
-  session,
   regions,
+  userId,
 }: RestaurantFormProps) => {
   const [loading, setLoading] = useState(false);
 
@@ -91,7 +103,7 @@ const RestaurantForm = ({
     }
 
     try {
-      await updateRestaurant(data);
+      await updateRestaurant({ id: defaultValues?.id!, data });
       form.reset();
       toast("Restaurante Atualizado");
     } catch (error) {
@@ -232,18 +244,35 @@ const RestaurantForm = ({
           {workHoursFields.map((_, index) => (
             <span key={index}>
               <div className="flex flex-col gap-2 border border-primary rounded p-2">
-                <SelectBuilder
+                <FormField
                   control={form.control}
                   name={`workHours.${index}.weekDay`}
-                  title="Dia"
-                  defaultValue={defaultValues?.workHours[
-                    index
-                  ]?.weekDay.toString()}
-                  selectItem={weekDays.map((day) => (
-                    <SelectItem value={day.value} key={day.id}>
-                      {day.name}
-                    </SelectItem>
-                  ))}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Dia</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={
+                          field.value ||
+                          defaultValues?.workHours[index]?.weekDay.toString()
+                        }
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {weekDays.map((day) => (
+                            <SelectItem value={day.value} key={day.id}>
+                              {day.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
 
                 <div className="flex gap-2">
@@ -321,7 +350,9 @@ const RestaurantForm = ({
             className="gap-2 w-full font-semibold"
             onClick={() =>
               copyToClipboard(
-                `www.minidapio.com/menu/${session?.id}/${slugGen(watchTitle)}`,
+                `www.minidapio.com/menu/${
+                  defaultValues?.userId || userId
+                }/${slugGen(watchTitle)}`,
                 "slug"
               )
             }

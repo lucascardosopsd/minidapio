@@ -20,7 +20,7 @@ export default async function Dashboard() {
         <div>
           <RestaurantSheet
             restaurantForm={
-              <RestaurantForm session={session} regions={regions} />
+              <RestaurantForm userId={session?.id} regions={regions} />
             }
             sheetTitle="Novo Restaurante"
             triggerText="Novo Restaurante"

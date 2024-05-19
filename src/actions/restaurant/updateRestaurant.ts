@@ -5,23 +5,22 @@ import prisma from "@/lib/prisma";
 import { useUserSession } from "@/hooks/useUserSession";
 import { revalidatePath } from "next/cache";
 
-export const updateRestaurant = async (
-  data: z.infer<typeof restaurantValidator>
-) => {
+interface UpdateRestaurantProps {
+  id: string;
+  data: z.infer<typeof restaurantValidator>;
+}
+
+export const updateRestaurant = async ({ id, data }: UpdateRestaurantProps) => {
   const user = await useUserSession();
 
   if (!user?.id) {
     throw new Error("User not found");
   }
 
-  const restaurantId = data.id;
-
-  delete data.id;
-
   try {
     await prisma.restaurant.update({
       where: {
-        id: restaurantId,
+        id,
       },
       data,
     });

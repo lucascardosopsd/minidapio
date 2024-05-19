@@ -87,11 +87,7 @@ const RestaurantCard = ({
         <div className="flex gap-2 w-full">
           <RestaurantSheet
             restaurantForm={
-              <RestaurantForm
-                defaultValues={restaurant}
-                session={session}
-                regions={regions}
-              />
+              <RestaurantForm defaultValues={restaurant} regions={regions} />
             }
             sheetTitle="Editar Restaurante"
             triggerText="Editar"
