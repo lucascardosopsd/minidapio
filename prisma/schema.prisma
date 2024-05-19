@@ -1,12 +1,11 @@
 datasource db {
   provider          = "mongodb"
   url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Heroku. Learn more: https://pris.ly/d/migrate-shadow
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialActions"] // You won't need this in Prisma 3.X or higher.
+  provider = "prisma-client-js"
 }
 
 model Account {
@@ -42,6 +41,7 @@ model User {
   email         String?      @unique
   emailVerified DateTime?
   image         String?
+  role          String       @default("user")
   accounts      Account[]
   sessions      Session[]
   restaurants   Restaurant[]
@@ -76,10 +76,13 @@ model Restaurant {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   userId     String?  @db.ObjectId
+  regionId   String?  @db.ObjectId
 
-  User       User?      @relation(fields: [userId], references: [id])
+  User       User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  region     Region?    @relation(fields: [regionId], references: [id])
   Categories Category[]
   Items      Item[]
+  Ads        Ad[]
 }
 
 model Category {
@@ -89,7 +92,7 @@ model Category {
   items        Item[]
   Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
   restaurantId String?     @db.ObjectId
-  User         User?       @relation(fields: [userId], references: [id])
+  User         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String?     @db.ObjectId
 }
 
@@ -109,6 +112,45 @@ model Item {
   Category     Category?   @relation(fields: [categoryId], references: [id])
   Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
   restaurantId String?     @db.ObjectId
-  User         User?       @relation(fields: [userId], references: [id])
+  User         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String?     @db.ObjectId
+}
+
+model Region {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  state      String
+  active     Boolean
+  ads        Ad[]
+  Restaurant Restaurant[]
+}
+
+model Ad {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  image       String
+  link        String?
+  expiration  DateTime?
+  active      Boolean
+  regionId    String    @db.ObjectId
+  views       View[]
+
+  region       Region      @relation(fields: [regionId], references: [id], onDelete: Cascade)
+  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId String?     @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model View {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  date         DateTime
+  adId         String   @db.ObjectId
+  restaurantId String   @db.ObjectId
+  ad           Ad       @relation(fields: [adId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

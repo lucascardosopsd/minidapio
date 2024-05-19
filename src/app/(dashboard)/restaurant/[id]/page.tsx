@@ -1,12 +1,12 @@
 "use server";
 import { Accordion } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-import CategorySheet from "@/components/modals/Category";
+import CategorySheet from "@/components/restaurant/modals/Category";
 import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
-import InputSearch from "@/components/InputSearch";
-import CategoryForm from "@/components/forms/Category";
-import ItemsActions from "@/components/ItemsActions";
-import CategoriesList from "@/components/lists/Categories";
+import InputSearch from "@/components/restaurant/InputSearch";
+import CategoryForm from "@/components/restaurant/forms/Category";
+import ItemsActions from "@/components/restaurant/ItemsActions";
+import CategoriesList from "@/components/restaurant/lists/Categories";
 import { CategoriesWithItemsProps } from "@/types/category";
 
 interface PageProps {

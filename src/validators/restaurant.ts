@@ -39,4 +39,5 @@ export const restaurantValidator = z.object({
   activeMenu: z.boolean().default(true),
   methods: PaymentMethodSchema,
   slug: z.string(),
+  regionId: z.string({ required_error: "Escolha uma região" }).nullable(),
 });

@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/restaurant/Navbar";
 import { BreadcrumbRouteProps } from "@/types/breacrumb";
 import { ReactNode } from "react";
 

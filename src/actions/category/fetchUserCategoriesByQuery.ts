@@ -11,7 +11,7 @@ export const fetchUserCategoriesByQuery = async (
 ): Promise<CategoriesWithItemsProps[]> => {
   const user = await useUserSession();
 
-  if (!user?.id) {
+  if (!user) {
     throw new Error("User not found");
   }
 
