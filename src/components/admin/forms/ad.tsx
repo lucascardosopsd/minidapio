@@ -85,16 +85,24 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
         />
 
         <div className="flex space-x-5">
-          <div className="flex flex-col flex-1">
-            <p>Expiração (Opcional)</p>
-
-            <Input
-              type="datetime-local"
-              {...form.register("expiration", {
-                valueAsDate: true,
-              })}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="expiration"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Expiração (Opcional)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="datetime-local"
+                    {...field}
+                    value={field.value ? field.value.toLocaleDateString() : ""}
+                    onChange={(e) => field.onChange(e.target.valueAsDate)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}

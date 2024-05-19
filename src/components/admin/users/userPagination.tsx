@@ -15,7 +15,7 @@ interface UserPaginationprops {
 const UserPagination = async ({ page, query }: UserPaginationprops) => {
   const { users, pages } = await fetchManyUsers({
     page: page - 1,
-    take: 2,
+    take: 10,
     query,
   });
 

@@ -11,7 +11,7 @@ export const adminSidebarOptions: AdsSidebarProps[] = [
   {
     label: "Anúncios",
     icon: <Grip />,
-    href: "/admin/dashboard",
+    href: "/admin/dashboard?page=1",
   },
   {
     label: "Regiões",

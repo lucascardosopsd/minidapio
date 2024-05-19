@@ -12,6 +12,7 @@ import { RegionProps } from "@/types/region";
 import { updateAd } from "@/actions/ad/updateAd";
 import { toast } from "sonner";
 import { deleteAd } from "@/actions/ad/deleteAd";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 
 interface AdCardProps {
   ad: AdProps;
@@ -27,6 +28,8 @@ const AdCard = ({ ad, regions }: AdCardProps) => {
       setLoading(true);
 
       await updateAd({ id: ad.id, data });
+
+      revalidateRoute({ fullPath: "/admin/dashboard" });
 
       toast.success("Anúncio atualizado");
 
