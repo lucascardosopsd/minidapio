@@ -8,17 +8,28 @@ import Paginate from "@/components/misc/Pagination";
 interface AdminPageProps {
   searchParams?: {
     page: string;
-    name?: string;
+    title?: string;
   };
 }
 
 const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
   const regions = await fetchRegions();
   const page = Number(searchParams?.page || 1);
+  const title = searchParams?.title || "";
 
   const { ads, pages } = await fetchAds({
     page: page - 1,
     take: 10,
+    query: title
+      ? {
+          where: {
+            title: {
+              contains: title,
+              mode: "insensitive",
+            },
+          },
+        }
+      : {},
   });
 
   return (

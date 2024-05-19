@@ -1,6 +1,7 @@
 "use server";
 import prisma from "@/lib/prisma";
 import { AdProps } from "@/types/ad";
+import { Prisma } from "@prisma/client";
 
 interface FetchManyAdsResProps {
   ads: AdProps[];
@@ -10,11 +11,13 @@ interface FetchManyAdsResProps {
 interface FetchAdsProps {
   take: number;
   page: number;
+  query: Prisma.AdFindManyArgs;
 }
 
 export const fetchAds = async ({
   take,
   page,
+  query,
 }: FetchAdsProps): Promise<FetchManyAdsResProps> => {
   const count = await prisma.ad.count();
   const pages = Math.round(count / take);
@@ -24,6 +27,7 @@ export const fetchAds = async ({
   const ads = await prisma.ad.findMany({
     skip,
     take,
+    ...query,
   });
 
   return {

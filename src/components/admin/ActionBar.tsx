@@ -7,13 +7,13 @@ import { toast } from "sonner";
 import { RegionProps } from "@/types/region";
 import ReusableModal from "../misc/ReusableModal";
 import { createNewAd } from "@/actions/ad/createNewAd";
+import SearchField from "../misc/SearchField";
 
 const ActionBar = ({ regions }: { regions: RegionProps[] }) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOnSubmit = async (data: z.infer<typeof adValidator>) => {
-    console.log(data);
     try {
       setLoading(true);
 
@@ -31,9 +31,12 @@ const ActionBar = ({ regions }: { regions: RegionProps[] }) => {
   };
 
   return (
-    <div className="flex justify-between items-center w-full">
+    <div className="flex justify-between items-center w-full gap-5">
       <p className="text-2xl">Anúncios</p>
-      <div className="flex gap-4">
+
+      <SearchField keyName="title" placeholder="Busque um anúncio" />
+
+      <div className="flex gap-5">
         <ReusableModal
           title="Novo Anúncio"
           content={
