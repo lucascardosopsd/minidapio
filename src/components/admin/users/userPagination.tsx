@@ -2,18 +2,30 @@ import { fetchManyUsers } from "@/actions/user/fetchManyUsers";
 import Paginate from "@/components/misc/Pagination";
 import UserCard from "../Cards/User";
 import { Separator } from "@/components/ui/separator";
+import SearchField from "@/components/misc/SearchField";
+import { Prisma } from "@prisma/client";
+
+export type UserQuery = Prisma.UserFindManyArgs;
 
 interface UserPaginationprops {
   page: number;
+  query?: UserQuery;
 }
 
-const UserPagination = async ({ page }: UserPaginationprops) => {
-  const { users, pages } = await fetchManyUsers({ page: page - 1, take: 2 });
+const UserPagination = async ({ page, query }: UserPaginationprops) => {
+  const { users, pages } = await fetchManyUsers({
+    page: page - 1,
+    take: 2,
+    query,
+  });
 
   return (
     <>
       <div className="w-full h-full py-10 flex gap-5 flex-col">
-        <p className="text-2xl">Usuários</p>
+        <div className="flex justify-between w-full gap-5 items-center">
+          <p className="text-2xl">Usuários</p>
+          <SearchField keyName="name" placeholder="Busque um nome" />
+        </div>
 
         <Separator />
 
