@@ -20,7 +20,7 @@ export const fetchAds = async ({
   query,
 }: FetchAdsProps): Promise<FetchManyAdsResProps> => {
   const count = await prisma.ad.count();
-  const pages = Math.round(count / take);
+  const pages = Math.ceil(count / take);
 
   const skip = page * take;
 

@@ -26,7 +26,7 @@ export const fetchManyRestaurants = async ({
   query = {},
 }: FetchManyRestaurantsProps): Promise<FetchManyRestaurantsResProps> => {
   const count = await prisma.user.count();
-  const pages = Math.round(count / take);
+  const pages = Math.ceil(count / take);
 
   const skip = page * take;
 

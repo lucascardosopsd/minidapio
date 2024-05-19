@@ -22,7 +22,7 @@ export const fetchManyUsers = async ({
   query = {},
 }: FetchManyUsersProps): Promise<FetchManyUsersResProps> => {
   const count = await prisma.user.count();
-  const pages = Math.round(count / take);
+  const pages = Math.ceil(count / take);
 
   const skip = page * take;
 
