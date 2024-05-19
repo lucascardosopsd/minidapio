@@ -13,27 +13,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Control, UseFormSetValue } from "react-hook-form";
+import { Control } from "react-hook-form";
 
 interface SelectBuilderProps {
   name: string;
   title?: string;
-  defaultValue?: string;
   placeholder?: string | ReactNode;
   selectItem: ReactNode | ReactNode[];
   control: Control<any>;
-  setValue?: UseFormSetValue<any>;
   triggerClassName?: string;
 }
 
 const SelectBuilder = ({
   name,
   title,
-  defaultValue,
   placeholder,
   selectItem,
   control,
-  setValue,
   triggerClassName,
 }: SelectBuilderProps) => {
   return (

@@ -66,7 +66,6 @@ const RegionModalContent = ({
         <SelectBuilder
           title="Estado"
           control={form.control}
-          setValue={form.setValue}
           name="state"
           selectItem={
             <div className="h-[300px]">

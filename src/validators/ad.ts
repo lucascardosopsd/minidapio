@@ -5,6 +5,7 @@ export const adValidator = z.object({
   description: z.string({ required_error: "Digite uma descrição" }),
   image: z.string({ required_error: "Suba uma imagem" }),
   link: z.string().optional(),
-  region: z.string(),
+  regionId: z.string(),
+  active: z.boolean().default(true),
   expiration: z.date().optional(),
 });

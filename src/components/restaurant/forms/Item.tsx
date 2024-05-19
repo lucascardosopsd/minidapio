@@ -236,8 +236,6 @@ const ItemForm = ({
             control={form.control}
             name="categoryId"
             title="Categoria*"
-            defaultValue={categoryId}
-            setValue={form.setValue}
             selectItem={categories.map((category) => (
               <SelectItem value={category.id}>{category.title}</SelectItem>
             ))}
