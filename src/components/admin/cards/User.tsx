@@ -14,9 +14,10 @@ import { copyToClipboard } from "@/tools/copyToClipboard";
 
 interface UserCardProps {
   user: UserProps;
+  preview?: boolean;
 }
 
-const UserCard = ({ user }: UserCardProps) => {
+const UserCard = ({ user, preview = false }: UserCardProps) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pathname = usePathname();
@@ -52,30 +53,32 @@ const UserCard = ({ user }: UserCardProps) => {
           <div className="flex items-center">{user.name}</div>
         </div>
 
-        <div className="flex gap-5">
-          <Button
-            size="icon"
-            onClick={() => copyToClipboard(user.id, "", "Id copiado!")}
-            className="right-5 top-5"
-          >
-            ID
-          </Button>
+        {!preview && (
+          <div className="flex gap-5">
+            <Button
+              size="icon"
+              onClick={() => copyToClipboard(user.id, "", "Id copiado!")}
+              className="right-5 top-5"
+            >
+              ID
+            </Button>
 
-          <DeleteModal
-            action={handleDelete}
-            dialogTitle="Apagar usuário"
-            triggerText={<FaTrash />}
-            dialogDescription={
-              <>
-                <p>
-                  Você está apagando o usuário:{" "}
-                  <span className="text-red-500">{user.name}</span>
-                </p>
-                <p>Deseja continuar?</p>
-              </>
-            }
-          />
-        </div>
+            <DeleteModal
+              action={handleDelete}
+              dialogTitle="Apagar usuário"
+              triggerText={<FaTrash />}
+              dialogDescription={
+                <>
+                  <p>
+                    Você está apagando o usuário:{" "}
+                    <span className="text-red-500">{user.name}</span>
+                  </p>
+                  <p>Deseja continuar?</p>
+                </>
+              }
+            />
+          </div>
+        )}
       </CardHeader>
     </Card>
   );
