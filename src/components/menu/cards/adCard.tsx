@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AdProps } from "@/types/ad";
 import Image from "next/image";
+import Link from "next/link";
 import { forwardRef } from "react";
 
 interface AdCardProps {
@@ -28,7 +29,9 @@ const AdCard = forwardRef<HTMLDivElement, AdCardProps>(({ ad }, ref) => {
         </div>
 
         {ad.link && (
-          <Button className="w-full bg-foreground">Saiba mais</Button>
+          <Link href={ad.link} target="_blank">
+            <Button className="w-full bg-foreground">Saiba mais</Button>
+          </Link>
         )}
       </CardContent>
     </Card>

@@ -31,6 +31,7 @@ const CategoryItemsContent = ({
   };
 
   useEffect(() => {
+    console.log(isAdInView);
     if (currentAd && isAdInView) return handleCreateView();
   }, [isAdInView]);
 
@@ -40,7 +41,11 @@ const CategoryItemsContent = ({
         <ItemCard item={item} themeColor={themeColor} key={item.id} />
       ))}
 
-      {currentAd && <AdCard ad={currentAd} ref={adRef} />}
+      {currentAd && (
+        <span ref={adRef}>
+          <AdCard ad={currentAd} />
+        </span>
+      )}
 
       {items.slice(items.length / 2).map((item) => (
         <ItemCard item={item} themeColor={themeColor} key={item.id} />
