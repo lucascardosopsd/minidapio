@@ -43,6 +43,7 @@ const CategoriesModalContent = ({
           <CategoryItemsContent
             items={restaurant.Items}
             themeColor={themeColor}
+            restaurantId={restaurant.id}
           />
         }
       />
@@ -78,6 +79,7 @@ const CategoriesModalContent = ({
                     <CategoryItemsContent
                       items={category.items!}
                       themeColor={themeColor}
+                      restaurantId={restaurant.id}
                     />
                   }
                 />

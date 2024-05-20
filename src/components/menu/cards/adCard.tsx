@@ -2,10 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AdProps } from "@/types/ad";
 import Image from "next/image";
+import { forwardRef } from "react";
 
-const AdCard = ({ ad }: { ad: AdProps }) => {
+interface AdCardProps {
+  ad: AdProps;
+}
+
+const AdCard = forwardRef<HTMLDivElement, AdCardProps>(({ ad }, ref) => {
   return (
-    <Card>
+    <Card ref={ref}>
       <CardContent className="flex flex-col p-0">
         <div className="h-[130px] w-[350px]">
           <Image
@@ -28,6 +33,6 @@ const AdCard = ({ ad }: { ad: AdProps }) => {
       </CardContent>
     </Card>
   );
-};
+});
 
 export default AdCard;

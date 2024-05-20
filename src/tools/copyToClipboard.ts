@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 export const copyToClipboard = (
   text: string,
-  elementId: string,
+  elementId = "copy",
   message = "Copiado com sucesso"
 ) => {
   if (navigator.clipboard) {
