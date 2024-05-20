@@ -37,7 +37,7 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
 
   return (
     <>
-      <div className="flex justify-center absolute left-0 bottom-0 w-full z-10">
+      <div className="flex justify-center absolute left-0 bottom-0 w-full z-20">
         <ReusableModal
           trigger="Toque para ver o cardápio"
           title={<span style={{ color: themeColor }}>Menu</span>}
@@ -55,8 +55,12 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
         />
       </div>
 
-      <div className="flex flex-col items-center justify-center gap-5 py-5 relative w-full pb-20">
-        <div className="flex gap-2 items-center justify-center p-2 rounded w-full">
+      <div className="bg-gradient-to-t from-background to-transparent h-[250px] w-full absolute bottom-0 left-0 z-10 cursor-none pointer-events-none" />
+
+      <div className="bg-gradient-to-b from-background to-transparent h-[250px] w-full absolute top-0 left-0 z-10 cursor-none pointer-events-none" />
+
+      <div className="flex flex-col items-center justify-center gap-5 relative w-full pb-40 pt-32 ">
+        <div className="flex gap-2 items-center justify-center p-2 rounded w-full fixed top-0 z-20 bg-background">
           <Image
             src={restaurant.logo}
             alt="logo"
@@ -66,7 +70,7 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
             className="w-20 h-20 rounded-full object-cover"
           />
 
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center ">
             <p style={{ color: themeColor }} className="text-center">
               {restaurant.title}
             </p>
