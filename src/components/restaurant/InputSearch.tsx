@@ -115,7 +115,6 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
                     name="filter.active"
                     title="Status"
                     control={form.control}
-                    setValue={form.setValue}
                     selectItem={
                       <>
                         <SelectItem value="true">Ativo</SelectItem>
