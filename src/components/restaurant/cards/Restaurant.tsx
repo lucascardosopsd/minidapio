@@ -100,7 +100,7 @@ const RestaurantCard = ({
             variant="outline"
             onClick={() =>
               copyToClipboard(
-                `www.minidapio.com/menu/${session?.id}/${restaurant.slug}`,
+                `${process.env.HOST}/menu/${session?.id}/${restaurant.slug}`,
                 "slug",
                 "Link do restaurante copiado!"
               )

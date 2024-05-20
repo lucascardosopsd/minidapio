@@ -350,7 +350,7 @@ const RestaurantForm = ({
             className="gap-2 w-full font-semibold"
             onClick={() =>
               copyToClipboard(
-                `www.minidapio.com/menu/${
+                `${process.env.HOST}/menu/${
                   defaultValues?.userId || userId
                 }/${slugGen(watchTitle)}`,
                 "slug"
