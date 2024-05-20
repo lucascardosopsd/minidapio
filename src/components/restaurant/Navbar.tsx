@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { LogOutIcon } from "lucide-react";
 
 interface NavbarProps {
   breadcrumb?: BreadcrumbRouteProps[];
@@ -35,10 +36,15 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
         <Button
           variant="outline"
           onClick={() => {
-            signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/` });
+            signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/login` });
           }}
+          size="sm"
+          className="group hover:bg-primary hover:border-primary transition"
         >
-          Sair
+          <LogOutIcon
+            size={18}
+            className="text-primary group-hover:text-background "
+          />
         </Button>
       </div>
     </div>
