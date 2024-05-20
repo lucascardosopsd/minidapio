@@ -350,7 +350,7 @@ const RestaurantForm = ({
             className="gap-2 w-full font-semibold"
             onClick={() =>
               copyToClipboard(
-                `${process.env.HOST}/menu/${
+                `${process.env.NEXT_PUBLIC_HOST}/menu/${
                   defaultValues?.userId || userId
                 }/${slugGen(watchTitle)}`,
                 "slug"

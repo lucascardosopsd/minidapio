@@ -100,9 +100,9 @@ const RestaurantCard = ({
             variant="outline"
             onClick={() =>
               copyToClipboard(
-                `${process.env.HOST}/menu/${session?.id}/${restaurant.slug}`,
+                `${process.env.NEXT_PUBLIC_HOST}/menu/${session?.id}/${restaurant.slug}`,
                 "slug",
-                "Link do restaurante copiado!"
+                "Link do cardápio copiado!"
               )
             }
           >
