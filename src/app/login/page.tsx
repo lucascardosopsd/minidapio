@@ -23,7 +23,7 @@ export default function Login() {
       <Separator orientation="vertical" />
 
       <div className="flex-1 flex justify-center items-center flex-col gap-2 px-4">
-        <p className="mb-4">Minidapio</p>
+        <p className="mb-4">Reserva</p>
         <p className="text-2xl font-bold">Vamos Começar!</p>
         <p>Entre com a sua conta</p>
 
