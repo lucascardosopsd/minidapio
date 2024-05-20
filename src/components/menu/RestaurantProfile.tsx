@@ -130,7 +130,10 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
           {Object.entries(restaurant.methods).map(([key, value], index) => (
             <>
               {paymentMethods.map(
-                (payment) => key == payment.label && <p>{payment.title}</p>
+                (payment) =>
+                  key == payment.label && (
+                    <p key={payment.title}>{payment.title}</p>
+                  )
               )}
 
               {index !== Object.entries(restaurant.methods).length! - 1 && (
