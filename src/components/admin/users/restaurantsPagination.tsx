@@ -1,7 +1,7 @@
 import Paginate from "@/components/misc/Pagination";
 import { Separator } from "@/components/ui/separator";
 import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
-import RestaurantCard from "../adminCards/Restaurant";
+import RestaurantCard from "../cards/Restaurant";
 import { fetchRegions } from "@/actions/region/fetchRegions";
 import { Prisma } from "@prisma/client";
 import SearchField from "@/components/misc/SearchField";

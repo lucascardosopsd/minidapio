@@ -2,7 +2,7 @@ import ActionBar from "@/components/admin/ActionBar";
 import { Separator } from "@/components/ui/separator";
 import { fetchRegions } from "@/actions/region/fetchRegions";
 import { fetchAds } from "@/actions/ad/fetchAds";
-import AdCard from "@/components/admin/adminCards/Ad";
+import AdCard from "@/components/admin/cards/Ad";
 import Paginate from "@/components/misc/Pagination";
 
 interface AdminPageProps {
