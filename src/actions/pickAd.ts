@@ -4,7 +4,6 @@ import { AdProps } from "@/types/ad";
 
 export const pickAd = async ({
   regionId,
-  restaurantId,
 }: {
   regionId: string;
   restaurantId: string;
@@ -18,14 +17,6 @@ export const pickAd = async ({
   const randomPos = Math.floor(Math.random() * (ads.length - 0 + 1)) + 0;
 
   const picked = ads[randomPos];
-
-  await prisma.view.create({
-    data: {
-      date: new Date(),
-      restaurantId: restaurantId,
-      adId: picked.id,
-    },
-  });
 
   return picked;
 };

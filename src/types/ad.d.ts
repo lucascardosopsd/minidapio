@@ -10,6 +10,7 @@ export interface AdProps {
   regionId: string;
   restaurantId?: string | null;
   restaurant?: Restaurant | null;
+  userId: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
