@@ -1,16 +1,16 @@
 "use client";
 import { Card, CardHeader } from "@/components/ui/card";
 import { useState } from "react";
-import { z } from "zod";
 import { FaTrash } from "react-icons/fa6";
 import DeleteModal from "@/components/restaurant/DeleteModal";
-import { adValidator } from "@/validators/ad";
 import { toast } from "sonner";
 import { UserProps } from "@/types/user";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { deleteUser } from "@/actions/user/deleteUser";
 import { usePathname, useSearchParams } from "next/navigation";
 import { revalidateRoute } from "@/actions/revalidateRoute";
+import { Button } from "@/components/ui/button";
+import { copyToClipboard } from "@/tools/copyToClipboard";
 
 interface UserCardProps {
   user: UserProps;
@@ -21,21 +21,6 @@ const UserCard = ({ user }: UserCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pathname = usePathname();
   const params = useSearchParams();
-
-  const handleOnSubmit = async (data: z.infer<typeof adValidator>) => {
-    try {
-      setLoading(true);
-
-      toast.success("Anúncio atualizado");
-
-      setIsModalOpen(false);
-    } catch (error) {
-      console.log(error);
-      toast.error("Ocorreu um erro");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async () => {
     try {
@@ -58,7 +43,7 @@ const UserCard = ({ user }: UserCardProps) => {
 
   return (
     <Card>
-      <CardHeader className="flex-row items-center justify-between">
+      <CardHeader className="flex-row items-center justify-between relative">
         <div className="flex gap-5">
           <Avatar>
             <AvatarImage src={user.image!} />
@@ -68,6 +53,14 @@ const UserCard = ({ user }: UserCardProps) => {
         </div>
 
         <div className="flex gap-5">
+          <Button
+            size="icon"
+            onClick={() => copyToClipboard(user.id, "", "Id copiado!")}
+            className="right-5 top-5"
+          >
+            ID
+          </Button>
+
           <DeleteModal
             action={handleDelete}
             dialogTitle="Apagar usuário"
