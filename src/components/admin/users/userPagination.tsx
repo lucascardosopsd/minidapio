@@ -1,6 +1,6 @@
 import { fetchManyUsers } from "@/actions/user/fetchManyUsers";
 import Paginate from "@/components/misc/Pagination";
-import UserCard from "../Cards/User";
+import UserCard from "../cards/User";
 import { Separator } from "@/components/ui/separator";
 import SearchField from "@/components/misc/SearchField";
 import { Prisma } from "@prisma/client";
