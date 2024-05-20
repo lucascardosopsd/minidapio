@@ -11,9 +11,12 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Mini Dápio | Cardápio Digital",
+  title: "Reserva | Cardápio Digital",
   description:
     "Cardápio digital gratuito que atende as necessidades simples do seu estabelecimento",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
