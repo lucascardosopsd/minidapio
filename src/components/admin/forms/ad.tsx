@@ -47,7 +47,7 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
       image: "",
       link: "",
       active: true,
-      userId: defaultValues.userId || "",
+      userId: "",
       regionId: regionsOptions[0].value,
     },
   });
