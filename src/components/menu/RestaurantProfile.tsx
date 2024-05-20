@@ -128,7 +128,7 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
 
         <div className="flex gap-1 text-sm">
           {Object.entries(restaurant.methods).map(([key, value], index) => (
-            <>
+            <span key={key}>
               {paymentMethods.map(
                 (payment) =>
                   key == payment.label && (
@@ -141,7 +141,7 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
                   |
                 </p>
               )}
-            </>
+            </span>
           ))}
         </div>
         {restaurant.linkMaps && (

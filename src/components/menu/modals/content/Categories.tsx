@@ -5,6 +5,8 @@ import { FullRestaurantProps } from "@/types/restaurant";
 import CategoryItemsContent from "./CategoryItems";
 import ItemCard from "../../cards/Item";
 import { Separator } from "@/components/ui/separator";
+import { adStore } from "@/context/ads";
+import { pickAd } from "@/actions/pickAd";
 
 interface CategoriesModalContentProps {
   items: ItemProps[];
@@ -19,6 +21,17 @@ const CategoriesModalContent = ({
   themeColor,
   restaurant,
 }: CategoriesModalContentProps) => {
+  const { setCurrentAd } = adStore();
+
+  const handlePickAd = async () => {
+    const ad = await pickAd({
+      regionId: restaurant.regionId!,
+      restaurantId: restaurant.id,
+    });
+
+    setCurrentAd(ad);
+  };
+
   return (
     <div className="overflow-y-auto overflow-x-hidden flex flex-col mt-5 relative gap-4 ">
       <ReusableModal
@@ -60,6 +73,7 @@ const CategoriesModalContent = ({
                   triggerClassName="flex justify-start"
                   triggerVariant="outline"
                   triggerStyle={{ borderColor: themeColor }}
+                  onClick={() => handlePickAd()}
                   content={
                     <CategoryItemsContent
                       items={category.items!}

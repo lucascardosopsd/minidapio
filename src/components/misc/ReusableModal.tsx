@@ -25,6 +25,7 @@ interface ReusableModalProps {
   triggerStyle?: CSSProperties;
   closeTriggerClassName?: string;
   closeTriggerStyle?: CSSProperties;
+  onClick?: () => void;
 }
 
 const ReusableModal = ({
@@ -39,6 +40,7 @@ const ReusableModal = ({
   triggerStyle,
   closeTriggerClassName,
   closeTriggerStyle,
+  onClick,
 }: ReusableModalProps) => {
   return (
     <Drawer open={isOpen} onOpenChange={onOpen}>
@@ -47,6 +49,7 @@ const ReusableModal = ({
           className={triggerClassName}
           variant={triggerVariant}
           style={triggerStyle}
+          onClick={onClick}
         >
           {trigger}
         </Button>
