@@ -5,12 +5,13 @@ import { Badge } from "../ui/badge";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { SlLocationPin } from "react-icons/sl";
-import CategoriesSheet from "./modals/Categories";
 import { Separator } from "../ui/separator";
 import { HourProps } from "@/types/hours";
 import { isBetweenHour } from "@/tools/isBetweenHour";
 import { weekDays } from "@/constants/weekDays";
 import { paymentMethods } from "@/constants/paymentMethods";
+import ReusableModal from "../misc/ReusableModal";
+import CategoriesModalContent from "./modals/content/Categories";
 
 interface RestaurantProfileProps {
   restaurant: FullRestaurantProps;
@@ -27,7 +28,7 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
     (hour: HourProps) => Number(hour.weekDay) == weekDayToday
   )[0];
 
-  if (hoursOfDay?.times) {
+  if (hoursOfDay?.times?.open) {
     isRestaurantOpened = isBetweenHour(
       hoursOfDay.times.open,
       hoursOfDay.times.close
@@ -37,13 +38,20 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
   return (
     <>
       <div className="flex justify-center absolute left-0 bottom-0 w-full z-10">
-        <CategoriesSheet
+        <ReusableModal
+          trigger="Toque para ver o cardápio"
+          title={<span style={{ color: themeColor }}>Menu</span>}
+          triggerClassName="w-full rounded-none"
+          triggerStyle={{ color: themeColor, borderColor: themeColor }}
           triggerVariant="outline"
-          triggerText="Toque para ver o cardápio"
-          themeColor={themeColor}
-          triggerClassname="w-full rounded-none py-6 border-none"
-          triggerStyle={{ color: themeColor }}
-          restaurant={restaurant}
+          content={
+            <CategoriesModalContent
+              categories={restaurant.Categories}
+              items={restaurant.Items}
+              themeColor={themeColor}
+              restaurant={restaurant}
+            />
+          }
         />
       </div>
 

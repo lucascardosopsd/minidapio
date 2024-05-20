@@ -1,5 +1,5 @@
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
-import RestaurantProfile from "@/components/restaurant/RestaurantProfile";
+import RestaurantProfile from "@/components/menu/RestaurantProfile";
 import { FullRestaurantProps } from "@/types/restaurant";
 
 interface MenuProps {
@@ -15,7 +15,11 @@ const Menu = async ({ params: { userId, slug } }: MenuProps) => {
       where: { slug, userId },
       include: {
         Items: true,
-        Categories: true,
+        Categories: {
+          include: {
+            items: true,
+          },
+        },
       },
     },
     userId

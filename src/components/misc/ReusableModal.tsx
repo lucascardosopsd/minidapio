@@ -23,6 +23,8 @@ interface ReusableModalProps {
   triggerClassName?: string;
   triggerVariant?: ButtonVariants;
   triggerStyle?: CSSProperties;
+  closeTriggerClassName?: string;
+  closeTriggerStyle?: CSSProperties;
 }
 
 const ReusableModal = ({
@@ -35,6 +37,8 @@ const ReusableModal = ({
   triggerClassName,
   triggerVariant,
   triggerStyle,
+  closeTriggerClassName,
+  closeTriggerStyle,
 }: ReusableModalProps) => {
   return (
     <Drawer open={isOpen} onOpenChange={onOpen}>
@@ -52,7 +56,10 @@ const ReusableModal = ({
         <DrawerHeader>
           <DrawerTitle className="flex items-center justify-between w-full">
             <DrawerClose asChild>
-              <FaChevronLeft style={triggerStyle} />
+              <FaChevronLeft
+                style={closeTriggerStyle}
+                className={closeTriggerClassName}
+              />
             </DrawerClose>
             {title}
           </DrawerTitle>

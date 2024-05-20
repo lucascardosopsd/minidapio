@@ -1,4 +1,4 @@
-import { CategoryProps } from "./category";
+import { CategoriesWithItemsProps } from "./category";
 import { ItemProps } from "./item";
 
 export interface PaymentMethodProps {
@@ -43,5 +43,5 @@ export interface RestaurantProps {
 
 export interface FullRestaurantProps extends RestaurantProps {
   Items: ItemProps[];
-  Categories: CategoryProps[];
+  Categories: CategoriesWithItemsProps[];
 }
