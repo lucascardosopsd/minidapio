@@ -1,5 +1,5 @@
 "use client";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa6";
 import DeleteModal from "@/components/restaurant/DeleteModal";
@@ -43,7 +43,7 @@ const UserCard = ({ user }: UserCardProps) => {
 
   return (
     <Card>
-      <CardHeader className="flex-row items-center justify-between relative">
+      <CardHeader className="flex-row items-center justify-between">
         <div className="flex gap-5">
           <Avatar>
             <AvatarImage src={user.image!} />
@@ -77,6 +77,16 @@ const UserCard = ({ user }: UserCardProps) => {
           />
         </div>
       </CardHeader>
+
+      <CardContent>
+        <Button
+          size="icon"
+          onClick={() => copyToClipboard(user.id, "", "Id copiado!")}
+          className="right-5 top-5"
+        >
+          id
+        </Button>
+      </CardContent>
     </Card>
   );
 };
