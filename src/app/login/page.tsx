@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import GoogleLoginButton from "@/components/misc/GoogleLoginButton";
+import Logo from "@/components/misc/Logo";
 
 export default function Login() {
   const { data: session } = useSession();
@@ -22,9 +23,10 @@ export default function Login() {
 
       <Separator orientation="vertical" />
 
-      <div className="flex-1 flex justify-center items-center flex-col gap-2 px-4">
-        <p className="mb-4">Reserva</p>
-        <p className="text-2xl font-bold">Vamos Começar!</p>
+      <div className="flex-1 flex justify-center items-center flex-col gap-2 px-4 max-w-md">
+        <Logo />
+
+        <p className="text-2xl font-bold">Reserva</p>
         <p>Entre com a sua conta</p>
 
         <GoogleLoginButton />
