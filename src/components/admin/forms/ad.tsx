@@ -136,7 +136,7 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
                       onChange={async (e) => {
                         field.onChange(e);
                         if (e.target.value.length >= 24) {
-                          await handleFetchUser(form.watch("userId", ""));
+                          await handleFetchUser(form.watch("userId", "") || "");
                         }
                       }}
                     />
