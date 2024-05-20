@@ -1,5 +1,5 @@
 import { fetchRegions } from "@/actions/region/fetchRegions";
-import RegionCard from "@/components/admin/cards/Region";
+import RegionCard from "@/components/admin/adminCards/Region";
 import RegionsActionBar from "@/components/admin/region/ActionBar";
 import { Separator } from "@/components/ui/separator";
 
