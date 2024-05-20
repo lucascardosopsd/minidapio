@@ -25,6 +25,14 @@ const Menu = async ({ params: { userId, slug } }: MenuProps) => {
     userId
   )) as FullRestaurantProps[];
 
+  if (!restaurant[0]) {
+    return (
+      <div className="flex items-center justify-center h-svh w-full">
+        Restaurante não encontrado.
+      </div>
+    );
+  }
+
   return (
     <div className="px-10 h-[100svh] overflow-y-auto max-w-[600px] flex items-start mx-auto antialiased">
       <RestaurantProfile restaurant={restaurant[0]} />

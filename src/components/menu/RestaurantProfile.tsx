@@ -18,7 +18,7 @@ interface RestaurantProfileProps {
 }
 
 const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
-  const themeColor = restaurant.color;
+  const themeColor = restaurant?.color || "#fff";
 
   let isRestaurantOpened = false;
 
@@ -59,7 +59,7 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
 
       <div className="bg-gradient-to-b from-background to-transparent h-[250px] w-full absolute top-0 left-0 z-10 cursor-none pointer-events-none" />
 
-      <div className="flex flex-col items-center justify-center gap-5 relative w-full pb-40 pt-32 ">
+      <div className="flex flex-col items-center justify-center gap-5 relative w-full pb-32 pt-32 ">
         <div className="flex gap-2 items-center justify-center p-2 rounded w-full fixed top-0 z-20 bg-background">
           <Image
             src={restaurant.logo}
@@ -142,7 +142,7 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
           ))}
         </div>
         {restaurant.linkMaps && (
-          <Link href={restaurant.linkMaps}>
+          <Link href={restaurant.linkMaps} target="_blank">
             <Button
               className="bg-background"
               variant="outline"
