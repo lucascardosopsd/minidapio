@@ -35,13 +35,19 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum Role {
+  user
+  admin
+  advertiser
+}
+
 model User {
   id            String       @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
   email         String?      @unique
   emailVerified DateTime?
   image         String?
-  role          String       @default("user")
+  role          Role         @default(user)
   accounts      Account[]
   sessions      Session[]
   restaurants   Restaurant[]
