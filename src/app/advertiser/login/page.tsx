@@ -10,7 +10,7 @@ export default function Login() {
   const router = useRouter();
 
   if (session) {
-    router.push("/restaurants");
+    router.push("/advertiser/dashboard");
     return <></>;
   }
 
