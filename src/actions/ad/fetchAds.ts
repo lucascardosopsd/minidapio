@@ -25,10 +25,17 @@ export const fetchAds = async ({
   const skip = page * take;
 
   const ads = await prisma.ad.findMany({
+    orderBy: {
+      title: "asc",
+    },
     skip,
     take,
     ...query,
   });
+
+  ads.sort((a, b) =>
+    a.active && !b.active ? -1 : !a.active && b.active ? 1 : 0
+  );
 
   return {
     ads,
