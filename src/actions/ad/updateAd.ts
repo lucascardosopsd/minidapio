@@ -1,12 +1,11 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { adValidator } from "@/validators/ad";
+import { AdProps } from "@/types/ad";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 
 interface UpdateAdProps {
   id: string;
-  data: z.infer<typeof adValidator>;
+  data: Partial<AdProps>;
 }
 
 export const updateAd = async ({ id, data }: UpdateAdProps) => {
