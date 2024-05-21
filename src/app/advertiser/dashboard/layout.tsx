@@ -1,13 +1,12 @@
 "use server";
-
 import { ReactNode } from "react";
 import Navbar from "@/components/admin/Navbar";
-import Sidebar from "@/components/admin/Sidebar";
+import Sidebar from "@/components/misc/ReusableSidebar";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 import { nextAuthOptions } from "@/lib/authProviders";
 import { redirect } from "next/navigation";
-import { adminSidebarOptions } from "@/constants/adminSidebar";
+import { advertiserSidebarOptions } from "@/constants/advertiserSidebar";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
@@ -26,7 +25,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="flex h-svh w-full">
-      <Sidebar options={adminSidebarOptions} />
+      <Sidebar options={advertiserSidebarOptions} />
       <div className="w-full">
         <Navbar
           signOutcallbackUrl={
