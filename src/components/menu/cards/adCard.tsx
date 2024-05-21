@@ -1,3 +1,4 @@
+import { createClick } from "@/actions/createClick";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AdProps } from "@/types/ad";
@@ -10,6 +11,14 @@ interface AdCardProps {
 }
 
 const AdCard = forwardRef<HTMLDivElement, AdCardProps>(({ ad }, ref) => {
+  const handleClick = async () => {
+    try {
+      await createClick({ adId: ad.id });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Card ref={ref}>
       <CardContent className="flex flex-col p-0">
@@ -28,7 +37,9 @@ const AdCard = forwardRef<HTMLDivElement, AdCardProps>(({ ad }, ref) => {
 
         {ad.link && (
           <Link href={ad.link} target="_blank">
-            <Button className="w-full bg-foreground">Saiba mais</Button>
+            <Button className="w-full bg-foreground" onClick={handleClick}>
+              Saiba mais
+            </Button>
           </Link>
         )}
       </CardContent>
