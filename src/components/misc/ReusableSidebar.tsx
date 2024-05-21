@@ -12,14 +12,17 @@ import { Separator } from "../ui/separator";
 import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { SidebarOptionProps } from "@/types/Sidebar";
+import { SidebarOptionProps } from "@/types/sidebar";
 
-interface SidebarProps {
+interface ReusableSidebarProps {
   options: SidebarOptionProps[];
 }
 
-const Sidebar = ({ options }: SidebarProps) => {
+const ReusableSidebar = ({ options }: ReusableSidebarProps) => {
   const pathname = usePathname();
+
+  const currentPath =
+    pathname.split("?").length > 0 ? pathname.split("?")[0] : pathname;
 
   return (
     <div className="h-full w-20 flex flex-col items-center border border-r gap-10 py-10">
@@ -29,9 +32,9 @@ const Sidebar = ({ options }: SidebarProps) => {
             <TooltipTrigger
               className={cn(
                 "transition",
-                option.href.split("?")[0] == pathname.split("?")[0] &&
+                option.href.split("?")[0] == currentPath &&
                   "text-primary border border-primary rounded p-2",
-                option.href.split("?")[0] !== pathname.split("?")[0] &&
+                option.href.split("?")[0] !== currentPath &&
                   "hover:scale-125 hover:text-primary"
               )}
             >
@@ -63,4 +66,4 @@ const Sidebar = ({ options }: SidebarProps) => {
   );
 };
 
-export default Sidebar;
+export default ReusableSidebar;

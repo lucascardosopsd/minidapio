@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarOptionProps } from "@/types/Sidebar";
+import { SidebarOptionProps } from "@/types/sidebar";
 import { Grip, MapPinned, User, UtensilsCrossed } from "lucide-react";
 
 export const adminSidebarOptions: SidebarOptionProps[] = [

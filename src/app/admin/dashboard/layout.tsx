@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import Navbar from "@/components/admin/Navbar";
-import Sidebar from "@/components/admin/Sidebar";
+import Sidebar from "@/components/misc/ReusableSidebar";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 import { nextAuthOptions } from "@/lib/authProviders";
