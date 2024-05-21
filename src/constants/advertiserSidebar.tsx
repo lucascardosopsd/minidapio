@@ -1,3 +1,5 @@
+"use client";
+
 import { SidebarOptionProps } from "@/types/Sidebar";
 import { Grip, LayoutDashboard } from "lucide-react";
 

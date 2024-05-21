@@ -1,3 +1,5 @@
+"use client";
+
 import { SidebarOptionProps } from "@/types/Sidebar";
 import { Grip, MapPinned, User, UtensilsCrossed } from "lucide-react";
 
