@@ -1,7 +1,7 @@
 import { fetchAds } from "@/actions/ad/fetchAds";
 import { getUserServerSession } from "@/actions/session/getUserServerSession";
 import AdCard from "@/components/advertiser/cards/Ad";
-import Paginate from "@/components/misc/Pagination";
+import Paginate from "@/components/misc/Paginate";
 import SearchField from "@/components/misc/SearchField";
 import { Separator } from "@/components/ui/separator";
 

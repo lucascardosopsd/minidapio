@@ -1,4 +1,4 @@
-import Paginate from "@/components/misc/Pagination";
+import Paginate from "@/components/misc/Paginate";
 import { Separator } from "@/components/ui/separator";
 import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
 import RestaurantCard from "../cards/Restaurant";
