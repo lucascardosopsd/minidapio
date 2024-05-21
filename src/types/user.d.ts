@@ -4,5 +4,5 @@ export interface UserProps {
   email: string | null;
   emailVerified: Date | null;
   image: string | null;
-  role: string;
+  role: "admin" | "user" | "advertiser";
 }
