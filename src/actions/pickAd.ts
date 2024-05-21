@@ -11,6 +11,7 @@ export const pickAd = async ({
   const ads = await prisma.ad.findMany({
     where: {
       regionId,
+      active: true,
     },
   });
 
