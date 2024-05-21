@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 import { nextAuthOptions } from "@/lib/authProviders";
 import { redirect } from "next/navigation";
+import { adminSidebarOptions } from "@/constants/adminSidebar";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
@@ -25,7 +26,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="flex h-svh w-full">
-      <Sidebar />
+      <Sidebar options={adminSidebarOptions} />
       <div className="w-full">
         <Navbar
           signOutcallbackUrl={process.env.NEXT_PUBLIC_HOST! + "/admin/login"}

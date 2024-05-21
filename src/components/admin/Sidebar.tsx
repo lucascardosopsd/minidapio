@@ -1,6 +1,4 @@
 "use client";
-
-import { adminSidebarOptions } from "@/constants/adminSidebar";
 import {
   Tooltip,
   TooltipContent,
@@ -14,13 +12,18 @@ import { Separator } from "../ui/separator";
 import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { SidebarOptionProps } from "@/types/Sidebar";
 
-const Sidebar = () => {
+interface SidebarProps {
+  options: SidebarOptionProps[];
+}
+
+const Sidebar = ({ options }: SidebarProps) => {
   const pathname = usePathname();
 
   return (
     <div className="h-full w-20 flex flex-col items-center border border-r gap-10 py-10">
-      {adminSidebarOptions.map((option, index) => (
+      {options.map((option, index) => (
         <TooltipProvider key={index}>
           <Tooltip>
             <TooltipTrigger
