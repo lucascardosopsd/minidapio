@@ -16,6 +16,7 @@ import { z } from "zod";
 import { updateUser } from "@/actions/user/updateUser";
 import { userValidatorSchema } from "@/validators/user";
 import { useState } from "react";
+import { roleI18n } from "@/constants/roleI18n";
 
 interface UserCardProps {
   user: UserProps;
@@ -70,12 +71,15 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
   return (
     <Card>
       <CardHeader className="flex-row items-center justify-between">
-        <div className="flex gap-5">
+        <div className="flex gap-5 flex-1 items-center">
           <Avatar>
             <AvatarImage src={user.image!} />
           </Avatar>
 
-          <div className="flex items-center">{user.name}</div>
+          <div className="flex items-center w-full flex-1">{user.name}</div>
+          <div className="flex items-center justify-center flex-1 w-full max-w-[200px]">
+            [{roleI18n[user.role]}]
+          </div>
         </div>
 
         {!preview && (
