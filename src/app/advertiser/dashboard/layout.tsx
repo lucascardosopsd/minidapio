@@ -20,7 +20,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
   if (!user) return redirect("/advertiser/login");
 
-  if (user.role !== "advertiser" || "admin")
+  if (user.role !== ("advertiser" || "admin"))
     return redirect("/advertiser/signout");
 
   return (
