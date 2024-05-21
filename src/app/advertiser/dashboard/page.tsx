@@ -1,5 +1,5 @@
 const AdvertiserDashboard = () => {
-  return <div>OK</div>;
+  return <section></section>;
 };
 
 export default AdvertiserDashboard;
