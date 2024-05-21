@@ -26,11 +26,9 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="flex h-svh w-full">
-      <Sidebar options={adminSidebarOptions} />
+      <Sidebar options={adminSidebarOptions} redirectLogout="/admin/login" />
       <div className="w-full">
-        <Navbar
-          signOutcallbackUrl={process.env.NEXT_PUBLIC_HOST! + "/admin/login"}
-        />
+        <Navbar />
         <div className="flex flex-col px-10 items-center justify-center h-[calc(100svh-80px)]">
           {children}
         </div>

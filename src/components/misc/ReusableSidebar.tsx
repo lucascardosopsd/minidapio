@@ -16,9 +16,10 @@ import { SidebarOptionProps } from "@/types/sidebar";
 
 interface ReusableSidebarProps {
   options: SidebarOptionProps[];
+  redirectLogout: string;
 }
 
-const ReusableSidebar = ({ options }: ReusableSidebarProps) => {
+const ReusableSidebar = ({ options, redirectLogout }: ReusableSidebarProps) => {
   const pathname = usePathname();
 
   const currentPath =
@@ -55,7 +56,7 @@ const ReusableSidebar = ({ options }: ReusableSidebarProps) => {
           size="icon"
           onClick={() => {
             signOut({
-              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/admin/login`,
+              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}${redirectLogout}`,
             });
           }}
         >

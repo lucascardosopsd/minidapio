@@ -1,6 +1,5 @@
 "use server";
 import { ReactNode } from "react";
-import Navbar from "@/components/admin/Navbar";
 import Sidebar from "@/components/misc/ReusableSidebar";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
@@ -21,17 +20,16 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
   if (!user) return redirect("/advertiser/login");
 
-  if (user.role !== "advertiser") return redirect("/advertiser/signout");
+  if (user.role !== "advertiser" || "admin")
+    return redirect("/advertiser/signout");
 
   return (
     <div className="flex h-svh w-full">
-      <Sidebar options={advertiserSidebarOptions} />
+      <Sidebar
+        options={advertiserSidebarOptions}
+        redirectLogout="/advertiser/login"
+      />
       <div className="w-full">
-        <Navbar
-          signOutcallbackUrl={
-            process.env.NEXT_PUBLIC_HOST! + "/advertiser/login"
-          }
-        />
         <div className="flex flex-col px-10 items-center justify-center h-[calc(100svh-80px)]">
           {children}
         </div>
