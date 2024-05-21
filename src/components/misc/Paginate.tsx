@@ -59,7 +59,7 @@ const Paginate = ({ pages }: PaginateProps) => {
   };
 
   return (
-    <Pagination>
+    <Pagination className="py-5">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
