@@ -6,7 +6,6 @@ export const pickAd = async ({
   regionId,
 }: {
   regionId: string;
-  restaurantId: string;
 }): Promise<AdProps> => {
   const ads = await prisma.ad.findMany({
     where: {

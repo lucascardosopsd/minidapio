@@ -26,7 +26,6 @@ const CategoriesModalContent = ({
   const handlePickAd = async () => {
     const ad = await pickAd({
       regionId: restaurant.regionId!,
-      restaurantId: restaurant.id,
     });
 
     setCurrentAd(ad);
