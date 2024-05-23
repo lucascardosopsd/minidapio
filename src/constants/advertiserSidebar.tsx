@@ -1,7 +1,7 @@
 "use client";
 
 import { SidebarOptionProps } from "@/types/sidebar";
-import { LayoutDashboard, ReceiptText } from "lucide-react";
+import { LayoutDashboard, ReceiptText, Settings } from "lucide-react";
 
 export const advertiserSidebarOptions: SidebarOptionProps[] = [
   {
@@ -13,5 +13,10 @@ export const advertiserSidebarOptions: SidebarOptionProps[] = [
     label: "Faturas",
     icon: ReceiptText,
     href: "/advertiser/dashboard/bills?page=1",
+  },
+  {
+    label: "Configurações",
+    icon: Settings,
+    href: "/advertiser/config",
   },
 ];

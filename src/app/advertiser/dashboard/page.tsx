@@ -58,8 +58,6 @@ const AdvertiserDashboard = async ({
     count: number;
   };
 
-  console.log(ads);
-
   const views = ads.reduce(
     (prev, current) => current?.views && prev + current.views.length,
     0
