@@ -43,14 +43,14 @@ const AdCard = ({ ad }: AdCardProps) => {
 
   return (
     <Card>
-      <CardHeader className="flex-row items-center justify-between">
+      <CardHeader className="flex-row items-center justify-between p-2">
         <div className="flex gap-5">
           <Image
             src={ad.image}
             width={300}
             height={300}
             alt={ad.title}
-            className="w-[150px] h-[80px] rounded border-2 object-cover"
+            className="w-[120px] h-[50px] rounded border-2 object-cover"
           />
           <div className="flex items-center">{ad.title}</div>
         </div>

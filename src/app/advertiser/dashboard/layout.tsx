@@ -32,7 +32,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
       />
       <div className="w-full">
         <Navbar />
-        <div className="flex flex-col px-10 items-center justify-center h-[calc(100svh-60px)]">
+        <div className="flex flex-col items-center justify-center h-[calc(100svh-70px)]">
           {children}
         </div>
       </div>
