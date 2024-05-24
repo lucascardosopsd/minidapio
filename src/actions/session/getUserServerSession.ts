@@ -24,12 +24,14 @@ export const getUserServerSession = async <T = UserProps>(
     return null;
   }
 
-  const user = await prisma.user.findUnique({
+  const query = {
     where: {
       email: session?.user?.email!,
     },
-    ...(!!props.query && props.query),
-  });
+    ...props?.query,
+  } satisfies Prisma.UserFindUniqueArgs;
+
+  const user = await prisma.user.findUnique(query);
 
   return user as T | null;
 };

@@ -1,5 +1,4 @@
 "use client";
-import { createAdvertiserAccount } from "@/actions/advertiser/createAccount";
 import FieldBuilder from "@/components/builders/FieldBuilder";
 import SelectBuilder from "@/components/builders/SelectBuilder";
 import { Button } from "@/components/ui/button";
@@ -13,15 +12,21 @@ import { useState } from "react";
 import { PatternFormat } from "react-number-format";
 import { toast } from "sonner";
 import { z } from "zod";
+import { UserProps } from "@/types/user";
+import axios from "axios";
+import { getCostumerProps } from "@/types/asaas";
+import { createAdvertiserAccount } from "@/actions/advertiser/createAccount";
+import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
+import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAccount";
 
 interface AdvertiserProfileFormProps {
   defaultValues?: AdvertiserAccount;
-  userId: string;
+  user: UserProps;
 }
 
 const AdvertiserProfileForm = ({
   defaultValues,
-  userId,
+  user,
 }: AdvertiserProfileFormProps) => {
   const [loading, setLoading] = useState(false);
 
@@ -29,14 +34,14 @@ const AdvertiserProfileForm = ({
     defaultValues: defaultValues
       ? {
           ...defaultValues,
-          userId,
+          userId: user.id,
         }
       : {
           name: "",
           personType: "FISICA",
           cpfCnpj: "",
           phone: "",
-          userId: userId,
+          userId: user.id,
         },
   });
 
@@ -44,9 +49,43 @@ const AdvertiserProfileForm = ({
     setLoading(true);
 
     try {
-      await createAdvertiserAccount({ data });
+      const { data: getRes } = await axios.get<getCostumerProps>(
+        "/api/asaas/costumer"
+      );
 
-      toast.success("Salvo com sucesso");
+      const costumers = getRes.data;
+
+      if (costumers) {
+        const checkCostumer = costumers.find(
+          (costumer) => costumer.email == user.email
+        );
+
+        if (!checkCostumer) {
+          await axios.post("/api/asaas/costumer", {
+            name: data.name,
+            cpfCnpj: data.cpfCnpj,
+            mobilePhone: data.phone,
+            email: user.email,
+          });
+        } else {
+          await axios.put(`/api/asaas/costumer/${checkCostumer.id}`, {
+            name: data.name,
+            cpfCnpj: data.cpfCnpj,
+            mobilePhone: data.phone,
+            email: user.email,
+          });
+        }
+      }
+
+      const checkAccount = await getAdvertiserAccount({ userId: user.id });
+
+      if (!checkAccount) {
+        await createAdvertiserAccount({ data });
+      } else {
+        await updateAdvertiserAccount({ userId: user.id, data });
+      }
+
+      toast.success("Salvo com sucesso!");
     } catch (error) {
       console.log(error);
       toast.error("Ocorreu um erro");

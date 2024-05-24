@@ -20,7 +20,7 @@ const ConfigPage = async () => {
       <p className="2xl">Perfil do anunciante</p>
       <AdvertiserProfileForm
         defaultValues={user?.AdvertiserAccount}
-        userId={user?.id!}
+        user={user!}
       />
     </section>
   );
