@@ -60,19 +60,6 @@ model User {
   AdvertiserAccount   AdvertiserAccount?
 }
 
-model AdvertiserAccount {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  cpfCnpj    String   @unique
-  phone      String
-  personType String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  userId     String   @unique @db.ObjectId
-
-  user User @relation(fields: [userId], references: [id])
-}
-
 model VerificationToken {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   identifier String
@@ -185,4 +172,39 @@ model Click {
   updatedAt DateTime @updatedAt
 
   Ad Ad? @relation(fields: [adId], references: [id])
+}
+
+model AdvertiserAccount {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  cpfCnpj    String   @unique
+  phone      String
+  personType String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String   @unique @db.ObjectId
+
+  payments Payment[]
+  user     User      @relation(fields: [userId], references: [id])
+}
+
+model Payment {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  paymentId            String
+  dateCreated          String
+  customer             String
+  paymentLink          String?
+  dueDate              String
+  value                Int
+  billingType          String
+  status               String
+  description          String
+  paymentDate          String
+  deleted              Boolean
+  advertiserAcccountId String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  AdvertiserAccount   AdvertiserAccount? @relation(fields: [advertiserAccountId], references: [id])
+  advertiserAccountId String?            @db.ObjectId
 }
