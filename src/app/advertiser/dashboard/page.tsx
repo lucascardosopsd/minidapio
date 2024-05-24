@@ -7,7 +7,7 @@ import PersistentDialog from "@/components/advertiser/persistentDialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FullAdProps } from "@/types/ad";
-import { UserPropsWithAdvertiser } from "@/types/user";
+import { User } from "@prisma/client";
 import { Eye, MousePointerClick } from "lucide-react";
 import Link from "next/link";
 
@@ -21,13 +21,7 @@ interface AdvertiserDashboardprops {
 const AdvertiserDashboard = async ({
   searchParams,
 }: AdvertiserDashboardprops) => {
-  const user = await getUserServerSession<UserPropsWithAdvertiser>({
-    query: {
-      include: {
-        AdvertiserAccount: true,
-      },
-    },
-  });
+  const user = await getUserServerSession<User>({});
   const startDate = searchParams?.startDate;
   const endDate = searchParams?.endDate;
 
@@ -86,11 +80,11 @@ const AdvertiserDashboard = async ({
     .sort((a, b) => a?.clicks?.length - b?.clicks?.length)
     .slice(0, 5);
 
-  const isOpenedModal = !user?.AdvertiserAccount;
+  const isOpenedModal = !user?.advertiserAccountId;
 
   return (
     <section className="h-svh w-full flex flex-col items-center space-y-5 overflow-y-auto pb-5">
-      {!user?.AdvertiserAccount && (
+      {!user?.advertiserAccountId && (
         <PersistentDialog
           title="Perfil de anunciante não encontrado"
           description={
@@ -107,6 +101,23 @@ const AdvertiserDashboard = async ({
           open={isOpenedModal}
         />
       )}
+
+      {/* {!user?.lastPaymentId && (
+        <PersistentDialog
+          title="Pagamento pendente"
+          description={
+            <div className="flex  flex-col gap-5">
+              <p>
+                É necessário efetuar o pagamento da pendência para continuar anunciando
+              </p>
+              <Link href="/advertiser/bills" className="self-end">
+                <Button>Clique aqui</Button>
+              </Link>
+            </div>
+          }
+          open={isOpenedModal}
+        />
+      )} */}
 
       <div className="w-full flex justify-between border-b px-10 items-center py-5">
         <p className="text-4xl">Dashboard</p>
