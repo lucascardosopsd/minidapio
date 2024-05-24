@@ -18,6 +18,7 @@ import { CostumerProps, CostumersArrayProps } from "@/types/asaas";
 import { createAdvertiserAccount } from "@/actions/advertiser/createAccount";
 import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
 import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAccount";
+import { updateUser } from "@/actions/user/updateUser";
 
 interface AdvertiserProfileFormProps {
   defaultValues?: AdvertiserAccount;
@@ -55,11 +56,19 @@ const AdvertiserProfileForm = ({
     const checkAccount = await getAdvertiserAccount({ userId: user.id });
 
     if (!checkAccount) {
-      await createAdvertiserAccount({
+      const newAdAccount = await createAdvertiserAccount({
         userId: user.id,
         data: {
           ...advertiserData,
           costumerId,
+          userId: user.id,
+        },
+      });
+
+      await updateUser({
+        id: user.id,
+        data: {
+          advertiserAccountId: newAdAccount.id,
         },
       });
     } else {

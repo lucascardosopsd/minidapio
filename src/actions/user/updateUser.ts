@@ -1,17 +1,15 @@
 "use server";
-
 import prisma from "@/lib/prisma";
-import { userValidatorSchema } from "@/validators/user";
-import { z } from "zod";
+import { User } from "@prisma/client";
 
 interface updateUserProps {
   id: string;
-  user: z.infer<typeof userValidatorSchema>;
+  data: Partial<User>;
 }
 
-export const updateUser = async ({ id, user }: updateUserProps) => {
+export const updateUser = async ({ id, data }: updateUserProps) => {
   return await prisma.user.update({
     where: { id },
-    data: { ...user },
+    data,
   });
 };

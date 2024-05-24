@@ -1,9 +1,9 @@
 import { getUserServerSession } from "@/actions/session/getUserServerSession";
 import AdvertiserProfileForm from "@/components/advertiser/forms/Profile";
-import { UserPropsWithAdvertiser } from "@/types/user";
+import { UserAdPaymentProps } from "@/types/user";
 
 const ConfigPage = async () => {
-  const user = await getUserServerSession<UserPropsWithAdvertiser>({
+  const user = await getUserServerSession<UserAdPaymentProps>({
     query: {
       include: {
         AdvertiserAccount: true,
@@ -19,7 +19,7 @@ const ConfigPage = async () => {
 
       <p className="2xl">Perfil do anunciante</p>
       <AdvertiserProfileForm
-        defaultValues={user?.AdvertiserAccount}
+        defaultValues={user?.AdvertiserAccount || undefined}
         user={user!}
       />
     </section>

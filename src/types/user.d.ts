@@ -7,8 +7,10 @@ export interface UserProps {
   emailVerified: Date | null;
   image: string | null;
   role: "admin" | "user" | "advertiser";
+  lastPaymentId: string | null;
+  advertiserAccountId: AdvertiserAccount | null;
 }
 
-export interface UserPropsWithAdvertiser extends UserProps {
-  AdvertiserAccount: AdvertiserAccount;
+export interface UserAdPaymentProps extends UserProps {
+  AdvertiserAccount: AdvertiserAccount | null;
 }
