@@ -12,7 +12,7 @@ interface ArgsProps {
 }
 
 interface GetUserServerSessionProps {
-  query: ArgsProps;
+  query?: ArgsProps;
 }
 
 export const getUserServerSession = async <T = UserProps>(

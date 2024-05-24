@@ -49,6 +49,7 @@ model User {
   image               String?
   advertiserAccountId String?            @db.ObjectId
   costumerId          String?
+  lastPaymentId       String?
   role                Role               @default(user)
   accounts            Account[]
   sessions            Session[]
