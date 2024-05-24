@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { UserProps } from "@/types/user";
 import axios from "axios";
-import { getCostumerProps } from "@/types/asaas";
+import { CostumerProps, CostumersArrayProps } from "@/types/asaas";
 import { createAdvertiserAccount } from "@/actions/advertiser/createAccount";
 import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
 import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAccount";
@@ -45,44 +45,69 @@ const AdvertiserProfileForm = ({
         },
   });
 
+  const createUserAdvertiserAcccount = async ({
+    costumerId,
+    advertiserData,
+  }: {
+    costumerId: string;
+    advertiserData: z.infer<typeof advertiserProfile>;
+  }) => {
+    const checkAccount = await getAdvertiserAccount({ userId: user.id });
+
+    if (!checkAccount) {
+      await createAdvertiserAccount({
+        userId: user.id,
+        data: {
+          ...advertiserData,
+          costumerId,
+        },
+      });
+    } else {
+      await updateAdvertiserAccount({ userId: user.id, data: advertiserData });
+    }
+  };
+
   const handleSubmit = async (data: z.infer<typeof advertiserProfile>) => {
     setLoading(true);
 
     try {
-      const { data: getRes } = await axios.get<getCostumerProps>(
+      const { data: getRes } = await axios.get<CostumersArrayProps>(
         "/api/asaas/costumer"
       );
 
       const costumers = getRes.data;
 
-      if (costumers) {
-        const checkCostumer = costumers.find(
-          (costumer) => costumer.email == user.email
+      const checkCostumer = costumers.find(
+        (costumer) => costumer.email == user.email
+      );
+
+      if (!checkCostumer) {
+        const { data: newCostumer } = await axios.post("/api/asaas/costumer", {
+          name: data.name,
+          cpfCnpj: data.cpfCnpj,
+          mobilePhone: data.phone,
+          email: user.email,
+        });
+
+        createUserAdvertiserAcccount({
+          costumerId: newCostumer.id,
+          advertiserData: data,
+        });
+      } else {
+        const { data: updatedCostumer } = await axios.put<CostumerProps>(
+          `/api/asaas/costumer/${checkCostumer.id}`,
+          {
+            name: data.name,
+            cpfCnpj: data.cpfCnpj,
+            mobilePhone: data.phone,
+            email: user.email,
+          }
         );
 
-        if (!checkCostumer) {
-          await axios.post("/api/asaas/costumer", {
-            name: data.name,
-            cpfCnpj: data.cpfCnpj,
-            mobilePhone: data.phone,
-            email: user.email,
-          });
-        } else {
-          await axios.put(`/api/asaas/costumer/${checkCostumer.id}`, {
-            name: data.name,
-            cpfCnpj: data.cpfCnpj,
-            mobilePhone: data.phone,
-            email: user.email,
-          });
-        }
-      }
-
-      const checkAccount = await getAdvertiserAccount({ userId: user.id });
-
-      if (!checkAccount) {
-        await createAdvertiserAccount({ data });
-      } else {
-        await updateAdvertiserAccount({ userId: user.id, data });
+        createUserAdvertiserAcccount({
+          costumerId: updatedCostumer.id,
+          advertiserData: data,
+        });
       }
 
       toast.success("Salvo com sucesso!");

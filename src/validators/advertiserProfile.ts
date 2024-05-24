@@ -6,4 +6,5 @@ export const advertiserProfile = z.object({
   phone: z.string({ required_error: "Informe o número de telefone" }),
   personType: z.string().optional(),
   userId: z.string().optional(),
+  costumerId: z.string().optional(),
 });

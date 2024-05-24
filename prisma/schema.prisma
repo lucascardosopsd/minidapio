@@ -47,6 +47,8 @@ model User {
   email               String?            @unique
   emailVerified       DateTime?
   image               String?
+  advertiserAccountId String?            @db.ObjectId
+  costumerId          String?
   role                Role               @default(user)
   accounts            Account[]
   sessions            Session[]
@@ -54,7 +56,6 @@ model User {
   categories          Category[]
   items               Item[]
   Ad                  Ad[]
-  advertiserAccountId String?            @db.ObjectId
   AdvertiserAccount   AdvertiserAccount?
 }
 
