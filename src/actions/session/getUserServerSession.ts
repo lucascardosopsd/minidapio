@@ -1,10 +1,8 @@
 "use server";
-
 import { nextAuthOptions } from "@/lib/authProviders";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
-import { UserProps } from "@/types/user";
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 
 interface ArgsProps {
   include?: Prisma.UserInclude;
@@ -15,7 +13,7 @@ interface GetUserServerSessionProps {
   query?: ArgsProps;
 }
 
-export const getUserServerSession = async <T = UserProps>(
+export const getUserServerSession = async <T = User>(
   props: GetUserServerSessionProps
 ): Promise<T | null> => {
   const session = await getServerSession(nextAuthOptions);

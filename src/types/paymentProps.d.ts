@@ -40,3 +40,15 @@ export interface PaymentResProps {
   anticipable: boolean;
   refunds: number | null;
 }
+
+export interface PixCodeResProps {
+  encodedImage: string;
+  payload: string;
+  expirationDate: string;
+}
+
+export interface BarCodeCodeResProps {
+  identificationField: string;
+  nossoNumero: string;
+  barCode: string;
+}

@@ -12,7 +12,7 @@ export const advertiserSidebarOptions: SidebarOptionProps[] = [
   {
     label: "Faturas",
     icon: ReceiptText,
-    href: "/advertiser/dashboard/bills?page=1",
+    href: "/advertiser/bills?page=1",
   },
   {
     label: "Configurações",

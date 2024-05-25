@@ -11,11 +11,5 @@ export const createAdvertiserAccount = async ({
   userId: string;
   data: z.infer<typeof advertiserProfile>;
 }) => {
-  return await prisma.advertiserAccount.create({
-    data: {
-      ...data,
-      personType: data.personType!,
-      userId: userId,
-    },
-  });
+  return await prisma.advertiserAccount.create({ data });
 };
