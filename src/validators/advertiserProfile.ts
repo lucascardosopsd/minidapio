@@ -4,7 +4,7 @@ export const advertiserProfile = z.object({
   name: z.string({ required_error: "Complete seu nome" }),
   cpfCnpj: z.string({ required_error: "Informe o número do documento" }),
   phone: z.string({ required_error: "Informe o número de telefone" }),
-  personType: z.string().optional(),
-  userId: z.string().optional(),
-  costumerId: z.string().optional(),
+  personType: z.string(),
+  userId: z.string(),
+  customerId: z.string().optional(),
 });

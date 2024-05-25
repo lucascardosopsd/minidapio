@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   try {
     const { name, cpfCnpj, email, mobilePhone } = await req.json();
 
-    const costumer = await axiosAsaas.post(
+    const customer = await axiosAsaas.post(
       "https://sandbox.asaas.com/api/v3/customers",
       {
         name,
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       }
     );
 
-    return Response.json({ costumer: costumer.data });
+    return Response.json({ customer: customer.data });
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log(error.message);

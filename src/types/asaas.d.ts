@@ -1,4 +1,4 @@
-export interface CostumerProps {
+export interface CustumerProps {
   object: {};
   id: string;
   dateCreated: string;
@@ -31,11 +31,11 @@ export interface CostumerProps {
   country: string;
 }
 
-export interface CostumersArrayProps {
+export interface CustumersArrayProps {
   object: {};
   hasMore: boolean;
   totalCount: number;
   limit: number;
   offset: number;
-  data: CostumerProps[];
+  data: customerProps[];
 }

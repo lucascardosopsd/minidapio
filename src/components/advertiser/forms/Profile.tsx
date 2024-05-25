@@ -14,11 +14,11 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { UserProps } from "@/types/user";
 import axios from "axios";
-import { CostumerProps, CostumersArrayProps } from "@/types/asaas";
 import { createAdvertiserAccount } from "@/actions/advertiser/createAccount";
-import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
 import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAccount";
 import { updateUser } from "@/actions/user/updateUser";
+import { CustumerProps, CustumersArrayProps } from "@/types/asaas";
+import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
 
 interface AdvertiserProfileFormProps {
   defaultValues?: AdvertiserAccount;
@@ -47,64 +47,61 @@ const AdvertiserProfileForm = ({
   });
 
   const createUserAdvertiserAcccount = async ({
-    costumerId,
     advertiserData,
   }: {
-    costumerId: string;
     advertiserData: z.infer<typeof advertiserProfile>;
   }) => {
-    const checkAccount = await getAdvertiserAccount({ userId: user.id });
+    const newAdAccount = await createAdvertiserAccount({
+      userId: user.id,
+      data: advertiserData,
+    });
 
-    if (!checkAccount) {
-      const newAdAccount = await createAdvertiserAccount({
-        userId: user.id,
-        data: {
-          ...advertiserData,
-          costumerId,
-          userId: user.id,
-        },
-      });
-
-      await updateUser({
-        id: user.id,
-        data: {
-          advertiserAccountId: newAdAccount.id,
-        },
-      });
-    } else {
-      await updateAdvertiserAccount({ userId: user.id, data: advertiserData });
-    }
+    await updateUser({
+      id: user.id,
+      data: {
+        advertiserAccountId: newAdAccount.id,
+      },
+    });
   };
 
   const handleSubmit = async (data: z.infer<typeof advertiserProfile>) => {
     setLoading(true);
 
     try {
-      const { data: getRes } = await axios.get<CostumersArrayProps>(
-        "/api/asaas/costumer"
+      const { data: getRes } = await axios.get<CustumersArrayProps>(
+        "/api/asaas/customer"
       );
 
-      const costumers = getRes.data;
+      const customers = getRes.data;
 
-      const checkCostumer = costumers.find(
+      const checkCostumer = customers.find(
         (costumer) => costumer.email == user.email
       );
 
       if (!checkCostumer) {
-        const { data: newCostumer } = await axios.post("/api/asaas/costumer", {
+        const { data: newCustomer } = await axios.post("/api/asaas/customer", {
           name: data.name,
           cpfCnpj: data.cpfCnpj,
           mobilePhone: data.phone,
           email: user.email,
         });
 
-        createUserAdvertiserAcccount({
-          costumerId: newCostumer.id,
-          advertiserData: data,
-        });
+        if (!newCustomer.customer.id) throw new Error("Costumer id not found");
+
+        data.customerId = newCustomer.customer.id;
+
+        const checkAccount = await getAdvertiserAccount({ userId: user.id });
+
+        if (!checkAccount) {
+          await createUserAdvertiserAcccount({
+            advertiserData: data,
+          });
+        } else {
+          await updateAdvertiserAccount({ userId: user.id, data: data });
+        }
       } else {
-        const { data: updatedCostumer } = await axios.put<CostumerProps>(
-          `/api/asaas/costumer/${checkCostumer.id}`,
+        await axios.put<CustumerProps>(
+          `/api/asaas/customer/${checkCostumer.id}`,
           {
             name: data.name,
             cpfCnpj: data.cpfCnpj,
@@ -113,10 +110,15 @@ const AdvertiserProfileForm = ({
           }
         );
 
-        createUserAdvertiserAcccount({
-          costumerId: updatedCostumer.id,
-          advertiserData: data,
-        });
+        const checkAccount = await getAdvertiserAccount({ userId: user.id });
+
+        if (!checkAccount) {
+          await createUserAdvertiserAcccount({
+            advertiserData: data,
+          });
+        } else {
+          await updateAdvertiserAccount({ userId: user.id, data: data });
+        }
       }
 
       toast.success("Salvo com sucesso!");
@@ -179,6 +181,8 @@ const AdvertiserProfileForm = ({
           title="Telefone Celular"
           fieldElement={<PatternFormat format="+55(##)#####-####" />}
         />
+
+        <input value={user.id} {...form.register("userId")} hidden />
 
         <Button type="submit" className="w-full" disabled={loading}>
           Salvar

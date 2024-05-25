@@ -7,12 +7,12 @@ export async function PUT(
   try {
     const data = await req.json();
 
-    const costumer = await axiosAsaas.put(
+    const customer = await axiosAsaas.put(
       `https://sandbox.asaas.com/api/v3/customers/${params.id}`,
       data
     );
 
-    return Response.json({ costumer: costumer.data });
+    return Response.json({ customer: customer.data });
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log(error.message);
