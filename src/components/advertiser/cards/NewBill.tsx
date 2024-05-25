@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import Moment from "moment";
 import axios from "axios";
 import { AdvertiserAccount, User } from "@prisma/client";
+import { copyToClipboard } from "@/tools/copyToClipboard";
 
 interface NewBillCardProps {
   user: User;
@@ -67,7 +68,6 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
         setMethodCode(codeData.barCode);
       }
     } catch (error) {
-      console.log(error.message);
       toast.error("Algo deu errado.");
     } finally {
       setLoading(false);
@@ -107,29 +107,34 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
         <p className="text-xs">
           O pagamento no valor de R$100,00 expira em 24 horas
         </p>
+
+        {methodImage ||
+          (methodCode && (
+            <div className="flex flex-col gap-5 border rounded p-5 w-full max-w-[500px]">
+              {methodImage && (
+                <Image
+                  src={methodImage}
+                  alt="Imagem do pagamento"
+                  height={1000}
+                  width={1000}
+                  className="w-32 h-32 overflow-hidden rounded"
+                />
+              )}
+              {methodCode && (
+                <div className="p-2 flex items-center justify-center gap-5 w-full">
+                  <p>{methodCode.slice(0, 20)}...</p>
+                  <Button
+                    onClick={() =>
+                      copyToClipboard(methodCode, "", "Código copiado!")
+                    }
+                  >
+                    <Copy />
+                  </Button>
+                </div>
+              )}
+            </div>
+          ))}
       </div>
-      {methodImage ||
-        (methodCode && (
-          <div className="flex flex-col gap-5 border p-5">
-            {methodImage && (
-              <Image
-                src={methodImage}
-                alt="Imagem do pagamento"
-                height={1000}
-                width={1000}
-                className="w-32 h-32 overflow-hidden rounded"
-              />
-            )}
-            {methodCode && (
-              <div className="border p-5 flex gap-5 max-w-[400px] w-full">
-                <p>{methodCode}asasasasasasasasasas</p>
-                <Button>
-                  <Copy />
-                </Button>
-              </div>
-            )}
-          </div>
-        ))}
     </div>
   );
 };
