@@ -9,8 +9,6 @@ export const GET = async (
       `https://sandbox.asaas.com/api/v3/payments/${params.paymentId}/pixQrCode`
     );
 
-    console.log(data);
-
     return Response.json(data);
   } catch (error: unknown) {
     if (error instanceof Error) {
