@@ -15,13 +15,13 @@ import {
   PixCodeResProps,
 } from "@/types/paymentProps";
 import { Copy } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
 import Moment from "moment";
 import axios from "axios";
 import { AdvertiserAccount, User } from "@prisma/client";
 import { copyToClipboard } from "@/tools/copyToClipboard";
+import Image from "next/image";
 
 interface NewBillCardProps {
   user: User;
@@ -46,7 +46,7 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
         {
           customer: advertiserAccount?.customerId || "",
           billingType: option.toUpperCase(),
-          value: 100,
+          value: 5,
           dueDate: moment.add(24, "hours"),
         }
       );
@@ -57,7 +57,7 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
         );
 
         setMethodCode(codeData.payload);
-        setMethodImage(codeData.encodedImage);
+        setMethodImage(`data:image/png;base64,${codeData.encodedImage}`);
       }
 
       if (option == "boleto") {
@@ -66,6 +66,7 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
         );
 
         setMethodCode(codeData.barCode);
+        setMethodImage("");
       }
     } catch (error) {
       toast.error("Algo deu errado.");
@@ -108,18 +109,19 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
           O pagamento no valor de R$100,00 expira em 24 horas
         </p>
 
-        {methodImage ||
-          (methodCode && (
-            <div className="flex flex-col gap-5 border rounded p-5 w-full max-w-[500px]">
-              {methodImage && (
-                <Image
-                  src={methodImage}
-                  alt="Imagem do pagamento"
-                  height={1000}
-                  width={1000}
-                  className="w-32 h-32 overflow-hidden rounded"
-                />
-              )}
+        <div className="flex flex-col items-center gap-5 border rounded p-5 w-full max-w-[500px]">
+          {methodImage && (
+            <Image
+              src={methodImage}
+              alt="Imagem do pagamento"
+              className="w-32 h-32 overflow-hidden rounded"
+              height={1000}
+              width={1000}
+            />
+          )}
+
+          {methodCode && (
+            <>
               {methodCode && (
                 <div className="p-2 flex items-center justify-center gap-5 w-full">
                   <p>{methodCode.slice(0, 20)}...</p>
@@ -132,8 +134,9 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
                   </Button>
                 </div>
               )}
-            </div>
-          ))}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

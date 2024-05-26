@@ -45,6 +45,7 @@ export interface PixCodeResProps {
   encodedImage: string;
   payload: string;
   expirationDate: string;
+  image: Image;
 }
 
 export interface BarCodeCodeResProps {
