@@ -1,4 +1,5 @@
 import { fetchAds } from "@/actions/ad/fetchAds";
+import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
 import { getUserServerSession } from "@/actions/session/getUserServerSession";
 import AdCard from "@/components/advertiser/cards/Ad";
 import StatsCard from "@/components/advertiser/cards/Stats";
@@ -80,7 +81,9 @@ const AdvertiserDashboard = async ({
     .sort((a, b) => a?.clicks?.length - b?.clicks?.length)
     .slice(0, 5);
 
-  const isOpenedModal = !user?.advertiserAccountId;
+  const hasAdvertiserAccount = !user?.advertiserAccountId;
+
+  let hasPaid = await checkMonthlyPayment({ userId: user?.id! });
 
   return (
     <section className="h-svh w-full flex flex-col items-center space-y-5 overflow-y-auto pb-5">
@@ -98,26 +101,27 @@ const AdvertiserDashboard = async ({
               </Link>
             </div>
           }
-          open={isOpenedModal}
+          open={hasAdvertiserAccount}
         />
       )}
 
-      {/* {!user?.lastPaymentId && (
+      {!user?.lastPaymentId && (
         <PersistentDialog
           title="Pagamento pendente"
           description={
             <div className="flex  flex-col gap-5">
               <p>
-                É necessário efetuar o pagamento da pendência para continuar anunciando
+                É necessário efetuar o pagamento da pendência para continuar
+                anunciando
               </p>
               <Link href="/advertiser/bills" className="self-end">
                 <Button>Clique aqui</Button>
               </Link>
             </div>
           }
-          open={isOpenedModal}
+          open={!hasPaid}
         />
-      )} */}
+      )}
 
       <div className="w-full flex justify-between border-b px-10 items-center py-5">
         <p className="text-4xl">Dashboard</p>
