@@ -199,7 +199,7 @@ model Payment {
   value                Int
   billingType          String
   status               String
-  description          String
+  description          String?
   paymentDate          String
   deleted              Boolean
   advertiserAcccountId String
