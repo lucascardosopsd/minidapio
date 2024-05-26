@@ -29,7 +29,7 @@ const BillsPage = async () => {
         <p className="text-4xl">Faturas</p>
       </div>
 
-      {hasPaid && (
+      {!hasPaid && (
         <NewBillCard
           user={user!}
           advertiserAccount={advertiserAccount}

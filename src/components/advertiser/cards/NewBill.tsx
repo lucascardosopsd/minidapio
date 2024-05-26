@@ -22,6 +22,7 @@ import axios from "axios";
 import { AdvertiserAccount, User } from "@prisma/client";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface NewBillCardProps {
   user: User;
@@ -77,7 +78,7 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
 
   return (
     <div className="w-full h-[calc(100svh-80px)] flex items-center justify-center flex-col gap-5">
-      <div className="border rounded p-5 flex flex-col gap-5">
+      <div className="p-5 flex flex-col gap-5">
         <p>{title}</p>
 
         <div className="flex gap-5">
@@ -109,7 +110,12 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
           O pagamento no valor de R$100,00 expira em 24 horas
         </p>
 
-        <div className="flex flex-col items-center gap-5 border rounded p-5 w-full max-w-[500px]">
+        <div
+          className={cn(
+            "flex flex-col items-center gap-5 border rounded p-5 w-full max-w-[500px]",
+            !methodImage && "hidden"
+          )}
+        >
           {methodImage && (
             <Image
               src={methodImage}
