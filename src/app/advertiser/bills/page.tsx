@@ -30,14 +30,15 @@ const BillsPage = async () => {
       </div>
 
       {!hasPaid && (
-        <NewBillCard
-          user={user!}
-          advertiserAccount={advertiserAccount}
-          title="Clique no botão para gerar seu pagamento"
-        />
+        <>
+          <NewBillCard
+            user={user!}
+            advertiserAccount={advertiserAccount}
+            title="Clique no botão para gerar seu pagamento"
+          />
+          <Separator />
+        </>
       )}
-
-      <Separator />
 
       <div className="flex flex-col justify-center gap-5 w-full px-10">
         <p>Pagamentos</p>
