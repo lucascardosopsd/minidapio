@@ -1,6 +1,5 @@
 import { Form } from "@/components/ui/form";
 import { useUserForm } from "@/hooks/useUserForm";
-import { UserProps } from "@/types/user";
 import { z } from "zod";
 import { userValidatorSchema } from "@/validators/user";
 import FieldBuilder from "@/components/builders/FieldBuilder";
@@ -9,9 +8,10 @@ import UploadImage from "@/components/misc/UploadImage";
 import SelectBuilder from "@/components/builders/SelectBuilder";
 import { SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { User } from "@prisma/client";
 
 interface UserFormProps {
-  defaultValues?: UserProps;
+  defaultValues?: User;
   onSubmit: (data: z.infer<typeof userValidatorSchema>) => Promise<void>;
   loading: boolean;
 }

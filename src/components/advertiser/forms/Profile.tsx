@@ -43,6 +43,7 @@ const AdvertiserProfileForm = ({
           cpfCnpj: "",
           phone: "",
           userId: user.id,
+          customerId: "",
         },
   });
 

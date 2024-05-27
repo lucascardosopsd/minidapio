@@ -1,10 +1,10 @@
-import { UserProps } from "@/types/user";
 import { userValidatorSchema } from "@/validators/user";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { User } from "@prisma/client";
 import { useForm } from "react-hook-form";
 
 interface useUserFormProps {
-  defaultValues?: UserProps;
+  defaultValues?: User | undefined;
 }
 
 export const useUserForm = ({ defaultValues }: useUserFormProps) => {

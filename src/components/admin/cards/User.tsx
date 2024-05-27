@@ -3,7 +3,6 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import DeleteModal from "@/components/restaurant/DeleteModal";
 import { toast } from "sonner";
-import { UserProps } from "@/types/user";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { deleteUser } from "@/actions/user/deleteUser";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -17,9 +16,10 @@ import { updateUser } from "@/actions/user/updateUser";
 import { userValidatorSchema } from "@/validators/user";
 import { useState } from "react";
 import { roleI18n } from "@/constants/roleI18n";
+import { User } from "@prisma/client";
 
 interface UserCardProps {
-  user: UserProps;
+  user: User;
   preview?: boolean;
 }
 
@@ -34,7 +34,7 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
   ) => {
     setLoading(true);
     try {
-      await updateUser({ id: user?.id!, user: data });
+      await updateUser({ id: user?.id!, data });
 
       setIsModalOpen(false);
 
@@ -53,7 +53,7 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
     setLoading(true);
 
     try {
-      await deleteUser({ id: user.id });
+      await deleteUser({ id: user?.id! });
 
       revalidateRoute({ fullPath: `${pathname}?${params}` });
 
@@ -73,12 +73,12 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
       <CardHeader className="flex-row items-center justify-between">
         <div className="flex gap-5 flex-1 items-center">
           <Avatar>
-            <AvatarImage src={user.image!} />
+            <AvatarImage src={user?.image!} />
           </Avatar>
 
-          <div className="flex items-center w-full flex-1">{user.name}</div>
+          <div className="flex items-center w-full flex-1">{user?.name}</div>
           <div className="flex items-center justify-center flex-1 w-full max-w-[200px]">
-            [{roleI18n[user.role]}]
+            [{roleI18n[user?.role!]}]
           </div>
         </div>
 
@@ -86,7 +86,7 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
           <div className="flex gap-5">
             <Button
               size="icon"
-              onClick={() => copyToClipboard(user.id, "", "Id copiado!")}
+              onClick={() => copyToClipboard(user?.id!, "", "Id copiado!")}
               className="right-5 top-5"
               variant="secondary"
             >
@@ -98,7 +98,7 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
               trigger={<FaPen />}
               content={
                 <UserForm
-                  defaultValues={user}
+                  defaultValues={user!}
                   onSubmit={handleUpdateUser}
                   loading={loading}
                 />
@@ -115,7 +115,7 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
                 <>
                   <p>
                     Você está apagando o usuário:{" "}
-                    <span className="text-red-500">{user.name}</span>
+                    <span className="text-red-500">{user?.name}</span>
                   </p>
                   <p>Deseja continuar?</p>
                 </>

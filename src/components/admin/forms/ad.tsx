@@ -18,11 +18,11 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useAdForm } from "@/hooks/useAdForm";
 import { RegionProps } from "@/types/region";
-import { UserProps } from "@/types/user";
 import { adValidator } from "@/validators/ad";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import UserCard from "../cards/User";
+import { User } from "@prisma/client";
 
 interface AdFormProps {
   defaultValues?: z.infer<typeof adValidator> | undefined;
@@ -32,7 +32,7 @@ interface AdFormProps {
 }
 
 const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
-  const [user, setUser] = useState<UserProps | null>({} as UserProps);
+  const [user, setUser] = useState<User | null>({} as User);
 
   const regionsOptions = regions.map((region: RegionProps) => ({
     label: region.title,
@@ -146,7 +146,7 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
               )}
             />
 
-            {user?.id && <UserCard user={user} preview />}
+            {user?.id && <UserCard user={user!} preview />}
           </div>
 
           <FormField

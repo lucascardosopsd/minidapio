@@ -10,7 +10,6 @@ interface CreateViewProps {
 export const createView = async ({ restaurantId, adId }: CreateViewProps) => {
   return await prisma.view.create({
     data: {
-      date: new Date(),
       restaurantId,
       adId,
     },
