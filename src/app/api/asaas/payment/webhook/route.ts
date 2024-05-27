@@ -12,6 +12,16 @@ export const POST = async (req: Request) => {
       },
     });
 
+    const checkPayment = await prisma.payment.findFirst({
+      where: {
+        paymentId: payment.id,
+      },
+    });
+
+    if (checkPayment) {
+      return Response.json({ ok: false });
+    }
+
     await prisma.payment.create({
       data: {
         paymentId: payment.id,
