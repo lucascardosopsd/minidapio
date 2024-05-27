@@ -128,7 +128,7 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
 
         <div className="flex gap-1 text-sm">
           {Object.entries(restaurant.methods).map(([key, value], index) => (
-            <span key={key}>
+            <span key={key} className="flex gap-1">
               {paymentMethods.map(
                 (payment) =>
                   key == payment.label && (

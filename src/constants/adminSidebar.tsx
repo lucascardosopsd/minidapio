@@ -1,18 +1,9 @@
-import {
-  Grip,
-  LucideIcon,
-  MapPinned,
-  User,
-  UtensilsCrossed,
-} from "lucide-react";
+"use client";
 
-interface AdsSidebarProps {
-  label: string;
-  icon: LucideIcon;
-  href: string;
-}
+import { SidebarOptionProps } from "@/types/sidebar";
+import { Grip, MapPinned, User, UtensilsCrossed } from "lucide-react";
 
-export const adminSidebarOptions: AdsSidebarProps[] = [
+export const adminSidebarOptions: SidebarOptionProps[] = [
   {
     label: "Anúncios",
     icon: Grip,

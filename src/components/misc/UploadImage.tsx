@@ -16,15 +16,14 @@ const UploadImage = ({ control, name }: UploadImageProps) => {
   });
 
   return (
-    <div className="relative">
+    <div className="relative rounded overflow-hidden">
       {watchChange && (
         <Image
           src={watchChange}
           alt={name}
-          width={0}
-          height={0}
-          sizes="1000px"
-          className="h-[180px] w-full object-cover absolute bottom-0 -z-10 opacity-50 rounded"
+          width={500}
+          height={500}
+          className="h-full w-full object-cover absolute bottom-0 -z-10 opacity-50"
         />
       )}
 
@@ -50,6 +49,7 @@ const UploadImage = ({ control, name }: UploadImageProps) => {
                   button: "bg-primary text-background",
                   allowedContent: "text-primary/60",
                   uploadIcon: "text-primary",
+                  container: "w-full h-full -mt-2",
                 }}
                 className="border border-primary hover:border-primary/60"
               />

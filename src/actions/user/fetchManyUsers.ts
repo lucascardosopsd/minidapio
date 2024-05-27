@@ -1,12 +1,11 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { UserProps } from "@/types/user";
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 
 type UserQuery = Prisma.UserFindManyArgs;
 
 interface FetchManyUsersResProps {
-  users: UserProps[];
+  users: User[];
   pages: number;
 }
 

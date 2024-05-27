@@ -1,6 +1,4 @@
 "use client";
-
-import { adminSidebarOptions } from "@/constants/adminSidebar";
 import {
   Tooltip,
   TooltipContent,
@@ -14,21 +12,30 @@ import { Separator } from "../ui/separator";
 import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { SidebarOptionProps } from "@/types/sidebar";
 
-const Sidebar = () => {
+interface ReusableSidebarProps {
+  options: SidebarOptionProps[];
+  redirectLogout: string;
+}
+
+const ReusableSidebar = ({ options, redirectLogout }: ReusableSidebarProps) => {
   const pathname = usePathname();
+
+  const currentPath =
+    pathname.split("?").length > 0 ? pathname.split("?")[0] : pathname;
 
   return (
     <div className="h-full w-20 flex flex-col items-center border border-r gap-10 py-10">
-      {adminSidebarOptions.map((option, index) => (
+      {options.map((option, index) => (
         <TooltipProvider key={index}>
           <Tooltip>
             <TooltipTrigger
               className={cn(
                 "transition",
-                option.href.split("?")[0] == pathname.split("?")[0] &&
+                option.href.split("?")[0] == currentPath &&
                   "text-primary border border-primary rounded p-2",
-                option.href.split("?")[0] !== pathname.split("?")[0] &&
+                option.href.split("?")[0] !== currentPath &&
                   "hover:scale-125 hover:text-primary"
               )}
             >
@@ -49,7 +56,7 @@ const Sidebar = () => {
           size="icon"
           onClick={() => {
             signOut({
-              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/admin/login`,
+              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}${redirectLogout}`,
             });
           }}
         >
@@ -60,4 +67,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default ReusableSidebar;

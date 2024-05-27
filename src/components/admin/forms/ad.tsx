@@ -1,4 +1,5 @@
 "use client";
+import { fetchUser } from "@/actions/user/fetchUser";
 import FieldBuilder from "@/components/builders/FieldBuilder";
 import SelectBuilder from "@/components/builders/SelectBuilder";
 import UploadImage from "@/components/misc/UploadImage";
@@ -18,7 +19,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAdForm } from "@/hooks/useAdForm";
 import { RegionProps } from "@/types/region";
 import { adValidator } from "@/validators/ad";
+import { useEffect, useState } from "react";
 import { z } from "zod";
+import UserCard from "../cards/User";
+import { User } from "@prisma/client";
 
 interface AdFormProps {
   defaultValues?: z.infer<typeof adValidator> | undefined;
@@ -28,6 +32,8 @@ interface AdFormProps {
 }
 
 const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
+  const [user, setUser] = useState<User | null>({} as User);
+
   const regionsOptions = regions.map((region: RegionProps) => ({
     label: region.title,
     value: region.id,
@@ -41,9 +47,40 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
       image: "",
       link: "",
       active: true,
+      userId: "",
       regionId: regionsOptions[0].value,
     },
   });
+
+  const handleFetchUser = async (userId: string) => {
+    if (userId) {
+      try {
+        const user = await fetchUser({ id: userId });
+
+        if (user) {
+          setUser(user);
+
+          return true;
+        }
+
+        form.setValue("userId", "");
+        form.setError("userId", {
+          message: "Digite um usuário válido!",
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    if (defaultValues?.userId) {
+      handleFetchUser(defaultValues?.userId);
+      return;
+    }
+  }, []);
+
   return (
     <Form {...form}>
       <form
@@ -85,24 +122,32 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
         />
 
         <div className="flex space-x-5">
-          <FormField
-            control={form.control}
-            name="expiration"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Expiração (Opcional)</FormLabel>
-                <FormControl>
-                  <Input
-                    type="datetime-local"
-                    {...field}
-                    value={field.value ? field.value.toLocaleDateString() : ""}
-                    onChange={(e) => field.onChange(e.target.valueAsDate)}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="space-y-2 flex-1">
+            <FormField
+              control={form.control}
+              name="userId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Usuário</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Digite o ID e pressione enter"
+                      className="w-full rounded-r-none"
+                      onChange={async (e) => {
+                        field.onChange(e);
+                        if (e.target.value.length >= 24) {
+                          await handleFetchUser(form.watch("userId", "") || "");
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {user?.id && <UserCard user={user!} preview />}
+          </div>
 
           <FormField
             control={form.control}
@@ -126,7 +171,7 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
           />
         </div>
 
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading} className="w-full">
           Confirmar
         </Button>
       </form>

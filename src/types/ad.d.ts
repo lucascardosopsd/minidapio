@@ -10,6 +10,27 @@ export interface AdProps {
   regionId: string;
   restaurantId?: string | null;
   restaurant?: Restaurant | null;
+  userId: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface FullAdProps extends AdProps {
+  clicks: ClickProps[];
+  views: ViewProps[];
+}
+
+export interface ClickProps {
+  id: string;
+  adId?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ViewProps {
+  id: string;
+  adId: string;
+  restaurantId: string;
   createdAt: Date;
   updatedAt: Date;
 }

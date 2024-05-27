@@ -36,17 +36,22 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?      @unique
-  emailVerified DateTime?
-  image         String?
-  role          String       @default("user")
-  accounts      Account[]
-  sessions      Session[]
-  restaurants   Restaurant[]
-  categories    Category[]
-  items         Item[]
+  id                  String             @id @default(auto()) @map("_id") @db.ObjectId
+  name                String?
+  email               String?            @unique
+  emailVerified       DateTime?
+  image               String?
+  advertiserAccountId String?            @db.ObjectId
+  lastPaymentId       String?
+  role                String             @default("user")
+  accounts            Account[]
+  sessions            Session[]
+  restaurants         Restaurant[]
+  categories          Category[]
+  items               Item[]
+  Ad                  Ad[]
+  AdvertiserAccount   AdvertiserAccount?
+  payments            Payment[]
 }
 
 model VerificationToken {
@@ -134,6 +139,9 @@ model Ad {
   active      Boolean
   regionId    String    @db.ObjectId
   views       View[]
+  userId      String?   @db.ObjectId
+  user        User?     @relation(fields: [userId], references: [id])
+  clicks      Click[]
 
   region Region @relation(fields: [regionId], references: [id], onDelete: Cascade)
 
@@ -142,12 +150,58 @@ model Ad {
 }
 
 model View {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  date         DateTime
-  adId         String   @db.ObjectId
-  restaurantId String   @db.ObjectId
-  ad           Ad?      @relation(fields: [adId], references: [id], onDelete: Cascade)
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  adId         String @db.ObjectId
+  restaurantId String @db.ObjectId
+  ad           Ad?    @relation(fields: [adId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Click {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  adId      String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Ad Ad? @relation(fields: [adId], references: [id])
+}
+
+model AdvertiserAccount {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  cpfCnpj    String   @unique
+  phone      String
+  personType String
+  customerId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String   @unique @db.ObjectId
+
+  payments Payment[]
+  user     User      @relation(fields: [userId], references: [id])
+}
+
+model Payment {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  paymentId            String
+  dateCreated          String
+  customer             String
+  paymentLink          String?
+  dueDate              String
+  value                Int
+  billingType          String
+  status               String
+  description          String?
+  paymentDate          String
+  deleted              Boolean
+  advertiserAcccountId String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  AdvertiserAccount   AdvertiserAccount? @relation(fields: [advertiserAccountId], references: [id])
+  advertiserAccountId String?            @db.ObjectId
+  User                User?              @relation(fields: [userId], references: [id])
+  userId              String?            @db.ObjectId
 }

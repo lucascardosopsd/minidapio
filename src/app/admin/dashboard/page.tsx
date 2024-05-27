@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { fetchRegions } from "@/actions/region/fetchRegions";
 import { fetchAds } from "@/actions/ad/fetchAds";
 import AdCard from "@/components/admin/cards/Ad";
-import Paginate from "@/components/misc/Pagination";
+import Paginate from "@/components/misc/Paginate";
 
 interface AdminPageProps {
   searchParams?: {

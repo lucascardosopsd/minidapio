@@ -26,7 +26,6 @@ const CategoriesModalContent = ({
   const handlePickAd = async () => {
     const ad = await pickAd({
       regionId: restaurant.regionId!,
-      restaurantId: restaurant.id,
     });
 
     setCurrentAd(ad);
@@ -43,6 +42,7 @@ const CategoriesModalContent = ({
           <CategoryItemsContent
             items={restaurant.Items}
             themeColor={themeColor}
+            restaurantId={restaurant.id}
           />
         }
       />
@@ -78,6 +78,7 @@ const CategoriesModalContent = ({
                     <CategoryItemsContent
                       items={category.items!}
                       themeColor={themeColor}
+                      restaurantId={restaurant.id}
                     />
                   }
                 />

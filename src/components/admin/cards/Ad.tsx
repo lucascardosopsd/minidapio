@@ -69,7 +69,7 @@ const AdCard = ({ ad, regions }: AdCardProps) => {
             width={300}
             height={300}
             alt={ad.title}
-            className="w-[150px] h-[80px] rounded border border-2 object-cover"
+            className="w-[150px] h-[80px] rounded border-2 object-cover"
           />
           <div className="flex items-center">{ad.title}</div>
         </div>

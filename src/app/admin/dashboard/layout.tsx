@@ -2,11 +2,12 @@
 
 import { ReactNode } from "react";
 import Navbar from "@/components/admin/Navbar";
-import Sidebar from "@/components/admin/Sidebar";
+import Sidebar from "@/components/misc/ReusableSidebar";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 import { nextAuthOptions } from "@/lib/authProviders";
 import { redirect } from "next/navigation";
+import { adminSidebarOptions } from "@/constants/adminSidebar";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
@@ -25,11 +26,9 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="flex h-svh w-full">
-      <Sidebar />
+      <Sidebar options={adminSidebarOptions} redirectLogout="/admin/login" />
       <div className="w-full">
-        <Navbar
-          signOutcallbackUrl={process.env.NEXT_PUBLIC_HOST! + "/admin/login"}
-        />
+        <Navbar />
         <div className="flex flex-col px-10 items-center justify-center h-[calc(100svh-80px)]">
           {children}
         </div>
