@@ -12,8 +12,6 @@ import SelectBuilder from "../../builders/SelectBuilder";
 import { PatternFormat } from "react-number-format";
 import Fence from "../Fence";
 import { slugGen } from "@/tools/slugGen";
-import { FaRegCopy } from "react-icons/fa6";
-import { copyToClipboard } from "@/tools/copyToClipboard";
 import ColorPicker from "../ColorPicker";
 import { createNewRestaurant } from "@/actions/restaurant/createNewRestaurant";
 import { toast } from "sonner";
@@ -343,24 +341,6 @@ const RestaurantForm = ({
           name="note"
           title="Observação"
         />
-
-        <div className="flex gap-2 items-center">
-          <Button
-            type="button"
-            className="gap-2 w-full font-semibold"
-            onClick={() =>
-              copyToClipboard(
-                `${process.env.NEXT_PUBLIC_HOST}/menu/${
-                  defaultValues?.userId || userId
-                }/${slugGen(watchTitle)}`,
-                "slug"
-              )
-            }
-          >
-            Copiar link do cardápio
-            <FaRegCopy strokeWidth={15} />
-          </Button>
-        </div>
 
         <input
           hidden
