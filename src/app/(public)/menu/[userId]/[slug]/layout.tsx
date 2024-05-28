@@ -9,8 +9,8 @@ interface LayoutProps {
 
 const Layout = ({ params: { id }, children }: LayoutProps) => {
   return (
-    <div className="flex flex-col h-full">
-      <div className="container h-full">{children}</div>
+    <div className="flex h-full max-w-lg items mx-auto relative">
+      <div className="container h-full mx-auto">{children}</div>
     </div>
   );
 };

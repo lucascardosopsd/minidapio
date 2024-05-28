@@ -39,11 +39,13 @@ const CategoriesModalContent = ({
         triggerClassName="flex justify-center font-bold"
         triggerStyle={{ borderColor: themeColor, background: themeColor }}
         content={
-          <CategoryItemsContent
-            items={restaurant.Items}
-            themeColor={themeColor}
-            restaurantId={restaurant.id}
-          />
+          <div className="max-w-lg mx-auto">
+            <CategoryItemsContent
+              items={restaurant.Items}
+              themeColor={themeColor}
+              restaurantId={restaurant.id}
+            />
+          </div>
         }
       />
 
@@ -75,11 +77,13 @@ const CategoriesModalContent = ({
                   triggerStyle={{ borderColor: themeColor }}
                   onClick={() => handlePickAd()}
                   content={
-                    <CategoryItemsContent
-                      items={category.items!}
-                      themeColor={themeColor}
-                      restaurantId={restaurant.id}
-                    />
+                    <div className="max-w-lg mx-auto">
+                      <CategoryItemsContent
+                        items={category.items!}
+                        themeColor={themeColor}
+                        restaurantId={restaurant.id}
+                      />
+                    </div>
                   }
                 />
               )

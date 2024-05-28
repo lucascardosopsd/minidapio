@@ -31,7 +31,6 @@ const CategoryItemsContent = ({
   };
 
   useEffect(() => {
-    console.log(isAdInView);
     if (currentAd && isAdInView) return handleCreateView();
   }, [isAdInView]);
 

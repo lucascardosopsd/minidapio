@@ -45,12 +45,14 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
           triggerStyle={{ color: themeColor, borderColor: themeColor }}
           triggerVariant="outline"
           content={
-            <CategoriesModalContent
-              categories={restaurant.Categories}
-              items={restaurant.Items}
-              themeColor={themeColor}
-              restaurant={restaurant}
-            />
+            <div className="max-w-lg mx-auto">
+              <CategoriesModalContent
+                categories={restaurant.Categories}
+                items={restaurant.Items}
+                themeColor={themeColor}
+                restaurant={restaurant}
+              />
+            </div>
           }
         />
       </div>
