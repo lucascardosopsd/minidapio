@@ -3,9 +3,10 @@ import { BreadcrumbRouteProps } from "@/types/breacrumb";
 import { ThemeToggle } from "../misc/ThemeToggle";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { LogOutIcon } from "lucide-react";
+import { Avatar, AvatarImage } from "../ui/avatar";
 
 interface NavbarProps {
   breadcrumb?: BreadcrumbRouteProps[];
@@ -13,6 +14,7 @@ interface NavbarProps {
 
 const Navbar = ({ breadcrumb }: NavbarProps) => {
   const router = useRouter();
+  const { data: session } = useSession();
 
   return (
     <div className="container flex justify-between items-center p-4 border-b border-border h-16">
@@ -33,6 +35,10 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
       </div>
       <div className="flex gap-2 items-center">
         <ThemeToggle />
+
+        <Avatar>
+          <AvatarImage src={session?.user?.image!} />
+        </Avatar>
         <Button
           variant="outline"
           onClick={() => {
