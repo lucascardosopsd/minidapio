@@ -25,6 +25,7 @@ const CategoryItemsContent = ({
   const handleCreateView = () => {
     try {
       createView({ restaurantId, adId: currentAd?.id! });
+      return;
     } catch (error) {
       console.log(error);
     }
