@@ -3,8 +3,6 @@ import { weekDays } from "@/constants/weekDays";
 import { useRestaurantForm } from "@/hooks/useRestaurantForm";
 import { useFieldArray, useWatch } from "react-hook-form";
 import { z } from "zod";
-import { restaurantValidator } from "@/validators/restaurant";
-import { RestaurantProps } from "@/types/restaurant";
 import { paymentMethods } from "@/constants/paymentMethods";
 import FieldBuilder from "../../builders/FieldBuilder";
 import UploadImage from "../../misc/UploadImage";
@@ -13,11 +11,6 @@ import { PatternFormat } from "react-number-format";
 import Fence from "../Fence";
 import { slugGen } from "@/tools/slugGen";
 import ColorPicker from "../ColorPicker";
-import { createNewRestaurant } from "@/actions/restaurant/createNewRestaurant";
-import { toast } from "sonner";
-import { useState } from "react";
-import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
-import { updateRestaurant } from "@/actions/restaurant/updateRestaurant";
 import {
   Form,
   FormControl,
@@ -38,22 +31,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RegionProps } from "@/types/region";
+import { restaurantValidator } from "@/validators/restaurant";
+import { RestaurantProps } from "@/types/restaurant";
+import { ArrowDown } from "lucide-react";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
-  toggleOpen?: () => void;
   regions: RegionProps[];
-  userId?: string;
+  onSubmit: (data: z.infer<typeof restaurantValidator>) => Promise<void>;
+  loading: boolean;
 }
 
 const RestaurantForm = ({
   defaultValues = undefined,
-  toggleOpen = () => {},
+  onSubmit,
+  loading,
   regions,
-  userId,
 }: RestaurantFormProps) => {
-  const [loading, setLoading] = useState(false);
-
   const form = useRestaurantForm({ defaultValues });
 
   const regionsOptions = regions.map((region: RegionProps) => ({
@@ -77,80 +71,16 @@ const RestaurantForm = ({
 
   const handleAppendWorkHour = () => {
     appendWorkHour({
-      weekDay: true,
+      weekDay: weekDays[0].value,
       opened: true,
-      close: true,
-      open: true,
+      times: { open: "", close: "" },
     });
-  };
-
-  const handleUpdateRestaurant = async (
-    data: z.infer<typeof restaurantValidator>
-  ) => {
-    setLoading(true);
-
-    const restaurantExists = await fetchUserRestaurantsByQuery({
-      where: {
-        title: form.getValues("title"),
-      },
-    });
-
-    if (!restaurantExists[0]) {
-      setLoading(false);
-      return;
-    }
-
-    try {
-      await updateRestaurant({ id: defaultValues?.id!, data });
-      form.reset();
-      toast("Restaurante Atualizado");
-    } catch (error) {
-      toast("Ocorreu um erro.");
-    } finally {
-      toggleOpen();
-      setLoading(false);
-    }
-  };
-
-  const handleNewRestaurant = async (
-    data: z.infer<typeof restaurantValidator>
-  ) => {
-    setLoading(true);
-
-    const restaurantExists = await fetchUserRestaurantsByQuery({
-      where: {
-        title: form.getValues("title"),
-      },
-    });
-
-    if (restaurantExists[0]) {
-      toast("Já existe um restaurante com este nome!");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const slug = slugGen(form.getValues("title"));
-      await createNewRestaurant({
-        ...data,
-        slug,
-      });
-      form.reset();
-      toast("Restaurante Criado");
-    } catch (error) {
-      toast("Ocorreu um erro.");
-    } finally {
-      toggleOpen();
-      setLoading(false);
-    }
   };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(
-          !defaultValues ? handleNewRestaurant : handleUpdateRestaurant
-        )}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4 pb-10 relative max-w-[500px] w-full"
       >
         {/* Basic */}
@@ -231,7 +161,9 @@ const RestaurantForm = ({
           control={form.control}
           name="regionId"
           selectItem={regionsOptions.map((option) => (
-            <SelectItem value={option.value}>{option.label}</SelectItem>
+            <SelectItem value={option.value} key={option.value}>
+              {option.label}
+            </SelectItem>
           ))}
         />
 
@@ -239,8 +171,8 @@ const RestaurantForm = ({
         <div className="border border-border p-2 rounded space-y-4 flex flex-col">
           <p>Horários*</p>
 
-          {workHoursFields.map((_, index) => (
-            <span key={index}>
+          {workHoursFields.map((field, index) => (
+            <span key={field.id}>
               <div className="flex flex-col gap-2 border border-primary rounded p-2">
                 <FormField
                   control={form.control}
@@ -249,15 +181,12 @@ const RestaurantForm = ({
                     <FormItem>
                       <FormLabel>Dia</FormLabel>
                       <Select
+                        value={field.value}
                         onValueChange={field.onChange}
-                        defaultValue={
-                          field.value ||
-                          defaultValues?.workHours[index]?.weekDay.toString()
-                        }
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue />
+                            <SelectValue placeholder="Selecione um dia" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -296,10 +225,6 @@ const RestaurantForm = ({
                       control={form.control}
                       fieldElement={<Checkbox />}
                       name={`workHours.${index}.opened`}
-                      defaultValue={
-                        defaultValues?.workHours ??
-                        defaultValues?.workHours[index].opened
-                      }
                     />
                   </div>
                   <p>Aberto</p>
@@ -312,6 +237,12 @@ const RestaurantForm = ({
                 >
                   Remover
                 </Button>
+
+                {workHoursFields.length - 1 == index && (
+                  <Button onClick={() => appendWorkHour(field)} type="button">
+                    Duplicar <ArrowDown size={16} />
+                  </Button>
+                )}
               </div>
             </span>
           ))}
@@ -350,12 +281,7 @@ const RestaurantForm = ({
         />
 
         <div className="flex gap-2 items-center">
-          <Button
-            variant="destructive"
-            className="w-full"
-            type="button"
-            onClick={toggleOpen}
-          >
+          <Button variant="destructive" className="w-full" type="submit">
             Cancelar
           </Button>
 

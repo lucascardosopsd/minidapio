@@ -5,9 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "../../ui/card";
 import Link from "next/link";
 import { Button } from "../../ui/button";
 import { FaArrowRight, FaRegCopy, FaTrash } from "react-icons/fa6";
-import RestaurantSheet from "../modals/Restaurant";
 import RestaurantForm from "../forms/Restaurant";
-import { RestaurantProps } from "@/types/restaurant";
 import { ImSpinner2 } from "react-icons/im";
 import { useState } from "react";
 import { Session } from "@/types/session";
@@ -17,6 +15,12 @@ import DeleteModal from "../DeleteModal";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import { RegionProps } from "@/types/region";
 
+import { restaurantValidator } from "@/validators/restaurant";
+import { z } from "zod";
+import { updateRestaurant } from "@/actions/restaurant/updateRestaurant";
+import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
+import ReusableModal from "@/components/misc/ReusableModal";
+import { RestaurantProps } from "@/types/restaurant";
 interface RestaurantCardProps {
   restaurant: RestaurantProps;
   session: Session | null;
@@ -29,6 +33,33 @@ const RestaurantCard = ({
   regions,
 }: RestaurantCardProps) => {
   const [loading, setLoading] = useState(false);
+
+  const handleUpdateRestaurant = async (
+    data: z.infer<typeof restaurantValidator>
+  ) => {
+    setLoading(true);
+
+    const restaurantExists = await fetchUserRestaurantsByQuery({
+      where: {
+        title: data.title,
+      },
+    });
+
+    if (!restaurantExists[0]) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await updateRestaurant({ id: data?.id!, data });
+      toast.success("Restaurante Atualizado");
+    } catch (error) {
+      toast("Ocorreu um erro.");
+    } finally {
+      setLoading(false);
+      setLoading(false);
+    }
+  };
 
   const handleDeleteRestaurant = async () => {
     try {
@@ -85,14 +116,19 @@ const RestaurantCard = ({
         </Link>
 
         <div className="flex gap-2 w-full">
-          <RestaurantSheet
-            restaurantForm={
-              <RestaurantForm defaultValues={restaurant} regions={regions} />
+          <ReusableModal
+            content={
+              <RestaurantForm
+                defaultValues={restaurant}
+                regions={regions}
+                loading={loading}
+                onSubmit={handleUpdateRestaurant}
+              />
             }
-            sheetTitle="Editar Restaurante"
-            triggerText="Editar"
+            title="Editar Restaurante"
+            trigger="Editar"
             triggerVariant="outline"
-            triggerClassname="w-full"
+            triggerClassName="w-full"
           />
 
           <Button
