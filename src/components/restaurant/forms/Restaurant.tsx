@@ -81,7 +81,7 @@ const RestaurantForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 pb-10 relative max-w-[500px] w-full"
+        className="space-y-4 pb-10 relative max-w-[500px] w-full mx-auto"
       >
         {/* Basic */}
         <FieldBuilder
