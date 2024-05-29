@@ -1,4 +1,5 @@
 import FieldBuilder from "@/components/builders/FieldBuilder";
+import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAfiliateForm } from "@/hooks/useAfiliateForm";
@@ -44,6 +45,8 @@ const AfiliateForm = ({ defaultValues, onSubmit }: AfiliateFormProps) => {
           control={form.control}
           fieldElement={<Input type="number" defaultValue={70} />}
         />
+
+        <Button type="submit">Confirmar</Button>
       </form>
     </Form>
   );

@@ -1,15 +1,15 @@
-import UserPagination from "@/components/admin/users/UserPagination";
+import AfiliatePagination from "@/components/admin/afiliates/AfiliatesPagination";
 import { Separator } from "@/components/ui/separator";
 import { Suspense } from "react";
 
-interface UsersPageProps {
+interface AfiliatesPageProps {
   searchParams?: {
     page: string;
     name?: string;
   };
 }
 
-const UsersPage = async ({ searchParams }: UsersPageProps) => {
+const AfiliatesPage = async ({ searchParams }: AfiliatesPageProps) => {
   const page = Number(searchParams?.page || 1);
   const name = searchParams?.name || "";
 
@@ -28,7 +28,7 @@ const UsersPage = async ({ searchParams }: UsersPageProps) => {
   return (
     <div className="relative w-full ">
       <Suspense fallback={fallback}>
-        <UserPagination
+        <AfiliatePagination
           page={page}
           query={
             name
@@ -48,4 +48,4 @@ const UsersPage = async ({ searchParams }: UsersPageProps) => {
   );
 };
 
-export default UsersPage;
+export default AfiliatesPage;
