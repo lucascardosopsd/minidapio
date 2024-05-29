@@ -281,10 +281,6 @@ const RestaurantForm = ({
         />
 
         <div className="flex gap-2 items-center">
-          <Button variant="destructive" className="w-full" type="submit">
-            Cancelar
-          </Button>
-
           <Button
             variant="default"
             className="w-full"

@@ -69,6 +69,8 @@ const RestaurantsList = ({
         <ReusableModal
           title="Novo Restaurante"
           trigger="Novo restaurante"
+          isOpen={open}
+          onOpen={setOpen}
           content={
             <RestaurantForm
               regions={regions}

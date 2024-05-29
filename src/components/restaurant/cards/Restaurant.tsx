@@ -33,15 +33,17 @@ const RestaurantCard = ({
   regions,
 }: RestaurantCardProps) => {
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleUpdateRestaurant = async (
     data: z.infer<typeof restaurantValidator>
   ) => {
+    console.log(data);
     setLoading(true);
 
     const restaurantExists = await fetchUserRestaurantsByQuery({
       where: {
-        title: data.title,
+        id: data.id,
       },
     });
 
@@ -50,14 +52,18 @@ const RestaurantCard = ({
       return;
     }
 
+    const id = data.id!;
+
+    delete data.id;
+
     try {
-      await updateRestaurant({ id: data?.id!, data });
+      await updateRestaurant({ id, data });
       toast.success("Restaurante Atualizado");
     } catch (error) {
       toast("Ocorreu um erro.");
     } finally {
       setLoading(false);
-      setLoading(false);
+      setOpen(false);
     }
   };
 
@@ -125,6 +131,8 @@ const RestaurantCard = ({
                 onSubmit={handleUpdateRestaurant}
               />
             }
+            isOpen={open}
+            onOpen={setOpen}
             title="Editar Restaurante"
             trigger="Editar"
             triggerVariant="outline"
