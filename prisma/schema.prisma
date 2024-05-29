@@ -44,6 +44,7 @@ model User {
   advertiserAccountId String?            @db.ObjectId
   lastPaymentId       String?
   role                String             @default("user")
+  afiliateId          String?
   accounts            Account[]
   sessions            Session[]
   restaurants         Restaurant[]
@@ -52,6 +53,18 @@ model User {
   Ad                  Ad[]
   AdvertiserAccount   AdvertiserAccount?
   payments            Payment[]
+}
+
+model Afiliate {
+  id          String              @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String
+  phone       String
+  pix         String
+  kickback    Int                 @default(70)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  advertisers AdvertiserAccount[]
 }
 
 model VerificationToken {
@@ -178,9 +191,11 @@ model AdvertiserAccount {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   userId     String   @unique @db.ObjectId
+  afiliateId String?  @db.ObjectId
 
   payments Payment[]
   user     User      @relation(fields: [userId], references: [id])
+  Afiliate Afiliate? @relation(fields: [afiliateId], references: [id])
 }
 
 model Payment {
