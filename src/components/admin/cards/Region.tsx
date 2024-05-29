@@ -10,7 +10,7 @@ import { FaPen, FaTrash } from "react-icons/fa6";
 import { updateRegion } from "@/actions/region/updateRegion";
 import DeleteModal from "@/components/restaurant/DeleteModal";
 import { deleteRegion } from "@/actions/region/deleteRegion";
-import RegionModalContent from "../forms/region";
+import RegionModalContent from "../forms/Region";
 
 interface RegionCardProps {
   region: RegionProps;

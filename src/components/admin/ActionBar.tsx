@@ -1,6 +1,6 @@
 "use client";
 import { adValidator } from "@/validators/ad";
-import AdForm from "./forms/ad";
+import AdForm from "./forms/Ad";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";

@@ -10,7 +10,7 @@ import { revalidateRoute } from "@/actions/revalidateRoute";
 import { Button } from "@/components/ui/button";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import ReusableModal from "@/components/misc/ReusableModal";
-import UserForm from "../forms/user";
+import UserForm from "../forms/User";
 import { z } from "zod";
 import { updateUser } from "@/actions/user/updateUser";
 import { userValidatorSchema } from "@/validators/user";
