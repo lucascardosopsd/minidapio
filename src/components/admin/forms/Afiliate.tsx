@@ -10,14 +10,19 @@ import { z } from "zod";
 interface AfiliateFormProps {
   defaultValues?: z.infer<typeof afiliateValidator> | undefined;
   onSubmit: (data: z.infer<typeof afiliateValidator>) => Promise<void>;
+  loading: boolean;
 }
 
-const AfiliateForm = ({ defaultValues, onSubmit }: AfiliateFormProps) => {
+const AfiliateForm = ({
+  defaultValues,
+  onSubmit,
+  loading,
+}: AfiliateFormProps) => {
   const form = useAfiliateForm({ defaultValues });
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         <FieldBuilder
           name="name"
           title="Nome"
@@ -40,13 +45,22 @@ const AfiliateForm = ({ defaultValues, onSubmit }: AfiliateFormProps) => {
         />
 
         <FieldBuilder
+          name="pix"
+          title="Chave PIX"
+          control={form.control}
+          fieldElement={<Input />}
+        />
+
+        <FieldBuilder
           name="kickback"
-          title="comissão"
+          title="Comissão(%)"
           control={form.control}
           fieldElement={<Input type="number" defaultValue={70} />}
         />
 
-        <Button type="submit">Confirmar</Button>
+        <Button type="submit" disabled={loading} className="w-full">
+          Confirmar
+        </Button>
       </form>
     </Form>
   );

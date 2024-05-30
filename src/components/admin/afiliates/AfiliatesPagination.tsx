@@ -1,9 +1,9 @@
 import Paginate from "@/components/misc/Paginate";
 import { Separator } from "@/components/ui/separator";
-import SearchField from "@/components/misc/SearchField";
 import { Prisma } from "@prisma/client";
 import { fetchManyAfiliates } from "@/actions/afiliate/fetchManyAfiliates";
 import AfiliateCard from "../cards/Afiliate";
+import AfiliatesActionBar from "./ActionBar";
 
 interface AfiliatesPaginationprops {
   page: number;
@@ -23,10 +23,7 @@ const AfiliatesPagination = async ({
   return (
     <>
       <div className="w-full h-full py-10 flex gap-5 flex-col">
-        <div className="flex justify-between w-full gap-5 items-center">
-          <p className="text-2xl">Afiliados</p>
-          <SearchField keyName="name" placeholder="Busque um nome" />
-        </div>
+        <AfiliatesActionBar />
 
         <Separator />
 
