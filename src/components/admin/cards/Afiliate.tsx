@@ -8,13 +8,13 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { Button } from "@/components/ui/button";
 import { copyToClipboard } from "@/tools/copyToClipboard";
-import ReusableModal from "@/components/misc/ReusableModal";
 import { z } from "zod";
 import { useState } from "react";
 import { Afiliate } from "@prisma/client";
 import { afiliateValidator } from "@/validators/afiliate";
 import { updateAfiliate } from "@/actions/afiliate/updateAfiliate";
 import AfiliateForm from "../forms/Afiliate";
+import ReusableDialog from "@/components/misc/ReusableDialog";
 
 interface UserAfiliateProps {
   afiliate: Afiliate;
@@ -86,13 +86,14 @@ const AfiliateCard = ({ afiliate, preview = false }: UserAfiliateProps) => {
               ID
             </Button>
 
-            <ReusableModal
+            <ReusableDialog
               title="Editar usuário"
               trigger={<FaPen />}
               content={
                 <AfiliateForm
                   defaultValues={afiliate!}
                   onSubmit={handleUpdateAfiliate}
+                  loading={loading}
                 />
               }
               isOpen={isModalOpen}
