@@ -36,7 +36,7 @@ const AfiliateCard = ({ afiliate, preview = false }: UserAfiliateProps) => {
 
       setIsModalOpen(false);
 
-      toast.info("Usuário atualizado");
+      toast.info("Afiliado atualizado");
 
       revalidateRoute({ fullPath: `${pathname}?${params}` });
     } catch (error) {

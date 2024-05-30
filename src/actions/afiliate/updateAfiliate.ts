@@ -1,14 +1,14 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { User } from "@prisma/client";
+import { Afiliate } from "@prisma/client";
 
 interface updateAfiliateProps {
   id: string;
-  data: Partial<User>;
+  data: Partial<Afiliate>;
 }
 
 export const updateAfiliate = async ({ id, data }: updateAfiliateProps) => {
-  return await prisma.user.update({
+  return await prisma.afiliate.update({
     where: { id },
     data,
   });

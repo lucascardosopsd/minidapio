@@ -11,7 +11,7 @@ import { useState } from "react";
 
 const AfiliatesActionBar = () => {
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const handleOnSubmit = async (data: z.infer<typeof afiliateValidator>) => {
     try {

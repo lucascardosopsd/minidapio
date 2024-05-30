@@ -53,18 +53,21 @@ model User {
   Ad                  Ad[]
   AdvertiserAccount   AdvertiserAccount?
   payments            Payment[]
+  Afiliate            Afiliate[]
 }
 
 model Afiliate {
-  id          String              @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  email       String
-  phone       String
-  pix         String
-  kickback    Int                 @default(70)
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
-  advertisers AdvertiserAccount[]
+  id                        String                      @id @default(auto()) @map("_id") @db.ObjectId
+  name                      String
+  email                     String
+  phone                     String
+  pix                       String
+  kickback                  Int                         @default(70)
+  createdAt                 DateTime                    @default(now())
+  updatedAt                 DateTime                    @updatedAt
+  user                      User                        @relation(fields: [userId], references: [id])
+  AfiliateAdvertiserAccount AfiliateAdvertiserAccount[]
+  userId                    String                      @db.ObjectId
 }
 
 model VerificationToken {
@@ -193,9 +196,19 @@ model AdvertiserAccount {
   userId     String   @unique @db.ObjectId
   afiliateId String?  @db.ObjectId
 
-  payments Payment[]
-  user     User      @relation(fields: [userId], references: [id])
-  Afiliate Afiliate? @relation(fields: [afiliateId], references: [id])
+  payments                  Payment[]
+  user                      User                        @relation(fields: [userId], references: [id])
+  AfiliateAdvertiserAccount AfiliateAdvertiserAccount[]
+}
+
+model AfiliateAdvertiserAccount {
+  id                  String            @id @default(auto()) @map("_id") @db.ObjectId
+  afiliateId          String            @db.ObjectId
+  advertiserAccountId String            @db.ObjectId
+  afiliate            Afiliate          @relation(fields: [afiliateId], references: [id], onDelete: Cascade)
+  advertiserAccount   AdvertiserAccount @relation(fields: [advertiserAccountId], references: [id], onDelete: Cascade)
+
+  @@unique([afiliateId, advertiserAccountId])
 }
 
 model Payment {

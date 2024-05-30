@@ -6,4 +6,5 @@ export const afiliateValidator = z.object({
   phone: z.string(),
   pix: z.string(),
   kickback: z.number().optional().default(70),
+  userId: z.string(),
 });
