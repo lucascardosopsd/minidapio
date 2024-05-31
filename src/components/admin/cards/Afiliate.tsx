@@ -79,7 +79,9 @@ const AfiliateCard = ({ afiliate, preview = false }: UserAfiliateProps) => {
           <div className="flex gap-5">
             <Button
               size="icon"
-              onClick={() => copyToClipboard(afiliate?.id!, "", "Id copiado!")}
+              onClick={() =>
+                copyToClipboard(afiliate.userId, "", "Id copiado!")
+              }
               className="right-5 top-5"
               variant="secondary"
             >

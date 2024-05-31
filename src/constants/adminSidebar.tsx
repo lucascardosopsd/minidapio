@@ -5,6 +5,7 @@ import {
   Grip,
   Handshake,
   MapPinned,
+  Megaphone,
   User,
   UtensilsCrossed,
 } from "lucide-react";
@@ -34,5 +35,10 @@ export const adminSidebarOptions: SidebarOptionProps[] = [
     label: "Afiliados",
     icon: Handshake,
     href: "/admin/dashboard/afiliates?page=1",
+  },
+  {
+    label: "Anunciantes",
+    icon: Megaphone,
+    href: "/admin/dashboard/advertisers?page=1",
   },
 ];
