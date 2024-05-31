@@ -16,7 +16,7 @@ import { userValidatorSchema } from "@/validators/user";
 import { useState } from "react";
 import { roleI18n } from "@/constants/roleI18n";
 import { User } from "@prisma/client";
-import UserForm from "../forms/UserForm";
+import UserForm from "../forms/User";
 
 interface UserCardProps {
   user: User;
