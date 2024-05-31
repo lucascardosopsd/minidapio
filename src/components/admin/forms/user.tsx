@@ -51,9 +51,10 @@ const UserForm = ({ defaultValues, onSubmit, loading }: UserFormProps) => {
           title="Função"
           selectItem={
             <>
-              <SelectItem value="admin">Admin</SelectItem>
+              <SelectItem value="admin">Administrador</SelectItem>
               <SelectItem value="user">Usuário</SelectItem>
               <SelectItem value="advertiser">Anunciante</SelectItem>
+              <SelectItem value="afiliate">Afiliado</SelectItem>
             </>
           }
         />
