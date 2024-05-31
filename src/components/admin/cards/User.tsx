@@ -10,13 +10,13 @@ import { revalidateRoute } from "@/actions/revalidateRoute";
 import { Button } from "@/components/ui/button";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import ReusableModal from "@/components/misc/ReusableModal";
-import UserForm from "../forms/User";
 import { z } from "zod";
 import { updateUser } from "@/actions/user/updateUser";
 import { userValidatorSchema } from "@/validators/user";
 import { useState } from "react";
 import { roleI18n } from "@/constants/roleI18n";
 import { User } from "@prisma/client";
+import UserForm from "../forms/User";
 
 interface UserCardProps {
   user: User;

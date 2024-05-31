@@ -1,6 +1,5 @@
 "use client";
 import { adValidator } from "@/validators/ad";
-import AdForm from "./forms/Ad";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -8,6 +7,7 @@ import { RegionProps } from "@/types/region";
 import ReusableModal from "../misc/ReusableModal";
 import { createNewAd } from "@/actions/ad/createNewAd";
 import SearchField from "../misc/SearchField";
+import AdForm from "./forms/Ad";
 
 const ActionBar = ({ regions }: { regions: RegionProps[] }) => {
   const [loading, setLoading] = useState(false);
