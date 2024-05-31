@@ -7,12 +7,11 @@ import { Input } from "@/components/ui/input";
 import { SelectItem } from "@/components/ui/select";
 import { useAdvertiserProfileForm } from "@/hooks/useAdvertiserProfileForm";
 import { advertiserProfile } from "@/validators/advertiserProfile";
-import { AdvertiserAccount } from "@prisma/client";
+import { AdvertiserAccount, User } from "@prisma/client";
 import { useState } from "react";
 import { PatternFormat } from "react-number-format";
 import { toast } from "sonner";
 import { z } from "zod";
-import { UserProps } from "@/types/user";
 import axios from "axios";
 import { createAdvertiserAccount } from "@/actions/advertiser/createAccount";
 import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAccount";
@@ -22,7 +21,7 @@ import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount"
 
 interface AdvertiserProfileFormProps {
   defaultValues?: AdvertiserAccount;
-  user: UserProps;
+  user: User;
 }
 
 const AdvertiserProfileForm = ({

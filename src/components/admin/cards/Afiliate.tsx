@@ -3,42 +3,40 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import DeleteModal from "@/components/restaurant/DeleteModal";
 import { toast } from "sonner";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { deleteUser } from "@/actions/user/deleteUser";
 import { usePathname, useSearchParams } from "next/navigation";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { Button } from "@/components/ui/button";
 import { copyToClipboard } from "@/tools/copyToClipboard";
-import ReusableModal from "@/components/misc/ReusableModal";
 import { z } from "zod";
-import { updateUser } from "@/actions/user/updateUser";
-import { userValidatorSchema } from "@/validators/user";
 import { useState } from "react";
-import { roleI18n } from "@/constants/roleI18n";
-import { User } from "@prisma/client";
-import UserForm from "../forms/User";
+import { Afiliate } from "@prisma/client";
+import { afiliateValidator } from "@/validators/afiliate";
+import { updateAfiliate } from "@/actions/afiliate/updateAfiliate";
+import AfiliateForm from "../forms/Afiliate";
+import ReusableDialog from "@/components/misc/ReusableDialog";
 
-interface UserCardProps {
-  user: User;
+interface UserAfiliateProps {
+  afiliate: Afiliate;
   preview?: boolean;
 }
 
-const UserCard = ({ user, preview = false }: UserCardProps) => {
+const AfiliateCard = ({ afiliate, preview = false }: UserAfiliateProps) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pathname = usePathname();
   const params = useSearchParams();
 
-  const handleUpdateUser = async (
-    data: z.infer<typeof userValidatorSchema>
+  const handleUpdateAfiliate = async (
+    data: z.infer<typeof afiliateValidator>
   ) => {
     setLoading(true);
     try {
-      await updateUser({ id: user?.id!, data });
+      await updateAfiliate({ id: afiliate?.id!, data });
 
       setIsModalOpen(false);
 
-      toast.info("Usuário atualizado");
+      toast.info("Afiliado atualizado");
 
       revalidateRoute({ fullPath: `${pathname}?${params}` });
     } catch (error) {
@@ -53,11 +51,11 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
     setLoading(true);
 
     try {
-      await deleteUser({ id: user?.id! });
+      await deleteUser({ id: afiliate?.id! });
 
       revalidateRoute({ fullPath: `${pathname}?${params}` });
 
-      toast.success("Usuário deletado");
+      toast.success("Afiliado deletado");
 
       setIsModalOpen(false);
     } catch (error) {
@@ -72,13 +70,8 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
     <Card>
       <CardHeader className="flex-row items-center justify-between">
         <div className="flex gap-5 flex-1 items-center">
-          <Avatar>
-            <AvatarImage src={user?.image!} />
-          </Avatar>
-
-          <div className="flex items-center w-full flex-1">{user?.name}</div>
-          <div className="flex items-center justify-center flex-1 w-full max-w-[200px]">
-            [{roleI18n[user?.role!]}]
+          <div className="flex items-center w-full flex-1">
+            {afiliate?.name}
           </div>
         </div>
 
@@ -86,20 +79,22 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
           <div className="flex gap-5">
             <Button
               size="icon"
-              onClick={() => copyToClipboard(user?.id!, "", "Id copiado!")}
+              onClick={() =>
+                copyToClipboard(afiliate.userId, "", "Id copiado!")
+              }
               className="right-5 top-5"
               variant="secondary"
             >
               ID
             </Button>
 
-            <ReusableModal
+            <ReusableDialog
               title="Editar usuário"
               trigger={<FaPen />}
               content={
-                <UserForm
-                  defaultValues={user!}
-                  onSubmit={handleUpdateUser}
+                <AfiliateForm
+                  defaultValues={afiliate!}
+                  onSubmit={handleUpdateAfiliate}
                   loading={loading}
                 />
               }
@@ -109,13 +104,13 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
 
             <DeleteModal
               action={handleDelete}
-              dialogTitle="Apagar usuário"
+              dialogTitle="Apagar afiliado"
               triggerText={<FaTrash />}
               dialogDescription={
                 <>
                   <p>
                     Você está apagando o usuário:{" "}
-                    <span className="text-red-500">{user?.name}</span>
+                    <span className="text-red-500">{afiliate?.name}</span>
                   </p>
                   <p>Deseja continuar?</p>
                 </>
@@ -128,4 +123,4 @@ const UserCard = ({ user, preview = false }: UserCardProps) => {
   );
 };
 
-export default UserCard;
+export default AfiliateCard;

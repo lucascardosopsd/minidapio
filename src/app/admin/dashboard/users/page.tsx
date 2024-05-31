@@ -1,4 +1,4 @@
-import UserPagination from "@/components/admin/users/userPagination";
+import UserPagination from "@/components/admin/users/UserPagination";
 import { Separator } from "@/components/ui/separator";
 import { Suspense } from "react";
 

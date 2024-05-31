@@ -6,7 +6,7 @@ import { z } from "zod";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import DeleteModal from "@/components/restaurant/DeleteModal";
 import { AdProps } from "@/types/ad";
-import AdForm from "../forms/ad";
+import AdForm from "../forms/Ad";
 import { adValidator } from "@/validators/ad";
 import { RegionProps } from "@/types/region";
 import { updateAd } from "@/actions/ad/updateAd";

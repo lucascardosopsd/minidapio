@@ -1,4 +1,4 @@
-import RestaurantsPagination from "@/components/admin/users/restaurantsPagination";
+import RestaurantsPagination from "@/components/admin/restaurants/RestaurantsPagination";
 
 interface UsersPageProps {
   searchParams?: {
