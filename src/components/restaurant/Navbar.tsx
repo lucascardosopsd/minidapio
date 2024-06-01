@@ -42,7 +42,9 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
         <Button
           variant="outline"
           onClick={() => {
-            signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/login` });
+            signOut({
+              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/dashboard/login`,
+            });
           }}
           size="sm"
           className="group hover:bg-primary hover:border-primary transition"
