@@ -12,7 +12,7 @@ const Layout = ({ params: { id }, children }: LayoutProps) => {
   return (
     <div className="flex flex-col h-full relative w-full">
       <Navbar />
-      <div className="container h-full mx-auto flex flex-col">{children}</div>
+      <div className="h-full mx-auto flex flex-col w-full">{children}</div>
     </div>
   );
 };
