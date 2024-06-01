@@ -22,8 +22,8 @@ const Navbar = () => {
           <div className="flex items-center gap-5">
             {/* <Button>Afiliado</Button> */}
 
-            <Link href="/advertiser/login">
-              <Button>Anunciante</Button>
+            <Link href="https://api.whatsapp.com/send?phone=5517996484654">
+              <Button variant="secondary">Anuncie</Button>
             </Link>
 
             <Link href="/dashboard/login">
