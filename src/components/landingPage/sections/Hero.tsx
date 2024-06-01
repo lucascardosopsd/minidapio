@@ -1,8 +1,5 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -17,15 +14,6 @@ const HeroSection = () => {
             Cardápio digital gratuito para oferecer uma melhor experiência para
             seu cliente
           </p>
-
-          <Link href="/dashboard/login">
-            <Button
-              variant="outline"
-              className="text-foreground font-semibold rounded-full"
-            >
-              Começar
-            </Button>
-          </Link>
         </div>
 
         <div className="flex items-end justify-center flex-[2] tablet:flex-[1.4] self-end">
