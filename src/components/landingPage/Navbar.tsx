@@ -16,7 +16,7 @@ const Navbar = () => {
             alt="logo"
             height={500}
             width={500}
-            className="h-full w-auto"
+            className="h-14 w-auto"
           />
 
           <div className="flex items-center gap-5">
