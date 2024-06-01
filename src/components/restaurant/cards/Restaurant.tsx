@@ -102,7 +102,7 @@ const RestaurantCard = ({
       </CardContent>
       <CardFooter className="flex flex-col gap-2">
         <Link
-          href={`/restaurant/${restaurant.id}`}
+          href={`/dashboard/restaurant/${restaurant.id}`}
           className="w-full space-y-4"
         >
           <Button
