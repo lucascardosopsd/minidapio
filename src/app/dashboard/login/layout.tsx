@@ -1,7 +1,17 @@
+import { ThemeProvider } from "@/components/misc/ThemeProvider";
 import { ReactNode } from "react";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
-  return <div className="container">{children}</div>;
+  return (
+    <ThemeProvider
+      attribute="class"
+      disableTransitionOnChange
+      enableSystem
+      defaultTheme="dark"
+    >
+      <div className="container">{children}</div>
+    </ThemeProvider>
+  );
 };
 
 export default Layout;

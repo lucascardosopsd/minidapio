@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/misc/ThemeProvider";
 import AuthProvider from "@/components/misc/AuthProvider";
 
 const poppins = Poppins({
@@ -28,15 +27,8 @@ export default function RootLayout({
     <html lang="pt-BR" className="!scroll-smooth">
       <body className={poppins.className}>
         <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            disableTransitionOnChange
-            enableSystem
-            defaultTheme="dark"
-          >
-            {children}
-            <Toaster />
-          </ThemeProvider>
+          {children}
+          <Toaster />
         </AuthProvider>
       </body>
     </html>

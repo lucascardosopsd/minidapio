@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/components/misc/ThemeProvider";
 import { ReactNode } from "react";
 
 interface LayoutProps {
@@ -9,9 +10,16 @@ interface LayoutProps {
 
 const Layout = ({ params: { id }, children }: LayoutProps) => {
   return (
-    <div className="flex h-full max-w-lg items mx-auto relative">
-      <div className="container h-full mx-auto">{children}</div>
-    </div>
+    <ThemeProvider
+      attribute="class"
+      disableTransitionOnChange
+      enableSystem
+      defaultTheme="dark"
+    >
+      <div className="flex h-full max-w-lg items mx-auto relative">
+        <div className="container h-full mx-auto">{children}</div>
+      </div>
+    </ThemeProvider>
   );
 };
 
