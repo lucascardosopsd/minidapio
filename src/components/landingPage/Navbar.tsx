@@ -35,7 +35,7 @@ const Navbar = () => {
 
       <Drawer>
         <DrawerTrigger asChild className="flex tablet:hidden">
-          <Button size="icon" className="absolute right-2 top-2">
+          <Button size="icon" className="fixed right-2 top-2">
             <Menu size={32} />
           </Button>
         </DrawerTrigger>
