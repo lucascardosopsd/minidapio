@@ -1,5 +1,4 @@
 "use server";
-
 import { ReactNode } from "react";
 import Navbar from "@/components/admin/Navbar";
 import Sidebar from "@/components/misc/ReusableSidebar";
@@ -8,7 +7,6 @@ import prisma from "@/lib/prisma";
 import { nextAuthOptions } from "@/lib/authProviders";
 import { redirect } from "next/navigation";
 import { adminSidebarOptions } from "@/constants/adminSidebar";
-import { ThemeProvider } from "@/components/misc/ThemeProvider";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
@@ -31,14 +29,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
       <div className="w-full">
         <Navbar />
         <div className="flex flex-col px-10 items-center justify-center h-[calc(100svh-80px)]">
-          <ThemeProvider
-            attribute="class"
-            disableTransitionOnChange
-            enableSystem
-            defaultTheme="dark"
-          >
-            {children}
-          </ThemeProvider>
+          {children}
         </div>
       </div>
     </div>
