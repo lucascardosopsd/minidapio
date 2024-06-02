@@ -19,17 +19,7 @@ import ItemCard from "./cards/Item";
 import SearchField from "../misc/SearchField";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-
-interface GroupedHourProps {
-  weekDay: string;
-  opened: boolean;
-  times: [
-    {
-      open: string;
-      close: string;
-    }
-  ];
-}
+import { groupHours } from "@/reducers/groupHours";
 
 interface RestaurantProfileProps {
   restaurant: FullRestaurantProps;
@@ -71,25 +61,6 @@ const RestaurantProfile = ({
     params.set("title", "");
     replace(`${pathname}?${params.toString()}`);
   };
-
-  let groupedHours: GroupedHourProps[] = [];
-
-  // Crerate
-  restaurant.workHours.forEach((hour: HourProps) => {
-    const indexDay = groupedHours.findIndex(
-      (groupedHour) => groupedHour.weekDay == hour.weekDay
-    );
-
-    if (!groupedHours[indexDay]) {
-      groupedHours.push({
-        weekDay: hour.weekDay,
-        opened: hour.opened,
-        times: [hour?.times!],
-      });
-    } else {
-      groupedHours[indexDay].times.push(hour?.times!);
-    }
-  });
 
   return (
     <>
@@ -177,7 +148,7 @@ const RestaurantProfile = ({
         </div>
 
         <div className="flex flex-col justify-center gap-1 text-sm w-full max-w-[400px] p-2 rounded">
-          {groupedHours
+          {groupHours(restaurant.workHours)
             .sort((a, b) => Number(a.weekDay) - Number(b.weekDay))
             .map((workHour) => (
               <div
