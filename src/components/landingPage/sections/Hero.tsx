@@ -5,7 +5,7 @@ const HeroSection = () => {
   return (
     <section className="bg-primary h-svh tablet:h-[calc(100svh-80px)] pt-10 tablet:py-0 w-full text-zinc-100 container">
       <div className="flex flex-col tablet:flex-row gap-5 items-center justify-center h-full mx-auto ">
-        <div className="flex flex-col gap-5 flex-1 items-center tablet:items-start">
+        <div className="flex flex-col gap-5 flex-1 items-center justify-end tablet:justify-center tablet:items-start">
           <p className="text-4xl tablet:text-6xl font-bold w-full max-w-lg text-center tablet:text-start">
             MODERNIZE SEU RESTAURANTE
           </p>
