@@ -17,6 +17,19 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ItemProps } from "@/types/item";
 import ItemCard from "./cards/Item";
 import SearchField from "../misc/SearchField";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+
+interface GroupedHourProps {
+  weekDay: string;
+  opened: boolean;
+  times: [
+    {
+      open: string;
+      close: string;
+    }
+  ];
+}
 
 interface RestaurantProfileProps {
   restaurant: FullRestaurantProps;
@@ -31,6 +44,7 @@ const RestaurantProfile = ({
   pageSearchParams,
 }: RestaurantProfileProps) => {
   const themeColor = restaurant?.color || "#fff";
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
 
   let isRestaurantOpened = false;
 
@@ -57,6 +71,25 @@ const RestaurantProfile = ({
     params.set("title", "");
     replace(`${pathname}?${params.toString()}`);
   };
+
+  let groupedHours: GroupedHourProps[] = [];
+
+  // Crerate
+  restaurant.workHours.forEach((hour: HourProps) => {
+    const indexDay = groupedHours.findIndex(
+      (groupedHour) => groupedHour.weekDay == hour.weekDay
+    );
+
+    if (!groupedHours[indexDay]) {
+      groupedHours.push({
+        weekDay: hour.weekDay,
+        opened: hour.opened,
+        times: [hour?.times!],
+      });
+    } else {
+      groupedHours[indexDay].times.push(hour?.times!);
+    }
+  });
 
   return (
     <>
@@ -108,6 +141,8 @@ const RestaurantProfile = ({
               />
             </div>
           }
+          onOpen={setIsCategoriesOpen}
+          isOpen={isCategoriesOpen}
         />
       </div>
 
@@ -142,12 +177,9 @@ const RestaurantProfile = ({
         </div>
 
         <div className="flex flex-col justify-center gap-1 text-sm w-full max-w-[400px] p-2 rounded">
-          {restaurant.workHours
-            .sort(
-              (workHour: HourProps) =>
-                Number(workHour.weekDay) - Number(workHour.weekDay)
-            )
-            .map((workHour: HourProps) => (
+          {groupedHours
+            .sort((a, b) => Number(a.weekDay) - Number(b.weekDay))
+            .map((workHour) => (
               <div
                 className="flex flex-col justify-center"
                 key={workHour.weekDay}
@@ -162,14 +194,24 @@ const RestaurantProfile = ({
                 </div>
 
                 <div className="flex justify-center gap-2">
-                  {workHour.times!.open ? (
-                    <div className="flex">
-                      <p>
-                        {workHour.times!.open}-{workHour.times!.close}
-                      </p>
-                    </div>
-                  ) : (
-                    <Badge variant="destructive">Fechado</Badge>
+                  {workHour.times!.map((time, index) =>
+                    time.open ? (
+                      <div className="flex">
+                        <p>
+                          {time.open}-{time.close}
+                        </p>
+                        <span
+                          className={cn(
+                            "hidden ml-2",
+                            index < workHour.times.length - 1 && "flex"
+                          )}
+                        >
+                          |
+                        </span>
+                      </div>
+                    ) : (
+                      <Badge variant="destructive">Fechado</Badge>
+                    )
                   )}
                 </div>
               </div>
