@@ -14,31 +14,31 @@ export const adminSidebarOptions: SidebarOptionProps[] = [
   {
     label: "Anúncios",
     icon: Grip,
-    href: "/admin/dashboard?page=1",
+    href: "/jsnHktoSE/dashboard?page=1",
   },
   {
     label: "Regiões",
     icon: MapPinned,
-    href: "/admin/dashboard/regions",
+    href: "/jsnHktoSE/dashboard/regions",
   },
   {
     label: "Usuários",
     icon: User,
-    href: "/admin/dashboard/users?page=1",
+    href: "/jsnHktoSE/dashboard/users?page=1",
   },
   {
     label: "Restaurantes",
     icon: UtensilsCrossed,
-    href: "/admin/dashboard/restaurants?page=1",
+    href: "/jsnHktoSE/dashboard/restaurants?page=1",
   },
   {
     label: "Afiliados",
     icon: Handshake,
-    href: "/admin/dashboard/afiliates?page=1",
+    href: "/jsnHktoSE/dashboard/afiliates?page=1",
   },
   {
     label: "Anunciantes",
     icon: Megaphone,
-    href: "/admin/dashboard/advertisers?page=1",
+    href: "/jsnHktoSE/dashboard/advertisers?page=1",
   },
 ];
