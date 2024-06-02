@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="bg-primary p-10 flex text-zinc-100">
+    <footer className="p-10 flex border">
       <div className="container flex flex-col tablet:flex-row items-center justify-between mx-auto w-full gap-5 ">
         <div className="flex items-center gap-2">
           <Image
@@ -12,7 +12,7 @@ const Footer = () => {
             width={500}
             className="h-14 w-auto"
           />
-          <p className="text-2xl font-bold text-zinc-100">Reserva</p>
+          <p className="text-2xl font-bold">Reserva</p>
         </div>
         <div className="flex gap-5">
           <div className="flex flex-col">
