@@ -7,7 +7,7 @@ const SignOutPage = () => {
   if (session) {
     signOut({
       redirect: true,
-      callbackUrl: "/admin/login",
+      callbackUrl: "/jsnHktoSE/login",
     });
   }
 };
