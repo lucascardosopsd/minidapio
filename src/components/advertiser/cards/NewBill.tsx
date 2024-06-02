@@ -23,6 +23,7 @@ import { AdvertiserAccount, User } from "@prisma/client";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { plans } from "@/constants/plans";
 
 interface NewBillCardProps {
   user: User;
@@ -47,7 +48,7 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
         {
           customer: advertiserAccount?.customerId || "",
           billingType: option.toUpperCase(),
-          value: 5,
+          value: plans[advertiserAccount?.plan!],
           dueDate: moment.add(24, "hours"),
         }
       );
@@ -106,8 +107,10 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
             Gerar
           </Button>
         </div>
-        <p className="text-xs">
-          O pagamento no valor de R$100,00 expira em 24 horas
+        <p className="text-xs text-center">
+          O pagamento no valor de{" "}
+          <span className="font-bold">R${plans[advertiserAccount?.plan!]}</span>{" "}
+          expira em 24 horas
         </p>
 
         <div
