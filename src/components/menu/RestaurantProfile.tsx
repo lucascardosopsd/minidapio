@@ -12,17 +12,35 @@ import { weekDays } from "@/constants/weekDays";
 import { paymentMethods } from "@/constants/paymentMethods";
 import ReusableModal from "../misc/ReusableModal";
 import CategoriesModalContent from "./modals/content/Categories";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ItemProps } from "@/types/item";
+import ItemCard from "./cards/Item";
+import SearchField from "../misc/SearchField";
 
 interface RestaurantProfileProps {
   restaurant: FullRestaurantProps;
+  isSearching?: boolean;
+  pageSearchParams?: {
+    title?: string;
+  };
 }
 
-const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
+const RestaurantProfile = ({
+  restaurant,
+  pageSearchParams,
+}: RestaurantProfileProps) => {
   const themeColor = restaurant?.color || "#fff";
 
   let isRestaurantOpened = false;
 
   const weekDayToday = new Date().getDay();
+
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const params = new URLSearchParams(searchParams);
+  const { replace } = useRouter();
 
   const hoursOfDay: HourProps = restaurant.workHours.filter(
     (hour: HourProps) => Number(hour.weekDay) == weekDayToday
@@ -35,9 +53,45 @@ const RestaurantProfile = ({ restaurant }: RestaurantProfileProps) => {
     );
   }
 
+  const handleClearSearchParams = () => {
+    params.set("title", "");
+    replace(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <>
       <div className="flex justify-center absolute left-0 bottom-0 w-full z-20">
+        <Drawer
+          open={!!pageSearchParams?.title}
+          onClose={handleClearSearchParams}
+        >
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle className="text-center">Pesquisa</DrawerTitle>
+            </DrawerHeader>
+
+            <div className="flex flex-col items-center gap-5 mx-auto w-svw max-w-[500px] p-5 h-[calc(100svh-100px)] overflow-y-auto">
+              <div className="w-full">
+                <SearchField
+                  keyName="title"
+                  placeholder="Busque um produto"
+                  triggerStyles={{ background: themeColor }}
+                />
+              </div>
+
+              {restaurant.Items.length ? (
+                restaurant.Items.map((item: ItemProps) => (
+                  <ItemCard item={item} themeColor={themeColor} key={item.id} />
+                ))
+              ) : (
+                <div className="h-full w-full flex items-center justify-center">
+                  <p>Nenhum item encontrado</p>
+                </div>
+              )}
+            </div>
+          </DrawerContent>
+        </Drawer>
+
         <ReusableModal
           trigger="Toque para ver o cardápio"
           title={<span style={{ color: themeColor }}>Menu</span>}

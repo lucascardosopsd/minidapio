@@ -7,14 +7,38 @@ interface MenuProps {
     userId: string;
     slug: string;
   };
+  searchParams?: {
+    title?: string;
+  };
 }
 
-const Menu = async ({ params: { userId, slug } }: MenuProps) => {
+const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
+  const title = !!searchParams?.title?.length;
+
   const restaurant = (await fetchRestaurantsByQuery(
     {
       where: { slug, userId },
       include: {
-        Items: true,
+        Items: {
+          where: !title
+            ? {}
+            : {
+                OR: [
+                  {
+                    title: {
+                      contains: searchParams?.title,
+                      mode: "insensitive",
+                    },
+                  },
+                  {
+                    description: {
+                      contains: searchParams?.title,
+                      mode: "insensitive",
+                    },
+                  },
+                ],
+              },
+        },
         Categories: {
           include: {
             items: true,
@@ -35,7 +59,10 @@ const Menu = async ({ params: { userId, slug } }: MenuProps) => {
 
   return (
     <div className="px-10 h-[100svh] overflow-y-auto max-w-[600px] flex items-start mx-auto antialiased">
-      <RestaurantProfile restaurant={restaurant[0]} />
+      <RestaurantProfile
+        restaurant={restaurant[0]}
+        pageSearchParams={searchParams}
+      />
     </div>
   );
 };

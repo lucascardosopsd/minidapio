@@ -7,6 +7,7 @@ import ItemCard from "../../cards/Item";
 import { Separator } from "@/components/ui/separator";
 import { adStore } from "@/context/ads";
 import { pickAd } from "@/actions/pickAd";
+import SearchField from "@/components/misc/SearchField";
 
 interface CategoriesModalContentProps {
   items: ItemProps[];
@@ -33,6 +34,12 @@ const CategoriesModalContent = ({
 
   return (
     <div className="overflow-y-auto overflow-x-hidden flex flex-col mt-5 relative gap-4 ">
+      <SearchField
+        keyName="title"
+        placeholder="Busque um produto"
+        triggerStyles={{ background: themeColor }}
+      />
+
       <ReusableModal
         trigger="Ver todos"
         title={<span style={{ color: themeColor }}>Todos</span>}
