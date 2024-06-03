@@ -215,24 +215,23 @@ model AfiliateAdvertiserAccount {
 }
 
 model Payment {
-  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
-  paymentId            String
-  dateCreated          String
-  customer             String
-  paymentLink          String?
-  dueDate              String
-  value                Int
-  billingType          String
-  status               String
-  description          String?
-  paymentDate          String
-  deleted              Boolean
-  advertiserAcccountId String
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  paymentId           String
+  dateCreated         String
+  customer            String
+  paymentLink         String?
+  dueDate             String
+  value               Int
+  billingType         String
+  status              String
+  description         String?
+  paymentDate         String
+  deleted             Boolean
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  advertiserAccountId String?  @db.ObjectId
+  userId              String?  @db.ObjectId
 
-  AdvertiserAccount   AdvertiserAccount? @relation(fields: [advertiserAccountId], references: [id])
-  advertiserAccountId String?            @db.ObjectId
-  User                User?              @relation(fields: [userId], references: [id])
-  userId              String?            @db.ObjectId
+  AdvertiserAccount AdvertiserAccount? @relation(fields: [advertiserAccountId], references: [id])
+  User              User?              @relation(fields: [userId], references: [id])
 }

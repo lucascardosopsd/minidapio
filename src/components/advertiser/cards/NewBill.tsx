@@ -27,7 +27,7 @@ import { plans } from "@/constants/plans";
 
 interface NewBillCardProps {
   user: User;
-  advertiserAccount: AdvertiserAccount | null;
+  advertiserAccount: AdvertiserAccount;
   title: string;
 }
 
