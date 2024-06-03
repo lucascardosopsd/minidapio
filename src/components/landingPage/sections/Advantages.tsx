@@ -14,14 +14,16 @@ const AdvantagesSection = () => {
       </div>
 
       <div className="flex flex-col flex-1 py-10 order-1 tablet:order-2">
-        <p className="text-2xl font-semibold text-primary">Como funciona?</p>
+        <p className="text-2xl font-semibold text-primary">
+          Quais são as vantagens?
+        </p>
 
         <div className="flex flex-col">
           <p className="text-primary font-medium">Para restaurantes</p>
           <p>
             O cardápio é gratuito e possuí uma interface agradável, pensada para
-            a melhor experiência do usuário se diferenciando da maioria dos
-            cardápios atuais.
+            a melhor experiência do usuário, diferenciando-se da maioria dos
+            cardápios disponíveis atualmente.
           </p>
         </div>
 
@@ -31,7 +33,7 @@ const AdvantagesSection = () => {
             Por um valor relativamente baixo, seu negócio é impulsionado e
             conhecido na região em um local com menor competição entre anúncios,
             além de poder rastrear visualizações e disponibilizar um link para o
-            cliente que o direciona para onde quiser.
+            cliente que o direciona para onde você quiser.
           </p>
         </div>
       </div>
