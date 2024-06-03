@@ -51,7 +51,7 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
 
   if (!restaurant[0]) {
     return (
-      <div className="flex items-center justify-center h-svh w-full">
+      <div className="flex items-center justify-center h-svh w-full ">
         Restaurante não encontrado.
       </div>
     );

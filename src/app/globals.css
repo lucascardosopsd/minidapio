@@ -29,7 +29,7 @@ input[type="color"]::-webkit-color-swatch {
 
 @layer base {
   :root {
-    --background: 258 100% 100%;
+    --background: 0 100% 100%;
     --foreground: 258 5% 10%;
     --card: 258 50% 100%;
     --card-foreground: 258 5% 15%;
@@ -39,36 +39,36 @@ input[type="color"]::-webkit-color-swatch {
     --primary-foreground: 0 0% 100%;
     --secondary: 258 30% 90%;
     --secondary-foreground: 0 0% 0%;
-    --muted: 220 30% 95%;
-    --muted-foreground: 258 5% 40%;
-    --accent: 220 30% 90%;
-    --accent-foreground: 258 5% 15%;
+    --muted: 220 0% 88%;
+    --muted-foreground: 258 0% 30%;
+    --accent: 220 0% 90%;
+    --accent-foreground: 258 0% 15%;
     --destructive: 0 100% 50%;
     --destructive-foreground: 258 5% 100%;
-    --border: 258 30% 82%;
-    --input: 258 30% 50%;
+    --border: 0 0% 82%;
+    --input: 258 0% 70%;
     --ring: 258 100% 50%;
     --radius: 0.5rem;
   }
   .dark {
-    --background: 258 50% 5%;
+    --background: 258 0% 4%;
     --foreground: 258 5% 90%;
     --card: 258 50% 0%;
     --card-foreground: 258 5% 90%;
-    --popover: 258 50% 5%;
+    --popover: 258 0% 4%;
     --popover-foreground: 258 5% 90%;
     --primary: 258 100% 50%;
     --primary-foreground: 0 0% 100%;
     --secondary: 258 30% 10%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 220 30% 15%;
+    --muted: 220 0% 18%;
     --muted-foreground: 258 5% 60%;
-    --accent: 220 30% 15%;
+    --accent: 220 0% 18%;
     --accent-foreground: 258 5% 90%;
     --destructive: 0 100% 30%;
     --destructive-foreground: 258 5% 90%;
-    --border: 258 30% 18%;
-    --input: 258 30% 18%;
+    --border: 0 0% 10%;
+    --input: 0 0% 10%;
     --ring: 258 100% 50%;
     --radius: 0.5rem;
   }
