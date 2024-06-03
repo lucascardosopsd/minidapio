@@ -36,11 +36,11 @@ export const POST = async (req: Request) => {
         paymentDate: payment.paymentDate,
         deleted: payment.deleted,
         userId: advertiserAccount?.userId,
-        advertiserAcccountId: advertiserAccount?.id || "",
+        advertiserAccountId: advertiserAccount?.id!,
       },
     });
 
-    revalidatePath("/(advertiser)");
+    revalidatePath("/advertiser/bills");
 
     return Response.json({ ok: true });
   } catch (error: unknown) {
