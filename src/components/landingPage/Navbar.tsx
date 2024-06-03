@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
 import { Menu } from "lucide-react";
+import { ThemeToggle } from "../misc/ThemeToggle";
 
 const Navbar = () => {
   return (
@@ -29,6 +30,7 @@ const Navbar = () => {
             <Link href="/dashboard/login">
               <Button>Restaurante</Button>
             </Link>
+            <ThemeToggle />
           </div>
         </div>
       </div>
