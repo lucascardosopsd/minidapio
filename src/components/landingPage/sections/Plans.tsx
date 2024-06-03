@@ -16,13 +16,13 @@ const PlansSection = () => {
       <Card>
         <CardHeader className="flex-col tablet:flex-row">
           <div className="flex flex-col gap-5 flex-1">
-            <p className="font-bold text-center tbalet:text-start">
-              Planos para anunciantes
+            <p className="font-bold text-center tablet:text-start text-2xl">
+              Planos para <span className="text-primary">anunciantes</span>
             </p>
             <p className="text-center tablet:text-start">
-              Selecione um plano que cabe no seu orçamento e apareça na sua
+              Selecione um plano que caiba no seu orçamento e apareça na sua
               região de maneira focada entre os itens do cardápio, sem competir
-              visualmente com ninguém ao mesmo tempo.
+              visualmente com ninguém no mesmo instante.
             </p>
           </div>
 
