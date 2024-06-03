@@ -43,6 +43,7 @@ const AdvertiserProfileForm = ({
           phone: "",
           userId: user.id,
           customerId: "",
+          plan: "basic",
         },
   });
 
@@ -180,6 +181,19 @@ const AdvertiserProfileForm = ({
           name="phone"
           title="Telefone Celular"
           fieldElement={<PatternFormat format="+55(##)#####-####" />}
+        />
+
+        <SelectBuilder
+          control={form.control}
+          name="plan"
+          title="Plano"
+          selectItem={
+            <>
+              <SelectItem value="basic">Básico (R$100,00)</SelectItem>
+              <SelectItem value="pro">Profissional (R$150,00)</SelectItem>
+              <SelectItem value="ultra">Ultra (R$200,00)</SelectItem>
+            </>
+          }
         />
 
         <input value={user.id} {...form.register("userId")} hidden />

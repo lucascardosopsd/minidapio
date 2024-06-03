@@ -7,7 +7,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
 
   if (session) {
-    return redirect("/admin/dashboard");
+    return redirect("/jsnHktoSE/dashboard");
   }
 
   return <div className="container">{children}</div>;

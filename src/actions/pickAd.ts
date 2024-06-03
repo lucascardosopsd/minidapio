@@ -1,22 +1,46 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { AdProps } from "@/types/ad";
+import { Ad } from "@prisma/client";
+import { adsProbabilities } from "@/constants/adsProbabilities";
+import moment from "moment";
 
 export const pickAd = async ({
   regionId,
 }: {
   regionId: string;
-}): Promise<AdProps> => {
+}): Promise<Ad> => {
   const ads = await prisma.ad.findMany({
     where: {
       regionId,
       active: true,
     },
+    include: {
+      AdvertiserAccount: {
+        include: {
+          payments: {
+            orderBy: {
+              createdAt: "desc",
+            },
+          },
+        },
+      },
+    },
   });
 
-  const randomPos = Math.floor(Math.random() * (ads.length - 0 + 1)) + 0;
+  let picked = null;
 
-  const picked = ads[randomPos];
+  while (!picked) {
+    ads.forEach((ad) => {
+      const random = Math.random();
+      if (random < adsProbabilities[ad?.AdvertiserAccount?.plan!]) {
+        const hasPaid = !!moment().diff(
+          moment(ad.AdvertiserAccount?.payments[0]?.createdAt, "months", true)
+        );
 
-  return picked;
+        if (hasPaid) picked = ad;
+      }
+    });
+  }
+
+  return picked!;
 };

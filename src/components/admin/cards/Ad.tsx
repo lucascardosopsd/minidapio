@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { deleteAd } from "@/actions/ad/deleteAd";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
 
 interface AdCardProps {
   ad: AdProps;
@@ -63,7 +64,7 @@ const AdCard = ({ ad, regions }: AdCardProps) => {
   return (
     <Card>
       <CardHeader className="flex-row items-center justify-between">
-        <div className="flex gap-5">
+        <div className="flex gap-5 items-center">
           <Image
             src={ad.image}
             width={300}
@@ -72,6 +73,7 @@ const AdCard = ({ ad, regions }: AdCardProps) => {
             className="w-[150px] h-[80px] rounded border-2 object-cover"
           />
           <div className="flex items-center">{ad.title}</div>
+          <Badge>{ad.active ? "Ativo" : "Inativo"}</Badge>
         </div>
 
         <div className="flex gap-5">

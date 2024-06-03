@@ -11,6 +11,7 @@ export interface AdProps {
   restaurantId?: string | null;
   restaurant?: Restaurant | null;
   userId: string | null;
+  advertiserAccountId: string;
   createdAt: Date;
   updatedAt: Date;
 }

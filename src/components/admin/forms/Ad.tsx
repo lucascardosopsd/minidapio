@@ -1,5 +1,4 @@
 "use client";
-import { fetchUser } from "@/actions/user/fetchUser";
 import FieldBuilder from "@/components/builders/FieldBuilder";
 import SelectBuilder from "@/components/builders/SelectBuilder";
 import UploadImage from "@/components/misc/UploadImage";
@@ -22,7 +21,10 @@ import { adValidator } from "@/validators/ad";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import UserCard from "../cards/User";
-import { User } from "@prisma/client";
+import { AdvertiserAccount, User } from "@prisma/client";
+import AdvertiserCard from "../cards/Advertiser";
+import { getAdvertiserAccountByQuery } from "@/actions/advertiser/getAdvertiserAccountByQuery";
+import { fetchUserByQuery } from "@/actions/user/fetchUserByQuery";
 
 interface AdFormProps {
   defaultValues?: z.infer<typeof adValidator> | undefined;
@@ -33,6 +35,9 @@ interface AdFormProps {
 
 const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
   const [user, setUser] = useState<User | null>({} as User);
+  const [advertiser, setAdvertiser] = useState<AdvertiserAccount | null>(
+    {} as AdvertiserAccount
+  );
 
   const regionsOptions = regions.map((region: RegionProps) => ({
     label: region.title,
@@ -49,16 +54,27 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
       active: true,
       userId: "",
       regionId: regionsOptions[0].value,
+      advertiserAccountId: "",
     },
   });
 
-  const handleFetchUser = async (userId: string) => {
-    if (userId) {
+  const handleFetchUser = async (userName: string) => {
+    if (userName) {
       try {
-        const user = await fetchUser({ id: userId });
+        const user = await fetchUserByQuery({
+          query: {
+            where: {
+              name: {
+                startsWith: userName,
+                mode: "insensitive",
+              },
+            },
+          },
+        });
 
         if (user) {
-          setUser(user);
+          setUser(user[0]);
+          form.setValue("userId", user[0].id);
 
           return true;
         }
@@ -74,9 +90,46 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
     }
   };
 
+  const handleFetchAdvertiser = async (advertiserName: string) => {
+    if (advertiserName) {
+      try {
+        const advertiser = await getAdvertiserAccountByQuery({
+          query: {
+            where: {
+              name: {
+                startsWith: advertiserName,
+                mode: "insensitive",
+              },
+            },
+          },
+        });
+
+        if (advertiser) {
+          setAdvertiser(advertiser[0]);
+          form.setValue("advertiserAccountId", advertiser[0].id);
+
+          return true;
+        }
+
+        form.setValue("advertiserAccountId", "");
+        form.setError("advertiserAccountId", {
+          message: "Digite um anunciante válido!",
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      return false;
+    }
+  };
+
   useEffect(() => {
     if (defaultValues?.userId) {
       handleFetchUser(defaultValues?.userId);
+      return;
+    }
+
+    if (defaultValues?.advertiserAccountId) {
+      handleFetchAdvertiser(defaultValues?.advertiserAccountId);
       return;
     }
   }, []);
@@ -121,40 +174,43 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
           ))}
         />
 
-        <div className="flex space-x-5">
+        <div className="flex flex-col space-y-5">
           <div className="space-y-2 flex-1">
-            <FormField
-              control={form.control}
-              name="userId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Usuário</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Digite o ID e pressione enter"
-                      className="w-full rounded-r-none"
-                      onChange={async (e) => {
-                        field.onChange(e);
-                        if (e.target.value.length >= 24) {
-                          await handleFetchUser(form.watch("userId", "") || "");
-                        }
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+            <p>Usuário</p>
+            <Input
+              onChange={async (e) => {
+                if (e.target.value.length >= 3) {
+                  await handleFetchUser(e.target.value);
+                }
+              }}
             />
 
             {user?.id && <UserCard user={user!} preview />}
           </div>
+
+          {user && (
+            <div className="space-y-2 flex-1 w-full">
+              <p>Anunciante</p>
+              <Input
+                onChange={async (e) => {
+                  if (e.target.value.length >= 3) {
+                    await handleFetchAdvertiser(e.target.value);
+                  }
+                }}
+              />
+
+              {advertiser?.id && (
+                <AdvertiserCard advertiser={advertiser!} user={user!} preview />
+              )}
+            </div>
+          )}
 
           <FormField
             control={form.control}
             name="active"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel className="w-full text-center">Ativo</FormLabel>
+                <FormLabel>Ativo</FormLabel>
                 <FormControl>
                   <div className="flex items-center h-full">
                     <Switch
