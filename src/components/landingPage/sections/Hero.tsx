@@ -11,7 +11,7 @@ const HeroSection = () => {
           </p>
 
           <p className="text-center tablet:text-start">
-            Cardápio digital gratuito para oferecer uma melhor experiência para
+            Cardápio digital gratuito para oferecer uma melhor experiência ao
             seu cliente
           </p>
         </div>
@@ -22,7 +22,7 @@ const HeroSection = () => {
             alt="Garçons"
             height={1000}
             width={1000}
-            className="w-full h-auto"
+            className="w-auto h-full object-cover tablet:w-auto tablet:h-full tablet:object-contain"
           />
         </div>
       </div>
