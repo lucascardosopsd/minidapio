@@ -14,5 +14,5 @@ export const adValidator = z.object({
   regionId: z.string(),
   active: z.boolean().default(true),
   expiration: z.date().optional().nullable(),
-  advertiserAccountId: z.string(),
+  advertiserAccountId: z.string().nullable(),
 });

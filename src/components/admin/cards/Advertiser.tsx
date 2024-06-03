@@ -55,7 +55,6 @@ const AdvertiserCard = ({
     userData: User;
   }) => {
     const newAdAccount = await createAdvertiserAccount({
-      userId: userData.id,
       data: advertiserData,
     });
 

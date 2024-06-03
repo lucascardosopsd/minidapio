@@ -1,10 +1,9 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { AdProps } from "@/types/ad";
-import { Prisma } from "@prisma/client";
+import { Ad, Prisma } from "@prisma/client";
 
 interface FetchManyAdsResProps {
-  ads: AdProps[];
+  ads: Ad[];
   pages: number;
 }
 

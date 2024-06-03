@@ -5,7 +5,6 @@ import { useState } from "react";
 import { z } from "zod";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import DeleteModal from "@/components/restaurant/DeleteModal";
-import { AdProps } from "@/types/ad";
 import AdForm from "../forms/Ad";
 import { adValidator } from "@/validators/ad";
 import { RegionProps } from "@/types/region";
@@ -15,9 +14,10 @@ import { deleteAd } from "@/actions/ad/deleteAd";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { Ad } from "@prisma/client";
 
 interface AdCardProps {
-  ad: AdProps;
+  ad: Ad;
   regions: RegionProps[];
 }
 

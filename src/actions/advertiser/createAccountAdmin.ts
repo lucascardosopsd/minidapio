@@ -1,13 +1,11 @@
 "use server";
-
-import { advertiserProfile } from "@/validators/advertiserProfile";
-import { z } from "zod";
 import prisma from "@/lib/prisma";
+import { AdvertiserAccount } from "@prisma/client";
 
 export const createAdvertiserAccount = async ({
   data,
 }: {
-  data: z.infer<typeof advertiserProfile>;
+  data: AdvertiserAccount;
 }) => {
   return await prisma.advertiserAccount.create({ data });
 };

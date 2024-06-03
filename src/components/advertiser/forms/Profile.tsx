@@ -53,7 +53,6 @@ const AdvertiserProfileForm = ({
     advertiserData: z.infer<typeof advertiserProfile>;
   }) => {
     const newAdAccount = await createAdvertiserAccount({
-      userId: user.id,
       data: advertiserData,
     });
 

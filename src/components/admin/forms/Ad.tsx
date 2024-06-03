@@ -21,13 +21,13 @@ import { adValidator } from "@/validators/ad";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import UserCard from "../cards/User";
-import { AdvertiserAccount, User } from "@prisma/client";
+import { Ad, AdvertiserAccount, User } from "@prisma/client";
 import AdvertiserCard from "../cards/Advertiser";
 import { getAdvertiserAccountByQuery } from "@/actions/advertiser/getAdvertiserAccountByQuery";
 import { fetchUserByQuery } from "@/actions/user/fetchUserByQuery";
 
 interface AdFormProps {
-  defaultValues?: z.infer<typeof adValidator> | undefined;
+  defaultValues: Ad | null;
   onSubmit: (data: z.infer<typeof adValidator>) => Promise<void>;
   regions: RegionProps[];
   loading: boolean;

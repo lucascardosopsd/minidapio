@@ -1,9 +1,9 @@
-import { AdProps } from "@/types/ad";
+import { Ad } from "@prisma/client";
 import { create } from "zustand";
 
 interface AdsStoreProps {
-  currentAd: AdProps | null;
-  setCurrentAd: (ad: AdProps) => void;
+  currentAd: Ad | null;
+  setCurrentAd: (ad: Ad) => void;
 }
 
 export const adStore = create<AdsStoreProps>((set) => ({

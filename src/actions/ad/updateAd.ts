@@ -1,11 +1,11 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { AdProps } from "@/types/ad";
+import { Ad } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 interface UpdateAdProps {
   id: string;
-  data: Partial<AdProps>;
+  data: Partial<Ad>;
 }
 
 export const updateAd = async ({ id, data }: UpdateAdProps) => {

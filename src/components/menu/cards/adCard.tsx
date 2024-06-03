@@ -1,16 +1,15 @@
 import { createClick } from "@/actions/createClick";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { AdProps } from "@/types/ad";
+import { Ad } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { forwardRef } from "react";
 
 interface AdCardProps {
-  ad: AdProps;
+  ad: Ad;
 }
 
-const AdCard = forwardRef<HTMLDivElement, AdCardProps>(({ ad }, ref) => {
+const AdCard = ({ ad }: AdCardProps) => {
   const handleClick = async () => {
     try {
       await createClick({ adId: ad.id });
@@ -20,7 +19,7 @@ const AdCard = forwardRef<HTMLDivElement, AdCardProps>(({ ad }, ref) => {
   };
 
   return (
-    <Card ref={ref}>
+    <Card>
       <CardContent className="flex flex-col p-0">
         <Image
           src={ad.image}
@@ -45,6 +44,6 @@ const AdCard = forwardRef<HTMLDivElement, AdCardProps>(({ ad }, ref) => {
       </CardContent>
     </Card>
   );
-});
+};
 
 export default AdCard;

@@ -44,6 +44,7 @@ const ActionBar = ({ regions }: { regions: RegionProps[] }) => {
               onSubmit={handleOnSubmit}
               regions={regions}
               loading={loading}
+              defaultValues={null}
             />
           }
           trigger="Novo Anúncio"
