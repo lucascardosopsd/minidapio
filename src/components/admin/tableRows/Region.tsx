@@ -1,6 +1,5 @@
 "use client";
 import ReusableDialog from "@/components/misc/ReusableDialog";
-import { Card, CardHeader } from "@/components/ui/card";
 import { RegionProps } from "@/types/region";
 import { useState } from "react";
 import { z } from "zod";
@@ -11,12 +10,13 @@ import { updateRegion } from "@/actions/region/updateRegion";
 import DeleteModal from "@/components/restaurant/DeleteModal";
 import { deleteRegion } from "@/actions/region/deleteRegion";
 import RegionModalContent from "../forms/Region";
+import { TableCell, TableRow } from "@/components/ui/table";
 
-interface RegionCardProps {
+interface RegionRowProps {
   region: RegionProps;
 }
 
-const RegionCard = ({ region }: RegionCardProps) => {
+const RegionRow = ({ region }: RegionRowProps) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -55,48 +55,46 @@ const RegionCard = ({ region }: RegionCardProps) => {
   };
 
   return (
-    <Card>
-      <CardHeader className="flex-row items-center justify-between">
-        <div className="flex items-center">
-          <p>{region.title}</p>
-          <p>-</p>
-          <p>{region.state}</p>
-        </div>
+    <TableRow>
+      <TableCell>{region.title}</TableCell>
+      <TableCell>{region.state}</TableCell>
+      <TableCell>{region.active ? "Ativo" : "Inativo"}</TableCell>
 
-        <div className="flex gap-5">
-          <ReusableDialog
-            title="Editar Região"
-            content={
-              <RegionModalContent
-                onSubmit={handleOnSubmit}
-                defaultValues={region}
-              />
-            }
-            trigger={<FaPen />}
-            description="Atualize os dados da região"
-            loading={loading}
-            onOpen={setIsModalOpen}
-            isOpen={isModalOpen}
-          />
+      <TableCell>
+        <ReusableDialog
+          title="Editar Região"
+          content={
+            <RegionModalContent
+              onSubmit={handleOnSubmit}
+              defaultValues={region}
+            />
+          }
+          trigger={<FaPen />}
+          description="Atualize os dados da região"
+          loading={loading}
+          onOpen={setIsModalOpen}
+          isOpen={isModalOpen}
+        />
+      </TableCell>
 
-          <DeleteModal
-            action={handleDelete}
-            dialogTitle="Apagar região"
-            triggerText={<FaTrash />}
-            dialogDescription={
-              <>
-                <p>
-                  Você está apagando a região:{" "}
-                  <span className="text-red-500">{region.title}</span>
-                </p>
-                <p>Deseja continuar?</p>
-              </>
-            }
-          />
-        </div>
-      </CardHeader>
-    </Card>
+      <TableCell>
+        <DeleteModal
+          action={handleDelete}
+          dialogTitle="Apagar região"
+          triggerText={<FaTrash />}
+          dialogDescription={
+            <>
+              <p>
+                Você está apagando a região:{" "}
+                <span className="text-red-500">{region.title}</span>
+              </p>
+              <p>Deseja continuar?</p>
+            </>
+          }
+        />
+      </TableCell>
+    </TableRow>
   );
 };
 
-export default RegionCard;
+export default RegionRow;
