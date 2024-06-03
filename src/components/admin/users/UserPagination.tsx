@@ -1,9 +1,16 @@
 import { fetchManyUsers } from "@/actions/user/fetchManyUsers";
 import Paginate from "@/components/misc/Paginate";
-import UserCard from "../cards/User";
 import { Separator } from "@/components/ui/separator";
 import SearchField from "@/components/misc/SearchField";
 import { Prisma } from "@prisma/client";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import UserRow from "../tableRows/User";
 
 export type UserQuery = Prisma.UserFindManyArgs;
 
@@ -21,21 +28,39 @@ const UserPagination = async ({ page, query }: UserPaginationprops) => {
 
   return (
     <>
-      <div className="w-full h-full py-10 flex gap-5 flex-col">
+      <div className="w-full h-[calc(100svh-150px)] flex gap-5 pt-5 flex-col">
         <div className="flex justify-between w-full gap-5 items-center">
           <p className="text-2xl">Usuários</p>
-          <SearchField keyName="name" placeholder="Busque um nome" />
+          <SearchField
+            keyName="name"
+            placeholder="Busque um nome"
+            inputClassName="w-64"
+          />
         </div>
 
         <Separator />
 
-        <div className="flex flex-col gap-5 h-[calc(100svh-220px)] overflow-y-auto">
-          {users.map((user) => (
-            <UserCard user={user} key={user.id} />
-          ))}
+        <div className="h-[calc(100svh-100px)] overflow-y-auto w-full">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Foto</TableHead>
+                <TableHead>Nome</TableHead>
+                <TableHead>Cargo</TableHead>
+                <TableHead>ID</TableHead>
+                <TableHead>Editar</TableHead>
+                <TableHead>Deletar</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {users.map((user) => (
+                <UserRow user={user} key={user.id} />
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 w-full flex items-center bg-background">
+      <div className="w-full flex items-center bg-background">
         <Paginate pages={pages} current={page} />
       </div>
     </>

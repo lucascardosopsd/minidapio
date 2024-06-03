@@ -12,6 +12,8 @@ interface SearchFieldProps {
   placeholder: string;
   triggerClassName?: string;
   triggerStyles?: CSSProperties;
+  inputClassName?: string;
+  inputStyles?: CSSProperties;
 }
 
 const SearchField = ({
@@ -19,6 +21,8 @@ const SearchField = ({
   placeholder,
   triggerClassName,
   triggerStyles,
+  inputClassName,
+  inputStyles,
 }: SearchFieldProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -40,7 +44,8 @@ const SearchField = ({
   return (
     <div className="flex gap-5 flex-1 justify-end w-full">
       <Input
-        className="w-full placeholder:text-muted"
+        className={cn("w-full placeholder:text-muted", inputClassName)}
+        style={inputStyles}
         placeholder={searchParams.get(keyName) || placeholder}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
