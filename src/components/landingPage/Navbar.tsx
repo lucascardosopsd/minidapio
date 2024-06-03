@@ -36,10 +36,10 @@ const Navbar = () => {
       </div>
 
       <Drawer>
-        <DrawerTrigger asChild className="flex tablet:hidden">
-          <Button size="icon" className="fixed right-2 top-2">
-            <Menu size={32} />
-          </Button>
+        <DrawerTrigger className="flex tablet:hidden">
+          <div className="fixed right-2 top-2 p-1 rounded bg-primary">
+            <Menu size={24} />
+          </div>
         </DrawerTrigger>
         <DrawerContent>
           <div className="flex flex-col gap-10 h-[calc(100svh-80px)] p-5 mx-auto">
