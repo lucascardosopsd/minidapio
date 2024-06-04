@@ -1,4 +1,3 @@
-import { fetchUser } from "@/actions/user/fetchUser";
 import FieldBuilder from "@/components/builders/FieldBuilder";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +17,7 @@ import UserCard from "../cards/User";
 import { useEffect, useState } from "react";
 import { User } from "@prisma/client";
 import { ImSpinner2 } from "react-icons/im";
+import { fetchUserByQuery } from "@/actions/user/fetchUserByQuery";
 
 interface AfiliateFormProps {
   defaultValues?: z.infer<typeof afiliateValidator> | undefined;
@@ -34,14 +34,24 @@ const AfiliateForm = ({
   const [user, setUser] = useState<User | null>({} as User);
   const [searching, setSearching] = useState(false);
 
-  const handleFetchUser = async (userId: string) => {
+  const handleFetchUser = async (userName: string) => {
     setSearching(true);
-    if (userId) {
+    if (userName) {
       try {
-        const user = await fetchUser({ id: userId });
+        const user = await fetchUserByQuery({
+          query: {
+            where: {
+              name: {
+                startsWith: userName,
+                mode: "insensitive",
+              },
+            },
+          },
+        });
 
         if (user) {
-          setUser(user);
+          setUser(user[0]);
+          form.setValue("userId", user[0].id);
 
           return true;
         }
@@ -114,13 +124,12 @@ const AfiliateForm = ({
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Digite o ID e pressione enter"
+                    placeholder="Digite nome"
                     className="w-full rounded-r-none"
-                    value={field.value}
                     onChange={async (e) => {
                       field.onChange(e);
-                      if (e.target.value.length >= 24) {
-                        await handleFetchUser(form.watch("userId", "") || "");
+                      if (e.target.value.length >= 3) {
+                        handleFetchUser(e.target.value);
                       }
                     }}
                   />
