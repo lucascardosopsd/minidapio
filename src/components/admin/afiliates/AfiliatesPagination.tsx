@@ -39,6 +39,7 @@ const AfiliatesPagination = async ({
             <TableHeader>
               <TableRow>
                 <TableHead>Nome</TableHead>
+                <TableHead>PIX</TableHead>
                 <TableHead>ID</TableHead>
                 <TableHead>Editar</TableHead>
                 <TableHead>Deletar</TableHead>
