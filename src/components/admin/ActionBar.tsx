@@ -34,7 +34,11 @@ const ActionBar = ({ regions }: { regions: RegionProps[] }) => {
     <div className="flex justify-between items-center w-full gap-5">
       <p className="text-2xl">Anúncios</p>
 
-      <SearchField keyName="title" placeholder="Busque um anúncio" />
+      <SearchField
+        keyName="title"
+        placeholder="Busque um anúncio"
+        inputClassName="w-64"
+      />
 
       <div className="flex gap-5">
         <ReusableModal

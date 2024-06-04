@@ -2,8 +2,15 @@ import ActionBar from "@/components/admin/ActionBar";
 import { Separator } from "@/components/ui/separator";
 import { fetchRegions } from "@/actions/region/fetchRegions";
 import { fetchAds } from "@/actions/ad/fetchAds";
-import AdCard from "@/components/admin/cards/Ad";
 import Paginate from "@/components/misc/Paginate";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import AdRow from "@/components/admin/tableRows/Ad";
 
 interface AdminPageProps {
   searchParams?: {
@@ -19,7 +26,7 @@ const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
 
   const { ads, pages } = await fetchAds({
     page: page - 1,
-    take: 10,
+    take: 20,
     query: title
       ? {
           where: {
@@ -39,9 +46,29 @@ const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
       <Separator />
 
       <div className="flex flex-col gap-5 h-[calc(100svh-120px)] overflow-y-auto pb-20">
-        {ads.map((ad) => (
-          <AdCard ad={ad} regions={regions} key={ad.id} />
-        ))}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Imagem</TableHead>
+
+              <TableHead>Título</TableHead>
+
+              <TableHead>Região</TableHead>
+
+              <TableHead>Status</TableHead>
+
+              <TableHead>Editar</TableHead>
+
+              <TableHead>Deletar</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {ads.map((ad) => (
+              <AdRow ad={ad} regions={regions} key={ad.id} />
+            ))}
+          </TableBody>
+        </Table>
       </div>
 
       <div className="absolute bottom-0 left-0 w-full flex items-center bg-background">
