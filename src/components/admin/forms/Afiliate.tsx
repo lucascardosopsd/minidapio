@@ -34,11 +34,19 @@ const AfiliateForm = ({
   const [user, setUser] = useState<User | null>({} as User);
   const [searching, setSearching] = useState(false);
 
-  const handleFetchUser = async (userName: string) => {
+  const handleFetchUser = async ({
+    userName,
+    userId,
+  }: {
+    userName?: string;
+    userId?: string;
+  }) => {
     setSearching(true);
-    if (userName) {
-      try {
-        const user = await fetchUserByQuery({
+    try {
+      let user;
+
+      if (userName) {
+        user = await fetchUserByQuery({
           query: {
             where: {
               name: {
@@ -48,30 +56,37 @@ const AfiliateForm = ({
             },
           },
         });
-
-        if (user) {
-          setUser(user[0]);
-          form.setValue("userId", user[0].id);
-
-          return true;
-        }
-
-        form.setValue("userId", "");
-        form.setError("userId", {
-          message: "Digite um usuário válido!",
+      } else {
+        user = await fetchUserByQuery({
+          query: {
+            where: {
+              id: userId,
+            },
+          },
         });
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setSearching(false);
       }
+
+      if (user) {
+        setUser(user[0]);
+        form.setValue("userId", user[0].id);
+
+        return true;
+      }
+
+      form.setValue("userId", "");
+      form.setError("userId", {
+        message: "Digite um usuário válido!",
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSearching(false);
     }
-    return false;
   };
 
   useEffect(() => {
     if (defaultValues) {
-      handleFetchUser(defaultValues.userId);
+      handleFetchUser({ userId: defaultValues?.userId });
     }
   }, []);
 
@@ -129,7 +144,7 @@ const AfiliateForm = ({
                     onChange={async (e) => {
                       field.onChange(e);
                       if (e.target.value.length >= 3) {
-                        handleFetchUser(e.target.value);
+                        handleFetchUser({ userName: e.target.value });
                       }
                     }}
                   />
