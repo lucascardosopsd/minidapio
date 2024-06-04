@@ -9,7 +9,7 @@ import { AdvertiserAccount, User } from "@prisma/client";
 import ReusableDialog from "@/components/misc/ReusableDialog";
 import { toast } from "sonner";
 import { deleteAdvertiserAccount } from "@/actions/advertiser/deleteAdvertiser";
-import AdminAdvertiserProfileForm from "../advertisers/Profile";
+import AdminAdvertiserProfileForm from "../forms/AdvertiserProfile";
 import { z } from "zod";
 import { adminAdvertiserProfile } from "@/validators/adminAdvertiserProfile";
 import axios from "axios";
