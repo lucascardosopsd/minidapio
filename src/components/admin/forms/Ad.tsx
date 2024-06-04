@@ -25,6 +25,7 @@ import { Ad, AdvertiserAccount, User } from "@prisma/client";
 import AdvertiserCard from "../cards/Advertiser";
 import { getAdvertiserAccountByQuery } from "@/actions/advertiser/getAdvertiserAccountByQuery";
 import { fetchUserByQuery } from "@/actions/user/fetchUserByQuery";
+import { ImSpinner2 } from "react-icons/im";
 
 interface AdFormProps {
   defaultValues: Ad | null;
@@ -35,6 +36,7 @@ interface AdFormProps {
 
 const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
   const [user, setUser] = useState<User | null>({} as User);
+  const [fetching, setFetching] = useState(false);
   const [advertiser, setAdvertiser] = useState<AdvertiserAccount | null>(
     {} as AdvertiserAccount
   );
@@ -58,10 +60,18 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
     },
   });
 
-  const handleFetchUser = async (userName: string) => {
-    if (userName) {
-      try {
-        const user = await fetchUserByQuery({
+  const handleFetchUser = async ({
+    userName,
+    userId,
+  }: {
+    userName?: string;
+    userId?: string;
+  }) => {
+    try {
+      setFetching(true);
+      let user;
+      if (userName) {
+        user = await fetchUserByQuery({
           query: {
             where: {
               name: {
@@ -71,29 +81,48 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
             },
           },
         });
-
-        if (user) {
-          setUser(user[0]);
-          form.setValue("userId", user[0].id);
-
-          return true;
-        }
-
-        form.setValue("userId", "");
-        form.setError("userId", {
-          message: "Digite um usuário válido!",
+      } else {
+        user = await fetchUserByQuery({
+          query: {
+            where: {
+              id: userId,
+            },
+          },
         });
-      } catch (error) {
-        console.log(error);
       }
-      return false;
+
+      if (user) {
+        setUser(user[0]);
+        form.setValue("userId", user[0].id);
+
+        return true;
+      }
+
+      form.setValue("userId", "");
+      form.setError("userId", {
+        message: "Digite um usuário válido!",
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setFetching(false);
     }
   };
 
-  const handleFetchAdvertiser = async (advertiserName: string) => {
-    if (advertiserName) {
-      try {
-        const advertiser = await getAdvertiserAccountByQuery({
+  const handleFetchAdvertiser = async ({
+    advertiserName,
+    advertiserId,
+  }: {
+    advertiserName?: string;
+    advertiserId?: string;
+  }) => {
+    try {
+      setFetching(true);
+
+      let advertiser;
+
+      if (advertiserName) {
+        advertiser = await getAdvertiserAccountByQuery({
           query: {
             where: {
               name: {
@@ -103,34 +132,44 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
             },
           },
         });
-
-        if (advertiser) {
-          setAdvertiser(advertiser[0]);
-          form.setValue("advertiserAccountId", advertiser[0].id);
-
-          return true;
-        }
-
-        form.setValue("advertiserAccountId", "");
-        form.setError("advertiserAccountId", {
-          message: "Digite um anunciante válido!",
+      } else {
+        advertiser = await getAdvertiserAccountByQuery({
+          query: {
+            where: {
+              id: advertiserId,
+            },
+          },
         });
-      } catch (error) {
-        console.log(error);
       }
-      return false;
+
+      if (advertiser) {
+        setAdvertiser(advertiser[0]);
+        form.setValue("advertiserAccountId", advertiser[0].id);
+
+        return true;
+      }
+
+      form.setValue("advertiserAccountId", "");
+      form.setError("advertiserAccountId", {
+        message: "Digite um anunciante válido!",
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setFetching(false);
     }
+    return false;
   };
 
   useEffect(() => {
     if (defaultValues?.userId) {
-      handleFetchUser(defaultValues?.userId);
-      return;
+      handleFetchUser({ userId: defaultValues?.userId! });
     }
 
     if (defaultValues?.advertiserAccountId) {
-      handleFetchAdvertiser(defaultValues?.advertiserAccountId);
-      return;
+      handleFetchAdvertiser({
+        advertiserId: defaultValues?.advertiserAccountId,
+      });
     }
   }, []);
 
@@ -176,11 +215,14 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
 
         <div className="flex flex-col space-y-5">
           <div className="space-y-2 flex-1">
-            <p>Usuário</p>
+            <div className="flex gap-2">
+              <p>Usuário </p>
+              {fetching && <ImSpinner2 className="animate-spin" />}
+            </div>
             <Input
               onChange={async (e) => {
                 if (e.target.value.length >= 3) {
-                  await handleFetchUser(e.target.value);
+                  await handleFetchUser({ userName: e.target.value });
                 }
               }}
             />
@@ -190,11 +232,16 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
 
           {user && (
             <div className="space-y-2 flex-1 w-full">
-              <p>Anunciante</p>
+              <div className="flex gap-2">
+                <p>Anunciante </p>
+                {fetching && <ImSpinner2 className="animate-spin" />}
+              </div>
               <Input
                 onChange={async (e) => {
                   if (e.target.value.length >= 3) {
-                    await handleFetchAdvertiser(e.target.value);
+                    await handleFetchAdvertiser({
+                      advertiserName: e.target.value,
+                    });
                   }
                 }}
               />
