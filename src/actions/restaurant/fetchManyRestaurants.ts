@@ -7,8 +7,6 @@ import {
 } from "@/types/restaurant";
 import { Prisma } from "@prisma/client";
 
-type QueryProps = Prisma.RestaurantFindManyArgs;
-
 interface FetchManyRestaurantsResProps {
   restaurants: RestaurantProps[];
   pages: number;
@@ -17,7 +15,7 @@ interface FetchManyRestaurantsResProps {
 interface FetchManyRestaurantsProps {
   take: number;
   page: number;
-  query?: QueryProps;
+  query?: Prisma.RestaurantFindManyArgs;
 }
 
 export const fetchManyRestaurants = async ({

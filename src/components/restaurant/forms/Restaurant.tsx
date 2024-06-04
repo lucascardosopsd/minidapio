@@ -1,4 +1,4 @@
-"use client";
+"use client";;
 import { weekDays } from "@/constants/weekDays";
 import { useRestaurantForm } from "@/hooks/useRestaurantForm";
 import { useFieldArray, useWatch } from "react-hook-form";
@@ -32,8 +32,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RegionProps } from "@/types/region";
 import { restaurantValidator } from "@/validators/restaurant";
-import { RestaurantProps } from "@/types/restaurant";
 import { ArrowDown } from "lucide-react";
+import { RestaurantProps } from "@/types/restaurant";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;

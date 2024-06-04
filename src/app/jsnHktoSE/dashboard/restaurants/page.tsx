@@ -24,8 +24,15 @@ const RestaurantsPage = ({ searchParams }: UsersPageProps) => {
                     mode: "insensitive",
                   },
                 },
+                include: {
+                  region: true,
+                },
               }
-            : {}
+            : {
+                include: {
+                  region: true,
+                },
+              }
         }
       />
     </div>
