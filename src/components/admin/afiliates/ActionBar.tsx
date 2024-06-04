@@ -33,7 +33,11 @@ const AfiliatesActionBar = () => {
   return (
     <div className="flex justify-between w-full gap-5 items-center">
       <p className="text-2xl">Afiliados</p>
-      <SearchField keyName="name" placeholder="Busque um nome" />
+      <SearchField
+        keyName="name"
+        placeholder="Busque um nome"
+        inputClassName="w-64"
+      />
       <ReusableDialog
         title="Novo Afiliado"
         trigger="Novo afiliado"

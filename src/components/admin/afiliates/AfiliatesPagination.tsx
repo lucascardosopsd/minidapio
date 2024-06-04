@@ -2,8 +2,15 @@ import Paginate from "@/components/misc/Paginate";
 import { Separator } from "@/components/ui/separator";
 import { Prisma } from "@prisma/client";
 import { fetchManyAfiliates } from "@/actions/afiliate/fetchManyAfiliates";
-import AfiliateCard from "../cards/Afiliate";
 import AfiliatesActionBar from "./ActionBar";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import AfiliateRow from "../tableRows/Afiliate";
 
 interface AfiliatesPaginationprops {
   page: number;
@@ -28,9 +35,22 @@ const AfiliatesPagination = async ({
         <Separator />
 
         <div className="flex flex-col gap-5 h-[calc(100svh-220px)] overflow-y-auto">
-          {afiliates.map((afiliate) => (
-            <AfiliateCard afiliate={afiliate} key={afiliate.id} />
-          ))}
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nome</TableHead>
+                <TableHead>ID</TableHead>
+                <TableHead>Editar</TableHead>
+                <TableHead>Deletar</TableHead>
+              </TableRow>
+            </TableHeader>
+
+            <TableBody>
+              {afiliates.map((afiliate) => (
+                <AfiliateRow afiliate={afiliate} key={afiliate.id} />
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
       <div className="absolute bottom-0 left-0 w-full flex items-center bg-background">
