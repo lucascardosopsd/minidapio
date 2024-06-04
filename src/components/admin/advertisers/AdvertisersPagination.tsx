@@ -2,9 +2,16 @@ import Paginate from "@/components/misc/Paginate";
 import { Separator } from "@/components/ui/separator";
 import { Prisma } from "@prisma/client";
 import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
-import AdvertiserCard from "../cards/Advertiser";
 
 import AdvertiserActionBar from "./ActionBar";
+import AdvertiserRow from "../tableRows/Advertiser";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 interface AdvertisersPaginationprops {
   page: number;
   query?: Prisma.AdvertiserAccountFindManyArgs;
@@ -34,13 +41,34 @@ const AdvertisersPagination = async ({
         <Separator />
 
         <div className="flex flex-col gap-5 h-[calc(100svh-220px)] overflow-y-auto">
-          {advertisers.map((advertiser) => (
-            <AdvertiserCard
-              advertiser={advertiser}
-              key={advertiser.id}
-              user={advertiser.user}
-            />
-          ))}
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nome</TableHead>
+
+                <TableHead>Plano</TableHead>
+
+                <TableHead>Afiliado</TableHead>
+
+                <TableHead>ID</TableHead>
+
+                <TableHead>Editar</TableHead>
+
+                <TableHead>Deletar</TableHead>
+              </TableRow>
+            </TableHeader>
+
+            <TableBody>
+              {advertisers.map((advertiser) => (
+                <AdvertiserRow
+                  advertiser={advertiser}
+                  key={advertiser.id}
+                  user={advertiser.user}
+                  afiliate={null}
+                />
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
       <div className="absolute bottom-0 left-0 w-full flex items-center bg-background">
