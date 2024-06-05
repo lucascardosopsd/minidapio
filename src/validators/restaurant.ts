@@ -15,11 +15,11 @@ const workHoursSchema = z.object({
 });
 
 const PaymentMethodSchema = z.object({
-  pix: z.boolean(),
-  cash: z.boolean(),
-  credit: z.boolean(),
-  debit: z.boolean(),
-  bankCheck: z.boolean(),
+  pix: z.boolean().optional(),
+  cash: z.boolean().optional(),
+  credit: z.boolean().optional(),
+  debit: z.boolean().optional(),
+  bankCheck: z.boolean().optional(),
 });
 
 export const restaurantValidator = z.object({
