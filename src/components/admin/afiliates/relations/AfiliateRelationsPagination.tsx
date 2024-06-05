@@ -2,9 +2,16 @@ import Paginate from "@/components/misc/Paginate";
 import { Separator } from "@/components/ui/separator";
 import { Prisma } from "@prisma/client";
 
-import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { fetchManyAfiliateRelations } from "@/actions/AfiliateAdvertiser/fetchManyAfiliateRelations";
 import AfiliateRelationsActionBar from "./ActionBar";
+import AfiliateRelationRow from "../../tableRows/AfiliateRelation";
 interface AfiliateRelationsPaginationProps {
   page: number;
   query?: Prisma.AfiliateAdvertiserAccountFindManyArgs;
@@ -37,22 +44,15 @@ const AfiliateRelationsPagination = async ({
 
                 <TableHead>ID</TableHead>
 
-                <TableHead>Editar</TableHead>
-
                 <TableHead>Deletar</TableHead>
               </TableRow>
             </TableHeader>
 
-            {/* <TableBody>
-              {advertisers.map((advertiser) => (
-                <AdvertiserRow
-                  advertiser={advertiser}
-                  key={advertiser.id}
-                  user={advertiser.user}
-                  afiliate={null}
-                />
+            <TableBody>
+              {afiliateRelations.map((relation) => (
+                <AfiliateRelationRow relation={relation} key={relation.id} />
               ))}
-            </TableBody> */}
+            </TableBody>
           </Table>
         </div>
       </div>
