@@ -21,7 +21,7 @@ import { updateUser } from "@/actions/user/updateUser";
 
 interface AdvertiserCardProps {
   advertiser: AdvertiserAccount;
-  user: User;
+  user: User | null;
   preview?: boolean;
 }
 
@@ -151,7 +151,7 @@ const AdvertiserCard = ({
           </div>
         </div>
 
-        {!preview && (
+        {!preview && user && (
           <div className="flex gap-5">
             <Button
               size="icon"

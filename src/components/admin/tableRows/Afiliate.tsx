@@ -15,7 +15,8 @@ import { updateAfiliate } from "@/actions/afiliate/updateAfiliate";
 import AfiliateForm from "../forms/Afiliate";
 import ReusableDialog from "@/components/misc/ReusableDialog";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { KeyRound } from "lucide-react";
+import { ChevronRight, KeyRound } from "lucide-react";
+import Link from "next/link";
 
 interface UserAfiliateProps {
   afiliate: Afiliate;
@@ -124,6 +125,18 @@ const AfiliateRow = ({ afiliate, preview = false }: UserAfiliateProps) => {
             </>
           }
         />
+      </TableCell>
+
+      <TableCell>
+        <Link
+          href={`/jsnHktoSE/dashboard/afiliates/${afiliate.id}/relations?page=1`}
+          target="_blank"
+          className="w-full"
+        >
+          <Button className="w-full">
+            <ChevronRight />
+          </Button>
+        </Link>
       </TableCell>
     </TableRow>
   );
