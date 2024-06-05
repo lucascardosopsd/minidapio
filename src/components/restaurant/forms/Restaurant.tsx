@@ -276,7 +276,7 @@ const RestaurantForm = ({
         <input
           type="text"
           {...form.register("slug")}
-          value={slugGen(watchTitle)}
+          value={watchTitle && slugGen(watchTitle)}
           hidden
         />
 
