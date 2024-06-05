@@ -24,7 +24,6 @@ const AfiliateRelationsActionBar = () => {
   const handleOnSubmit = async (
     data: z.infer<typeof afiliateAdvertiserValidator>
   ) => {
-    console.log(data);
     try {
       setLoading(true);
 

@@ -38,7 +38,6 @@ const RestaurantCard = ({
   const handleUpdateRestaurant = async (
     data: z.infer<typeof restaurantValidator>
   ) => {
-    console.log(data);
     setLoading(true);
 
     const restaurantExists = await fetchUserRestaurantsByQuery({
