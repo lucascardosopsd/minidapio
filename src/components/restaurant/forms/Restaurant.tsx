@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { weekDays } from "@/constants/weekDays";
 import { useRestaurantForm } from "@/hooks/useRestaurantForm";
 import { useFieldArray, useWatch } from "react-hook-form";
@@ -9,7 +9,6 @@ import UploadImage from "../../misc/UploadImage";
 import SelectBuilder from "../../builders/SelectBuilder";
 import { PatternFormat } from "react-number-format";
 import Fence from "../Fence";
-import { slugGen } from "@/tools/slugGen";
 import ColorPicker from "../ColorPicker";
 import {
   Form,
@@ -271,13 +270,6 @@ const RestaurantForm = ({
           }
           name="note"
           title="Observação"
-        />
-
-        <input
-          hidden
-          value={slugGen(watchTitle)}
-          id="slug"
-          {...form.register("slug")}
         />
 
         <div className="flex gap-2 items-center">
