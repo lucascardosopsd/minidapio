@@ -11,6 +11,7 @@ import { afiliateAdvertiserValidator } from "@/validators/afiliateAdvertiser";
 import AfiliateRelationForm from "../../forms/AfiliateRelation";
 import { useParams, usePathname } from "next/navigation";
 import { revalidateRoute } from "@/actions/revalidateRoute";
+import { fetchAfiliateAdvertiserRelationsByQuery } from "@/actions/AfiliateAdvertiser/fetchAfiliateAdvertiserRelationsByQuery";
 
 const AfiliateRelationsActionBar = () => {
   const [loading, setLoading] = useState(false);
@@ -26,6 +27,26 @@ const AfiliateRelationsActionBar = () => {
     console.log(data);
     try {
       setLoading(true);
+
+      const exists = await fetchAfiliateAdvertiserRelationsByQuery({
+        query: {
+          where: {
+            AND: [
+              {
+                advertiserAccountId: data.advertiserAccountId,
+              },
+              {
+                afiliateId: data.afiliateId,
+              },
+            ],
+          },
+        },
+      });
+
+      if (!!exists.length) {
+        toast.success("Relacionamento já existente.");
+        return;
+      }
 
       await createAfiliateAdvertiserAccount({ data });
 
