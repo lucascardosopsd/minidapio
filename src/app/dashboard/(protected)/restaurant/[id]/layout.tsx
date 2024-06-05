@@ -28,8 +28,8 @@ const Layout = ({ children, params: { id } }: LayoutProps) => {
   }, []);
 
   const breadcrumb: BreadcrumbRouteProps[] = [
-    { title: "Início", route: "/restaurants" },
-    { title: restaurant.title, route: "/restaurant/" + id },
+    { title: "Início", route: "/dashboard/restaurants" },
+    { title: restaurant.title, route: "/dashboard/restaurant/" + id },
   ];
 
   return (
