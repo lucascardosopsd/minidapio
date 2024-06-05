@@ -21,7 +21,7 @@ export default async function Restaurant({
   searchParams,
 }: PageProps) {
   if (!searchParams) {
-    redirect("/restaurant/" + restaurantId);
+    redirect("/dashboard/restaurant/" + restaurantId);
   }
 
   const categories = await fetchUserCategoriesByQuery({

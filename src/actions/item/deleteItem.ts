@@ -17,7 +17,7 @@ export const deleteItem = async (id: string, restaurantId: string) => {
       },
     });
 
-    revalidatePath("/restaurant/" + restaurantId);
+    revalidatePath("/dashboard/restaurant/" + restaurantId);
   } catch (error) {
     throw new Error("Can't delete restaurant");
   }
