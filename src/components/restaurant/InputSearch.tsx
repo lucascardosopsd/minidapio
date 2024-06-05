@@ -57,7 +57,7 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
       if (value) params.set(key, value);
     });
 
-    router.push(`/item/search/${restaurantId}?${params.toString()}`);
+    router.push(`/dashboard/item/search/${restaurantId}?${params.toString()}`);
 
     setLoading(false);
   };
