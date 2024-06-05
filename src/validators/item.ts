@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const ItemValidator = z.object({
   title: z.string({ required_error: "Digite o nome do item" }),
-  description: z.string().nullable(),
+  description: z.string().nullable().optional(),
   price: z.number({ required_error: "Estabeleça um preço" }),
   image: z.string({ required_error: "Adicione uma imagem" }),
   active: z.boolean().default(true),
