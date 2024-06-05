@@ -58,7 +58,7 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
   }
 
   return (
-    <div className="px-10 h-[100svh] overflow-y-auto max-w-[600px] flex items-start mx-auto antialiased">
+    <div className="px-5 h-svh max-w-[600px] antialiased">
       <RestaurantProfile
         restaurant={restaurant[0]}
         pageSearchParams={searchParams}

@@ -49,7 +49,7 @@ const RestaurantsList = ({
     try {
       await createNewRestaurant({
         ...data,
-        slug: slugGen(data.slug),
+        slug: slugGen(data.title),
       });
       toast("Restaurante Criado");
     } catch (error) {
