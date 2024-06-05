@@ -13,6 +13,7 @@ import { Session } from "@/types/session";
 import { Region } from "@prisma/client";
 import RestaurantCard from "../cards/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
+import { slugGen } from "@/tools/slugGen";
 
 interface RestaurantsListProps {
   session: Session;
@@ -46,7 +47,10 @@ const RestaurantsList = ({
     }
 
     try {
-      await createNewRestaurant(data);
+      await createNewRestaurant({
+        ...data,
+        slug: slugGen(data.slug),
+      });
       toast("Restaurante Criado");
     } catch (error) {
       toast("Ocorreu um erro.");

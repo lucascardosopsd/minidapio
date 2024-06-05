@@ -1,7 +1,7 @@
 "use client";
 import { weekDays } from "@/constants/weekDays";
 import { useRestaurantForm } from "@/hooks/useRestaurantForm";
-import { useFieldArray, useWatch } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { paymentMethods } from "@/constants/paymentMethods";
 import FieldBuilder from "../../builders/FieldBuilder";
@@ -33,7 +33,6 @@ import { RegionProps } from "@/types/region";
 import { restaurantValidator } from "@/validators/restaurant";
 import { ArrowDown } from "lucide-react";
 import { RestaurantProps } from "@/types/restaurant";
-import { slugGen } from "@/tools/slugGen";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
@@ -54,11 +53,6 @@ const RestaurantForm = ({
     label: region.title,
     value: region.id,
   }));
-
-  const watchTitle = useWatch({
-    control: form.control,
-    name: "title",
-  });
 
   const {
     fields: workHoursFields,
@@ -273,12 +267,7 @@ const RestaurantForm = ({
           title="Observação"
         />
 
-        <input
-          type="text"
-          {...form.register("slug")}
-          value={watchTitle && slugGen(watchTitle)}
-          hidden
-        />
+        <input type="text" {...form.register("slug")} hidden />
 
         <div className="flex gap-2 items-center">
           <Button
