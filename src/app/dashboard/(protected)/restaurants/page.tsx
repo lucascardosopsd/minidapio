@@ -10,10 +10,6 @@ export default async function Dashboard() {
 
   return (
     <main className="flex flex-col items-center justify-center h-[calc(100svh-4rem)] gap-8 ">
-      <div className="space-y-4 w-full">
-        <p>Restaurantes</p>
-      </div>
-
       <RestaurantsList
         regions={regions}
         restaurants={restaurants!}
