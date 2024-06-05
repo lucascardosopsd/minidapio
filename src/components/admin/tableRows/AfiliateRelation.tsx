@@ -12,6 +12,8 @@ import { toast } from "sonner";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { plansI18n } from "@/constants/plansI18n";
 import { deleteAfiliateAdvertiserRelation } from "@/actions/AfiliateAdvertiser/deleteAfiliateAdvertiserRelation";
+import { usePathname } from "next/navigation";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 
 interface RelationProps extends AfiliateAdvertiserAccount {
   advertiserAccount: AdvertiserAccount;
@@ -23,11 +25,15 @@ interface AfiliateRelationRowProps {
 }
 
 const AfiliateRelationRow = ({ relation }: AfiliateRelationRowProps) => {
+  const pathname = usePathname();
+
   const handleDelete = async () => {
     try {
       await deleteAfiliateAdvertiserRelation({ id: relation.id });
 
-      toast.success("Anúncio deletado");
+      revalidateRoute({ fullPath: pathname });
+
+      toast.success("Relação deletada");
     } catch (error) {
       console.log(error);
       toast.error("Ocorreu um erro");

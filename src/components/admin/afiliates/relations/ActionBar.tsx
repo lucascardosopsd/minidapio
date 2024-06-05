@@ -9,13 +9,16 @@ import ReusableDialog from "@/components/misc/ReusableDialog";
 import { createAfiliateAdvertiserAccount } from "@/actions/AfiliateAdvertiser/createAfiliateAdvertiserAccount";
 import { afiliateAdvertiserValidator } from "@/validators/afiliateAdvertiser";
 import AfiliateRelationForm from "../../forms/AfiliateRelation";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 
 const AfiliateRelationsActionBar = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
   const params: { [key: string]: string } = useParams();
+
+  const pathname = usePathname();
 
   const handleOnSubmit = async (
     data: z.infer<typeof afiliateAdvertiserValidator>
@@ -25,6 +28,8 @@ const AfiliateRelationsActionBar = () => {
       setLoading(true);
 
       await createAfiliateAdvertiserAccount({ data });
+
+      revalidateRoute({ fullPath: pathname });
 
       toast.success("Relacionamento criado");
 
