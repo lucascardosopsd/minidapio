@@ -1,9 +1,7 @@
 "use client";
-
 import { createNewRestaurant } from "@/actions/restaurant/createNewRestaurant";
 import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
 import ReusableModal from "@/components/misc/ReusableModal";
-import { slugGen } from "@/tools/slugGen";
 import { restaurantValidator } from "@/validators/restaurant";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -48,12 +46,7 @@ const RestaurantsList = ({
     }
 
     try {
-      const slug = slugGen(data.title);
-
-      await createNewRestaurant({
-        ...data,
-        slug,
-      });
+      await createNewRestaurant(data);
       toast("Restaurante Criado");
     } catch (error) {
       toast("Ocorreu um erro.");

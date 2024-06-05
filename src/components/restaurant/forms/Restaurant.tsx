@@ -33,6 +33,7 @@ import { RegionProps } from "@/types/region";
 import { restaurantValidator } from "@/validators/restaurant";
 import { ArrowDown } from "lucide-react";
 import { RestaurantProps } from "@/types/restaurant";
+import { slugGen } from "@/tools/slugGen";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
@@ -270,6 +271,13 @@ const RestaurantForm = ({
           }
           name="note"
           title="Observação"
+        />
+
+        <input
+          type="text"
+          {...form.register("slug")}
+          value={slugGen(watchTitle)}
+          hidden
         />
 
         <div className="flex gap-2 items-center">
