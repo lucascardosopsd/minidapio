@@ -1,10 +1,5 @@
-export interface CategoryProps {
-  id: string;
-  title: string;
-  order: number | null;
-  restaurantId: string | null;
-}
+import { Category, Item } from "@prisma/client";
 
-export interface CategoriesWithItemsProps extends CategoryProps {
-  items?: ItemProps[];
+export interface CategoriesWithItemsProps extends Category {
+  items?: Item[];
 }

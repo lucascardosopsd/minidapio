@@ -1,4 +1,5 @@
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
+import CategoriesBar from "@/components/menu/CategoriesBar";
 import MenuHeader from "@/components/menu/Header";
 import MenuInputSearch from "@/components/misc/InputSearch";
 import { FullRestaurantProps } from "@/types/restaurant";
@@ -10,13 +11,14 @@ interface MenuProps {
   };
   searchParams?: {
     title?: string;
+    categoryId?: string;
   };
 }
 
 const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
   const title = !!searchParams?.title?.length;
 
-  const restaurant = (await fetchRestaurantsByQuery(
+  const restaurants = (await fetchRestaurantsByQuery(
     {
       where: { slug, userId },
       include: {
@@ -50,7 +52,10 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
     userId
   )) as FullRestaurantProps[];
 
-  if (!restaurant[0]) {
+  const currentCategoryId =
+    searchParams?.categoryId || restaurants[0].Categories[0].id;
+
+  if (!restaurants[0]) {
     return (
       <div className="flex items-center justify-center h-svh w-full ">
         Restaurante não encontrado.
@@ -60,8 +65,13 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
 
   return (
     <div className="h-svh antialiased w-full">
-      <MenuHeader restaurant={restaurant[0]} />
+      <MenuHeader restaurant={restaurants[0]} />
       <MenuInputSearch keyName="title" placeholder="Busque um item" />
+      <CategoriesBar
+        categories={restaurants[0].Categories}
+        themeColor={restaurants[0].color}
+        currentCategoryId={currentCategoryId}
+      />
     </div>
   );
 };
