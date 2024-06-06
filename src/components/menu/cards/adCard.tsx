@@ -1,6 +1,6 @@
 import { createClick } from "@/actions/createClick";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Ad } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,29 +19,30 @@ const AdCard = ({ ad }: AdCardProps) => {
   };
 
   return (
-    <Card>
-      <CardContent className="flex flex-col p-0">
+    <Card className="border-primary">
+      <CardContent className="flex p-0">
         <Image
           src={ad.image}
           height={500}
           width={500}
           alt="Anúncio"
-          className="w-full h-full rounded object-cover"
+          className="w-32 h-40 rounded-tl-md object-cover"
         />
         <div className="flex flex-col gap-2 p-5">
           <p className="text-xs text-muted-foreground">Anúncio</p>
           <p className="font-semibold">{ad.title}</p>
           <p className="text-xs">{ad.description}</p>
         </div>
-
+      </CardContent>
+      <CardFooter className="p-0">
         {ad.link && (
-          <Link href={ad.link} target="_blank">
-            <Button className="w-full bg-foreground" onClick={handleClick}>
+          <Link href={ad.link} target="_blank" className="w-full">
+            <Button className="w-full rounded-t-none" onClick={handleClick}>
               Saiba mais
             </Button>
           </Link>
         )}
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 };

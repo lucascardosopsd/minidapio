@@ -5,6 +5,7 @@ import ItemCard from "@/components/menu/cards/Item";
 import MenuInputSearch from "@/components/menu/InputSearch";
 import { FullRestaurantProps } from "@/types/restaurant";
 import ClearSearch from "@/components/menu/ClearSearch";
+import ItemsList from "@/components/menu/ItemsList";
 
 interface MenuProps {
   params: {
@@ -90,14 +91,13 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
       <div className="h-[calc(100svh-28svh)] overflow-y-auto flex flex-col gap-5 p-5 relative pb-32">
         <div className="w-full h-32 fixed bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-50" />
 
-        {currentCategoryId !== "hightlights" &&
-          currentItems.map((item) => (
-            <ItemCard
-              item={item}
-              themeColor={restaurants[0].color}
-              key={item.id}
-            />
-          ))}
+        {currentCategoryId !== "hightlights" && (
+          <ItemsList
+            items={currentItems}
+            themeColor={restaurants[0].color}
+            regionId={restaurants[0].regionId!}
+          />
+        )}
 
         {currentCategoryId == "highlights" && (
           <>

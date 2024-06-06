@@ -1,5 +1,5 @@
+import { Item } from "@prisma/client";
 import { CategoriesWithItemsProps } from "./category";
-import { ItemProps } from "./item";
 
 export interface PaymentMethodProps {
   pix: boolean;
@@ -42,6 +42,6 @@ export interface RestaurantProps {
 }
 
 export interface FullRestaurantProps extends RestaurantProps {
-  Items: ItemProps[];
+  Items: Item[];
   Categories: CategoriesWithItemsProps[];
 }
