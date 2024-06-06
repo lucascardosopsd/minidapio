@@ -18,6 +18,7 @@ interface ItemSheetProps {
   sheetTitle: string | ReactNode;
   sheetDescription?: string;
   triggerStyles?: string;
+  triggerSize?: "default" | "sm" | "lg" | "icon" | null | undefined;
 }
 
 const ItemSheet = ({
@@ -27,6 +28,7 @@ const ItemSheet = ({
   sheetTitle,
   sheetDescription,
   triggerStyles,
+  triggerSize = "default",
 }: ItemSheetProps) => {
   const [open, setOpen] = useState(false);
 
@@ -40,6 +42,7 @@ const ItemSheet = ({
         variant={triggerVariant}
         onClick={toggleOpen}
         className={triggerStyles}
+        size={triggerSize}
       >
         {triggerText}
       </Button>

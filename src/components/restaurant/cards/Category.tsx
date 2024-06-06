@@ -9,8 +9,6 @@ import CategorySheet from "../modals/Category";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import { Badge } from "../../ui/badge";
 import DeleteModal from "../DeleteModal";
-import ItemSheet from "../modals/Item";
-import ItemForm from "../forms/Item";
 import { deleteCategory } from "@/actions/category/deleteCategory";
 import { toast } from "sonner";
 import CategoryForm from "../forms/Category";
@@ -23,6 +21,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import ItemRow from "../tableRows/Item";
+import ItemSheet from "../modals/Item";
+import ItemForm from "../forms/Item";
+import { CopyPlus } from "lucide-react";
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
@@ -55,6 +56,19 @@ const CategoryCard = ({
       <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
         <p>{category.title}</p>
         <div className="flex gap-4 ml-auto">
+          <ItemSheet
+            itemForm={
+              <ItemForm
+                categoryId={category.id.toString()}
+                restaurantId={restaurantId}
+                categories={categories}
+              />
+            }
+            sheetTitle="Novo Item"
+            triggerText={<CopyPlus size={18} />}
+            triggerStyles="w-full"
+            triggerVariant="default"
+          />
           <CategorySheet
             sheetTitle="Editar Categoria"
             triggerText={<FaPen />}
@@ -119,22 +133,6 @@ const CategoryCard = ({
               <p className="text-center p-4">Categoria sem items.</p>
             )}
           </div>
-        </div>
-
-        <div className="flex mt-2">
-          <ItemSheet
-            itemForm={
-              <ItemForm
-                categoryId={category.id.toString()}
-                restaurantId={restaurantId}
-                categories={categories}
-              />
-            }
-            sheetTitle="Novo Item"
-            triggerText="Novo Item"
-            triggerVariant="default"
-            triggerStyles="w-full"
-          />
         </div>
       </AccordionContent>
     </AccordionItem>
