@@ -65,12 +65,7 @@ export default async function Restaurant({
           className={`w-full mx-auto h-full tablet:h-[58svh] tablet:overflow-y-auto space-y-2 pb-10`}
         >
           {pageItems.map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              restaurantId={restaurantId}
-              categories={categories}
-            />
+            <ItemCard key={item.id} item={item} categories={categories} />
           ))}
 
           {!items.length && <p>Nenhum item encontrado.</p>}

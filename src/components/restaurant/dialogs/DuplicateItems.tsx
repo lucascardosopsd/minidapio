@@ -15,6 +15,7 @@ import { useState } from "react";
 import { fetchUserItemsByQuery } from "@/actions/item/fetchUserItemsByQuery";
 import { createNewItem } from "@/actions/item/createNewItem";
 import { ImSpinner2 } from "react-icons/im";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 
 const DuplicateItemsDialog = () => {
   const { idList, setAllIds } = useItemStore();
@@ -38,7 +39,9 @@ const DuplicateItemsDialog = () => {
           if (items[0]) {
             const { id: _, ...rest } = items[0];
 
-            await createNewItem(rest, pathname);
+            await createNewItem({ data: rest });
+
+            revalidateRoute({ fullPath: pathname });
           }
 
           toast(`Item ${items[0].title} duplicado.`);
@@ -55,7 +58,8 @@ const DuplicateItemsDialog = () => {
       if (items[0]) {
         const { id: _, ...rest } = items[0];
 
-        await createNewItem(rest, pathname);
+        await createNewItem({ data: rest });
+        revalidateRoute({ fullPath: pathname });
       }
 
       toast(`Item ${items[0].title} duplicado.`);
