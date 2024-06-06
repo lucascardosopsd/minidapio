@@ -1,5 +1,4 @@
 "use client";
-
 import { cn } from "@/lib/utils";
 import { Category, Item } from "@prisma/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -31,7 +30,7 @@ const CategoriesBar = ({
 
   return (
     <div
-      className="flex gap-5 items-center overflow-x-auto w-[calc(100vw)] p-2 px-10"
+      className="flex gap-7 items-center overflow-x-auto w-[calc(100vw)] p-2 px-10"
       style={{ background: themeColor }}
     >
       <span
@@ -52,7 +51,7 @@ const CategoriesBar = ({
       {categories.map((category) => (
         <span
           className={cn(
-            "text-background font-medium cursor-pointer select-none transition bg-transparent text-center",
+            "text-background font-medium cursor-pointer select-none transition bg-transparent text-center w-full whitespace-nowrap",
             currentCategoryId == category.id &&
               "bg-background p-2 px-4 rounded-full"
           )}
