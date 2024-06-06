@@ -1,22 +1,49 @@
 "use client";
 import { Checkbox } from "../../ui/checkbox";
-import { FaPen } from "react-icons/fa6";
-import ItemSheet from "../modals/Item";
 import ItemForm from "../forms/Item";
 import { useItemStore } from "@/context/item";
 import { Badge } from "../../ui/badge";
 import { Category } from "@prisma/client";
 import { ItemProps } from "@/types/item";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { useState } from "react";
+import { updateItem } from "@/actions/item/updateItem";
+import { z } from "zod";
+import { ItemValidator } from "@/validators/item";
+import { toast } from "sonner";
+import { FaPen } from "react-icons/fa6";
+import ReusableModal from "@/components/misc/ReusableModal";
+import { revalidateRoute } from "@/actions/revalidateRoute";
+import { usePathname } from "next/navigation";
 
 interface ItemRowProps {
   item: ItemProps;
   categories: Category[];
-  restaurantId: string;
 }
 
-const ItemRow = ({ item, categories, restaurantId }: ItemRowProps) => {
+const ItemRow = ({ item, categories }: ItemRowProps) => {
   const { toggleId, idList } = useItemStore();
+  const pathname = usePathname();
+
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleUpdateItem = async (
+    data: Partial<z.infer<typeof ItemValidator>>
+  ) => {
+    setLoading(true);
+    try {
+      await updateItem({ data, id: item.id });
+      toast.success("Item Atualizado!");
+      revalidateRoute({ fullPath: pathname });
+    } catch (error) {
+      toast.error("Ocorreu um erro.");
+      throw new Error("Error when create/update new item");
+    } finally {
+      setOpen(false);
+      setLoading(false);
+    }
+  };
 
   return (
     <TableRow>
@@ -88,18 +115,20 @@ const ItemRow = ({ item, categories, restaurantId }: ItemRowProps) => {
       </TableCell>
 
       <TableCell>
-        <ItemSheet
-          itemForm={
+        <ReusableModal
+          content={
             <ItemForm
-              defaultValues={item}
+              categoryId={item.categoryId!}
               categories={categories}
-              restaurantId={restaurantId}
-              itemId={item.id}
+              onSubmit={handleUpdateItem}
+              loading={loading}
             />
           }
-          sheetTitle="Editar Item"
-          triggerText={<FaPen />}
+          title="Atualizar Item"
+          trigger={<FaPen size={12} />}
           triggerVariant="default"
+          triggerSize="icon"
+          isOpen={open}
         />
       </TableCell>
     </TableRow>

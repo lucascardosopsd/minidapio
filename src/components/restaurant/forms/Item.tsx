@@ -23,35 +23,29 @@ import UploadImage from "../../misc/UploadImage";
 import { useWatch } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import SelectBuilder from "../../builders/SelectBuilder";
-import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { CategoriesWithItemsProps } from "@/types/category";
-import { createNewItem } from "@/actions/item/createNewItem";
-import { toast } from "sonner";
-import { updateItem } from "@/actions/item/updateItem";
 import { isEmpty } from "@/tools/isEmpty";
 
 interface ItemFormProps {
   defaultValues?: Partial<ItemProps>;
-  toggleOpen?: () => void;
   categoryId?: string;
-  restaurantId: string;
+  loading: boolean;
   categories: CategoriesWithItemsProps[];
+  onSubmit: (data: z.infer<typeof ItemValidator>) => Promise<void>;
   itemId?: string;
 }
 
 const ItemForm = ({
   defaultValues = undefined,
   categoryId,
-  toggleOpen = () => {},
-  restaurantId,
+  loading,
   categories,
-  itemId = "",
+  onSubmit,
 }: ItemFormProps) => {
   const form = useItemFormHook({
     defaultValues: defaultValues || { categoryId, active: true, order: 0 },
   });
-  const [loading, setLoading] = useState(false);
   const path = usePathname();
 
   const watchSale = useWatch({
@@ -60,47 +54,11 @@ const ItemForm = ({
     defaultValue: false,
   });
 
-  const handleUpdateItem = async (
-    data: Partial<z.infer<typeof ItemValidator>>
-  ) => {
-    setLoading(true);
-    try {
-      await updateItem(data, itemId, path);
-      toast("Item Atualizado!");
-      toggleOpen();
-    } catch (error) {
-      toast("Ocorreu um erro.");
-      throw new Error("Error when create/update new item");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleNewItem = async (data: z.infer<typeof ItemValidator>) => {
-    data.restaurantId = restaurantId;
-
-    setLoading(true);
-    try {
-      await createNewItem(data, path);
-      toast("Item criado!");
-      toggleOpen();
-    } catch (error) {
-      toast("Ocorreu um erro.");
-      throw new Error("Error when create/update new item");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <Form {...form}>
       <form
         className="flex flex-col gap-4"
-        onSubmit={
-          !itemId
-            ? form.handleSubmit(handleNewItem)
-            : form.handleSubmit(handleUpdateItem)
-        }
+        onSubmit={form.handleSubmit(onSubmit)}
       >
         <FieldBuilder
           control={form.control}
@@ -244,15 +202,6 @@ const ItemForm = ({
         </div>
 
         <div className="flex gap-2 items-center">
-          <Button
-            variant="destructive"
-            className="w-full"
-            type="button"
-            onClick={toggleOpen}
-          >
-            Cancelar
-          </Button>
-
           <Button
             variant="default"
             className="w-full"

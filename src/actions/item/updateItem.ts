@@ -2,14 +2,14 @@
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { useUserSession } from "@/hooks/useUserSession";
-import { revalidatePath } from "next/cache";
 import { ItemValidator } from "@/validators/item";
 
-export const updateItem = async (
-  data: Partial<z.infer<typeof ItemValidator>>,
-  id: string,
-  path?: string
-) => {
+interface UpdateItemProps {
+  id: string;
+  data: Partial<z.infer<typeof ItemValidator>>;
+}
+
+export const updateItem = async ({ data, id }: UpdateItemProps) => {
   const user = await useUserSession();
 
   if (!user?.id) {
@@ -26,8 +26,6 @@ export const updateItem = async (
         userId: user.id,
       },
     });
-
-    if (path) revalidatePath(path);
   } catch (error) {
     throw new Error("Can't update item");
   }

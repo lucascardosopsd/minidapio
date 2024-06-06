@@ -1,14 +1,14 @@
-"use server";
+"use server";;
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { useUserSession } from "@/hooks/useUserSession";
-import { revalidatePath } from "next/cache";
 import { ItemValidator } from "@/validators/item";
 
-export const createNewItem = async (
-  data: z.infer<typeof ItemValidator>,
-  path?: string
-) => {
+interface CreateNewItem{
+  data:z.infer<typeof ItemValidator>
+}
+
+export const createNewItem = async ({data}:CreateNewItem) => {
   const user = await useUserSession();
 
   if (!user?.id) {
@@ -23,7 +23,6 @@ export const createNewItem = async (
       },
     });
 
-    if (path) revalidatePath(path);
   } catch (error) {
     throw new Error("Can't create new item");
   }

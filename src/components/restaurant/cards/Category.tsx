@@ -21,9 +21,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import ItemRow from "../tableRows/Item";
-import ItemSheet from "../modals/Item";
 import ItemForm from "../forms/Item";
 import { CopyPlus } from "lucide-react";
+import ReusableModal from "@/components/misc/ReusableModal";
+import { useState } from "react";
+import { z } from "zod";
+import { createNewItem } from "@/actions/item/createNewItem";
+import { ItemValidator } from "@/validators/item";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
@@ -37,6 +42,25 @@ const CategoryCard = ({
   categories,
 }: CategoryCardProps) => {
   const pathname = usePathname();
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleNewItem = async (data: z.infer<typeof ItemValidator>) => {
+    data.restaurantId = restaurantId;
+
+    setLoading(true);
+    try {
+      await createNewItem({ data });
+      toast.success("Item criado!");
+      revalidateRoute({ fullPath: pathname });
+    } catch (error) {
+      toast.error("Ocorreu um erro.");
+      throw new Error("Error when create/update new item");
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  };
 
   const handleDeleteCategory = async () => {
     try {
@@ -56,18 +80,23 @@ const CategoryCard = ({
       <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
         <p>{category.title}</p>
         <div className="flex gap-4 ml-auto">
-          <ItemSheet
-            itemForm={
-              <ItemForm
-                categoryId={category.id.toString()}
-                restaurantId={restaurantId}
-                categories={categories}
-              />
+          <ReusableModal
+            content={
+              <div className="mx-auto max-w-lg py-5">
+                <ItemForm
+                  categoryId={category.id.toString()}
+                  categories={categories}
+                  onSubmit={handleNewItem}
+                  loading={loading}
+                />
+              </div>
             }
-            sheetTitle="Novo Item"
-            triggerText={<CopyPlus size={18} />}
-            triggerStyles="w-full"
+            title="Novo Item"
+            trigger={<CopyPlus size={18} />}
+            triggerClassName="w-full"
             triggerVariant="default"
+            isOpen={open}
+            onOpen={setOpen}
           />
 
           <CategorySheet
@@ -120,11 +149,7 @@ const CategoryCard = ({
                 <TableBody>
                   {category.items &&
                     category?.items.map((item) => (
-                      <ItemRow
-                        categories={categories}
-                        item={item}
-                        restaurantId={item.restaurantId!}
-                      />
+                      <ItemRow categories={categories} item={item} />
                     ))}
                 </TableBody>
               </Table>

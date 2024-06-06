@@ -23,9 +23,8 @@ interface ReusableModalProps {
   triggerClassName?: string;
   triggerVariant?: ButtonVariants;
   triggerStyle?: CSSProperties;
-  closeTriggerClassName?: string;
-  closeTriggerStyle?: CSSProperties;
   onClick?: () => void;
+  triggerSize?: "default" | "sm" | "lg" | "icon" | null | undefined;
 }
 
 const ReusableModal = ({
@@ -38,8 +37,7 @@ const ReusableModal = ({
   triggerClassName,
   triggerVariant,
   triggerStyle,
-  closeTriggerClassName,
-  closeTriggerStyle,
+  triggerSize,
   onClick,
 }: ReusableModalProps) => {
   return (
@@ -50,6 +48,7 @@ const ReusableModal = ({
           variant={triggerVariant}
           style={triggerStyle}
           onClick={onClick}
+          size={triggerSize}
         >
           {trigger}
         </Button>
@@ -59,7 +58,10 @@ const ReusableModal = ({
         <DrawerHeader>
           <DrawerTitle className="flex items-center justify-between w-full">
             {title}
-            <DrawerClose asChild>
+            <DrawerClose
+              asChild
+              className="text-red-500 cursor-pointer hover:scale-125 transition"
+            >
               <X />
             </DrawerClose>
           </DrawerTitle>
