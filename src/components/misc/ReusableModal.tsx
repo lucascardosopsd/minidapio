@@ -10,7 +10,7 @@ import {
 } from "../ui/drawer";
 import { Button } from "../ui/button";
 import { ButtonVariants } from "@/types/button";
-import { FaChevronLeft } from "react-icons/fa6";
+import { X } from "lucide-react";
 
 interface ReusableModalProps {
   trigger: string | ReactNode;
@@ -58,13 +58,10 @@ const ReusableModal = ({
       <DrawerContent className="h-svh">
         <DrawerHeader>
           <DrawerTitle className="flex items-center justify-between w-full">
-            <DrawerClose asChild>
-              <FaChevronLeft
-                style={closeTriggerStyle}
-                className={closeTriggerClassName}
-              />
-            </DrawerClose>
             {title}
+            <DrawerClose asChild>
+              <X />
+            </DrawerClose>
           </DrawerTitle>
           <DrawerDescription className="w-full text-end">
             {description}

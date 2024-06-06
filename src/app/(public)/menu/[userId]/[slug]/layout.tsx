@@ -8,11 +8,7 @@ interface LayoutProps {
 }
 
 const Layout = ({ params: { id }, children }: LayoutProps) => {
-  return (
-    <div className="flex h-full max-w-lg items mx-auto relative">
-      <div className="container h-full mx-auto">{children}</div>
-    </div>
-  );
+  return <div className="mx-auto max-w-[600px]:">{children}</div>;
 };
 
 export default Layout;
