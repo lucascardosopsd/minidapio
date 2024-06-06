@@ -28,6 +28,7 @@ const CategorySheet = ({
   sheetDescription,
   triggerClassname,
   categoryForm,
+  triggerVariant,
 }: CategorySheetProps) => {
   const [open, setOpen] = useState(false);
 
@@ -38,7 +39,7 @@ const CategorySheet = ({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild className={triggerClassname}>
-        <Button>{triggerText}</Button>
+        <Button variant={triggerVariant}>{triggerText}</Button>
       </SheetTrigger>
 
       <SheetContent>

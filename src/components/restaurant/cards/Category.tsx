@@ -69,10 +69,11 @@ const CategoryCard = ({
             triggerStyles="w-full"
             triggerVariant="default"
           />
+
           <CategorySheet
             sheetTitle="Editar Categoria"
             triggerText={<FaPen />}
-            triggerVariant="default"
+            triggerVariant="outline"
             defaultValues={category}
             categoryForm={
               <CategoryForm
