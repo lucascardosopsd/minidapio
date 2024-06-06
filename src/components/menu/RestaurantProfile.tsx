@@ -14,7 +14,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ItemProps } from "@/types/item";
 import ItemCard from "./cards/Item";
 import SearchField from "../misc/SearchField";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { groupHours } from "@/reducers/groupHours";
 
@@ -31,7 +30,6 @@ const RestaurantProfile = ({
   pageSearchParams,
 }: RestaurantProfileProps) => {
   const themeColor = restaurant?.color || "#fff";
-  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
 
   let isRestaurantOpened = false;
 
@@ -95,8 +93,6 @@ const RestaurantProfile = ({
       </div>
 
       <div className="bg-gradient-to-t from-background to-transparent h-[250px] w-full absolute bottom-0 left-0 z-10 cursor-none pointer-events-none" />
-
-      <div className="bg-gradient-to-b from-background to-transparent h-[250px] w-full absolute top-0 left-0 z-10 cursor-none pointer-events-none" />
 
       <div className="flex flex-col items-center justify-center gap-5 relative w-full pb-32 pt-32 ">
         <div className="flex flex-col justify-center gap-1 text-sm w-full max-w-[400px] p-2 rounded">

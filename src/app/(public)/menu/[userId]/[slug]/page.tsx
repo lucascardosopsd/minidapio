@@ -1,5 +1,6 @@
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import MenuHeader from "@/components/menu/Header";
+import MenuInputSearch from "@/components/misc/InputSearch";
 import { FullRestaurantProps } from "@/types/restaurant";
 
 interface MenuProps {
@@ -60,6 +61,7 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
   return (
     <div className="h-svh antialiased w-full">
       <MenuHeader restaurant={restaurant[0]} />
+      <MenuInputSearch keyName="title" placeholder="Busque um item" />
     </div>
   );
 };
