@@ -22,12 +22,12 @@ import {
 import ItemRow from "../tableRows/Item";
 import ItemForm from "../forms/Item";
 import { CopyPlus } from "lucide-react";
-import ReusableModal from "@/components/misc/ReusableModal";
 import { useState } from "react";
 import { z } from "zod";
 import { createNewItem } from "@/actions/item/createNewItem";
 import { ItemValidator } from "@/validators/item";
 import { revalidateRoute } from "@/actions/revalidateRoute";
+import ReusableSheet from "@/components/misc/ReusableSheet";
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
@@ -79,16 +79,14 @@ const CategoryCard = ({
       <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
         <p>{category.title}</p>
         <div className="flex gap-4 ml-auto">
-          <ReusableModal
+          <ReusableSheet
             content={
-              <div className="mx-auto max-w-lg py-5">
-                <ItemForm
-                  categoryId={category.id.toString()}
-                  categories={categories}
-                  onSubmit={handleNewItem}
-                  loading={loading}
-                />
-              </div>
+              <ItemForm
+                categoryId={category.id.toString()}
+                categories={categories}
+                onSubmit={handleNewItem}
+                loading={loading}
+              />
             }
             title="Novo Item"
             trigger={<CopyPlus size={18} />}
@@ -98,18 +96,16 @@ const CategoryCard = ({
             onOpen={setOpen}
           />
 
-          <ReusableModal
+          <ReusableSheet
             title="Editar Categoria"
             trigger={<FaPen />}
             triggerVariant="outline"
             content={
-              <div className="mx-auto max-w-lg py-5">
-                <CategoryForm
-                  defaultValues={category}
-                  categoryId={category.id}
-                  restaurantId={restaurantId}
-                />
-              </div>
+              <CategoryForm
+                defaultValues={category}
+                categoryId={category.id}
+                restaurantId={restaurantId}
+              />
             }
           />
 

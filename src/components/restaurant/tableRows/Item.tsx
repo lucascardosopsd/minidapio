@@ -12,9 +12,9 @@ import { z } from "zod";
 import { ItemValidator } from "@/validators/item";
 import { toast } from "sonner";
 import { FaPen } from "react-icons/fa6";
-import ReusableModal from "@/components/misc/ReusableModal";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { usePathname } from "next/navigation";
+import ReusableSheet from "@/components/misc/ReusableSheet";
 
 interface ItemRowProps {
   item: ItemProps;
@@ -115,17 +115,15 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
       </TableCell>
 
       <TableCell>
-        <ReusableModal
+        <ReusableSheet
           content={
-            <div className="mx-auto max-w-lg py-5">
-              <ItemForm
-                categoryId={item.categoryId!}
-                categories={categories}
-                onSubmit={handleUpdateItem}
-                loading={loading}
-                defaultValues={item}
-              />
-            </div>
+            <ItemForm
+              categoryId={item.categoryId!}
+              categories={categories}
+              onSubmit={handleUpdateItem}
+              loading={loading}
+              defaultValues={item}
+            />
           }
           title="Atualizar Item"
           trigger={<FaPen size={12} />}

@@ -7,7 +7,7 @@ import CategoryForm from "@/components/restaurant/forms/Category";
 import ItemsActions from "@/components/restaurant/ItemsActions";
 import CategoriesList from "@/components/restaurant/lists/Categories";
 import { CategoriesWithItemsProps } from "@/types/category";
-import ReusableModal from "@/components/misc/ReusableModal";
+import ReusableSheet from "@/components/misc/ReusableSheet";
 
 interface PageProps {
   params: {
@@ -48,17 +48,12 @@ export default async function Restaurant({
         <InputSearch restaurantId={restaurantId} disableParams />
 
         <div className="flex gap-2 w-full tablet:w-auto">
-          <ReusableModal
+          <ReusableSheet
             title="Criar Categoria"
             trigger="Nova Categoria"
             triggerVariant="default"
             triggerClassName="w-full tablet:w-40"
-            content={
-              <div className="mx-auto max-w-lg py-5">
-                {" "}
-                <CategoryForm restaurantId={restaurantId} />{" "}
-              </div>
-            }
+            content={<CategoryForm restaurantId={restaurantId} />}
           />
         </div>
       </div>
