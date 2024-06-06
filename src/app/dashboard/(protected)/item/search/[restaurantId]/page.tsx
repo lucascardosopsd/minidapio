@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import InputSearch from "@/components/restaurant/InputSearch";
 import { redirect } from "next/navigation";
 import { fetchUserItemsByQuery } from "@/actions/item/fetchUserItemsByQuery";
-import ItemCard from "@/components/restaurant/cards/Item";
+import ItemCard from "@/components/restaurant/tableRows/Item";
 import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
 import Paginate from "@/components/restaurant/Pagination";
 import BottomFade from "@/components/restaurant/BottomFade";

@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "../../ui/accordion";
 import CategorySheet from "../modals/Category";
-import { FaCheck, FaPen, FaTrash } from "react-icons/fa6";
+import { FaPen, FaTrash } from "react-icons/fa6";
 import { Badge } from "../../ui/badge";
 import DeleteModal from "../DeleteModal";
 import ItemSheet from "../modals/Item";
@@ -15,21 +15,25 @@ import { deleteCategory } from "@/actions/category/deleteCategory";
 import { toast } from "sonner";
 import CategoryForm from "../forms/Category";
 import { usePathname } from "next/navigation";
-import CategoryItemsList from "../lists/Items";
-import { DragControls } from "framer-motion";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import ItemRow from "../tableRows/Item";
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
   restaurantId: string;
   categories: CategoriesWithItemsProps[];
-  controls: DragControls;
 }
 
 const CategoryCard = ({
   category,
   restaurantId,
   categories,
-  controls,
 }: CategoryCardProps) => {
   const pathname = usePathname();
 
@@ -85,26 +89,28 @@ const CategoryCard = ({
         <div className="overflow-x-auto w-[calc(100svw-60px)] tablet:w-full">
           <div className="w-[250svw] pr-20 tablet:pr-0 tablet:w-full">
             <div className="flex flex-col space-y-2 mt-2">
-              <div className="flex items-center pl-3 text-foreground/50 ">
-                <div className="flex gap-2 flex-[2]">
-                  <p>
-                    <FaCheck />
-                  </p>
-                  <p>Nome</p>
-                </div>
-                <p className="flex-1">Preço</p>
-                <p className="flex-1">Desconto</p>
-                <p className="flex-1">Tipo</p>
-                <p className="flex-1">Status</p>
-                <p className="flex-1 flex justify-center">Ações</p>
-              </div>
-
-              {category.items && (
-                <CategoryItemsList
-                  categories={categories}
-                  originalItems={category.items}
-                />
-              )}
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Preço</TableHead>
+                    <TableHead>Desconto</TableHead>
+                    <TableHead>Preço</TableHead>
+                    <TableHead>Tipo</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {category.items &&
+                    category?.items.map((item) => (
+                      <ItemRow
+                        categories={categories}
+                        item={item}
+                        restaurantId={item.restaurantId!}
+                      />
+                    ))}
+                </TableBody>
+              </Table>
             </div>
 
             {!category.items && (

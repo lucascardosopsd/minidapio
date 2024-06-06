@@ -24,8 +24,15 @@ export default async function Restaurant({
       where: {
         restaurantId,
       },
+      orderBy: {
+        order: "asc",
+      },
       include: {
-        items: true,
+        items: {
+          orderBy: {
+            order: "asc",
+          },
+        },
       },
     });
 

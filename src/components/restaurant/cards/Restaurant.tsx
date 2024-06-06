@@ -32,7 +32,6 @@ const RestaurantCard = ({
   session,
   regions,
 }: RestaurantCardProps) => {
-  console.log(restaurant);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
