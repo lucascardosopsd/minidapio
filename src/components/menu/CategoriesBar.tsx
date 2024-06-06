@@ -52,7 +52,7 @@ const CategoriesBar = ({
       {categories.map((category) => (
         <span
           className={cn(
-            "text-background font-medium cursor-pointer select-none transition bg-transparent",
+            "text-background font-medium cursor-pointer select-none transition bg-transparent text-center",
             currentCategoryId == category.id &&
               "bg-background p-2 px-4 rounded-full"
           )}
