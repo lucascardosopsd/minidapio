@@ -1,6 +1,5 @@
 "use client";
 import { useItemStore } from "@/context/item";
-import { ItemProps } from "@/types/item";
 import { AnimatePresence, motion } from "framer-motion";
 import { Separator } from "../ui/separator";
 import TransferItemsDialog from "./dialogs/TransferItems";
@@ -8,9 +7,10 @@ import { CategoriesWithItemsProps } from "@/types/category";
 import { Checkbox } from "../ui/checkbox";
 import DeleteItemsDialog from "./dialogs/DeleteItems";
 import DuplicateItemsDialog from "./dialogs/DuplicateItems";
+import { Item } from "@prisma/client";
 
 interface ItemsActionsProps {
-  items: ItemProps[];
+  items: Item[];
   categories: CategoriesWithItemsProps[];
   visible?: boolean;
 }

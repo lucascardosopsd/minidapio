@@ -1,15 +1,14 @@
 "use server";
 import prisma from "@/lib/prisma";
 import { useUserSession } from "@/hooks/useUserSession";
-import { Prisma } from "@prisma/client";
-import { ItemProps } from "@/types/item";
+import { Item, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export type ItemsQuery = Prisma.ItemFindManyArgs;
 
 interface fetchUserItemsByQueryReturnProps {
   count: number;
-  items: ItemProps[];
+  items: Item[];
 }
 
 export const fetchUserItemsByQuery = async (

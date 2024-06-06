@@ -7,7 +7,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../ui/dialog";
-import { CategoryProps } from "@/types/category";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -19,9 +18,10 @@ import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { updateManyItems } from "@/actions/item/updateManyItems";
+import { Category } from "@prisma/client";
 
 interface TransferItemsProps {
-  categories: CategoryProps[];
+  categories: Category[];
 }
 
 const TransferItemsDialog = ({ categories }: TransferItemsProps) => {

@@ -1,5 +1,4 @@
 import { ItemProps } from "@/types/item";
-import { useDragControls } from "framer-motion";
 import { useEffect, useState } from "react";
 import ItemCard from "../cards/Item";
 import { CategoriesWithItemsProps } from "@/types/category";
@@ -14,7 +13,6 @@ const CategoryItemsList = ({
   categories,
 }: CategoryItemsListProps) => {
   const [newOrder, setNewOrder] = useState<ItemProps[]>(originalItems);
-  const controls = useDragControls();
 
   useEffect(() => {
     setNewOrder(originalItems);

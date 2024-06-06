@@ -1,16 +1,16 @@
 "use client";
-import { ItemProps } from "@/types/item";
 import { Checkbox } from "../../ui/checkbox";
 import { FaPen } from "react-icons/fa6";
 import ItemSheet from "../modals/Item";
 import ItemForm from "../forms/Item";
 import { useItemStore } from "@/context/item";
 import { Badge } from "../../ui/badge";
-import { CategoryProps } from "@/types/category";
+import { Category } from "@prisma/client";
+import { ItemProps } from "@/types/item";
 
 interface ItemCardProps {
   item: ItemProps;
-  categories: CategoryProps[];
+  categories: Category[];
   restaurantId: string;
 }
 

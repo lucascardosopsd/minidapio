@@ -1,14 +1,14 @@
-import { CategoryProps } from "@/types/category";
 import { categoryValidator } from "@/validators/category";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Category } from "@prisma/client";
 import { useForm } from "react-hook-form";
 
 interface UseCategoryFormProps {
-  defaultValues?: Partial<CategoryProps> | undefined;
+  defaultValues?: Partial<Category> | undefined;
 }
 
 export const useCategoryForm = ({ defaultValues }: UseCategoryFormProps) => {
-  return useForm<CategoryProps>({
+  return useForm<Category>({
     defaultValues,
     resolver: zodResolver(categoryValidator),
   });

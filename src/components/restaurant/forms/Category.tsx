@@ -11,11 +11,11 @@ import { Input } from "../../ui/input";
 import { useState } from "react";
 import { createNewCategory } from "@/actions/category/createNewCategory";
 import { updateCategory } from "@/actions/category/updateCategory";
-import { CategoryProps } from "@/types/category";
 import { isEmpty } from "@/tools/isEmpty";
+import { Category } from "@prisma/client";
 
 interface CategoryFormProps {
-  defaultValues?: Partial<CategoryProps> | undefined;
+  defaultValues?: Partial<Category> | undefined;
   categoryId?: string;
   restaurantId: string;
   toggleOpen?: () => void;

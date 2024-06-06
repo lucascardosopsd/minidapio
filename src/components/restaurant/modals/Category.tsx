@@ -9,10 +9,10 @@ import {
   SheetTrigger,
 } from "../../ui/sheet";
 import { ButtonVariants } from "@/types/button";
-import { CategoryProps } from "@/types/category";
+import { Category } from "@prisma/client";
 
 interface CategorySheetProps {
-  defaultValues?: CategoryProps | undefined;
+  defaultValues?: Category | undefined;
   triggerText: string | ReactNode;
   triggerVariant: ButtonVariants;
   sheetTitle: string | ReactNode;
