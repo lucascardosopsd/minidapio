@@ -48,7 +48,7 @@ const MenuHeader = ({ restaurant }: MenuHeaderProps) => {
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col text-sm">
           <p>{restaurant.title}</p>
           <p
             className={cn(
@@ -63,7 +63,7 @@ const MenuHeader = ({ restaurant }: MenuHeaderProps) => {
 
       <ReusableModal
         trigger={<Menu style={{ color: restaurant.color }} size={32} />}
-        triggerVariant="outline"
+        triggerVariant="ghost"
         triggerClassName="border-none"
         title="Perfil do restaurante"
         content={<RestaurantProfile restaurant={restaurant} />}
