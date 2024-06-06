@@ -1,13 +1,13 @@
 "use server";
 import { Accordion } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-import CategorySheet from "@/components/restaurant/modals/Category";
 import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
 import InputSearch from "@/components/restaurant/InputSearch";
 import CategoryForm from "@/components/restaurant/forms/Category";
 import ItemsActions from "@/components/restaurant/ItemsActions";
 import CategoriesList from "@/components/restaurant/lists/Categories";
 import { CategoriesWithItemsProps } from "@/types/category";
+import ReusableModal from "@/components/misc/ReusableModal";
 
 interface PageProps {
   params: {
@@ -48,13 +48,17 @@ export default async function Restaurant({
         <InputSearch restaurantId={restaurantId} disableParams />
 
         <div className="flex gap-2 w-full tablet:w-auto">
-          <CategorySheet
-            sheetTitle="Criar Categoria"
-            triggerText="Nova Categoria"
+          <ReusableModal
+            title="Criar Categoria"
+            trigger="Nova Categoria"
             triggerVariant="default"
-            triggerClassname="w-full tablet:w-40"
-            restaurantId={restaurantId}
-            categoryForm={<CategoryForm restaurantId={restaurantId} />}
+            triggerClassName="w-full tablet:w-40"
+            content={
+              <div className="mx-auto max-w-lg py-5">
+                {" "}
+                <CategoryForm restaurantId={restaurantId} />{" "}
+              </div>
+            }
           />
         </div>
       </div>

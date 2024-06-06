@@ -117,18 +117,22 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
       <TableCell>
         <ReusableModal
           content={
-            <ItemForm
-              categoryId={item.categoryId!}
-              categories={categories}
-              onSubmit={handleUpdateItem}
-              loading={loading}
-            />
+            <div className="mx-auto max-w-lg py-5">
+              <ItemForm
+                categoryId={item.categoryId!}
+                categories={categories}
+                onSubmit={handleUpdateItem}
+                loading={loading}
+                defaultValues={item}
+              />
+            </div>
           }
           title="Atualizar Item"
           trigger={<FaPen size={12} />}
           triggerVariant="default"
           triggerSize="icon"
           isOpen={open}
+          onOpen={setOpen}
         />
       </TableCell>
     </TableRow>

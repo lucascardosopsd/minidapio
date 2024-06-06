@@ -5,7 +5,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../../ui/accordion";
-import CategorySheet from "../modals/Category";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import { Badge } from "../../ui/badge";
 import DeleteModal from "../DeleteModal";
@@ -99,17 +98,18 @@ const CategoryCard = ({
             onOpen={setOpen}
           />
 
-          <CategorySheet
-            sheetTitle="Editar Categoria"
-            triggerText={<FaPen />}
+          <ReusableModal
+            title="Editar Categoria"
+            trigger={<FaPen />}
             triggerVariant="outline"
-            defaultValues={category}
-            categoryForm={
-              <CategoryForm
-                defaultValues={category}
-                categoryId={category.id}
-                restaurantId={restaurantId}
-              />
+            content={
+              <div className="mx-auto max-w-lg py-5">
+                <CategoryForm
+                  defaultValues={category}
+                  categoryId={category.id}
+                  restaurantId={restaurantId}
+                />
+              </div>
             }
           />
 
