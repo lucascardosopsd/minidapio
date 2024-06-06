@@ -27,7 +27,7 @@ const ItemRow = ({ item, categories, restaurantId }: ItemRowProps) => {
         />
       </TableCell>
 
-      <TableCell>
+      <TableCell className="flex items-center">
         <p>{item.title}</p>
 
         <p className="text-primary text-xs ml-1">[{item.order!}]</p>
