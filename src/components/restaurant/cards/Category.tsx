@@ -92,12 +92,14 @@ const CategoryCard = ({
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Preço</TableHead>
+                    <TableHead></TableHead>
+
+                    <TableHead>Nome</TableHead>
                     <TableHead>Desconto</TableHead>
-                    <TableHead>Preço</TableHead>
-                    <TableHead>Tipo</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Ações</TableHead>
+                    <TableHead className="text-center">Preço</TableHead>
+                    <TableHead className="text-center">Tipo</TableHead>
+                    <TableHead className="text-center">Status</TableHead>
+                    <TableHead>Editar</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

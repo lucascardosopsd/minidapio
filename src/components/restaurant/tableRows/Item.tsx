@@ -57,29 +57,19 @@ const ItemRow = ({ item, categories, restaurantId }: ItemRowProps) => {
 
       <TableCell>
         {item.sale ? (
-          <Badge className="w-full max-w-[100px] flex justify-center">
-            Promoção
-          </Badge>
+          <Badge className="w-full  flex justify-center">Promoção</Badge>
         ) : (
-          <Badge
-            variant="outline"
-            className="w-full max-w-[100px] flex justify-center"
-          >
-            Preço
+          <Badge variant="outline" className="w-full flex justify-center">
+            Normal
           </Badge>
         )}
       </TableCell>
 
       <TableCell>
         {item.highlight ? (
-          <Badge className="w-full max-w-[100px] flex justify-center">
-            Destaque
-          </Badge>
+          <Badge className="w-full flex justify-center">Destaque</Badge>
         ) : (
-          <Badge
-            variant="outline"
-            className="w-full max-w-[100px] flex justify-center"
-          >
+          <Badge variant="outline" className="w-full flex justify-center">
             Normal
           </Badge>
         )}
@@ -87,14 +77,9 @@ const ItemRow = ({ item, categories, restaurantId }: ItemRowProps) => {
 
       <TableCell>
         {item.active ? (
-          <Badge className="w-full max-w-[100px] flex justify-center">
-            Ativo
-          </Badge>
+          <Badge className="w-full flex justify-center">Ativo</Badge>
         ) : (
-          <Badge
-            variant="outline"
-            className="w-full max-w-[100px] flex justify-center"
-          >
+          <Badge variant="outline" className="w-full flex justify-center">
             Inativo
           </Badge>
         )}
