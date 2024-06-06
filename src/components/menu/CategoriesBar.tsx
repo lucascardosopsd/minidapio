@@ -31,9 +31,24 @@ const CategoriesBar = ({
 
   return (
     <div
-      className="flex gap-5 items-center overflow-x-auto w-[calc(100vw)] p-2 pr-10"
+      className="flex gap-5 items-center overflow-x-auto w-[calc(100vw)] p-2 px-10"
       style={{ background: themeColor }}
     >
+      <span
+        className={cn(
+          "text-background font-medium cursor-pointer select-none transition bg-transparent",
+          currentCategoryId == "highlights" &&
+            "bg-background p-2 px-4 rounded-full"
+        )}
+        style={{
+          color: currentCategoryId == "highlights" ? themeColor : "background",
+        }}
+        key={"highlights"}
+        onClick={() => handleSetCategoryId("highlights")}
+      >
+        Destaques
+      </span>
+
       {categories.map((category) => (
         <span
           className={cn(
