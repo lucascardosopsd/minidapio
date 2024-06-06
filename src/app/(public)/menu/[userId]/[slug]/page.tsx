@@ -2,8 +2,9 @@ import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsBy
 import CategoriesBar from "@/components/menu/CategoriesBar";
 import MenuHeader from "@/components/menu/Header";
 import ItemCard from "@/components/menu/cards/Item";
-import MenuInputSearch from "@/components/misc/InputSearch";
+import MenuInputSearch from "@/components/menu/InputSearch";
 import { FullRestaurantProps } from "@/types/restaurant";
+import ClearSearch from "@/components/menu/ClearSearch";
 
 interface MenuProps {
   params: {
@@ -55,11 +56,13 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
 
   const currentCategoryId = searchParams?.categoryId || "highlights";
 
-  const currentItems = restaurants[0].Items.filter(
+  const currentItems = restaurants[0]?.Items?.filter(
     (item) => item.categoryId == currentCategoryId
   );
 
-  const highlightItems = restaurants[0].Items.filter((item) => item.highlight);
+  const highlightItems = restaurants[0]?.Items?.filter(
+    (item) => item.highlight
+  );
 
   if (!restaurants[0]) {
     return (
@@ -73,11 +76,16 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
     <div className="h-svh antialiased w-full">
       <MenuHeader restaurant={restaurants[0]} />
       <MenuInputSearch keyName="title" placeholder="Busque um item" />
-      <CategoriesBar
-        categories={restaurants[0].Categories}
-        themeColor={restaurants[0].color}
-        currentCategoryId={currentCategoryId}
-      />
+
+      {searchParams?.title && <ClearSearch keys={["categoryId", "title"]} />}
+
+      {!searchParams?.title && (
+        <CategoriesBar
+          categories={restaurants[0].Categories}
+          themeColor={restaurants[0].color}
+          currentCategoryId={currentCategoryId}
+        />
+      )}
 
       <div className="h-[calc(100svh-28svh)] overflow-y-auto flex flex-col gap-5 p-5 relative pb-32">
         <div className="w-full h-32 fixed bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-50" />
