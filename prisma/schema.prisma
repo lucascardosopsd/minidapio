@@ -121,7 +121,7 @@ model Item {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
-  price       Float
+  price       Float?
   image       String
   highlight   Boolean
   active      Boolean

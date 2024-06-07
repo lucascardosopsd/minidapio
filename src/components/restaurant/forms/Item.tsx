@@ -1,6 +1,5 @@
 "use client";
 import { useItemFormHook } from "@/hooks/useItemForm";
-import { ItemProps } from "@/types/item";
 import {
   Form,
   FormControl,
@@ -23,12 +22,12 @@ import UploadImage from "../../misc/UploadImage";
 import { useWatch } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import SelectBuilder from "../../builders/SelectBuilder";
-import { usePathname } from "next/navigation";
 import { CategoriesWithItemsProps } from "@/types/category";
 import { isEmpty } from "@/tools/isEmpty";
+import { Item } from "@prisma/client";
 
 interface ItemFormProps {
-  defaultValues?: Partial<ItemProps>;
+  defaultValues?: Item;
   categoryId?: string;
   loading: boolean;
   categories: CategoriesWithItemsProps[];
@@ -46,7 +45,6 @@ const ItemForm = ({
   const form = useItemFormHook({
     defaultValues: defaultValues || { categoryId, active: true, order: 0 },
   });
-  const path = usePathname();
 
   const watchSale = useWatch({
     control: form.control,
@@ -77,16 +75,17 @@ const ItemForm = ({
         <FormField
           control={form.control}
           name="price"
-          render={({ field: { onChange } }) => (
+          render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel>Price*</FormLabel>
+              <FormLabel>Preço</FormLabel>
               <FormControl>
                 <NumericFormat
                   decimalSeparator=","
                   maxLength={8}
                   prefix="R$"
                   placeholder="R$0,00"
-                  onValueChange={(values) => onChange(values.floatValue)}
+                  value={field.value}
+                  onValueChange={(values) => field.onChange(values.floatValue)}
                 />
               </FormControl>
               <FormMessage />

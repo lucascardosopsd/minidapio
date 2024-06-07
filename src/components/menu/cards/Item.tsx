@@ -2,12 +2,12 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/tools/formatPrice";
-import { ItemProps } from "@/types/item";
+import { Item } from "@prisma/client";
 import Image from "next/image";
 import { useState } from "react";
 
 interface ItemCardProps {
-  item: ItemProps;
+  item: Item;
   themeColor: string;
 }
 
@@ -42,9 +42,11 @@ const ItemCard = ({ item, themeColor }: ItemCardProps) => {
           <p className="text-xs">{item.description}</p>
           {item.sale ? (
             <>
-              <p className="text-xs line-through">
-                {formatPrice(item.price, "pt-BR", "BRL")}
-              </p>
+              {item.price && (
+                <p className="text-xs line-through">
+                  {formatPrice(item?.price, "pt-BR", "BRL")}
+                </p>
+              )}
               <p
                 className={cn("text-md", item.highlight && "text-background")}
                 style={{ color: !item.highlight ? themeColor : "" }}
@@ -52,10 +54,12 @@ const ItemCard = ({ item, themeColor }: ItemCardProps) => {
                 {formatPrice(item.salePrice!, "pt-BR", "BRL")}
               </p>
             </>
-          ) : (
+          ) : item?.price ? (
             <p className="font-bold" style={{ color: themeColor }}>
-              {formatPrice(item.price, "pt-BR", "BRL")}
+              {formatPrice(item?.price, "pt-BR", "BRL")}
             </p>
+          ) : (
+            <></>
           )}
         </div>
       </div>

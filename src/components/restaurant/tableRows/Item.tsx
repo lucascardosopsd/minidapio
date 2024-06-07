@@ -3,8 +3,7 @@ import { Checkbox } from "../../ui/checkbox";
 import ItemForm from "../forms/Item";
 import { useItemStore } from "@/context/item";
 import { Badge } from "../../ui/badge";
-import { Category } from "@prisma/client";
-import { ItemProps } from "@/types/item";
+import { Category, Item } from "@prisma/client";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { useState } from "react";
 import { updateItem } from "@/actions/item/updateItem";
@@ -17,7 +16,7 @@ import { usePathname } from "next/navigation";
 import ReusableSheet from "@/components/misc/ReusableSheet";
 
 interface ItemRowProps {
-  item: ItemProps;
+  item: Item;
   categories: Category[];
 }
 
@@ -66,10 +65,14 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         <p
           className={item.salePrice ? "line-through text-muted-foreground" : ""}
         >
-          {item.price.toLocaleString("pt-br", {
-            style: "currency",
-            currency: "BRL",
-          })}
+          {item?.price ? (
+            item.price?.toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
+            })
+          ) : (
+            <p>Sem Preço</p>
+          )}
         </p>
 
         {item.sale && (
