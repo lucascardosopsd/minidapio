@@ -84,6 +84,9 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
           categories={restaurants[0].Categories}
           themeColor={restaurants[0].color}
           currentCategoryId={currentCategoryId}
+          initialIndex={restaurants[0].Categories.findIndex(
+            (category) => category.id == currentCategoryId
+          )}
         />
       )}
 
