@@ -45,7 +45,7 @@ const MenuInputSearch = ({
       <div className="flex flex-1 justify-end w-full">
         <Input
           className={cn(
-            "w-full placeholder:text-muted rounded-r-none border-r-0 shadow-md",
+            "w-full placeholder:text-muted-foreground rounded-r-none border-r-0 shadow-md",
             inputClassName
           )}
           style={inputStyles}
@@ -58,7 +58,7 @@ const MenuInputSearch = ({
           size="icon"
           onClick={handleSearch}
           className={cn(
-            "border-l-0 rounded-l-none text-muted text-lg shadow-md",
+            "border-l-0 rounded-l-none text-muted-foreground text-lg shadow-md",
             triggerClassName
           )}
           style={triggerStyles}
