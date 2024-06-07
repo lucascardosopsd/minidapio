@@ -62,7 +62,7 @@ const CategoriesBar = ({
         <SwiperSlide key={category.id}>
           <div
             className={cn(
-              "text-background cursor-pointer select-none transition bg-transparent text-center text-sm flex items-center justify-center h-full mx-5 leading-[12px] font-semibold",
+              "text-background cursor-pointer select-none transition bg-transparent text-center text-sm flex items-center justify-center h-full mx-5 leading-[12px] font-semibold whitespace-nowrap",
               currentCategoryId == category.id &&
                 "bg-background p-2 px-4 rounded-lg"
             )}
