@@ -68,7 +68,7 @@ const ItemCard = ({ item, themeColor }: ItemCardProps) => {
   return (
     <>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="flex justify-center items-center">
+        <DialogContent className="flex justify-center items-center p-0">
           <Image
             height={1000}
             width={1000}
@@ -96,6 +96,7 @@ const ItemCard = ({ item, themeColor }: ItemCardProps) => {
           height={500}
           width={500}
           className="h-32 w-32 object-cover rounded-l"
+          onClick={() => setIsModalOpen(true)}
         />
 
         <div className="flex flex-col justify-center gap-2">
