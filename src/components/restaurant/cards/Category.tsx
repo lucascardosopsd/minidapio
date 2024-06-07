@@ -28,6 +28,8 @@ import { createNewItem } from "@/actions/item/createNewItem";
 import { ItemValidator } from "@/validators/item";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import ReusableSheet from "@/components/misc/ReusableSheet";
+import { updateCategory } from "@/actions/category/updateCategory";
+import { categoryValidator } from "@/validators/category";
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
@@ -45,6 +47,9 @@ const CategoryCard = ({
   const [open, setOpen] = useState(false);
 
   const handleNewItem = async (data: z.infer<typeof ItemValidator>) => {
+    const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+
     data.restaurantId = restaurantId;
 
     setLoading(true);
@@ -68,6 +73,26 @@ const CategoryCard = ({
     } catch (error) {
       toast("ocorreu um erro");
       throw new Error("Error when delete category");
+    }
+  };
+
+  const handleUpdateCategory = async (
+    data: z.infer<typeof categoryValidator>
+  ) => {
+    setLoading(true);
+
+    try {
+      await updateCategory({ data, id: category.id });
+
+      revalidateRoute({ fullPath: pathname });
+      toast("Categoria atualizada");
+    } catch (error) {
+      console.log(error);
+      toast("Ocorreu um erro.");
+      throw new Error("Can't update category");
+    } finally {
+      setOpen(false);
+      setLoading(false);
     }
   };
 
@@ -103,10 +128,13 @@ const CategoryCard = ({
             content={
               <CategoryForm
                 defaultValues={category}
-                categoryId={category.id}
                 restaurantId={restaurantId}
+                onSubmit={handleUpdateCategory}
+                loading={loading}
               />
             }
+            isOpen={open}
+            onOpen={setOpen}
           />
 
           <DeleteModal
