@@ -24,11 +24,11 @@ const MenuInputSearch = ({
   inputStyles,
 }: MenuInputSearchProps) => {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
-
   const params = new URLSearchParams(searchParams);
   const { replace } = useRouter();
   const [query, setQuery] = useState("");
+  const pathname = usePathname();
+  const [inputTerm, setInputTerm] = useState("");
 
   const handleSearch = () => {
     if (query) {
@@ -40,8 +40,17 @@ const MenuInputSearch = ({
     }
   };
 
+  const handleClearParams = (keys: string[]) => {
+    keys.forEach((key) => {
+      params.delete(key);
+    });
+
+    replace(`${pathname}?${params.toString()}`);
+    setInputTerm("");
+  };
+
   return (
-    <div className="p-5">
+    <div className="p-5 flex flex-col gap-2">
       <div className="flex flex-1 justify-end w-full">
         <Input
           className={cn(
@@ -50,8 +59,11 @@ const MenuInputSearch = ({
           )}
           style={inputStyles}
           placeholder={searchParams.get(keyName) || placeholder}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={inputTerm}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setInputTerm(e.target.value);
+          }}
           onKeyDown={(e) => e.key == "Enter" && handleSearch()}
         />
         <Button
@@ -67,6 +79,16 @@ const MenuInputSearch = ({
           <Search size={24} />
         </Button>
       </div>
+
+      {inputTerm && (
+        <Button
+          className="w-full text-primary"
+          variant="outline"
+          onClick={() => handleClearParams(["categoryId", "title"])}
+        >
+          Limpar pesquisa
+        </Button>
+      )}
     </div>
   );
 };

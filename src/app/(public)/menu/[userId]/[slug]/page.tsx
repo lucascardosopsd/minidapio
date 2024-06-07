@@ -3,7 +3,6 @@ import CategoriesBar from "@/components/menu/CategoriesBar";
 import MenuHeader from "@/components/menu/Header";
 import MenuInputSearch from "@/components/menu/InputSearch";
 import { FullRestaurantProps } from "@/types/restaurant";
-import ClearSearch from "@/components/menu/ClearSearch";
 import ItemsList from "@/components/menu/ItemsList";
 
 interface MenuProps {
@@ -76,8 +75,6 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
     <div className="h-svh antialiased w-full">
       <MenuHeader restaurant={restaurants[0]} />
       <MenuInputSearch keyName="title" placeholder="Busque um item" />
-
-      {searchParams?.title && <ClearSearch keys={["categoryId", "title"]} />}
 
       {!searchParams?.title && (
         <CategoriesBar
