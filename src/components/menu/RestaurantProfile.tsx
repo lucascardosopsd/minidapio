@@ -11,12 +11,12 @@ import { weekDays } from "@/constants/weekDays";
 import { paymentMethods } from "@/constants/paymentMethods";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ItemProps } from "@/types/item";
 import ItemCard from "./cards/Item";
 import SearchField from "../misc/SearchField";
 import { cn } from "@/lib/utils";
 import { groupHours } from "@/reducers/groupHours";
 
+import { Item } from "@prisma/client";
 interface RestaurantProfileProps {
   restaurant: FullRestaurantProps;
   isSearching?: boolean;
@@ -79,7 +79,7 @@ const RestaurantProfile = ({
               </div>
 
               {restaurant.Items.length ? (
-                restaurant.Items.map((item: ItemProps) => (
+                restaurant.Items.map((item: Item) => (
                   <ItemCard item={item} themeColor={themeColor} key={item.id} />
                 ))
               ) : (
