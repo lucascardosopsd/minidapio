@@ -89,7 +89,7 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
 
       <div className="h-[calc(100svh-28svh)] overflow-y-auto p-5 relative pb-32 mx-auto">
         {/* Gradient FX */}
-        <div className="w-full h-32 fixed bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-50" />
+        <div className="w-full h-32 fixed bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-50 pointer-events-none" />
 
         {currentCategoryId !== "highlights" && (
           <ItemsList
