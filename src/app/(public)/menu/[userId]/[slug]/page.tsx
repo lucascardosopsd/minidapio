@@ -1,7 +1,6 @@
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import CategoriesBar from "@/components/menu/CategoriesBar";
 import MenuHeader from "@/components/menu/Header";
-import ItemCard from "@/components/menu/cards/Item";
 import MenuInputSearch from "@/components/menu/InputSearch";
 import { FullRestaurantProps } from "@/types/restaurant";
 import ClearSearch from "@/components/menu/ClearSearch";
@@ -57,6 +56,8 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
 
   const currentCategoryId = searchParams?.categoryId || "highlights";
 
+  console.log(currentCategoryId);
+
   const currentItems = restaurants[0]?.Items?.filter(
     (item) => item.categoryId == currentCategoryId
   );
@@ -88,10 +89,11 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
         />
       )}
 
-      <div className="h-[calc(100svh-28svh)] overflow-y-auto grid grid-cols-1 tablet:grid-cols-2 gap-5 p-5 relative pb-32 mx-auto">
+      <div className="h-[calc(100svh-28svh)] overflow-y-auto p-5 relative pb-32 mx-auto">
+        {/* Gradient FX */}
         <div className="w-full h-32 fixed bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-50" />
 
-        {currentCategoryId !== "hightlights" && (
+        {currentCategoryId !== "highlights" && (
           <ItemsList
             items={currentItems}
             themeColor={restaurants[0].color}
@@ -100,15 +102,11 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
         )}
 
         {currentCategoryId == "highlights" && (
-          <>
-            {highlightItems.map((item) => (
-              <ItemCard
-                item={item}
-                themeColor={restaurants[0].color}
-                key={item.id}
-              />
-            ))}
-          </>
+          <ItemsList
+            items={highlightItems}
+            themeColor={restaurants[0].color}
+            regionId={restaurants[0].regionId!}
+          />
         )}
       </div>
     </div>
