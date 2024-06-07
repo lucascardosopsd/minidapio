@@ -67,7 +67,7 @@ const ItemForm = ({
 
         <FieldBuilder
           control={form.control}
-          fieldElement={<Textarea />}
+          fieldElement={<Textarea maxLength={300} />}
           name="description"
           title="Descrição"
         />
