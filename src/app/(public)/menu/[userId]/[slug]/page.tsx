@@ -56,8 +56,6 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
 
   const currentCategoryId = searchParams?.categoryId || "highlights";
 
-  console.log(currentCategoryId);
-
   const currentItems = restaurants[0]?.Items?.filter(
     (item) => item.categoryId == currentCategoryId
   );

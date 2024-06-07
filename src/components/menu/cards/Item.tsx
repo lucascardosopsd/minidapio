@@ -3,8 +3,10 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/tools/formatPrice";
 import { Item } from "@prisma/client";
+import { Star } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { TbStarFilled } from "react-icons/tb";
 
 interface ItemCardProps {
   item: Item;
@@ -13,6 +15,55 @@ interface ItemCardProps {
 
 const ItemCard = ({ item, themeColor }: ItemCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [favorite, setFavorite] = useState(false);
+
+  const handleSetFavorite = () => {
+    if (localStorage.getItem("favorites")) {
+      const favorites = JSON.parse(
+        localStorage.getItem("favorites") || "[]"
+      ) as unknown as string[];
+
+      const isFavorite = favorites?.includes(item.id);
+
+      if (isFavorite) {
+        const filter = favorites.filter((id) => id !== item.id);
+
+        localStorage.setItem("favorites", JSON.stringify(filter));
+
+        setFavorite(false);
+
+        return;
+      }
+
+      localStorage.setItem(
+        "favorites",
+        JSON.stringify([...favorites, item.id])
+      );
+
+      setFavorite(true);
+
+      return;
+    }
+
+    localStorage.setItem("favorites", JSON.stringify([item.id]));
+
+    setFavorite(true);
+  };
+
+  const handleCheckFavorite = () => {
+    if (localStorage.getItem("favorites")) {
+      const favorites = JSON.parse(
+        localStorage.getItem("favorites") || "[]"
+      ) as unknown as string[];
+
+      const isFavorite = favorites?.includes(item.id);
+      setFavorite(isFavorite);
+    }
+  };
+
+  useEffect(() => {
+    handleCheckFavorite();
+  });
 
   return (
     <>
@@ -28,7 +79,17 @@ const ItemCard = ({ item, themeColor }: ItemCardProps) => {
         </DialogContent>
       </Dialog>
 
-      <div className="flex gap-4 bg-card rounded border h-32">
+      <div className="flex gap-4 bg-card rounded border h-32 relative">
+        <div
+          onClick={handleSetFavorite}
+          className={cn(
+            "absolute right-2 top-2 text-yellow-500 transition scale-100",
+            favorite && "scale-125"
+          )}
+        >
+          {!favorite ? <Star size={20} /> : <TbStarFilled size={20} />}
+        </div>
+
         <Image
           alt="Produto"
           src={item.image}
