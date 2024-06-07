@@ -35,7 +35,7 @@ const CategoriesBar = ({
     >
       <span
         className={cn(
-          "text-background font-medium cursor-pointer select-none transition bg-transparent",
+          "text-background font-medium cursor-pointer select-none transition bg-transparent text-sm",
           currentCategoryId == "highlights" &&
             "bg-background p-2 px-4 rounded-full"
         )}
@@ -51,7 +51,7 @@ const CategoriesBar = ({
       {categories.map((category) => (
         <span
           className={cn(
-            "text-background font-medium cursor-pointer select-none transition bg-transparent text-center w-full whitespace-nowrap",
+            "text-background font-medium cursor-pointer select-none transition bg-transparent text-center w-full whitespace-nowrap text-sm",
             currentCategoryId == category.id &&
               "bg-background p-2 px-4 rounded-full"
           )}

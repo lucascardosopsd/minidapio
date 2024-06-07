@@ -5,8 +5,6 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { SlLocationPin } from "react-icons/sl";
 import { Separator } from "../ui/separator";
-import { HourProps } from "@/types/hours";
-import { isBetweenHour } from "@/tools/isBetweenHour";
 import { weekDays } from "@/constants/weekDays";
 import { paymentMethods } from "@/constants/paymentMethods";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
@@ -31,26 +29,11 @@ const RestaurantProfile = ({
 }: RestaurantProfileProps) => {
   const themeColor = restaurant?.color || "#fff";
 
-  let isRestaurantOpened = false;
-
-  const weekDayToday = new Date().getDay();
-
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
   const params = new URLSearchParams(searchParams);
   const { replace } = useRouter();
-
-  const hoursOfDay: HourProps = restaurant.workHours.filter(
-    (hour: HourProps) => Number(hour.weekDay) == weekDayToday
-  )[0];
-
-  if (hoursOfDay?.times?.open) {
-    isRestaurantOpened = isBetweenHour(
-      hoursOfDay.times.open,
-      hoursOfDay.times.close
-    );
-  }
 
   const handleClearSearchParams = () => {
     params.set("title", "");

@@ -18,8 +18,6 @@ interface ItemsListProps {
 const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
   const { currentAd, setCurrentAd } = adStore();
 
-  console.log(currentAd);
-
   const adRef = useRef(null);
   const isAdInView = useInView(adRef, { once: true });
 
@@ -51,9 +49,11 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
     if (currentAd && isAdInView) return handleCreateView();
   }, [isAdInView]);
 
+  const middleIndex = Math.ceil(items.length / 2);
+
   return (
     <div className="flex flex-col gap-5">
-      {items.slice((items.length / 2) * -1).map((item) => (
+      {items.slice(0, middleIndex).map((item) => (
         <ItemCard item={item} themeColor={themeColor} key={item.id} />
       ))}
 
@@ -63,7 +63,7 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
         </span>
       )}
 
-      {items.slice(items.length / 2).map((item) => (
+      {items.slice(middleIndex).map((item) => (
         <ItemCard item={item} themeColor={themeColor} key={item.id} />
       ))}
     </div>

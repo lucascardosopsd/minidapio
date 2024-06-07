@@ -88,7 +88,7 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
         />
       )}
 
-      <div className="h-[calc(100svh-28svh)] overflow-y-auto flex flex-col gap-5 p-5 relative pb-32">
+      <div className="h-[calc(100svh-28svh)] overflow-y-auto grid grid-cols-1 tablet:grid-cols-2 gap-5 p-5 relative pb-32 mx-auto">
         <div className="w-full h-32 fixed bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-50" />
 
         {currentCategoryId !== "hightlights" && (

@@ -5,7 +5,6 @@ import { HourProps } from "@/types/hours";
 import { FullRestaurantProps } from "@/types/restaurant";
 import { Menu } from "lucide-react";
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ReusableModal from "../misc/ReusableModal";
 import RestaurantProfile from "./RestaurantProfile";
 
@@ -17,12 +16,6 @@ const MenuHeader = ({ restaurant }: MenuHeaderProps) => {
   let isRestaurantOpened = false;
 
   const weekDayToday = new Date().getDay();
-
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-
-  const params = new URLSearchParams(searchParams);
-  const { replace } = useRouter();
 
   const hoursOfDay: HourProps = restaurant.workHours.filter(
     (hour: HourProps) => Number(hour.weekDay) == weekDayToday
