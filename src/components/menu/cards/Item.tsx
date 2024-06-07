@@ -83,7 +83,7 @@ const ItemCard = ({ item, themeColor }: ItemCardProps) => {
         <div
           onClick={handleSetFavorite}
           className={cn(
-            "absolute right-2 top-2 text-yellow-500 transition scale-100",
+            "absolute right-2 bottom-2 text-yellow-500 transition scale-100",
             favorite && "scale-125"
           )}
         >
@@ -100,7 +100,7 @@ const ItemCard = ({ item, themeColor }: ItemCardProps) => {
         />
 
         <div className="flex flex-col justify-center gap-2">
-          <p className="font-semibold">{item.title}</p>
+          <p className="font-semibold text-sm">{item.title}</p>
           <p className="text-xs">{item.description}</p>
           {item.sale ? (
             <>
