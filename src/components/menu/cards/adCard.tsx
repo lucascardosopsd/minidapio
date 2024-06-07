@@ -26,7 +26,7 @@ const AdCard = ({ ad }: AdCardProps) => {
           height={500}
           width={500}
           alt="Anúncio"
-          className="w-32 h-40 rounded-tl-md object-cover"
+          className="w-32 h-32 rounded-tl-md object-cover"
         />
         <div className="flex flex-col gap-2 p-5">
           <p className="text-xs text-muted-foreground">Anúncio</p>
