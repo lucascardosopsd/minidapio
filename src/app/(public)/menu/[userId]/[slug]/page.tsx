@@ -4,6 +4,8 @@ import MenuHeader from "@/components/menu/Header";
 import MenuInputSearch from "@/components/menu/InputSearch";
 import { FullRestaurantProps } from "@/types/restaurant";
 import ItemsList from "@/components/menu/ItemsList";
+import SearchModal from "@/components/menu/SearchModal";
+import { Item } from "@prisma/client";
 
 interface MenuProps {
   params: {
@@ -30,13 +32,13 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
                 OR: [
                   {
                     title: {
-                      contains: searchParams?.title,
+                      contains: searchParams?.title?.replace(/\s+$/, ""),
                       mode: "insensitive",
                     },
                   },
                   {
                     description: {
-                      contains: searchParams?.title,
+                      contains: searchParams?.title?.replace(/\s+$/, ""),
                       mode: "insensitive",
                     },
                   },
@@ -55,9 +57,15 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
 
   const currentCategoryId = searchParams?.categoryId || "highlights";
 
-  const currentItems = restaurants[0]?.Items?.filter(
-    (item) => item.categoryId == currentCategoryId
-  );
+  let currentItems: Item[] | null = null;
+
+  if (!title) {
+    currentItems = restaurants[0]?.Items?.filter(
+      (item) => item.categoryId == currentCategoryId
+    );
+  } else {
+    currentItems = restaurants[0].Items;
+  }
 
   const highlightItems = restaurants[0]?.Items?.filter(
     (item) => item.highlight
@@ -76,20 +84,24 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
       <MenuHeader restaurant={restaurants[0]} />
       <MenuInputSearch keyName="title" placeholder="Busque um item" />
 
-      {!searchParams?.title && (
-        <CategoriesBar
-          categories={restaurants[0].Categories}
-          themeColor={restaurants[0].color}
-          currentCategoryId={currentCategoryId}
-          initialIndex={restaurants[0].Categories.findIndex(
-            (category) => category.id == currentCategoryId
-          )}
-        />
-      )}
+      <CategoriesBar
+        categories={restaurants[0].Categories}
+        themeColor={restaurants[0].color}
+        currentCategoryId={currentCategoryId}
+        initialIndex={restaurants[0].Categories.findIndex(
+          (category) => category.id == currentCategoryId
+        )}
+      />
 
       <div className="h-[calc(100svh-28svh)] overflow-y-auto p-5 relative pb-32 mx-auto">
         {/* Gradient FX */}
         <div className="w-full h-32 fixed bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-50 pointer-events-none" />
+
+        <SearchModal
+          isOpen={!!searchParams?.title}
+          items={currentItems}
+          themeColor={restaurants[0].color}
+        />
 
         {currentCategoryId !== "highlights" && (
           <ItemsList

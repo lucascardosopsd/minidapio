@@ -38,14 +38,7 @@ const MenuInputSearch = ({
       params.set(keyName, "");
       replace(`${pathname}?${params.toString()}`);
     }
-  };
 
-  const handleClearParams = (keys: string[]) => {
-    keys.forEach((key) => {
-      params.delete(key);
-    });
-
-    replace(`${pathname}?${params.toString()}`);
     setInputTerm("");
   };
 
@@ -58,8 +51,8 @@ const MenuInputSearch = ({
             inputClassName
           )}
           style={inputStyles}
-          placeholder={searchParams.get(keyName) || placeholder}
           value={inputTerm}
+          placeholder={searchParams.get(keyName) || placeholder}
           onChange={(e) => {
             setQuery(e.target.value);
             setInputTerm(e.target.value);
@@ -79,16 +72,6 @@ const MenuInputSearch = ({
           <Search size={24} />
         </Button>
       </div>
-
-      {inputTerm && (
-        <Button
-          className="w-full text-primary"
-          variant="outline"
-          onClick={() => handleClearParams(["categoryId", "title"])}
-        >
-          Limpar pesquisa
-        </Button>
-      )}
     </div>
   );
 };
