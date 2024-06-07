@@ -1,10 +1,8 @@
 import { CSSProperties, ReactNode } from "react";
 import { Button } from "../ui/button";
 import { ButtonVariants } from "@/types/button";
-import { X } from "lucide-react";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -58,12 +56,6 @@ const ReusableSheet = ({
         <SheetHeader>
           <SheetTitle className="flex items-center justify-between w-full">
             {title}
-            <SheetClose
-              asChild
-              className="text-red-500 cursor-pointer hover:scale-125 transition"
-            >
-              <X />
-            </SheetClose>
           </SheetTitle>
           <SheetDescription className="w-full text-end">
             {description}
