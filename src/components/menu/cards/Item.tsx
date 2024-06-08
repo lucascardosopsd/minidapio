@@ -94,16 +94,6 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
           borderColor: highlight ? themeColor : "",
         }}
       >
-        <div
-          onClick={handleSetFavorite}
-          className={cn(
-            "absolute right-2 bottom-2 text-yellow-500 transition scale-100",
-            favorite && "scale-125"
-          )}
-        >
-          {!favorite ? <Star size={20} /> : <TbStarFilled size={20} />}
-        </div>
-
         <Image
           alt="Produto"
           src={item.image}
@@ -113,33 +103,56 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
           onClick={() => setIsModalOpen(true)}
         />
 
-        <div className="flex flex-col justify-center gap-2">
+        <div className="flex flex-col justify-center gap-2 w-full pr-5">
           {highlight && (
             <p className="text-xs text-muted-foreground">Destaque</p>
           )}
-          <p className="font-semibold text-sm">{item.title}</p>
-          <p className="text-xs">{item.description}</p>
-          {item.sale ? (
-            <>
-              {item.price && (
-                <p className="text-xs line-through">
+          <p className="font-semibold text-sm text-start">{item.title}</p>
+          <p className="text-xs text-start">{item.description}</p>
+
+          <div className="flex items-center justify-between w-full">
+            <div className="flex-1">
+              {item.sale ? (
+                <>
+                  {item.price && (
+                    <p className="text-xs line-through text-start">
+                      {formatPrice(item?.price, "pt-BR", "BRL")}
+                    </p>
+                  )}
+                  <p
+                    className={cn(
+                      "text-md text-start",
+                      item.highlight && "text-background"
+                    )}
+                    style={{ color: !item.highlight ? themeColor : "" }}
+                  >
+                    {formatPrice(item.salePrice!, "pt-BR", "BRL")}
+                  </p>
+                </>
+              ) : item?.price ? (
+                <p
+                  className="font-bold text-start"
+                  style={{ color: themeColor }}
+                >
                   {formatPrice(item?.price, "pt-BR", "BRL")}
                 </p>
+              ) : (
+                <></>
               )}
-              <p
-                className={cn("text-md", item.highlight && "text-background")}
-                style={{ color: !item.highlight ? themeColor : "" }}
-              >
-                {formatPrice(item.salePrice!, "pt-BR", "BRL")}
-              </p>
-            </>
-          ) : item?.price ? (
-            <p className="font-bold" style={{ color: themeColor }}>
-              {formatPrice(item?.price, "pt-BR", "BRL")}
-            </p>
-          ) : (
-            <></>
-          )}
+            </div>
+
+            <div
+              onClick={handleSetFavorite}
+              className={cn(
+                "text-yellow-500 transition scale-100 flex-1 ",
+                favorite && "scale-125"
+              )}
+            >
+              <div className="flex justify-end">
+                {!favorite ? <Star size={20} /> : <TbStarFilled size={20} />}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
