@@ -89,7 +89,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
       </Dialog>
 
       <div
-        className={"flex gap-4 bg-card rounded border h-full min-h-32 relative"}
+        className={"flex flex-1 gap-4 bg-card rounded border h-full min-h-32 relative"}
         style={{
           borderColor: highlight ? themeColor : "",
         }}
