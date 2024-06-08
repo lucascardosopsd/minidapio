@@ -107,10 +107,23 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
           {highlight && (
             <p className="text-xs text-muted-foreground">Destaque</p>
           )}
-          <p className="font-semibold text-sm text-start text-foreground">
+          <p className="font-semibold text-sm text-start text-foreground flex items-center gap-2">
             {item.title}
+            <div
+              onClick={handleSetFavorite}
+              className={cn(
+                "text-yellow-500 transition scale-100 flex justify-center",
+                favorite && "scale-125"
+              )}
+            >
+              <div className="self-end">
+                {!favorite ? <Star size={16} /> : <TbStarFilled size={16} />}
+              </div>
+            </div>
           </p>
-          <p className="text-xs text-start">{item.description}</p>
+          <p className="text-xs text-start text-muted-foreground">
+            {item.description}
+          </p>
 
           <div className="flex items-center justify-between w-full">
             <div className="flex-1">
@@ -141,18 +154,6 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
               ) : (
                 <></>
               )}
-            </div>
-
-            <div
-              onClick={handleSetFavorite}
-              className={cn(
-                "text-yellow-500 transition scale-100 flex-1 flex justify-center",
-                favorite && "scale-125"
-              )}
-            >
-              <div className="self-end">
-                {!favorite ? <Star size={20} /> : <TbStarFilled size={20} />}
-              </div>
             </div>
           </div>
         </div>
