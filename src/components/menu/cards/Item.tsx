@@ -89,7 +89,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
       </Dialog>
 
       <div
-        className={"flex gap-4 bg-card rounded border h-32 relative"}
+        className={"flex gap-4 bg-card rounded border h-full min-h-32 relative"}
         style={{
           borderColor: highlight ? themeColor : "",
         }}
@@ -99,7 +99,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
           src={item.image}
           height={500}
           width={500}
-          className="h-[126px] w-[126px] object-cover rounded-l"
+          className="h-full w-[126px] object-cover rounded-l"
           onClick={() => setIsModalOpen(true)}
         />
 
