@@ -44,12 +44,10 @@ const CategoryCard = ({
 }: CategoryCardProps) => {
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openItem, setOpenItem] = useState(false);
+  const [openEditCategory, setOpenEditCategory] = useState(false);
 
   const handleNewItem = async (data: z.infer<typeof ItemValidator>) => {
-    const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(false);
-
     data.restaurantId = restaurantId;
 
     setLoading(true);
@@ -62,7 +60,7 @@ const CategoryCard = ({
       throw new Error("Error when create/update new item");
     } finally {
       setLoading(false);
-      setOpen(false);
+      setOpenItem(false);
     }
   };
 
@@ -91,7 +89,7 @@ const CategoryCard = ({
       toast("Ocorreu um erro.");
       throw new Error("Can't update category");
     } finally {
-      setOpen(false);
+      setOpenEditCategory(false);
       setLoading(false);
     }
   };
@@ -117,8 +115,8 @@ const CategoryCard = ({
             trigger={<CopyPlus size={18} />}
             triggerClassName="w-full"
             triggerVariant="default"
-            isOpen={open}
-            onOpen={setOpen}
+            isOpen={openItem}
+            onOpen={setOpenItem}
           />
 
           <ReusableSheet
@@ -133,8 +131,8 @@ const CategoryCard = ({
                 loading={loading}
               />
             }
-            isOpen={open}
-            onOpen={setOpen}
+            isOpen={openEditCategory}
+            onOpen={setOpenEditCategory}
           />
 
           <DeleteModal
