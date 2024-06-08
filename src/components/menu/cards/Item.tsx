@@ -11,9 +11,10 @@ import { TbStarFilled } from "react-icons/tb";
 interface ItemCardProps {
   item: Item;
   themeColor: string;
+  highlight?: boolean;
 }
 
-const ItemCard = ({ item, themeColor }: ItemCardProps) => {
+const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [favorite, setFavorite] = useState(false);
 
@@ -79,7 +80,12 @@ const ItemCard = ({ item, themeColor }: ItemCardProps) => {
         </DialogContent>
       </Dialog>
 
-      <div className="flex gap-4 bg-card rounded border h-32 relative">
+      <div
+        className={"flex gap-4 bg-card rounded border h-32 relative"}
+        style={{
+          borderColor: highlight ? themeColor : "",
+        }}
+      >
         <div
           onClick={handleSetFavorite}
           className={cn(
@@ -95,11 +101,14 @@ const ItemCard = ({ item, themeColor }: ItemCardProps) => {
           src={item.image}
           height={500}
           width={500}
-          className="h-32 w-32 object-cover rounded-l"
+          className="h-[126px] w-[126px] object-cover rounded-l"
           onClick={() => setIsModalOpen(true)}
         />
 
         <div className="flex flex-col justify-center gap-2">
+          {highlight && (
+            <p className="text-xs text-muted-foreground">Destaque</p>
+          )}
           <p className="font-semibold text-sm">{item.title}</p>
           <p className="text-xs">{item.description}</p>
           {item.sale ? (

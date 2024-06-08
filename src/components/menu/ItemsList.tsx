@@ -8,6 +8,7 @@ import { useInView } from "framer-motion";
 import { createView } from "@/actions/createView";
 import AdCard from "./cards/adCard";
 import { pickAd } from "@/actions/pickAd";
+import { currentCategoryStore } from "@/context/currentCategory";
 
 interface ItemsListProps {
   items: Item[];
@@ -17,6 +18,7 @@ interface ItemsListProps {
 
 const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
   const { currentAd, setCurrentAd } = adStore();
+  const { categoryId } = currentCategoryStore();
 
   const adRef = useRef(null);
   const isAdInView = useInView(adRef, { once: true });
@@ -53,9 +55,18 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
 
   return (
     <div className="flex flex-col gap-5">
-      {items.slice(0, middleIndex).map((item) => (
-        <ItemCard item={item} themeColor={themeColor} key={item.id} />
-      ))}
+      {items
+        .filter((item) => item.categoryId == categoryId)
+        .sort((a, b) => Number(b.highlight) - Number(a.highlight))
+        .slice(0, middleIndex)
+        .map((item) => (
+          <ItemCard
+            item={item}
+            themeColor={themeColor}
+            key={item.id}
+            highlight={item.highlight}
+          />
+        ))}
 
       {currentAd && (
         <span ref={adRef}>
@@ -63,9 +74,18 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
         </span>
       )}
 
-      {items.slice(middleIndex).map((item) => (
-        <ItemCard item={item} themeColor={themeColor} key={item.id} />
-      ))}
+      {items
+        .filter((item) => item.categoryId == categoryId)
+        .sort((a, b) => Number(b.highlight) - Number(a.highlight))
+        .slice(middleIndex)
+        .map((item) => (
+          <ItemCard
+            item={item}
+            themeColor={themeColor}
+            key={item.id}
+            highlight={item.highlight}
+          />
+        ))}
     </div>
   );
 };

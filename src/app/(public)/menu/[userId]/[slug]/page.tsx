@@ -5,7 +5,6 @@ import MenuInputSearch from "@/components/menu/InputSearch";
 import { FullRestaurantProps } from "@/types/restaurant";
 import ItemsList from "@/components/menu/ItemsList";
 import SearchModal from "@/components/menu/SearchModal";
-import { Item } from "@prisma/client";
 
 interface MenuProps {
   params: {
@@ -14,7 +13,6 @@ interface MenuProps {
   };
   searchParams?: {
     title?: string;
-    categoryId?: string;
   };
 }
 
@@ -55,19 +53,7 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
     userId
   )) as FullRestaurantProps[];
 
-  const currentCategoryId = searchParams?.categoryId || "highlights";
-
-  let currentItems: Item[] | null = null;
-
-  if (!title) {
-    currentItems = restaurants[0]?.Items?.filter(
-      (item) => item.categoryId == currentCategoryId
-    );
-  } else {
-    currentItems = restaurants[0].Items;
-  }
-
-  const highlightItems = restaurants[0]?.Items?.filter(
+  const highLightedItems = restaurants[0].Items.filter(
     (item) => item.highlight
   );
 
@@ -87,10 +73,6 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
       <CategoriesBar
         categories={restaurants[0].Categories}
         themeColor={restaurants[0].color}
-        currentCategoryId={currentCategoryId}
-        initialIndex={restaurants[0].Categories.findIndex(
-          (category) => category.id == currentCategoryId
-        )}
       />
 
       <div className="h-[calc(100svh-28svh)] overflow-y-auto p-5 relative pb-32 mx-auto">
@@ -99,25 +81,15 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
 
         <SearchModal
           isOpen={!!searchParams?.title}
-          items={currentItems}
+          items={restaurants[0].Items}
           themeColor={restaurants[0].color}
         />
 
-        {currentCategoryId !== "highlights" && (
-          <ItemsList
-            items={currentItems}
-            themeColor={restaurants[0].color}
-            regionId={restaurants[0].regionId!}
-          />
-        )}
-
-        {currentCategoryId == "highlights" && (
-          <ItemsList
-            items={highlightItems}
-            themeColor={restaurants[0].color}
-            regionId={restaurants[0].regionId!}
-          />
-        )}
+        <ItemsList
+          items={restaurants[0].Items}
+          themeColor={restaurants[0].color}
+          regionId={restaurants[0].regionId!}
+        />
       </div>
     </div>
   );

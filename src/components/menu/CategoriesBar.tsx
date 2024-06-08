@@ -1,8 +1,9 @@
 "use client";
+import { currentCategoryStore } from "@/context/currentCategory";
 import { cn } from "@/lib/utils";
 import { Category, Item } from "@prisma/client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 interface CategoryWithItemProps extends Category {
@@ -12,25 +13,18 @@ interface CategoryWithItemProps extends Category {
 interface CategoriesBarProps {
   categories: CategoryWithItemProps[];
   themeColor: string;
-  currentCategoryId: string;
-  initialIndex?: number;
 }
 
-const CategoriesBar = ({
-  categories,
-  themeColor,
-  currentCategoryId,
-  initialIndex = 0,
-}: CategoriesBarProps) => {
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
-  const pathname = usePathname();
-  const { replace } = useRouter();
+const CategoriesBar = ({ categories, themeColor }: CategoriesBarProps) => {
+  const { categoryId, setCategoryId } = currentCategoryStore();
 
   const handleSetCategoryId = (id: string) => {
-    params.set("categoryId", id);
-    replace(`${pathname}?${params.toString()}`);
+    setCategoryId(id);
   };
+
+  useEffect(() => {
+    setCategoryId(categories[0].id);
+  }, []);
 
   return (
     <div className="relative">
@@ -48,7 +42,6 @@ const CategoriesBar = ({
 
       <Swiper
         slidesPerView={2}
-        initialSlide={initialIndex}
         style={{
           background: themeColor,
           height: "50px",
@@ -56,34 +49,15 @@ const CategoriesBar = ({
           paddingLeft: "50px",
         }}
       >
-        <SwiperSlide key="highlights">
-          <div
-            className={cn(
-              "text-background font-medium cursor-pointer select-none transition bg-transparent text-sm flex items-center justify-center h-full",
-              currentCategoryId == "highlights" &&
-                "bg-background p-2 px-4 rounded-lg"
-            )}
-            style={{
-              color:
-                currentCategoryId == "highlights" ? themeColor : "background",
-            }}
-            onClick={() => handleSetCategoryId("highlights")}
-          >
-            Destaques
-          </div>
-        </SwiperSlide>
-
         {categories.map((category) => (
           <SwiperSlide key={category.id}>
             <div
               className={cn(
                 "text-background cursor-pointer select-none transition bg-transparent text-center text-sm flex items-center justify-center h-full mx-5 leading-[12px] font-semibold whitespace-nowrap",
-                currentCategoryId == category.id &&
-                  "bg-background p-2 px-4 rounded-lg"
+                categoryId == category.id && "bg-background p-2 px-4 rounded-lg"
               )}
               style={{
-                color:
-                  currentCategoryId == category.id ? themeColor : "background",
+                color: categoryId == category.id ? themeColor : "background",
               }}
               onClick={() => handleSetCategoryId(category.id)}
             >

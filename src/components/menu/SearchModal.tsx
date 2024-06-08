@@ -47,7 +47,7 @@ const SearchModal = ({ isOpen, themeColor, items }: SearchModalProps) => {
             {items.length ? (
               <div className="max-w-lg mx-auto flex flex-col gap-5 h-[90svh] overflow-y-auto">
                 {items.map((item) => (
-                  <ItemCard item={item} themeColor={themeColor} />
+                  <ItemCard item={item} themeColor={themeColor} key={item.id} />
                 ))}
               </div>
             ) : (
