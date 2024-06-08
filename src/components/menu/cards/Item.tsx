@@ -33,6 +33,8 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
 
         setFavorite(false);
 
+        window.dispatchEvent(new Event("storage"));
+
         return;
       }
 
@@ -43,10 +45,14 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
 
       setFavorite(true);
 
+      window.dispatchEvent(new Event("storage"));
+
       return;
     }
 
     localStorage.setItem("favorites", JSON.stringify([item.id]));
+
+    window.dispatchEvent(new Event("storage"));
 
     setFavorite(true);
   };
@@ -64,7 +70,9 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
 
   useEffect(() => {
     handleCheckFavorite();
-  });
+
+    window.addEventListener("storage", () => handleCheckFavorite());
+  }, []);
 
   return (
     <>

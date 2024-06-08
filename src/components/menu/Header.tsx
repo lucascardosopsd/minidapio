@@ -7,6 +7,7 @@ import { Menu } from "lucide-react";
 import Image from "next/image";
 import ReusableModal from "../misc/ReusableModal";
 import RestaurantProfile from "./RestaurantProfile";
+import FavoritesModal from "./FavoritesModal";
 
 interface MenuHeaderProps {
   restaurant: FullRestaurantProps;
@@ -29,7 +30,7 @@ const MenuHeader = ({ restaurant }: MenuHeaderProps) => {
   }
 
   return (
-    <div className="flex items-center justify-between h-20 border-b w-full pr-5">
+    <div className="flex items-center justify-between h-20 border-b w-full pr-2">
       <div className="flex gap-5 items-center">
         <div className="h-full w-auto">
           <Image
@@ -54,13 +55,20 @@ const MenuHeader = ({ restaurant }: MenuHeaderProps) => {
         </div>
       </div>
 
-      <ReusableModal
-        trigger={<Menu style={{ color: restaurant.color }} size={32} />}
-        triggerVariant="ghost"
-        triggerClassName="border-none"
-        title="Perfil do restaurante"
-        content={<RestaurantProfile restaurant={restaurant} />}
-      />
+      <div className="flex items-center gap-2">
+        <FavoritesModal
+          themeColor={restaurant.color}
+          items={restaurant.Items}
+        />
+
+        <ReusableModal
+          trigger={<Menu style={{ color: restaurant.color }} size={32} />}
+          triggerVariant="ghost"
+          triggerClassName="border-none"
+          title="Perfil do restaurante"
+          content={<RestaurantProfile restaurant={restaurant} />}
+        />
+      </div>
     </div>
   );
 };
