@@ -14,7 +14,7 @@ export const adminSidebarOptions: SidebarOptionProps[] = [
   {
     label: "Anúncios",
     icon: Grip,
-    href: "/jsnHktoSE/dashboard?page=1",
+    href: "/jsnHktoSE/dashboard/ads?page=1",
   },
   {
     label: "Regiões",
