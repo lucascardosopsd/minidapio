@@ -57,7 +57,7 @@ const Navbar = () => {
 
               <Link href="/advertiser/login" className="order-2 tablet:order-1">
                 <p className="text-primary font-semibold border-b text-4xl ">
-                  Anunciante
+                  Anuncie
                 </p>
               </Link>
 
