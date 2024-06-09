@@ -62,6 +62,20 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
     userId
   )) as FullRestaurantProps[];
 
+  const sortHighLightedItems = restaurants[0].Items.filter(
+    (item) => item.highlight
+  );
+
+  const sortOrdered = restaurants[0].Items.filter(
+    (item) => item.order !== 0 && !item.highlight
+  ).sort((a, b) => a.order - b.order);
+
+  const sortTitle = restaurants[0].Items.filter(
+    (item) => item.order == 0 && !item.highlight
+  ).sort((a, b) => a.title.localeCompare(b.title));
+
+  const items = [...sortHighLightedItems, ...sortOrdered, ...sortTitle];
+
   if (!restaurants[0]) {
     return (
       <div className="flex items-center justify-center h-svh w-full ">
@@ -86,12 +100,12 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
 
         <SearchModal
           isOpen={!!searchParams?.title}
-          items={restaurants[0].Items}
+          items={items}
           themeColor={restaurants[0].color}
         />
 
         <ItemsList
-          items={restaurants[0].Items}
+          items={items}
           themeColor={restaurants[0].color}
           regionId={restaurants[0].regionId!}
         />
