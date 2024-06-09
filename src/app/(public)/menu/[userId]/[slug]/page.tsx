@@ -47,6 +47,9 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
               },
         },
         Categories: {
+          orderBy: {
+            order: "asc",
+          },
           include: {
             items: true,
           },
