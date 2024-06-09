@@ -80,7 +80,12 @@ const RestaurantForm = ({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        // lock slug of update
+        onSubmit={form.handleSubmit((data) =>
+          !defaultValues
+            ? onSubmit(data)
+            : onSubmit({ ...data, slug: defaultValues.slug })
+        )}
         className="space-y-4 pb-10 relative max-w-[500px] w-full mx-auto"
       >
         {/* Basic */}
