@@ -89,21 +89,25 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
       </Dialog>
 
       <div
-        className={"flex flex-1 gap-4 bg-card rounded border h-full min-h-32 relative"}
+        className={
+          "flex flex-1 gap-4 bg-card rounded border h-full min-h-36 relative"
+        }
         style={{
           borderColor: highlight ? themeColor : "",
         }}
       >
-        <Image
-          alt="Produto"
-          src={item.image}
-          height={500}
-          width={500}
-          className="h-full w-[126px] object-cover rounded-l"
-          onClick={() => setIsModalOpen(true)}
-        />
+        <div className="flex-1 max-h-full max-w-full rounded-l">
+          <Image
+            alt="Produto"
+            src={item.image}
+            height={500}
+            width={500}
+            className="h-full w-full object-cover rounded-l"
+            onClick={() => setIsModalOpen(true)}
+          />
+        </div>
 
-        <div className="flex flex-col justify-center gap-2 w-full pr-5">
+        <div className="flex flex-col justify-center gap-2 w-full pr-5 flex-[1.5]">
           {highlight && (
             <p className="text-xs text-muted-foreground">Destaque</p>
           )}
