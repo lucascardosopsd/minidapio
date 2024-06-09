@@ -104,6 +104,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
             width={500}
             className="h-full w-full object-cover rounded-l"
             onClick={() => setIsModalOpen(true)}
+            priority
           />
         </div>
 
