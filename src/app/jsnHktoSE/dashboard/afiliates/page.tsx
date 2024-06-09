@@ -24,8 +24,15 @@ const AfiliatesPage = async ({ searchParams }: AfiliatesPageProps) => {
                     mode: "insensitive",
                   },
                 },
+                orderBy: {
+                  name: "asc",
+                },
               }
-            : {}
+            : {
+                orderBy: {
+                  name: "asc",
+                },
+              }
         }
       />
     </div>

@@ -35,8 +35,15 @@ const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
               mode: "insensitive",
             },
           },
+          orderBy: {
+            title: "asc",
+          },
         }
-      : {},
+      : {
+          orderBy: {
+            title: "asc",
+          },
+        },
   });
 
   return (

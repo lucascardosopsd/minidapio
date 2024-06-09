@@ -24,8 +24,15 @@ const UsersPage = async ({ searchParams }: UsersPageProps) => {
                     mode: "insensitive",
                   },
                 },
+                orderBy: {
+                  name: "asc",
+                },
               }
-            : {}
+            : {
+                orderBy: {
+                  name: "asc",
+                },
+              }
         }
       />
     </div>

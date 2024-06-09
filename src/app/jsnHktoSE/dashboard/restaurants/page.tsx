@@ -24,6 +24,9 @@ const RestaurantsPage = ({ searchParams }: UsersPageProps) => {
                     mode: "insensitive",
                   },
                 },
+                orderBy: {
+                  title: "asc",
+                },
                 include: {
                   region: true,
                 },
@@ -31,6 +34,9 @@ const RestaurantsPage = ({ searchParams }: UsersPageProps) => {
             : {
                 include: {
                   region: true,
+                },
+                orderBy: {
+                  title: "asc",
                 },
               }
         }

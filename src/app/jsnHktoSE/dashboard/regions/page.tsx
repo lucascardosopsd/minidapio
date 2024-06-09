@@ -1,4 +1,3 @@
-import { fetchRegions } from "@/actions/region/fetchRegions";
 import RegionsActionBar from "@/components/admin/region/ActionBar";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -9,9 +8,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import RegionRow from "@/components/admin/tableRows/Region";
+import { fetchRegionsByQuery } from "@/actions/region/fetchRegionsByQuery";
 
 const RegionsPage = async () => {
-  const regions = await fetchRegions();
+  const regions = await fetchRegionsByQuery({
+    query: {
+      orderBy: {
+        title: "asc",
+      },
+    },
+  });
 
   return (
     <section className="space-y-5 w-full h-full pt-5">

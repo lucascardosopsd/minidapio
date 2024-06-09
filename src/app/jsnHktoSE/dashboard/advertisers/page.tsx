@@ -24,8 +24,15 @@ const AdvertisersPage = async ({ searchParams }: AdvertisersPageProps) => {
                     mode: "insensitive",
                   },
                 },
+                orderBy: {
+                  name: "asc",
+                },
               }
-            : {}
+            : {
+                orderBy: {
+                  name: "asc",
+                },
+              }
         }
       />
     </div>
