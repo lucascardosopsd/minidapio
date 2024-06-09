@@ -106,7 +106,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
           />
         </div>
 
-        <div className="flex flex-col justify-center gap-2 w-full pr-5 flex-[1.5]">
+        <div className="flex flex-col justify-center gap-2 w-full p-5 flex-[1.5]">
           {highlight && (
             <p className="text-xs text-muted-foreground">Destaque</p>
           )}
