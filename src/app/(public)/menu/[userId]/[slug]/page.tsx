@@ -19,48 +19,45 @@ interface MenuProps {
 const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
   const title = !!searchParams?.title?.length;
 
-  const restaurants = (await fetchRestaurantsByQuery(
-    {
-      where: { slug, userId },
-      include: {
-        Items: {
-          orderBy: {
-            order: "asc",
-          },
-          where: !title
-            ? {
-                active: true,
-              }
-            : {
-                active: true,
-                OR: [
-                  {
-                    title: {
-                      contains: searchParams?.title?.replace(/\s+$/, ""),
-                      mode: "insensitive",
-                    },
-                  },
-                  {
-                    description: {
-                      contains: searchParams?.title?.replace(/\s+$/, ""),
-                      mode: "insensitive",
-                    },
-                  },
-                ],
-              },
+  const restaurants = (await fetchRestaurantsByQuery({
+    where: { slug, userId },
+    include: {
+      Items: {
+        orderBy: {
+          order: "asc",
         },
-        Categories: {
-          orderBy: {
-            order: "asc",
-          },
-          include: {
-            items: true,
-          },
+        where: !title
+          ? {
+              active: true,
+            }
+          : {
+              active: true,
+              OR: [
+                {
+                  title: {
+                    contains: searchParams?.title?.replace(/\s+$/, ""),
+                    mode: "insensitive",
+                  },
+                },
+                {
+                  description: {
+                    contains: searchParams?.title?.replace(/\s+$/, ""),
+                    mode: "insensitive",
+                  },
+                },
+              ],
+            },
+      },
+      Categories: {
+        orderBy: {
+          order: "asc",
+        },
+        include: {
+          items: true,
         },
       },
     },
-    userId
-  )) as FullRestaurantProps[];
+  })) as FullRestaurantProps[];
 
   const sortHighLightedItems = restaurants[0].Items.filter(
     (item) => item.highlight

@@ -10,18 +10,12 @@ import { Prisma } from "@prisma/client";
 export type RestaurantQuery = Prisma.RestaurantFindFirstArgs;
 
 export const fetchRestaurantsByQuery = async (
-  query: RestaurantQuery,
-  userId: string
+  query: RestaurantQuery
 ): Promise<RestaurantProps[]> => {
-  if (!userId) {
-    throw new Error("User not found");
-  }
-
   const includeUserQuery = {
     ...query,
     where: {
       ...query.where,
-      userId: userId,
     },
   } satisfies RestaurantQuery;
 
