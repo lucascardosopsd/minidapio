@@ -22,6 +22,9 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
   const restaurants = (await fetchRestaurantsByQuery(
     {
       where: { slug, userId },
+      orderBy: {
+        title: "asc",
+      },
       include: {
         Items: {
           where: !title
