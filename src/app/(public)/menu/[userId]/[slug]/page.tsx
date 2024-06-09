@@ -22,8 +22,12 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
   const restaurants = (await fetchRestaurantsByQuery(
     {
       where: { slug, userId },
+
       include: {
         Items: {
+          orderBy: {
+            order: "asc",
+          },
           where: !title
             ? {}
             : {
@@ -52,10 +56,6 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
     },
     userId
   )) as FullRestaurantProps[];
-
-  const highLightedItems = restaurants[0].Items.filter(
-    (item) => item.highlight
-  );
 
   if (!restaurants[0]) {
     return (
