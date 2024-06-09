@@ -28,8 +28,11 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
             order: "asc",
           },
           where: !title
-            ? {}
+            ? {
+                active: true,
+              }
             : {
+                active: true,
                 OR: [
                   {
                     title: {
