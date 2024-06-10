@@ -1,85 +1,89 @@
-import ActionBar from "@/components/admin/ActionBar";
-import { Separator } from "@/components/ui/separator";
-import { fetchRegions } from "@/actions/region/fetchRegions";
 import { fetchAds } from "@/actions/ad/fetchAds";
-import Paginate from "@/components/misc/Paginate";
+import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
+import { fetchManyPayments } from "@/actions/payments/fetchManyPayments";
+import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
+import { fetchManyUsers } from "@/actions/user/fetchManyUsers";
+import StatsCard from "@/components/advertiser/cards/Stats";
+import { formatPrice } from "@/tools/formatPrice";
 import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import AdRow from "@/components/admin/tableRows/Ad";
+  DollarSign,
+  Image,
+  Megaphone,
+  User,
+  UtensilsCrossed,
+} from "lucide-react";
 
-interface AdminPageProps {
-  searchParams?: {
-    page: string;
-    title?: string;
-  };
-}
-
-const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
-  const regions = await fetchRegions();
-  const page = Number(searchParams?.page || 1);
-  const title = searchParams?.title || "";
-
-  const { ads, pages } = await fetchAds({
-    page: page - 1,
-    take: 20,
-    query: title
-      ? {
-          where: {
-            title: {
-              contains: title,
-              mode: "insensitive",
-            },
-          },
-          orderBy: {
-            title: "asc",
-          },
-        }
-      : {
-          orderBy: {
-            title: "asc",
-          },
-        },
+const AdminDashboard = async () => {
+  const { users } = await fetchManyUsers({ page: 0, take: 1000000 });
+  const { restaurants } = await fetchManyRestaurants({
+    page: 0,
+    take: 1000000,
+  });
+  const { ads } = await fetchAds({
+    page: 0,
+    take: 1000,
+    query: {
+      where: {
+        active: true,
+      },
+    },
+  });
+  const { advertisers } = await fetchManyAdvertisers({
+    page: 0,
+    take: 1000000,
   });
 
+  const { payments } = await fetchManyPayments({ page: 0, take: 10000 });
+
+  const revenue = payments.reduce(
+    (prev, current) => (prev += current.value),
+    0
+  );
+
   return (
-    <section className="w-full h-full pt-5 flex flex-col gap-5 relative">
-      <ActionBar regions={regions} />
+    <section className="flex items-center justify-center">
+      <div className="border rounded p-5 flex flex-col gap-5">
+        <p className="text-2xl text-primary">Global</p>
 
-      <Separator />
+        <div className="grid grid-cols-1 tablet:grid-cols-3 gap-5">
+          <StatsCard
+            title="Usuários totais"
+            icon={User}
+            content={<p className="text-4xl text-center">{users.length}</p>}
+          />
 
-      <div className="flex flex-col gap-5 h-[calc(100svh-120px)] overflow-y-auto pb-20">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Imagem</TableHead>
+          <StatsCard
+            title="Anunciantes totais"
+            icon={Megaphone}
+            content={
+              <p className="text-4xl text-center">{advertisers.length}</p>
+            }
+          />
 
-              <TableHead>Título</TableHead>
+          <StatsCard
+            title="Anuncios totais"
+            icon={Image}
+            content={<p className="text-4xl text-center">{ads.length}</p>}
+          />
 
-              <TableHead>Região</TableHead>
+          <StatsCard
+            title="Restaurantes totais"
+            icon={UtensilsCrossed}
+            content={
+              <p className="text-4xl text-center">{restaurants.length}</p>
+            }
+          />
 
-              <TableHead>Status</TableHead>
-
-              <TableHead>Editar</TableHead>
-
-              <TableHead>Deletar</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {ads.map((ad) => (
-              <AdRow ad={ad} regions={regions} key={ad.id} />
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      <div className="absolute bottom-0 left-0 w-full flex items-center bg-background">
-        <Paginate pages={pages} current={page} />
+          <StatsCard
+            title="Faturamento bruto total"
+            icon={DollarSign}
+            content={
+              <p className="text-4xl text-center">
+                {formatPrice(revenue, "pt-BR", "BRL")}
+              </p>
+            }
+          />
+        </div>
       </div>
     </section>
   );
