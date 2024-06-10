@@ -55,13 +55,17 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
       </TableCell>
 
       <TableCell>
-        <Image
-          alt="imagem do produto"
-          src={item.image}
-          height={500}
-          width={500}
-          className="h-10 w-10 rounded-full object-cover"
-        />
+        {item.image ? (
+          <Image
+            alt="imagem do produto"
+            src={item.image}
+            height={500}
+            width={500}
+            className="h-10 w-10 rounded-full object-cover"
+          />
+        ) : (
+          <></>
+        )}
       </TableCell>
 
       <TableCell>
