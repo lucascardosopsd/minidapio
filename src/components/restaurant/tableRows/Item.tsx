@@ -76,7 +76,15 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         </div>
       </TableCell>
 
-      <TableCell>{item.description ? "Sim" : "Não"}</TableCell>
+      <TableCell>
+        {item.description ? (
+          <Badge className="w-full  flex justify-center">Sim</Badge>
+        ) : (
+          <Badge variant="outline" className="w-full flex justify-center">
+            Não
+          </Badge>
+        )}
+      </TableCell>
 
       <TableCell>
         <p
