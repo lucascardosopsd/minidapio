@@ -161,6 +161,7 @@ const CategoryCard = ({
                     <TableHead></TableHead>
                     <TableHead>Img</TableHead>
                     <TableHead>Nome</TableHead>
+                    <TableHead>Descrito</TableHead>
                     <TableHead>Desconto</TableHead>
                     <TableHead className="text-center">Preço</TableHead>
                     <TableHead className="text-center">Tipo</TableHead>

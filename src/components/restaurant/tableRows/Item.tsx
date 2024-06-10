@@ -76,6 +76,8 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         </div>
       </TableCell>
 
+      <TableCell>{item.description ? "Sim" : "Não"}</TableCell>
+
       <TableCell>
         <p
           className={item.salePrice ? "line-through text-muted-foreground" : ""}
