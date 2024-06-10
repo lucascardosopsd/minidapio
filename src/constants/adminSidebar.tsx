@@ -4,6 +4,7 @@ import { SidebarOptionProps } from "@/types/sidebar";
 import {
   Grip,
   Handshake,
+  Image,
   MapPinned,
   Megaphone,
   User,
@@ -12,8 +13,13 @@ import {
 
 export const adminSidebarOptions: SidebarOptionProps[] = [
   {
-    label: "Anúncios",
+    label: "Dashboard",
     icon: Grip,
+    href: "/jsnHktoSE/dashboard",
+  },
+  {
+    label: "Anúncios",
+    icon: Image,
     href: "/jsnHktoSE/dashboard/ads?page=1",
   },
   {

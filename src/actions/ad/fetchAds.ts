@@ -10,7 +10,7 @@ interface FetchManyAdsResProps {
 interface FetchAdsProps {
   take: number;
   page: number;
-  query: Prisma.AdFindManyArgs;
+  query?: Prisma.AdFindManyArgs;
 }
 
 export const fetchAds = async ({
