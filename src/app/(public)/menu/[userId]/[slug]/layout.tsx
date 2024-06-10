@@ -37,18 +37,7 @@ export const generateMetadata = async (
 
 const Layout = async ({ children }: LayoutProps) => {
   return (
-    <div className="relative">
-      <div
-        className="absolute left-0 right-0 top-0 bottom-0 mx-auto z-[100] pointer-events-none opacity-100"
-        style={{
-          backgroundImage: `url("/paper-texture.jpg")`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "300px 300px",
-          mixBlendMode: "multiply",
-        }}
-      />
       <div className="mx-auto max-w-[600px]">{children}</div>
-    </div>
   );
 };
 
