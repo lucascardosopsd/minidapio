@@ -20,7 +20,6 @@ import { RegionProps } from "@/types/region";
 import { adValidator } from "@/validators/ad";
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import UserCard from "../cards/User";
 import { Ad, AdvertiserAccount, User } from "@prisma/client";
 import AdvertiserCard from "../cards/Advertiser";
 import { getAdvertiserAccountByQuery } from "@/actions/advertiser/getAdvertiserAccountByQuery";
@@ -60,36 +59,17 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
     },
   });
 
-  const handleFetchUser = async ({
-    userName,
-    userId,
-  }: {
-    userName?: string;
-    userId?: string;
-  }) => {
+  const handleFetchUser = async () => {
     try {
       setFetching(true);
-      let user;
-      if (userName) {
-        user = await fetchUserByQuery({
-          query: {
-            where: {
-              name: {
-                startsWith: userName,
-                mode: "insensitive",
-              },
-            },
+
+      const user = await fetchUserByQuery({
+        query: {
+          where: {
+            advertiserAccountId: advertiser?.id,
           },
-        });
-      } else {
-        user = await fetchUserByQuery({
-          query: {
-            where: {
-              id: userId,
-            },
-          },
-        });
-      }
+        },
+      });
 
       if (user) {
         setUser(user[0]);
@@ -146,6 +126,8 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
         setAdvertiser(advertiser[0]);
         form.setValue("advertiserAccountId", advertiser[0].id);
 
+        await handleFetchUser();
+
         return true;
       }
 
@@ -162,10 +144,6 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
   };
 
   useEffect(() => {
-    if (defaultValues?.userId) {
-      handleFetchUser({ userId: defaultValues?.userId! });
-    }
-
     if (defaultValues?.advertiserAccountId) {
       handleFetchAdvertiser({
         advertiserId: defaultValues?.advertiserAccountId,
@@ -215,22 +193,6 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
 
         <div className="flex flex-col space-y-5">
           <div className="space-y-2 flex-1">
-            <div className="flex gap-2">
-              <p>Usuário </p>
-              {fetching && <ImSpinner2 className="animate-spin" />}
-            </div>
-            <Input
-              onChange={async (e) => {
-                if (e.target.value.length >= 3) {
-                  await handleFetchUser({ userName: e.target.value });
-                }
-              }}
-            />
-
-            {user?.id && <UserCard user={user!} preview />}
-          </div>
-
-          {user && (
             <div className="space-y-2 flex-1 w-full">
               <div className="flex gap-2">
                 <p>Anunciante </p>
@@ -246,32 +208,32 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
                 }}
               />
 
-              {advertiser?.id && (
+              {advertiser && user && (
                 <AdvertiserCard advertiser={advertiser!} user={user!} preview />
               )}
             </div>
-          )}
 
-          <FormField
-            control={form.control}
-            name="active"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Ativo</FormLabel>
-                <FormControl>
-                  <div className="flex items-center h-full">
-                    <Switch
-                      onCheckedChange={field.onChange}
-                      checked={field.value}
-                      className="h-8 w-14 mt-2"
-                      thumbClassName="data-[state=checked]:translate-x-8"
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="active"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Ativo</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center h-full">
+                      <Switch
+                        onCheckedChange={field.onChange}
+                        checked={field.value}
+                        className="h-8 w-14 mt-2"
+                        thumbClassName="data-[state=checked]:translate-x-8"
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         <Button type="submit" disabled={loading} className="w-full">
