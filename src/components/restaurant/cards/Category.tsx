@@ -159,7 +159,7 @@ const CategoryCard = ({
                 <TableHeader>
                   <TableRow>
                     <TableHead></TableHead>
-
+                    <TableHead>Img</TableHead>
                     <TableHead>Nome</TableHead>
                     <TableHead>Desconto</TableHead>
                     <TableHead className="text-center">Preço</TableHead>

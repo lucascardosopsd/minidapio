@@ -14,6 +14,7 @@ import { FaPen } from "react-icons/fa6";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { usePathname } from "next/navigation";
 import ReusableSheet from "@/components/misc/ReusableSheet";
+import Image from "next/image";
 
 interface ItemRowProps {
   item: Item;
@@ -50,6 +51,16 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         <Checkbox
           onClick={() => toggleId(item.id)}
           checked={idList.some((id) => item.id == id)}
+        />
+      </TableCell>
+
+      <TableCell>
+        <Image
+          alt="imagem do produto"
+          src={item.image}
+          height={500}
+          width={500}
+          className="h-10 w-10 rounded-full object-cover"
         />
       </TableCell>
 
