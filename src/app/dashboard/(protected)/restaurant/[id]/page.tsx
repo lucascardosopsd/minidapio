@@ -23,7 +23,7 @@ export default async function Restaurant({
         restaurantId,
       },
       orderBy: {
-        order: "desc",
+        order: "asc",
       },
       include: {
         items: {
