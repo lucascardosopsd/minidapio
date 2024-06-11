@@ -25,16 +25,15 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     return redirect("/advertiser/signout");
 
   return (
-    <div className="flex h-svh w-full">
+    <div className="flex h-svh overflow-hidden w-full">
       <Sidebar
         options={advertiserSidebarOptions}
         redirectLogout="/advertiser/login"
       />
-      <div className="w-full">
+
+      <div className="flex flex-col w-full">
         <Navbar />
-        <div className="flex flex-col items-center justify-center h-[calc(100svh-70px)]">
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   );
