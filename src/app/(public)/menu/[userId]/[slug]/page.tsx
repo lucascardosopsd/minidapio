@@ -1,10 +1,9 @@
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import CategoriesBar from "@/components/menu/CategoriesBar";
 import MenuHeader from "@/components/menu/Header";
-import MenuInputSearch from "@/components/menu/InputSearch";
 import { FullRestaurantProps } from "@/types/restaurant";
 import ItemsList from "@/components/menu/ItemsList";
-import SearchModal from "@/components/menu/SearchModal";
+import SearchSection from "@/components/menu/SearchSection";
 
 interface MenuProps {
   params: {
@@ -84,7 +83,8 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
   return (
     <div className="h-svh antialiased w-full">
       <MenuHeader restaurant={restaurants[0]} />
-      <MenuInputSearch keyName="title" placeholder="Busque um item" />
+
+      <SearchSection restaurant={restaurants[0]} />
 
       <CategoriesBar
         categories={restaurants[0].Categories}
@@ -94,12 +94,6 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
       <div className="h-[calc(100svh-28svh)] overflow-y-auto p-5 relative pb-32 mx-auto">
         {/* Gradient FX */}
         <div className="w-full h-32 fixed bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-50 pointer-events-none" />
-
-        <SearchModal
-          isOpen={!!searchParams?.title}
-          items={items}
-          themeColor={restaurants[0].color}
-        />
 
         <ItemsList
           items={items}

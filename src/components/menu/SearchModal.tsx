@@ -6,56 +6,54 @@ import {
   DrawerDescription,
   DrawerHeader,
 } from "../ui/drawer";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+import { FullRestaurantProps } from "@/types/restaurant";
 import ItemCard from "./cards/Item";
+import { ImSpinner2 } from "react-icons/im";
 
 interface SearchModalProps {
   isOpen: boolean;
+  restaurant: FullRestaurantProps;
   items: Item[];
-  themeColor: string;
+  loading: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const SearchModal = ({ isOpen, themeColor, items }: SearchModalProps) => {
-  const { replace } = useRouter();
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
-  const pathname = usePathname();
-  const [isModalOpen, setIsModalOpen] = useState(isOpen);
-
-  const handleClearParams = (keys: string[]) => {
-    keys.forEach((key) => {
-      params.delete(key);
-    });
-
-    replace(`${pathname}?${params.toString()}`);
-  };
-
-  useEffect(() => {
-    setIsModalOpen(isOpen);
-  }, [isOpen]);
-
+const SearchModal = ({
+  isOpen,
+  restaurant,
+  items,
+  setOpen,
+  loading,
+}: SearchModalProps) => {
   return (
-    <Drawer
-      open={isModalOpen}
-      onOpenChange={setIsModalOpen}
-      onClose={() => handleClearParams(["title", "categoryId"])}
-    >
+    <Drawer open={isOpen} onOpenChange={setOpen}>
       <DrawerContent>
         <DrawerHeader>
           <DrawerDescription>
+            {loading && (
+              <div className="absolute h-full w-full bg-background/50 flex items-center justify-center z-50">
+                <ImSpinner2 size={36} className="animate-spin" />
+              </div>
+            )}
+
             {items.length ? (
               <div className="max-w-lg mx-auto flex flex-col gap-5 h-[90svh] overflow-y-auto">
-                <p className="text-lg">Pesquisa</p>
+                <p className="text-lg text-center">Pesquisa</p>
                 {items.map((item) => (
-                  <ItemCard item={item} themeColor={themeColor} key={item.id} />
+                  <ItemCard
+                    item={item}
+                    themeColor={restaurant.color}
+                    highlight={item.highlight}
+                    key={item.id}
+                  />
                 ))}
               </div>
             ) : (
               <></>
             )}
 
-            {!items.length ? (
+            {!items.length && !loading ? (
               <div className="flex items-center justify-center h-[90svh]">
                 <p>Nenhum item encontrado</p>
               </div>
