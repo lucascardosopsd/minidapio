@@ -90,8 +90,6 @@ const AdvertiserProfileForm = ({
           email: user.email,
         });
 
-        console.log(newCustomer);
-
         if (!newCustomer.customer.id) throw new Error("Costumer id not found");
 
         data.customerId = newCustomer.customer.id;

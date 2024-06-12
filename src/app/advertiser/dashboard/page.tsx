@@ -81,7 +81,7 @@ const AdvertiserDashboard = async ({
     .sort((a, b) => a?.clicks?.length - b?.clicks?.length)
     .slice(0, 5);
 
-  const hasAdvertiserAccount = !!user?.advertiserAccountId;
+  const hasAdvertiserAccount = !user?.advertiserAccountId;
 
   let hasPaid = await checkMonthlyPayment({ userId: user?.id! });
 
