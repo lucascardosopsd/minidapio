@@ -81,11 +81,16 @@ const ItemForm = ({
               <FormControl>
                 <NumericFormat
                   decimalSeparator=","
+                  valueIsNumericString
+                  decimalScale={2}
                   maxLength={8}
                   prefix="R$"
                   placeholder="R$0,00"
+                  onValueChange={(values) => {
+                    field.onChange(values.floatValue);
+                  }}
                   value={field.value}
-                  onValueChange={(values) => field.onChange(values.floatValue)}
+                  onBlur={field.onBlur}
                 />
               </FormControl>
               <FormMessage />
