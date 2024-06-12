@@ -6,7 +6,7 @@ export const GET = async (
 ) => {
   try {
     const { data } = await axiosAsaas.get(
-      `https://sandbox.asaas.com/api/v3/payments/${params.paymentId}/identificationField`
+      `/payments/${params.paymentId}/identificationField`
     );
 
     return Response.json(data);

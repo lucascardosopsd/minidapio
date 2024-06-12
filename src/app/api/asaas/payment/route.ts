@@ -4,10 +4,7 @@ export const POST = async (req: Request) => {
   try {
     const body = await req.json();
 
-    const { data } = await axiosAsaas.post(
-      "https://sandbox.asaas.com/api/v3/payments",
-      body
-    );
+    const { data } = await axiosAsaas.post("/payments", body);
 
     return Response.json(data);
   } catch (error: unknown) {

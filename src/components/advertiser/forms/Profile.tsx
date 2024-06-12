@@ -74,9 +74,13 @@ const AdvertiserProfileForm = ({
 
       const customers = getRes.data;
 
-      const checkCostumer = customers.find(
-        (costumer) => costumer.email == user.email
-      );
+      let checkCostumer = null;
+
+      if (customers) {
+        checkCostumer = customers.find(
+          (costumer) => costumer.email == user.email
+        );
+      }
 
       if (!checkCostumer) {
         const { data: newCustomer } = await axios.post("/api/asaas/customer", {
@@ -85,6 +89,8 @@ const AdvertiserProfileForm = ({
           mobilePhone: data.phone,
           email: user.email,
         });
+
+        console.log(newCustomer);
 
         if (!newCustomer.customer.id) throw new Error("Costumer id not found");
 
@@ -124,7 +130,7 @@ const AdvertiserProfileForm = ({
       toast.success("Salvo com sucesso!");
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message);
+        console.log(error);
       }
       toast.error("Ocorreu um erro");
     } finally {
@@ -181,7 +187,7 @@ const AdvertiserProfileForm = ({
           control={form.control}
           name="phone"
           title="Telefone Celular"
-          fieldElement={<PatternFormat format="+55(##)#####-####" />}
+          fieldElement={<PatternFormat format="(##)#####-####" />}
         />
 
         <SelectBuilder

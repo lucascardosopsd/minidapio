@@ -6,7 +6,7 @@ export const GET = async (
 ) => {
   try {
     const { data } = await axiosAsaas.get(
-      `https://sandbox.asaas.com/api/v3/payments/${params.paymentId}/pixQrCode`
+      `/payments/${params.paymentId}/pixQrCode`
     );
 
     return Response.json(data);

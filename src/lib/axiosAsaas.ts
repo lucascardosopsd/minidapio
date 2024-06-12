@@ -7,5 +7,5 @@ export const axiosAsaas = Axios.create({
     "accept": "application/json",
     "Content-Type": "application/json",
   },
-  baseURL: "https://sandbox.asaas.com/api/v3",
+  baseURL: process.env.ASAAS_BASE_URL!,
 });
