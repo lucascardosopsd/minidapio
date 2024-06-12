@@ -5,7 +5,7 @@ import { useItemStore } from "@/context/item";
 import { Badge } from "../../ui/badge";
 import { Category, Item } from "@prisma/client";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { updateItem } from "@/actions/item/updateItem";
 import { z } from "zod";
 import { ItemValidator } from "@/validators/item";
@@ -15,6 +15,13 @@ import { revalidateRoute } from "@/actions/revalidateRoute";
 import { usePathname } from "next/navigation";
 import ReusableSheet from "@/components/misc/ReusableSheet";
 import Image from "next/image";
+import { NumericFormat } from "react-number-format";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ItemRowProps {
   item: Item;
@@ -23,6 +30,9 @@ interface ItemRowProps {
 
 const ItemRow = ({ item, categories }: ItemRowProps) => {
   const { toggleId, idList } = useItemStore();
+  const [price, setPrice] = useState(item.price);
+  const priceRef = useRef<HTMLInputElement>(null);
+
   const pathname = usePathname();
 
   const [loading, setLoading] = useState(false);
@@ -86,19 +96,41 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         )}
       </TableCell>
 
-      <TableCell>
-        <p
-          className={item.salePrice ? "line-through text-muted-foreground" : ""}
-        >
-          {item?.price ? (
-            item.price?.toLocaleString("pt-br", {
-              style: "currency",
-              currency: "BRL",
-            })
-          ) : (
-            <p>Sem Preço</p>
-          )}
-        </p>
+      <TableCell className="flex justify-center w-full">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              {item?.price ? (
+                <NumericFormat
+                  decimalSeparator=","
+                  valueIsNumericString
+                  decimalScale={2}
+                  maxLength={8}
+                  prefix="R$"
+                  placeholder="R$0,00"
+                  onValueChange={(values) => setPrice(values.floatValue!)}
+                  value={price}
+                  onKeyDown={(e) => {
+                    if (e.key == "Enter") {
+                      priceRef?.current && priceRef.current.blur();
+
+                      handleUpdateItem({
+                        price: item.price,
+                      });
+                    }
+                  }}
+                  getInputRef={priceRef}
+                  className="max-w-32 text-center"
+                />
+              ) : (
+                <p>Sem Preço</p>
+              )}
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Enter</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
         {item.sale && (
           <p className="text-primary">
@@ -117,7 +149,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
           <Badge className="w-full  flex justify-center">Promoção</Badge>
         ) : (
           <Badge variant="outline" className="w-full flex justify-center">
-            Normal
+            Não
           </Badge>
         )}
       </TableCell>
@@ -127,7 +159,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
           <Badge className="w-full flex justify-center">Destaque</Badge>
         ) : (
           <Badge variant="outline" className="w-full flex justify-center">
-            Normal
+            Não
           </Badge>
         )}
       </TableCell>
