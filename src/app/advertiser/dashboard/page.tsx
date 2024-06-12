@@ -81,13 +81,13 @@ const AdvertiserDashboard = async ({
     .sort((a, b) => a?.clicks?.length - b?.clicks?.length)
     .slice(0, 5);
 
-  const hasAdvertiserAccount = !user?.advertiserAccountId;
+  const hasAdvertiserAccount = !!user?.advertiserAccountId;
 
   let hasPaid = await checkMonthlyPayment({ userId: user?.id! });
 
   return (
     <section className="h-svh w-full flex flex-col items-center space-y-5 overflow-y-auto pb-5">
-      {!user?.advertiserAccountId && (
+      {hasAdvertiserAccount && (
         <PersistentDialog
           title="Perfil de anunciante não encontrado"
           description={

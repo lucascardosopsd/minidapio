@@ -23,7 +23,7 @@ export default function Login() {
         <p>Seja conhecido na sua região.</p>
       </div>
 
-      <Separator orientation="vertical" />
+      <Separator orientation="vertical" className="hidden tablet:block" />
 
       <div className="flex-1 flex justify-center items-center flex-col gap-2 px-4 max-w-md">
         <Logo />

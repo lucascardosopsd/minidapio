@@ -123,7 +123,9 @@ const AdvertiserProfileForm = ({
 
       toast.success("Salvo com sucesso!");
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
       toast.error("Ocorreu um erro");
     } finally {
       setLoading(false);
