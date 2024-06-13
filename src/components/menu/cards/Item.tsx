@@ -94,17 +94,14 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
           borderColor: highlight ? themeColor : "",
         }}
       >
-        <div className="flex-1 max-h-full max-w-full rounded-l">
-          <Image
-            alt="Produto"
-            src={item.image}
-            height={500}
-            width={500}
-            className="h-full w-full object-cover rounded-l"
-            onClick={() => setIsModalOpen(true)}
-            priority
-          />
-        </div>
+        <div
+          className="flex-1 max-h-full max-w-full rounded-l bg-red-500"
+          style={{
+            backgroundImage: `url(${item.image})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
 
         <div className="flex flex-col justify-center gap-2 w-full p-5 flex-[1.5]">
           {highlight && (
