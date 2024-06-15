@@ -95,7 +95,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
         }}
       >
         <div
-          className="flex-1 max-h-full max-w-full rounded-l bg-red-500"
+          className="flex-1 max-h-full max-w-full rounded-l"
           style={{
             backgroundImage: `url(${item.image})`,
             backgroundSize: "cover",
