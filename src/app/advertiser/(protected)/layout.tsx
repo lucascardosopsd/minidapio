@@ -1,10 +1,10 @@
 "use server";
 import { ReactNode } from "react";
-import Sidebar from "@/components/misc/ReusableSidebar";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 import { nextAuthOptions } from "@/lib/authProviders";
 import { redirect } from "next/navigation";
+import Sidebar from "@/components/misc/ReusableSidebar";
 import { advertiserSidebarOptions } from "@/constants/advertiserSidebar";
 import Navbar from "@/components/advertiser/Navbar";
 
@@ -25,15 +25,16 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     return redirect("/advertiser/signout");
 
   return (
-    <div className="flex h-svh overflow-hidden w-full">
+    <div className="flex h-svh w-full">
       <Sidebar
         options={advertiserSidebarOptions}
         redirectLogout="/advertiser/login"
       />
-
-      <div className="flex flex-col w-full">
+      <div className="w-full">
         <Navbar />
-        {children}
+        <div className="flex flex-col items-center justify-center h-[calc(100svh-70px)]">
+          {children}
+        </div>
       </div>
     </div>
   );
