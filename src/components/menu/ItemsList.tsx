@@ -1,5 +1,4 @@
 "use client";
-
 import { Item } from "@prisma/client";
 import ItemCard from "./cards/Item";
 import { adStore } from "@/context/ads";
@@ -7,7 +6,6 @@ import { useEffect, useRef } from "react";
 import { useInView } from "framer-motion";
 import { createView } from "@/actions/createView";
 import AdCard from "./cards/adCard";
-import { pickAd } from "@/actions/pickAd";
 import { currentCategoryStore } from "@/context/currentCategory";
 
 interface ItemsListProps {
@@ -23,17 +21,17 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
   const adRef = useRef(null);
   const isAdInView = useInView(adRef, { once: true });
 
-  const handlePickAd = async () => {
-    const ad = await pickAd({
-      regionId: regionId,
-    });
+  // const handlePickAd = async () => {
+  //   const ad = await pickAd({
+  //     regionId: regionId,
+  //   });
 
-    setCurrentAd(ad);
-  };
+  //   setCurrentAd(ad);
+  // };
 
-  useEffect(() => {
-    handlePickAd();
-  }, []);
+  // useEffect(() => {
+  //   handlePickAd();
+  // }, []);
 
   const handleCreateView = () => {
     try {
