@@ -26,10 +26,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
   if (!user) return redirect("/advertiser/login");
 
-  if (!user.AdvertiserAccount) return redirect("/advertiser/new");
-
-  if (user.role !== ("advertiser" || "admin"))
-    return redirect("/advertiser/signout");
+  if (!user.advertiserAccountId) return redirect("/advertiser/new");
 
   return (
     <div className="flex h-svh w-full">

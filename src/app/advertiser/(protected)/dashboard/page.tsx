@@ -11,7 +11,6 @@ import { FullAdProps } from "@/types/ad";
 import { User } from "@prisma/client";
 import { Eye, MousePointerClick } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 interface AdvertiserDashboardprops {
   searchParams?: {
@@ -81,10 +80,6 @@ const AdvertiserDashboard = async ({
   const rankClicked = ads
     .sort((a, b) => a?.clicks?.length - b?.clicks?.length)
     .slice(0, 5);
-
-  const hasAdvertiserAccount = user?.advertiserAccountId;
-
-  hasAdvertiserAccount && redirect("/advertiser/new");
 
   let hasPaid = await checkMonthlyPayment({ userId: user?.id! });
 
