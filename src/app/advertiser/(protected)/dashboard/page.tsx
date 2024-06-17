@@ -11,6 +11,7 @@ import { FullAdProps } from "@/types/ad";
 import { User } from "@prisma/client";
 import { Eye, MousePointerClick } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 interface AdvertiserDashboardprops {
   searchParams?: {
@@ -81,31 +82,15 @@ const AdvertiserDashboard = async ({
     .sort((a, b) => a?.clicks?.length - b?.clicks?.length)
     .slice(0, 5);
 
-  const hasAdvertiserAccount = !user?.advertiserAccountId;
+  const hasAdvertiserAccount = user?.advertiserAccountId;
+
+  hasAdvertiserAccount && redirect("/advertiser/new");
 
   let hasPaid = await checkMonthlyPayment({ userId: user?.id! });
 
   return (
     <section className="h-svh w-full flex flex-col items-center space-y-5 overflow-y-auto pb-5">
-      {hasAdvertiserAccount && (
-        <PersistentDialog
-          title="Perfil de anunciante não encontrado"
-          description={
-            <div className="flex  flex-col gap-5">
-              <p>
-                É necessário preencher as informações de anunciante para
-                prosseguir
-              </p>
-              <Link href="/advertiser/config" className="self-end">
-                <Button>Clique aqui</Button>
-              </Link>
-            </div>
-          }
-          open={hasAdvertiserAccount}
-        />
-      )}
-
-      {!user?.lastPaymentId && (
+      {user?.lastPaymentId && (
         <PersistentDialog
           title="Pagamento pendente"
           description={
