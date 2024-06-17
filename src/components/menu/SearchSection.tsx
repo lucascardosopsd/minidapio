@@ -41,18 +41,10 @@ const SearchSection = ({
           AND: [
             { restaurantId: restaurant.id },
             {
-              OR: [
-                {
-                  title: {
-                    contains: inputTerm,
-                    mode: "insensitive",
-                  },
-                  description: {
-                    contains: inputTerm,
-                    mode: "insensitive",
-                  },
-                },
-              ],
+              title: {
+                contains: inputTerm?.replace(/\s+$/, ""),
+                mode: "insensitive",
+              },
             },
           ],
         },

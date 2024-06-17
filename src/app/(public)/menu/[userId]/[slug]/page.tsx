@@ -10,14 +10,9 @@ interface MenuProps {
     userId: string;
     slug: string;
   };
-  searchParams?: {
-    title?: string;
-  };
 }
 
-const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
-  const title = !!searchParams?.title?.length;
-
+const Menu = async ({ params: { userId, slug } }: MenuProps) => {
   const restaurants = (await fetchRestaurantsByQuery({
     where: { slug, userId },
     include: {
@@ -25,34 +20,20 @@ const Menu = async ({ params: { userId, slug }, searchParams }: MenuProps) => {
         orderBy: {
           order: "asc",
         },
-        where: !title
-          ? {
-              active: true,
-            }
-          : {
-              active: true,
-              OR: [
-                {
-                  title: {
-                    contains: searchParams?.title?.replace(/\s+$/, ""),
-                    mode: "insensitive",
-                  },
-                },
-                {
-                  description: {
-                    contains: searchParams?.title?.replace(/\s+$/, ""),
-                    mode: "insensitive",
-                  },
-                },
-              ],
-            },
+        where: {
+          active: true,
+        },
       },
       Categories: {
         orderBy: {
           order: "asc",
         },
         include: {
-          items: true,
+          items: {
+            where: {
+              active: true,
+            },
+          },
         },
       },
     },
