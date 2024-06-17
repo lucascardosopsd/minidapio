@@ -59,7 +59,7 @@ const FavoritesModal = ({ items, themeColor }: FavoritesModalProps) => {
 
         <div className="flex flex-col gap-5 items-center h-[85svh] overflow-y-auto pb-10 px-5">
           {favoriteList.map((item) => (
-            <div className="w-[400px]">
+            <div className="w-[400px] px-5">
               <ItemCard item={item} themeColor={themeColor} key={item.id} />
             </div>
           ))}
