@@ -18,15 +18,18 @@ import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAc
 import { updateUser } from "@/actions/user/updateUser";
 import { CustumerProps, CustumersArrayProps } from "@/types/asaas";
 import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
+import { redirect } from "next/navigation";
 
 interface AdvertiserProfileFormProps {
   defaultValues?: AdvertiserAccount;
   user: User;
+  revalidatePath?: string;
 }
 
 const AdvertiserProfileForm = ({
   defaultValues,
   user,
+  revalidatePath,
 }: AdvertiserProfileFormProps) => {
   const [loading, setLoading] = useState(false);
 
@@ -52,16 +55,23 @@ const AdvertiserProfileForm = ({
   }: {
     advertiserData: z.infer<typeof advertiserProfile>;
   }) => {
-    const newAdAccount = await createAdvertiserAccount({
-      data: advertiserData,
-    });
+    try {
+      const newAdAccount = await createAdvertiserAccount({
+        data: advertiserData,
+      });
 
-    await updateUser({
-      id: user.id,
-      data: {
-        advertiserAccountId: newAdAccount.id,
-      },
-    });
+      await updateUser({
+        id: user.id,
+        data: {
+          advertiserAccountId: newAdAccount.id,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Algo deu errado");
+    } finally {
+      revalidatePath && redirect(revalidatePath);
+    }
   };
 
   const handleSubmit = async (data: z.infer<typeof advertiserProfile>) => {
@@ -132,6 +142,7 @@ const AdvertiserProfileForm = ({
       }
       toast.error("Ocorreu um erro");
     } finally {
+      revalidatePath && redirect(revalidatePath);
       setLoading(false);
     }
   };

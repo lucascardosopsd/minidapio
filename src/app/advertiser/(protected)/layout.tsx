@@ -1,12 +1,13 @@
 "use server";
 import { ReactNode } from "react";
 import { getServerSession } from "next-auth";
-import prisma from "@/lib/prisma";
 import { nextAuthOptions } from "@/lib/authProviders";
 import { redirect } from "next/navigation";
 import Sidebar from "@/components/misc/ReusableSidebar";
 import { advertiserSidebarOptions } from "@/constants/advertiserSidebar";
 import Navbar from "@/components/advertiser/Navbar";
+import { getUserServerSession } from "@/actions/session/getUserServerSession";
+import { UserAdPaymentProps } from "@/types/user";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
@@ -15,14 +16,17 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     return redirect("/advertiser/login");
   }
 
-  const user = await prisma.user.findUnique({
-    where: { email: session?.user?.email! },
+  const user = await getUserServerSession<UserAdPaymentProps>({
+    query: {
+      include: {
+        AdvertiserAccount: true,
+      },
+    },
   });
 
   if (!user) return redirect("/advertiser/login");
 
-  if (user.role !== ("advertiser" || "admin"))
-    return redirect("/advertiser/signout");
+  if (!user.advertiserAccountId) return redirect("/advertiser/new");
 
   return (
     <div className="flex h-svh w-full">
