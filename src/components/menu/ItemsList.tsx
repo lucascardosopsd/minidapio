@@ -7,6 +7,7 @@ import { useInView } from "framer-motion";
 import { createView } from "@/actions/createView";
 import AdCard from "./cards/adCard";
 import { currentCategoryStore } from "@/context/currentCategory";
+import { pickAd } from "@/actions/pickAd";
 
 interface ItemsListProps {
   items: Item[];
@@ -21,17 +22,17 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
   const adRef = useRef(null);
   const isAdInView = useInView(adRef, { once: true });
 
-  // const handlePickAd = async () => {
-  //   const ad = await pickAd({
-  //     regionId: regionId,
-  //   });
+  const handlePickAd = async () => {
+    const ad = await pickAd({
+      regionId: regionId,
+    });
 
-  //   setCurrentAd(ad);
-  // };
+    setCurrentAd(ad);
+  };
 
-  // useEffect(() => {
-  //   handlePickAd();
-  // }, []);
+  useEffect(() => {
+    handlePickAd();
+  }, [regionId]);
 
   const handleCreateView = () => {
     try {

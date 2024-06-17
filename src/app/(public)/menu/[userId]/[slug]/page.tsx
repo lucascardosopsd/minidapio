@@ -39,15 +39,19 @@ const Menu = async ({ params: { userId, slug } }: MenuProps) => {
     },
   })) as FullRestaurantProps[];
 
-  const sortHighLightedItems = restaurants[0].Items.filter(
+  if (!restaurants[0]?.Items) {
+    return;
+  }
+
+  const sortHighLightedItems = restaurants[0]?.Items.filter(
     (item) => item.highlight
   );
 
-  const sortOrdered = restaurants[0].Items.filter(
+  const sortOrdered = restaurants[0]?.Items.filter(
     (item) => item.order !== 0 && !item.highlight
   ).sort((a, b) => a.order - b.order);
 
-  const sortTitle = restaurants[0].Items.filter(
+  const sortTitle = restaurants[0]?.Items.filter(
     (item) => item.order == 0 && !item.highlight
   ).sort((a, b) => a.title.localeCompare(b.title));
 
