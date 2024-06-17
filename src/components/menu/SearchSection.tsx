@@ -81,6 +81,7 @@ const SearchSection = ({
               setInputTerm(e.target.value);
             }}
             onKeyDown={(e) => e.key == "Enter" && handleToggleOpen()}
+            placeholder="Busque um item"
           />
           <Button
             size="icon"
