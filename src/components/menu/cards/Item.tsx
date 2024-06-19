@@ -1,5 +1,5 @@
 "use client";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/tools/formatPrice";
 import { Item } from "@prisma/client";
@@ -76,8 +76,8 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
 
   return (
     <>
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="flex justify-center items-center p-0 h-[90%] w-[90%]">
+      <Drawer open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DrawerContent className="flex justify-center items-center p-0 h-[90%] w-[90%]">
           <Image
             height={1000}
             width={1000}
@@ -85,8 +85,8 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
             src={item.image}
             className="h-full w-full object-cover rounded rounded-r-none "
           />
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
       <div
         className={
