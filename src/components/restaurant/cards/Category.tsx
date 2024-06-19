@@ -7,7 +7,7 @@ import {
 } from "../../ui/accordion";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import { Badge } from "../../ui/badge";
-import DeleteModal from "../DeleteModal";
+import DeleteModal from "../ConfirmModal";
 import { deleteCategory } from "@/actions/category/deleteCategory";
 import { toast } from "sonner";
 import CategoryForm from "../forms/Category";

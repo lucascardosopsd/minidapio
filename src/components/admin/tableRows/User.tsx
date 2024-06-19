@@ -8,7 +8,7 @@ import { roleI18n } from "@/constants/roleI18n";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import UserForm from "../forms/User";
-import DeleteModal from "@/components/restaurant/DeleteModal";
+import DeleteModal from "@/components/restaurant/ConfirmModal";
 import { deleteUser } from "@/actions/user/deleteUser";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { toast } from "sonner";

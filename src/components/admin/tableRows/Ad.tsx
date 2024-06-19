@@ -3,7 +3,7 @@ import ReusableDialog from "@/components/misc/ReusableDialog";
 import { useState } from "react";
 import { z } from "zod";
 import { FaPen, FaTrash } from "react-icons/fa6";
-import DeleteModal from "@/components/restaurant/DeleteModal";
+import DeleteModal from "@/components/restaurant/ConfirmModal";
 import AdForm from "../forms/Ad";
 import { adValidator } from "@/validators/ad";
 import { RegionProps } from "@/types/region";

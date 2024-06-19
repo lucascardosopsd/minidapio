@@ -1,6 +1,6 @@
 "use client";
 import { FaTrash } from "react-icons/fa6";
-import DeleteModal from "@/components/restaurant/DeleteModal";
+import DeleteModal from "@/components/restaurant/ConfirmModal";
 import { Button } from "@/components/ui/button";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import {
