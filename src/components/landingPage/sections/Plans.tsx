@@ -35,7 +35,7 @@ const PlansSection = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-4xl font-semibold text-center">R$100,00</p>
-                <p className="text-center text-xs">Apareça 10% das vezes</p>
+                <p className="text-center text-xs">10% de chance de aparecer</p>
               </CardContent>
 
               <CardFooter>
@@ -54,7 +54,7 @@ const PlansSection = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-4xl font-semibold text-center">R$150,00</p>
-                <p className="text-center text-xs">Apareça 20% das vezes</p>
+                <p className="text-center text-xs">20% de chance de aparecer</p>
               </CardContent>
 
               <CardFooter>
@@ -75,7 +75,7 @@ const PlansSection = () => {
                 <p className="text-center line-through">R$200,00</p>
 
                 <p className="text-4xl font-semibold text-center">R$175,00</p>
-                <p className="text-center text-xs">Apareça 40% das vezes</p>
+                <p className="text-center text-xs">40% de chance de aparecer</p>
               </CardContent>
 
               <CardFooter>
