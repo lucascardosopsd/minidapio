@@ -13,6 +13,7 @@ import { Region } from "@prisma/client";
 import RestaurantCard from "../cards/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
 import { slugGen } from "@/tools/slugGen";
+import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 
 interface RestaurantsListProps {
   session: Session;
@@ -41,6 +42,18 @@ const RestaurantsList = ({
 
     if (restaurantExists[0]) {
       toast.error("Já existe um restaurante com este nome!");
+      setLoading(false);
+      return;
+    }
+
+    const userRestaurants = await fetchRestaurantsByQuery({
+      where: {
+        userId: restaurants[0].userId,
+      },
+    });
+
+    if (userRestaurants.length >= 5) {
+      toast.error("Limite de 5 restaurantes atingido");
       setLoading(false);
       return;
     }
