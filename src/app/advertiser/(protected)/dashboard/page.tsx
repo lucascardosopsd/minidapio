@@ -85,7 +85,7 @@ const AdvertiserDashboard = async ({
 
   return (
     <section className="h-svh w-full flex flex-col items-center space-y-5 overflow-y-auto pb-5">
-      {user?.lastPaymentId && (
+      {!hasPaid && (
         <PersistentDialog
           title="Pagamento pendente"
           description={
