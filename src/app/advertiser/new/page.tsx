@@ -4,14 +4,9 @@ import { nextAuthOptions } from "@/lib/authProviders";
 import { UserAdPaymentProps } from "@/types/user";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
-import { redirect } from "next/navigation";
 
 const NewAdvertiserAccount = async () => {
   const session = await getServerSession(nextAuthOptions);
-
-  if (!session) {
-    return redirect("/advertiser/login");
-  }
 
   const user = await getUserServerSession<UserAdPaymentProps>({
     query: {
@@ -20,10 +15,6 @@ const NewAdvertiserAccount = async () => {
       },
     },
   });
-
-  if (user?.AdvertiserAccount) {
-    return redirect("/advertiser/dashboard");
-  }
 
   return (
     <section className="flex items-center justify-center gap-5 h-svh flex-col">
@@ -37,7 +28,7 @@ const NewAdvertiserAccount = async () => {
 
         <div className="flex-1 flex justify-end">
           <Image
-            src={session.user?.image!}
+            src={session?.user?.image!}
             alt="Usuário"
             height={500}
             width={500}

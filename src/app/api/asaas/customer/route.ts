@@ -19,19 +19,14 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { name, cpfCnpj, email, mobilePhone } = await req.json();
+    const body = await req.json();
 
-    const customer = await axiosAsaas.post(`/customers`, {
-      name,
-      cpfCnpj,
-      email,
-      mobilePhone,
-    });
+    const customer = await axiosAsaas.post(`/customers`, body);
 
     return Response.json({ customer: customer.data });
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.log(error);
+      console.log(error.message);
     } else {
       console.log("An unknown error occurred");
     }
