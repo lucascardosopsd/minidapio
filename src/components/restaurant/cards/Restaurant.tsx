@@ -104,6 +104,12 @@ const RestaurantCard = ({
         },
       });
 
+      if (userRestaurants.length >= 5) {
+        toast.error("Limite de 5 restaurantes atingido");
+        setLoading(false);
+        return;
+      }
+
       const newRestaurant = await createNewRestaurant({
         title: restaurant.title + "-" + userRestaurants.length + 1,
         active: restaurant.active,
