@@ -48,7 +48,7 @@ const RestaurantsList = ({
 
     const userRestaurants = await fetchRestaurantsByQuery({
       where: {
-        userId: restaurants[0].userId,
+        userId: session.id,
       },
     });
 
