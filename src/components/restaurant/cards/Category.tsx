@@ -173,9 +173,11 @@ const CategoryCard = ({
                 </TableHeader>
                 <TableBody>
                   {category.items &&
-                    category?.items.map((item) => (
-                      <ItemRow categories={categories} item={item} />
-                    ))}
+                    category?.items
+                      .sort((a, b) => a.order - b.order)
+                      .map((item) => (
+                        <ItemRow categories={categories} item={item} />
+                      ))}
                 </TableBody>
               </Table>
             </div>
