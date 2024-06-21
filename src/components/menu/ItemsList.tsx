@@ -50,7 +50,7 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
     if (currentAd && isAdInView) return handleCreateView();
   }, [isAdInView]);
 
-  const adOrder = Math.floor(Math.random() * (0 - items.length + 1) + 0) * 100;
+  const adOrder = Math.floor(Math.random() * (0 - items.length + 1) + 0) * -1;
 
   return (
     <div className="flex flex-col gap-5">
@@ -58,7 +58,11 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
         .filter((item) => item.categoryId == categoryId)
         .sort((a, b) => Number(b.highlight) - Number(a.highlight))
         .map((item, index) => (
-          <span className={`order-[${index}]`}>
+          <span
+            style={{
+              order: index,
+            }}
+          >
             <ItemCard
               item={item}
               themeColor={themeColor}
@@ -69,7 +73,12 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
         ))}
 
       {currentAd && (
-        <span ref={adRef} className={`order-[${adOrder}]`}>
+        <span
+          ref={adRef}
+          style={{
+            order: adOrder,
+          }}
+        >
           <AdCard ad={currentAd} />
         </span>
       )}
