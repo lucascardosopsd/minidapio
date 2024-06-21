@@ -43,12 +43,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
   ) => {
     setLoading(true);
     try {
-      await updateItem({
-        data: {
-          price: data.price,
-        },
-        id: item.id,
-      });
+      await updateItem({ data, id: item.id });
       toast.success("Item Atualizado!");
       revalidateRoute({ fullPath: pathname });
     } catch (error) {
