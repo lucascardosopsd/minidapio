@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Badge } from "../../ui/badge";
-import { Card, CardContent, CardFooter, CardHeader } from "../../ui/card";
+import { Card, CardContent } from "../../ui/card";
 import Link from "next/link";
 import { Button } from "../../ui/button";
 import { FaArrowRight, FaTrash } from "react-icons/fa6";
@@ -172,136 +172,135 @@ const RestaurantCard = ({
   };
 
   return (
-    <Card className="w-full h-[300px]" key={restaurant.id}>
-      <CardHeader>
-        <div className="flex justify-between">
-          <p>{restaurant.title}</p>
+    <Card className="w-full h-[315px]" key={restaurant.id}>
+      <CardContent className="flex flex-col items-center p-5 gap-5">
+        <div className="flex flex-col justify-between w-full">
+          <p className="line-clamp-1 mb-2 border-b">{restaurant.title}</p>
 
-          <Badge
-            variant={restaurant.active ? "default" : "destructive"}
-            className="h-5"
-          >
-            {restaurant.active ? "Ativo" : "Inativo"}
-          </Badge>
+          <div className="flex gap-2 w-full justify-between">
+            <Badge
+              variant={restaurant.active ? "default" : "destructive"}
+              className="h-5"
+            >
+              {restaurant.active ? "Ativo" : "Inativo"}
+            </Badge>
 
-          <Popover>
-            <div>
-              <PopoverTrigger>
-                <EllipsisVertical />
-              </PopoverTrigger>
-            </div>
-            <PopoverContent>
-              <div className="flex flex-col gap-2 w-full">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() =>
-                    copyToClipboard(
-                      `${process.env.NEXT_PUBLIC_HOST}/menu/${session?.id}/${restaurant.slug}`,
-                      "slug",
-                      "Link do cardápio copiado!"
-                    )
-                  }
-                >
-                  <p className="flex items-center gap-2">
-                    Link <Link2 size={16} />
-                  </p>
-                </Button>
-
-                <ConfirmModal
-                  action={handleDuplicateRestaurant}
-                  dialogTitle="Duplicar Item"
-                  triggerText={
-                    <p className="flex items-center gap-2">
-                      Duplicar <Layers2 size={15} />
-                    </p>
-                  }
-                  dialogDescription={
-                    <div className="flex flex-col gap-2">
-                      <div className="flex gap-2">
-                        <p>Você está duplicando</p>
-                        <Badge className="text-center">
-                          {restaurant.title}
-                        </Badge>
-                      </div>
-                    </div>
-                  }
-                  triggerVariant="outline"
-                  triggerClassName="w-full bg-transparent border border-primary"
-                />
-
-                <ConfirmModal
-                  action={handleDeleteRestaurant}
-                  dialogTitle="Deletar Item"
-                  triggerText={
-                    <p className="flex gap-2 items-center">
-                      Apagar <FaTrash />
-                    </p>
-                  }
-                  dialogDescription={
-                    <div className="flex flex-col gap-2">
-                      <div className="flex gap-2">
-                        <p>Você está apagando o restaurante</p>
-                        <Badge>{restaurant.title}</Badge>
-                      </div>
-                    </div>
-                  }
-                />
+            <Popover>
+              <div>
+                <PopoverTrigger>
+                  <EllipsisVertical />
+                </PopoverTrigger>
               </div>
-            </PopoverContent>
-          </Popover>
+              <PopoverContent>
+                <div className="flex flex-col gap-2 w-full">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() =>
+                      copyToClipboard(
+                        `${process.env.NEXT_PUBLIC_HOST}/menu/${session?.id}/${restaurant.slug}`,
+                        "slug",
+                        "Link do cardápio copiado!"
+                      )
+                    }
+                  >
+                    <p className="flex items-center gap-2">
+                      Link <Link2 size={16} />
+                    </p>
+                  </Button>
+
+                  <ConfirmModal
+                    action={handleDuplicateRestaurant}
+                    dialogTitle="Duplicar Item"
+                    triggerText={
+                      <p className="flex items-center gap-2">
+                        Duplicar <Layers2 size={15} />
+                      </p>
+                    }
+                    dialogDescription={
+                      <div className="flex flex-col gap-2">
+                        <div className="flex gap-2">
+                          <p>Você está duplicando</p>
+                          <Badge className="text-center">
+                            {restaurant.title}
+                          </Badge>
+                        </div>
+                      </div>
+                    }
+                    triggerVariant="outline"
+                    triggerClassName="w-full bg-transparent border border-primary"
+                  />
+
+                  <ConfirmModal
+                    action={handleDeleteRestaurant}
+                    dialogTitle="Deletar Item"
+                    triggerText={
+                      <p className="flex gap-2 items-center">
+                        Apagar <FaTrash />
+                      </p>
+                    }
+                    dialogDescription={
+                      <div className="flex flex-col gap-2">
+                        <div className="flex gap-2">
+                          <p>Você está apagando o restaurante</p>
+                          <Badge>{restaurant.title}</Badge>
+                        </div>
+                      </div>
+                    }
+                  />
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="flex justify-center gap-2">
-          <Image
-            alt="logo"
-            src={restaurant.logo}
-            width={0}
-            height={0}
-            sizes="1000px"
-            className="rounded-full h-20 w-20"
+        <Image
+          alt="logo"
+          src={restaurant.logo}
+          width={0}
+          height={0}
+          sizes="1000px"
+          className="rounded-full h-20 w-20"
+        />
+
+        <div className="flex flex-col gap-2 w-full">
+          <Link
+            href={`/dashboard/restaurant/${restaurant.id}`}
+            className="w-full space-y-4"
+          >
+            <Button
+              variant={restaurant.active ? "default" : "outline"}
+              className="w-full flex items-center justify-center gap-2"
+              onClick={() => setLoading(true)}
+            >
+              {!loading ? (
+                <>
+                  <p>Gerenciar</p>
+                  <FaArrowRight />
+                </>
+              ) : (
+                <ImSpinner2 className="animate-spin" size={20} />
+              )}
+            </Button>
+          </Link>
+
+          <ReusableModal
+            content={
+              <RestaurantForm
+                defaultValues={restaurant}
+                regions={regions}
+                loading={loading}
+                onSubmit={handleUpdateRestaurant}
+              />
+            }
+            isOpen={open}
+            onOpen={setOpen}
+            title="Editar Restaurante"
+            trigger="Editar"
+            triggerVariant="outline"
+            triggerClassName="w-full"
           />
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col gap-2">
-        <Link
-          href={`/dashboard/restaurant/${restaurant.id}`}
-          className="w-full space-y-4"
-        >
-          <Button
-            variant={restaurant.active ? "default" : "outline"}
-            className="w-full flex items-center justify-center gap-2"
-            onClick={() => setLoading(true)}
-          >
-            {!loading ? (
-              <>
-                <p>Gerenciar</p>
-                <FaArrowRight />
-              </>
-            ) : (
-              <ImSpinner2 className="animate-spin" size={20} />
-            )}
-          </Button>
-        </Link>
-
-        <ReusableModal
-          content={
-            <RestaurantForm
-              defaultValues={restaurant}
-              regions={regions}
-              loading={loading}
-              onSubmit={handleUpdateRestaurant}
-            />
-          }
-          isOpen={open}
-          onOpen={setOpen}
-          title="Editar Restaurante"
-          trigger="Editar"
-          triggerVariant="outline"
-          triggerClassName="w-full"
-        />
-      </CardFooter>
     </Card>
   );
 };
