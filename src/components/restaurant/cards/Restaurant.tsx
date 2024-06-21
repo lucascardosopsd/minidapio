@@ -172,7 +172,7 @@ const RestaurantCard = ({
   };
 
   return (
-    <Card className="w-full h-[330px]" key={restaurant.id}>
+    <Card className="w-full h-[300px]" key={restaurant.id}>
       <CardHeader>
         <div className="flex justify-between">
           <p>{restaurant.title}</p>
