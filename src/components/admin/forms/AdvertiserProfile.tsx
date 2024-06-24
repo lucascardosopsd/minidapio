@@ -12,14 +12,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SelectItem } from "@/components/ui/select";
-import { AdvertiserAccount, User } from "@prisma/client";
-import { useState } from "react";
+import { AdvertiserAccount, Afiliate, User } from "@prisma/client";
+import { useEffect, useState } from "react";
 import { PatternFormat } from "react-number-format";
 import { z } from "zod";
 import UserCard from "../cards/User";
 import { useAdminAdvertiserProfileForm } from "@/hooks/useAdminAdvertiserProfileForm";
 import { adminAdvertiserProfile } from "@/validators/adminAdvertiserProfile";
-import { fetchUser } from "@/actions/user/fetchUser";
+import { fetchAfiliate } from "@/actions/afiliate/fetchAfiliate";
+import Fence from "@/components/restaurant/Fence";
 
 interface AdminAdvertiserProfileFormProps {
   defaultValues?: AdvertiserAccount;
@@ -37,7 +38,7 @@ const AdminAdvertiserProfileForm = ({
   onSubmit,
   loading,
 }: AdminAdvertiserProfileFormProps) => {
-  const [afiliate, setAfiliate] = useState<User | null>({} as User);
+  const [afiliate, setAfiliate] = useState<Afiliate | null>({} as Afiliate);
 
   const form = useAdminAdvertiserProfileForm({
     defaultValues: defaultValues
@@ -57,19 +58,19 @@ const AdminAdvertiserProfileForm = ({
         },
   });
 
-  const handleFetchUser = async (userId: string) => {
-    if (userId) {
+  const handleFetchAfiliate = async (id: string) => {
+    if (id) {
       try {
-        const user = await fetchUser({ id: userId });
+        const afiliate = await fetchAfiliate({ id: id });
 
-        if (user && user.role == "afiliate") {
-          setAfiliate(user);
+        if (afiliate) {
+          setAfiliate(afiliate);
 
           return true;
         }
 
-        form.setValue("userId", "");
-        form.setError("userId", {
+        form.setValue("afiliateId", "");
+        form.setError("afiliateId", {
           message: "Digite um afiliado válido!",
         });
       } catch (error) {
@@ -78,6 +79,12 @@ const AdminAdvertiserProfileForm = ({
       return false;
     }
   };
+
+  useEffect(() => {
+    if (defaultValues?.afiliateId) {
+      handleFetchAfiliate(defaultValues.afiliateId);
+    }
+  }, []);
 
   return (
     <Form {...form}>
@@ -145,12 +152,12 @@ const AdminAdvertiserProfileForm = ({
                 <FormLabel>Afiliado</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Digite o ID e pressione enter"
+                    placeholder="Cole o ID"
                     className="w-full rounded-r-none"
                     onChange={async (e) => {
                       field.onChange(e);
                       if (e.target.value.length >= 24) {
-                        await handleFetchUser(
+                        await handleFetchAfiliate(
                           form.watch("afiliateId", "") || ""
                         );
                       }
@@ -162,7 +169,7 @@ const AdminAdvertiserProfileForm = ({
             )}
           />
 
-          {afiliate?.id && <UserCard user={afiliate!} preview />}
+          {afiliate?.id && <Fence>{afiliate.name}</Fence>}
         </div>
 
         <input value={userData.id} {...form.register("userId")} hidden />

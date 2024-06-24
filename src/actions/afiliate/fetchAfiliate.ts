@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma";
 
 interface GetAfiliateProps {
-  email?: string;
   id?: string;
 }
 

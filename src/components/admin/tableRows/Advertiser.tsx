@@ -145,7 +145,7 @@ const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
 
       <TableCell>{plansI18n[advertiser?.plan]}</TableCell>
 
-      <TableCell>{afiliate?.name ?? "Desconhecido"}</TableCell>
+      <TableCell>{afiliate?.name || "Desconhecido"}</TableCell>
 
       <TableCell>
         <Button

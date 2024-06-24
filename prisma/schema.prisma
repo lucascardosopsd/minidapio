@@ -67,8 +67,8 @@ model Afiliate {
   updatedAt DateTime @updatedAt
   userId    String   @db.ObjectId
 
-  user                      User                        @relation(fields: [userId], references: [id])
-  AfiliateAdvertiserAccount AfiliateAdvertiserAccount[]
+  user              User                @relation(fields: [userId], references: [id])
+  AdvertiserAccount AdvertiserAccount[]
 }
 
 model VerificationToken {
@@ -196,22 +196,13 @@ model AdvertiserAccount {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   userId     String   @unique @db.ObjectId
+  afiliateId String?  @unique @db.ObjectId
   plan       String   @default("basic")
 
-  payments                  Payment[]
-  user                      User                        @relation(fields: [userId], references: [id])
-  AfiliateAdvertiserAccount AfiliateAdvertiserAccount[]
-  ads                       Ad[]
-}
-
-model AfiliateAdvertiserAccount {
-  id                  String            @id @default(auto()) @map("_id") @db.ObjectId
-  afiliateId          String            @db.ObjectId
-  advertiserAccountId String            @db.ObjectId
-  afiliate            Afiliate          @relation(fields: [afiliateId], references: [id], onDelete: Cascade)
-  advertiserAccount   AdvertiserAccount @relation(fields: [advertiserAccountId], references: [id], onDelete: Cascade)
-
-  @@unique([afiliateId, advertiserAccountId])
+  payments Payment[]
+  user     User      @relation(fields: [userId], references: [id])
+  afiliate Afiliate? @relation(fields: [afiliateId], references: [id])
+  ads      Ad[]
 }
 
 model Payment {

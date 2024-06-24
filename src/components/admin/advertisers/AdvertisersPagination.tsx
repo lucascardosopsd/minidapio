@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { fetchAfiliate } from "@/actions/afiliate/fetchAfiliate";
 interface AdvertisersPaginationprops {
   page: number;
   query?: Prisma.AdvertiserAccountFindManyArgs;
@@ -24,13 +25,7 @@ const AdvertisersPagination = async ({
   const { advertisers, pages } = await fetchManyAdvertisers({
     page: page - 1,
     take: 10,
-    query: {
-      ...query,
-      include: {
-        AfiliateAdvertiserAccount: true,
-        user: true,
-      },
-    },
+    query,
   });
 
   return (
@@ -59,14 +54,20 @@ const AdvertisersPagination = async ({
             </TableHeader>
 
             <TableBody>
-              {advertisers.map((advertiser) => (
-                <AdvertiserRow
-                  advertiser={advertiser}
-                  key={advertiser.id}
-                  user={advertiser.user}
-                  afiliate={null}
-                />
-              ))}
+              {advertisers.map(async (advertiser) => {
+                const afiliate = await fetchAfiliate({
+                  id: advertiser.afiliateId || "",
+                });
+
+                return (
+                  <AdvertiserRow
+                    advertiser={advertiser}
+                    key={advertiser.id}
+                    user={advertiser.user}
+                    afiliate={afiliate}
+                  />
+                );
+              })}
             </TableBody>
           </Table>
         </div>

@@ -86,7 +86,7 @@ const AfiliateRow = ({ afiliate, preview = false }: UserAfiliateProps) => {
       <TableCell>
         <Button
           size="icon"
-          onClick={() => copyToClipboard(afiliate.userId, "", "Id copiado!")}
+          onClick={() => copyToClipboard(afiliate.id, "", "Id copiado!")}
           className="right-5 top-5"
           variant="secondary"
         >
