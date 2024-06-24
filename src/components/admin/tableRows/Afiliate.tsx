@@ -15,7 +15,7 @@ import { updateAfiliate } from "@/actions/afiliate/updateAfiliate";
 import AfiliateForm from "../forms/Afiliate";
 import ReusableDialog from "@/components/misc/ReusableDialog";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { ChevronRight, KeyRound } from "lucide-react";
+import { ChevronRight, Copy, KeyRound } from "lucide-react";
 import Link from "next/link";
 
 interface UserAfiliateProps {
@@ -85,12 +85,16 @@ const AfiliateRow = ({ afiliate, preview = false }: UserAfiliateProps) => {
 
       <TableCell>
         <Button
-          size="icon"
-          onClick={() => copyToClipboard(afiliate.id, "", "Id copiado!")}
+          onClick={() =>
+            copyToClipboard(String(afiliate.code), "", "Código copiado!")
+          }
           className="right-5 top-5"
           variant="secondary"
         >
-          ID
+          <p className="flex items-center justify-center gap-2">
+            {afiliate.code}
+            <Copy />
+          </p>
         </Button>
       </TableCell>
 

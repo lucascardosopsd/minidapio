@@ -19,8 +19,9 @@ import { z } from "zod";
 import UserCard from "../cards/User";
 import { useAdminAdvertiserProfileForm } from "@/hooks/useAdminAdvertiserProfileForm";
 import { adminAdvertiserProfile } from "@/validators/adminAdvertiserProfile";
-import { fetchAfiliate } from "@/actions/afiliate/fetchAfiliate";
 import Fence from "@/components/restaurant/Fence";
+import { fetchAfiliatesByQuery } from "@/actions/afiliate/fetchAfiliatesByQuery";
+import { X } from "lucide-react";
 
 interface AdminAdvertiserProfileFormProps {
   defaultValues?: AdvertiserAccount;
@@ -53,24 +54,28 @@ const AdminAdvertiserProfileForm = ({
           phone: "",
           userId: userData.id,
           customerId: "",
-          afiliateId: "",
+          afiliateCode: 0,
           plan: "basic",
         },
   });
 
-  const handleFetchAfiliate = async (id: string) => {
-    if (id) {
+  const handleFetchAfiliate = async (code: number) => {
+    if (code) {
       try {
-        const afiliate = await fetchAfiliate({ id: id });
+        const afiliate = await fetchAfiliatesByQuery({
+          query: {
+            where: { code },
+          },
+        });
 
-        if (afiliate) {
-          setAfiliate(afiliate);
+        if (afiliate[0]) {
+          setAfiliate(afiliate[0]);
 
           return true;
         }
 
-        form.setValue("afiliateId", "");
-        form.setError("afiliateId", {
+        form.setValue("afiliateCode", 0);
+        form.setError("afiliateCode", {
           message: "Digite um afiliado válido!",
         });
       } catch (error) {
@@ -81,8 +86,8 @@ const AdminAdvertiserProfileForm = ({
   };
 
   useEffect(() => {
-    if (defaultValues?.afiliateId) {
-      handleFetchAfiliate(defaultValues.afiliateId);
+    if (defaultValues?.afiliateCode) {
+      handleFetchAfiliate(defaultValues.afiliateCode);
     }
   }, []);
 
@@ -146,21 +151,20 @@ const AdminAdvertiserProfileForm = ({
         <div className="space-y-2 flex-1">
           <FormField
             control={form.control}
-            name="afiliateId"
+            name="afiliateCode"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Afiliado</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Cole o ID"
+                    placeholder="Cole código"
                     className="w-full rounded-r-none"
                     onChange={async (e) => {
-                      field.onChange(e);
-                      if (e.target.value.length >= 24) {
-                        await handleFetchAfiliate(
-                          form.watch("afiliateId", "") || ""
-                        );
-                      }
+                      field.onChange(Number(e.target.value));
+
+                      await handleFetchAfiliate(
+                        form.watch("afiliateCode", 0) || 0
+                      );
                     }}
                   />
                 </FormControl>
@@ -169,7 +173,19 @@ const AdminAdvertiserProfileForm = ({
             )}
           />
 
-          {afiliate?.id && <Fence>{afiliate.name}</Fence>}
+          {afiliate?.id && (
+            <Fence>
+              <p className="flex-1 text-center">{afiliate.name}</p>
+              <span
+                onClick={() => {
+                  form.setValue("afiliateCode", null);
+                  setAfiliate(null);
+                }}
+              >
+                <X className="hover:scale-125 transition text-muted hover:text-destructive cursor-pointer" />
+              </span>
+            </Fence>
+          )}
         </div>
 
         <input value={userData.id} {...form.register("userId")} hidden />

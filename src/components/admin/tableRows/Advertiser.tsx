@@ -19,6 +19,8 @@ import { createAdvertiserAccount } from "@/actions/advertiser/createAccount";
 import { updateUser } from "@/actions/user/updateUser";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { plansI18n } from "@/constants/plansI18n";
+import { revalidateRoute } from "@/actions/revalidateRoute";
+import { usePathname } from "next/navigation";
 
 interface AdvertiserRowProps {
   advertiser: AdvertiserAccount;
@@ -29,6 +31,7 @@ interface AdvertiserRowProps {
 const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const pathname = usePathname();
 
   const handleDelete = async () => {
     try {
@@ -134,6 +137,9 @@ const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
       console.log(error);
       toast.error("Ocorreu um erro");
     } finally {
+      revalidateRoute({
+        fullPath: pathname,
+      });
       setLoading(false);
       setIsModalOpen(false);
     }
