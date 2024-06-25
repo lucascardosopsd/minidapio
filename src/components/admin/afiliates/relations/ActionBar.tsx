@@ -1,68 +1,8 @@
 "use client";
-import { z } from "zod";
-
-import { toast } from "sonner";
-
-import { useState } from "react";
 import SearchField from "@/components/misc/SearchField";
-import ReusableDialog from "@/components/misc/ReusableDialog";
-import { createAfiliateAdvertiserAccount } from "@/actions/AfiliateAdvertiser/createAfiliateAdvertiserAccount";
-import { afiliateAdvertiserValidator } from "@/validators/afiliateAdvertiser";
-import AfiliateRelationForm from "../../forms/AfiliateRelation";
-import { useParams, usePathname } from "next/navigation";
-import { revalidateRoute } from "@/actions/revalidateRoute";
-import { fetchAfiliateAdvertiserRelationsByQuery } from "@/actions/AfiliateAdvertiser/fetchAfiliateAdvertiserRelationsByQuery";
 import { User } from "@prisma/client";
 
 const AfiliateRelationsActionBar = ({ user }: { user: User }) => {
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  const params: { [key: string]: string } = useParams();
-
-  const pathname = usePathname();
-
-  const handleOnSubmit = async (
-    data: z.infer<typeof afiliateAdvertiserValidator>
-  ) => {
-    try {
-      setLoading(true);
-
-      const exists = await fetchAfiliateAdvertiserRelationsByQuery({
-        query: {
-          where: {
-            AND: [
-              {
-                advertiserAccountId: data.advertiserAccountId,
-              },
-              {
-                afiliateId: data.afiliateId,
-              },
-            ],
-          },
-        },
-      });
-
-      if (!!exists.length) {
-        toast.success("Relacionamento já existente.");
-        return;
-      }
-
-      await createAfiliateAdvertiserAccount({ data });
-
-      revalidateRoute({ fullPath: pathname });
-
-      toast.success("Relacionamento criado");
-
-      setOpen(false);
-    } catch (error) {
-      console.log(error);
-      toast.error("Ocorreu um erro");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="flex justify-between w-full gap-5 items-center">
       <p className="text-2xl">Anunciantes de {user.name}</p>
@@ -70,19 +10,6 @@ const AfiliateRelationsActionBar = ({ user }: { user: User }) => {
         keyName="name"
         placeholder="Busque um nome"
         inputClassName="w-64"
-      />
-      <ReusableDialog
-        title="Nova Relação"
-        trigger="Nova relação"
-        content={
-          <AfiliateRelationForm
-            onSubmit={handleOnSubmit}
-            loading={loading}
-            afiliateId={params.afiliateId!}
-          />
-        }
-        isOpen={open}
-        onOpen={setOpen}
       />
     </div>
   );
