@@ -133,7 +133,7 @@ const AfiliateRow = ({ afiliate, preview = false }: UserAfiliateProps) => {
 
       <TableCell>
         <Link
-          href={`/jsnHktoSE/dashboard/afiliates/${afiliate.id}/relations?page=1`}
+          href={`/jsnHktoSE/dashboard/afiliates/${afiliate.code}/relations?page=1`}
           target="_blank"
           className="w-full"
         >

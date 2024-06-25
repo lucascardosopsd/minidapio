@@ -1,3 +1,5 @@
+import { fetchAfiliatesByQuery } from "@/actions/afiliate/fetchAfiliatesByQuery";
+import { fetchUser } from "@/actions/user/fetchUser";
 import AfiliateRelationsPagination from "@/components/admin/afiliates/relations/AfiliateRelationsPagination";
 
 interface AdvertisersPageProps {
@@ -5,7 +7,7 @@ interface AdvertisersPageProps {
     page?: string;
   };
   params?: {
-    afiliateId: string;
+    code: string;
   };
 }
 
@@ -15,15 +17,27 @@ const AdvertisersPage = async ({
 }: AdvertisersPageProps) => {
   const page = Number(searchParams?.page) || 1;
 
+  if (!params?.code) {
+    throw new Error("invalid code");
+  }
+
+  const afiliate = await fetchAfiliatesByQuery({
+    query: { where: { code: Number(params?.code) } },
+  });
+
+  const user = await fetchUser({ id: afiliate[0].userId });
+
   return (
     <div className="relative w-full ">
       <AfiliateRelationsPagination
         page={page}
         query={{
           where: {
-            afiliateId: params?.afiliateId,
+            afiliateCode: Number(params?.code),
           },
         }}
+        afiliate={afiliate[0]}
+        user={user!}
       />
     </div>
   );

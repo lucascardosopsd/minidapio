@@ -12,8 +12,9 @@ import AfiliateRelationForm from "../../forms/AfiliateRelation";
 import { useParams, usePathname } from "next/navigation";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { fetchAfiliateAdvertiserRelationsByQuery } from "@/actions/AfiliateAdvertiser/fetchAfiliateAdvertiserRelationsByQuery";
+import { User } from "@prisma/client";
 
-const AfiliateRelationsActionBar = () => {
+const AfiliateRelationsActionBar = ({ user }: { user: User }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -64,7 +65,7 @@ const AfiliateRelationsActionBar = () => {
 
   return (
     <div className="flex justify-between w-full gap-5 items-center">
-      <p className="text-2xl">Anunciantes Afiliados</p>
+      <p className="text-2xl">Anunciantes de {user.name}</p>
       <SearchField
         keyName="name"
         placeholder="Busque um nome"

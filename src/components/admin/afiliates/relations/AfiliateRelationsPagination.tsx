@@ -1,6 +1,6 @@
 import Paginate from "@/components/misc/Paginate";
 import { Separator } from "@/components/ui/separator";
-import { Prisma } from "@prisma/client";
+import { Afiliate, Prisma, User } from "@prisma/client";
 
 import {
   Table,
@@ -9,28 +9,32 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { fetchManyAfiliateRelations } from "@/actions/AfiliateAdvertiser/fetchManyAfiliateRelations";
 import AfiliateRelationsActionBar from "./ActionBar";
-import AfiliateRelationRow from "../../tableRows/AfiliateRelation";
+import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
+import AdvertiserRow from "../../tableRows/Advertiser";
 interface AfiliateRelationsPaginationProps {
   page: number;
-  query?: Prisma.AfiliateAdvertiserAccountFindManyArgs;
+  query?: Prisma.AdvertiserAccountFindManyArgs;
+  afiliate: Afiliate;
+  user: User;
 }
 
 const AfiliateRelationsPagination = async ({
   page,
   query,
+  afiliate,
+  user,
 }: AfiliateRelationsPaginationProps) => {
-  const { afiliateRelations, pages } = await fetchManyAfiliateRelations({
+  const { advertisers, pages } = await fetchManyAdvertisers({
     page: page - 1,
     take: 10,
-    ...query,
+    query,
   });
 
   return (
     <>
       <div className="w-full h-full py-10 flex gap-5 flex-col">
-        <AfiliateRelationsActionBar />
+        <AfiliateRelationsActionBar user={user} />
 
         <Separator />
 
@@ -49,8 +53,13 @@ const AfiliateRelationsPagination = async ({
             </TableHeader>
 
             <TableBody>
-              {afiliateRelations.map((relation) => (
-                <AfiliateRelationRow relation={relation} key={relation.id} />
+              {advertisers.map((advertiser) => (
+                <AdvertiserRow
+                  advertiser={advertiser}
+                  afiliate={afiliate}
+                  key={advertiser.id}
+                  user={user}
+                />
               ))}
             </TableBody>
           </Table>
