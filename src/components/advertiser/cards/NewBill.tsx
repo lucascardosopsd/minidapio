@@ -14,17 +14,16 @@ import { useState } from "react";
 import { toast } from "sonner";
 import Moment from "moment";
 import axios from "axios";
-import { AdvertiserAccount, User } from "@prisma/client";
+import { AdvertiserAccount } from "@prisma/client";
 import { plans } from "@/constants/plans";
 import { useRouter } from "next/navigation";
 
 interface NewBillCardProps {
-  user: User;
   advertiserAccount: AdvertiserAccount;
   title: string;
 }
 
-const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
+const NewBillCard = ({ title, advertiserAccount }: NewBillCardProps) => {
   const [loading, setLoading] = useState(false);
   const [option, setOption] = useState("pix");
   const router = useRouter();
@@ -38,7 +37,7 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
       const { data: newPayment } = await axios.post<PaymentResProps>(
         "/api/asaas/payment",
         {
-          customer: advertiserAccount?.customerId || "",
+          customer: advertiserAccount?.customerId!,
           billingType: option.toUpperCase(),
           value: plans[advertiserAccount?.plan!],
           dueDate: moment.add(24, "hours"),

@@ -128,10 +128,19 @@ const AdvertiserProfileForm = ({
 
         if (!checkAccount) {
           await createUserAdvertiserAcccount({
-            advertiserData: data,
+            advertiserData: {
+              ...data,
+              customerId: checkCostumer.id,
+            },
           });
         } else {
-          await updateAdvertiserAccount({ userId: user.id, data: data });
+          await updateAdvertiserAccount({
+            userId: user.id,
+            data: {
+              ...data,
+              customerId: checkCostumer.id,
+            },
+          });
         }
       }
 

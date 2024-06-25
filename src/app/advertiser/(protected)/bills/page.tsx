@@ -19,6 +19,8 @@ const BillsPage = async () => {
 
   const advertiserAccount = await getAdvertiserAccount({ userId: user?.id! });
 
+  console.log(advertiserAccount);
+
   const payments = await fetchUserPayments({ userId: user?.id! });
 
   let hasPaid = await checkMonthlyPayment({ userId: user?.id! });
@@ -32,7 +34,6 @@ const BillsPage = async () => {
       {!hasPaid && (
         <>
           <NewBillCard
-            user={user!}
             advertiserAccount={advertiserAccount!}
             title="Clique no botão para gerar seu pagamento"
           />
