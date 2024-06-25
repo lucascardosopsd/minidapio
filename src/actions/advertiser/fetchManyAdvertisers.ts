@@ -1,15 +1,9 @@
 "use server";
 import prisma from "@/lib/prisma";
-import {
-  AdvertiserAccount,
-  Prisma,
-  User,
-  AfiliateAdvertiserAccount,
-} from "@prisma/client";
+import { AdvertiserAccount, Prisma, User } from "@prisma/client";
 
 interface AdvertiserReturn extends AdvertiserAccount {
   user: User;
-  AfiliateAdvertiserAccount: AfiliateAdvertiserAccount[];
 }
 
 interface FetchManyAdvertisersResProps {
@@ -41,7 +35,6 @@ export const fetchManyAdvertisers = async ({
     ...query,
     include: {
       user: true,
-      AfiliateAdvertiserAccount: true,
     },
   });
 

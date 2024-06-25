@@ -18,6 +18,8 @@ import { useEffect, useState } from "react";
 import { User } from "@prisma/client";
 import { ImSpinner2 } from "react-icons/im";
 import { fetchUserByQuery } from "@/actions/user/fetchUserByQuery";
+import { fetchAfiliatesByQuery } from "@/actions/afiliate/fetchAfiliatesByQuery";
+import Fence from "@/components/restaurant/Fence";
 
 interface AfiliateFormProps {
   defaultValues?: z.infer<typeof afiliateValidator> | undefined;
@@ -84,9 +86,31 @@ const AfiliateForm = ({
     }
   };
 
+  const handleGenCode = async () => {
+    let generatedCode;
+    while (typeof generatedCode === "undefined") {
+      const randomCode = Math.floor(Math.random() * 9999) + 1;
+
+      const afiliates = await fetchAfiliatesByQuery({
+        query: {
+          where: { code: randomCode },
+        },
+      });
+
+      if (!afiliates.length) {
+        generatedCode = randomCode;
+        form.setValue("code", randomCode);
+      }
+    }
+  };
+
   useEffect(() => {
     if (defaultValues) {
       handleFetchUser({ userId: defaultValues?.userId });
+    }
+
+    if (!defaultValues) {
+      handleGenCode();
     }
   }, []);
 
@@ -156,6 +180,8 @@ const AfiliateForm = ({
 
           {user?.id && <UserCard user={user!} preview />}
         </div>
+
+        <Fence>{defaultValues?.code}</Fence>
 
         <Button type="submit" disabled={loading} className="w-full">
           Confirmar
