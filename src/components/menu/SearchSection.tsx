@@ -41,18 +41,10 @@ const SearchSection = ({
           AND: [
             { restaurantId: restaurant.id },
             {
-              OR: [
-                {
-                  title: {
-                    contains: inputTerm,
-                    mode: "insensitive",
-                  },
-                  description: {
-                    contains: inputTerm,
-                    mode: "insensitive",
-                  },
-                },
-              ],
+              title: {
+                contains: inputTerm?.replace(/\s+$/, ""),
+                mode: "insensitive",
+              },
             },
           ],
         },
@@ -89,6 +81,7 @@ const SearchSection = ({
               setInputTerm(e.target.value);
             }}
             onKeyDown={(e) => e.key == "Enter" && handleToggleOpen()}
+            placeholder="Busque um item"
           />
           <Button
             size="icon"

@@ -12,7 +12,7 @@ const ConfigPage = async () => {
   });
 
   return (
-    <section className="h-[calc(100svh-70px)] flex flex-col items-center overflow-y-auto pb-5">
+    <section className="h-[calc(100svh-70px)] flex flex-col items-center overflow-y-auto pb-5 w-full">
       <div className="w-full flex justify-between border-b px-10 items-center py-5">
         <p className="text-4xl">Configurações</p>
       </div>

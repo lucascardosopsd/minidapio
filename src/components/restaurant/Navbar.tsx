@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { LogOutIcon } from "lucide-react";
+import { Headset, LogOutIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 
 interface NavbarProps {
@@ -36,9 +36,20 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
       <div className="flex gap-2 items-center">
         <ThemeToggle />
 
+        <Link
+          href="https://api.whatsapp.com/send?phone=5517988421625"
+          className="w-full"
+          target="_blank"
+        >
+          <Button className="gap-2">
+            Suporte <Headset />
+          </Button>
+        </Link>
+
         <Avatar>
           <AvatarImage src={session?.user?.image!} />
         </Avatar>
+
         <Button
           variant="outline"
           onClick={() => {

@@ -32,7 +32,7 @@ const SearchModal = ({
         <DrawerHeader>
           <DrawerDescription>
             {loading && (
-              <div className="absolute h-full w-full bg-background/50 flex items-center justify-center z-50">
+              <div className="absolute h-[90svh] w-full bg-background/50 flex items-center justify-center z-50">
                 <ImSpinner2 size={36} className="animate-spin" />
               </div>
             )}

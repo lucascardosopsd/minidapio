@@ -34,6 +34,7 @@ const RestaurantActionbar = ({ restaurantId }: RestaurantActionBarProps) => {
 
       throw new Error("Can't create new category");
     } finally {
+      setLoading(false);
       setOpen(false);
     }
   };

@@ -1,7 +1,7 @@
 "use client";
 import { Card, CardHeader } from "@/components/ui/card";
 import { FaPen, FaTrash } from "react-icons/fa6";
-import DeleteModal from "@/components/restaurant/DeleteModal";
+import DeleteModal from "@/components/restaurant/ConfirmModal";
 import { Button } from "@/components/ui/button";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import { useState } from "react";

@@ -112,7 +112,7 @@ model Category {
   title        String
   order        Int?        @default(0)
   items        Item[]
-  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   restaurantId String?     @db.ObjectId
   User         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String?     @db.ObjectId
@@ -131,8 +131,8 @@ model Item {
   order       Int     @default(0)
 
   categoryId   String?     @db.ObjectId
-  Category     Category?   @relation(fields: [categoryId], references: [id])
-  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  Category     Category?   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   restaurantId String?     @db.ObjectId
   User         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String?     @db.ObjectId

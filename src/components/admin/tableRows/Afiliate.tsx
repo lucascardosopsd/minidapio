@@ -1,6 +1,6 @@
 "use client";
 import { FaPen, FaTrash } from "react-icons/fa6";
-import DeleteModal from "@/components/restaurant/DeleteModal";
+import DeleteModal from "@/components/restaurant/ConfirmModal";
 import { toast } from "sonner";
 import { deleteUser } from "@/actions/user/deleteUser";
 import { usePathname, useSearchParams } from "next/navigation";

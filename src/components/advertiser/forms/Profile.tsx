@@ -18,8 +18,7 @@ import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAc
 import { updateUser } from "@/actions/user/updateUser";
 import { CustumerProps, CustumersArrayProps } from "@/types/asaas";
 import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
-import { usePathname } from "next/navigation";
-import { revalidateRoute } from "@/actions/revalidateRoute";
+import { redirect } from "next/navigation";
 
 interface AdvertiserProfileFormProps {
   defaultValues?: AdvertiserAccount;
@@ -70,7 +69,7 @@ const AdvertiserProfileForm = ({
       console.log(error);
       toast.error("Algo deu errado");
     } finally {
-      revalidateRoute({ fullPath: pathname });
+      revalidatePath && redirect(revalidatePath);
     }
   };
 
@@ -100,7 +99,7 @@ const AdvertiserProfileForm = ({
           email: user.email,
         });
 
-        if (!newCustomer.customer.id) throw new Error("Costumer id not found");
+        if (!newCustomer.customer.id) throw new Error("Custumer id not found");
 
         data.customerId = newCustomer.customer.id;
 
@@ -142,7 +141,7 @@ const AdvertiserProfileForm = ({
       }
       toast.error("Ocorreu um erro");
     } finally {
-      revalidateRoute({ fullPath: pathname });
+      revalidatePath && redirect(revalidatePath);
       setLoading(false);
     }
   };

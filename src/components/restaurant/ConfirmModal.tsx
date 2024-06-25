@@ -13,22 +13,25 @@ import {
 } from "../ui/alert-dialog";
 import { ButtonVariants } from "@/types/button";
 import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
 
-interface DeleteModalProps {
+interface ConfirmModalProps {
   triggerText: string | ReactNode;
   triggerVariant?: ButtonVariants;
+  triggerClassName?: string;
   dialogTitle: string;
   dialogDescription?: string | ReactNode;
   action: () => void;
 }
 
-const DeleteModal = ({
+const ConfirmModal = ({
   triggerText,
   triggerVariant = "destructive",
   dialogTitle,
   dialogDescription,
+  triggerClassName,
   action,
-}: DeleteModalProps) => {
+}: ConfirmModalProps) => {
   const [open, setOpen] = useState(false);
 
   const toggleOpen = () => {
@@ -37,7 +40,11 @@ const DeleteModal = ({
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <Button variant={triggerVariant} onClick={toggleOpen}>
+      <Button
+        variant={triggerVariant}
+        className={cn("bg-red-500", triggerClassName)}
+        onClick={toggleOpen}
+      >
         {triggerText}
       </Button>
       <AlertDialogContent>
@@ -48,7 +55,7 @@ const DeleteModal = ({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
           <AlertDialogAction onClick={action} asChild>
-            <Button variant={triggerVariant} className="bg-red-500">
+            <Button variant={triggerVariant} className={"bg-red-500"}>
               Confirmar
             </Button>
           </AlertDialogAction>
@@ -58,4 +65,4 @@ const DeleteModal = ({
   );
 };
 
-export default DeleteModal;
+export default ConfirmModal;

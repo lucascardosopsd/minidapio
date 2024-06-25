@@ -96,11 +96,11 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         )}
       </TableCell>
 
-      <TableCell className="flex justify-center w-full">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              {item?.price ? (
+      <TableCell>
+        {item.price ? (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className="flex items-center justify-center w-full">
                 <NumericFormat
                   decimalSeparator=","
                   valueIsNumericString
@@ -114,23 +114,28 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
                     if (e.key == "Enter") {
                       priceRef?.current && priceRef.current.blur();
 
-                      handleUpdateItem({
-                        price: item.price,
-                      });
+                      console.log(typeof price == "undefined");
+
+                      if (typeof price == "undefined") {
+                        handleUpdateItem({ price: 0 });
+                        return;
+                      }
+
+                      handleUpdateItem({ price });
                     }
                   }}
                   getInputRef={priceRef}
                   className="max-w-32 text-center"
                 />
-              ) : (
-                <p>Sem Preço</p>
-              )}
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Enter</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Enter</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : (
+          <p className="text-center">Sem preço</p>
+        )}
 
         {item.sale && (
           <p className="text-primary">

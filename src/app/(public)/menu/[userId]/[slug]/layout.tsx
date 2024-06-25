@@ -23,22 +23,20 @@ export const generateMetadata = async (
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
-    title: restaurants[0].title,
-    description: `Cardápio digital ${restaurants[0].title}`,
+    title: restaurants[0]?.title,
+    description: `Cardápio digital ${restaurants[0]?.title}`,
     openGraph: {
-      description: `Cardápio digital ${restaurants[0].title}`,
-      title: restaurants[0].title,
+      description: `Cardápio digital ${restaurants[0]?.title}`,
+      title: restaurants[0]?.title,
       url: `${process.env.HOST}/menu/${params?.userId}/${params?.slug}`,
-      images: [restaurants[0].logo, ...previousImages],
+      images: [restaurants[0]?.logo, ...previousImages],
       locale: "pt-BR",
     },
   };
 };
 
 const Layout = async ({ children }: LayoutProps) => {
-  return (
-      <div className="mx-auto max-w-[600px]">{children}</div>
-  );
+  return <div className="mx-auto max-w-[600px]">{children}</div>;
 };
 
 export default Layout;

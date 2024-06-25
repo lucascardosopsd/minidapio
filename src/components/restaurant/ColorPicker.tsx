@@ -19,21 +19,10 @@ const ColorPicker = ({ control, fieldName }: ColorPickerProps) => {
             <>
               <input
                 type="color"
-                className="h-10 w-full disabled:opacity-50 disabled:pointer-events-none border-4 rounded hidden"
+                className="h-10 w-full disabled:opacity-50 disabled:pointer-events-none border-4 rounded"
                 id="hs-color-input"
                 {...field}
               />
-
-              <label
-                htmlFor="hs-color-input"
-                className="w-full h-10 rounded flex items-center justify-center"
-                style={{
-                  borderColor: watchColor,
-                  background: watchColor,
-                }}
-              >
-                Selecione a cor
-              </label>
             </>
           </FormControl>
           <p className="text-xs">Clique para mudar</p>

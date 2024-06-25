@@ -16,12 +16,14 @@ export const createNewCategory = async ({
   }
 
   try {
-    await prisma.category.create({
+    const newCategory = await prisma.category.create({
       data: {
         ...data,
         userId: user.id,
       },
     });
+
+    return newCategory;
   } catch (error) {
     throw new Error("Can't create new restaurant");
   }
