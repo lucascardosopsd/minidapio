@@ -34,7 +34,6 @@ const NewAdvertiserAccount = async () => {
       <AdvertiserProfileForm
         defaultValues={user?.AdvertiserAccount || undefined}
         user={user!}
-        revalidatePath="/advertiser/new"
       />
     </section>
   );
