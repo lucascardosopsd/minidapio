@@ -70,6 +70,7 @@ model Afiliate {
 
   user              User                @relation(fields: [userId], references: [id])
   AdvertiserAccount AdvertiserAccount[]
+  Payment           Payment[]
 }
 
 model VerificationToken {
@@ -223,7 +224,9 @@ model Payment {
   updatedAt           DateTime @updatedAt
   advertiserAccountId String?  @db.ObjectId
   userId              String?  @db.ObjectId
+  afiliateCode        Int?
 
   AdvertiserAccount AdvertiserAccount? @relation(fields: [advertiserAccountId], references: [id])
+  afiliate          Afiliate?          @relation(fields: [afiliateCode], references: [code])
   User              User?              @relation(fields: [userId], references: [id])
 }
