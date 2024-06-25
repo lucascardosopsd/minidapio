@@ -1,12 +1,10 @@
 import { fetchAds } from "@/actions/ad/fetchAds";
 import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
 import { getUserServerSession } from "@/actions/session/getUserServerSession";
-import AdCard from "@/components/advertiser/cards/Ad";
 import StatsCard from "@/components/advertiser/cards/Stats";
 import DateRange from "@/components/advertiser/inputs/DateRange";
 import PersistentDialog from "@/components/advertiser/persistentDialog";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { FullAdProps } from "@/types/ad";
 import { User } from "@prisma/client";
 import { Eye, MousePointerClick } from "lucide-react";
@@ -139,7 +137,7 @@ const AdvertiserDashboard = async ({
           />
         </div>
 
-        <Separator />
+        {/* <Separator />
 
         <div className="flex gap-5 w-full">
           <div className="flex flex-col gap-5 flex-1">
@@ -167,7 +165,7 @@ const AdvertiserDashboard = async ({
               )}
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
