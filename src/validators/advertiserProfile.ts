@@ -8,4 +8,5 @@ export const advertiserProfile = z.object({
   userId: z.string(),
   customerId: z.string(),
   plan: z.string(),
+  afiliateCode: z.number().nullable().optional(),
 });

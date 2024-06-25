@@ -8,7 +8,15 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 
-const NewAdvertiserAccount = async () => {
+interface NewAdvertiserAccountProps {
+  searchParams?: {
+    code?: String;
+  };
+}
+
+const NewAdvertiserAccount = async ({
+  searchParams,
+}: NewAdvertiserAccountProps) => {
   const session = await getServerSession(nextAuthOptions);
 
   const user = await getUserServerSession<UserAdPaymentProps>({
@@ -21,7 +29,7 @@ const NewAdvertiserAccount = async () => {
 
   return (
     <section className="flex items-center justify-center gap-5 h-svh flex-col">
-      <div className="flex items-center w-full px-10">
+      <div className="flex items-center w-full px-10 py-5">
         <div className="flex-1"></div>
 
         <div className="flex-1">
@@ -56,6 +64,7 @@ const NewAdvertiserAccount = async () => {
       <AdvertiserProfileForm
         defaultValues={user?.AdvertiserAccount || undefined}
         user={user!}
+        code={Number(searchParams?.code || null)}
       />
     </section>
   );
