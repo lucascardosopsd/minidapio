@@ -2,7 +2,7 @@
 import { Item } from "@prisma/client";
 import ItemCard from "./cards/Item";
 import { adStore } from "@/context/ads";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { createView } from "@/actions/createView";
 import AdCard from "./cards/adCard";
@@ -18,6 +18,7 @@ interface ItemsListProps {
 const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
   const { currentAd, setCurrentAd } = adStore();
   const { categoryId } = currentCategoryStore();
+  const [adOrder, setAdOrder] = useState(0);
 
   const adRef = useRef(null);
   const isAdInView = useInView(adRef, { once: true });
@@ -50,7 +51,13 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
     if (currentAd && isAdInView) return handleCreateView();
   }, [isAdInView]);
 
-  const adOrder = Math.floor(Math.random() * (0 - items.length + 1) + 0) * -1;
+  useEffect(() => {
+    const length = items.filter((item) => item.categoryId == categoryId).length;
+
+    const randomNum = Math.floor(Math.random() * (length - 0 + 1) + 0);
+
+    setAdOrder(randomNum);
+  }, [categoryId]);
 
   return (
     <div className="flex flex-col gap-5">
