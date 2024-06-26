@@ -5,7 +5,7 @@ import { useItemStore } from "@/context/item";
 import { Badge } from "../../ui/badge";
 import { Category, Item } from "@prisma/client";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { updateItem } from "@/actions/item/updateItem";
 import { z } from "zod";
 import { ItemValidator } from "@/validators/item";
@@ -30,13 +30,20 @@ interface ItemRowProps {
 
 const ItemRow = ({ item, categories }: ItemRowProps) => {
   const { toggleId, idList } = useItemStore();
-  const [price, setPrice] = useState(item.price);
+
+  const [price, setPrice] = useState(0);
   const priceRef = useRef<HTMLInputElement>(null);
 
   const pathname = usePathname();
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (item.price) {
+      setPrice(item.price);
+    }
+  }, [item.price]);
 
   const handleUpdateItem = async (
     data: Partial<z.infer<typeof ItemValidator>>
@@ -113,8 +120,6 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
                   onKeyDown={(e) => {
                     if (e.key == "Enter") {
                       priceRef?.current && priceRef.current.blur();
-
-                      console.log(typeof price == "undefined");
 
                       if (typeof price == "undefined") {
                         handleUpdateItem({ price: 0 });
