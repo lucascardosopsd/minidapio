@@ -160,14 +160,14 @@ const RestaurantProfile = ({
 
         <p className="text-center text-sm">{restaurant.address}</p>
 
-        <div className="flex flex-col items-center text-sm">
+        {/* <div className="flex flex-col items-center text-sm">
           {restaurant.note && (
             <>
               <p className="text-yellow-500 font-semibold">Atenção!</p>
               <p className="text-justify ">{restaurant.note}</p>
             </>
           )}
-        </div>
+        </div> */}
       </div>
     </>
   );

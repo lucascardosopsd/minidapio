@@ -4,6 +4,7 @@ import MenuHeader from "@/components/menu/Header";
 import { FullRestaurantProps } from "@/types/restaurant";
 import ItemsList from "@/components/menu/ItemsList";
 import SearchSection from "@/components/menu/SearchSection";
+import NoteModal from "@/components/menu/NoteModal";
 
 interface MenuProps {
   params: {
@@ -67,6 +68,8 @@ const Menu = async ({ params: { userId, slug } }: MenuProps) => {
 
   return (
     <div className="h-svh antialiased w-full">
+      <NoteModal restaurant={restaurants[0]} />
+
       <MenuHeader restaurant={restaurants[0]} />
 
       <SearchSection restaurant={restaurants[0]} />
