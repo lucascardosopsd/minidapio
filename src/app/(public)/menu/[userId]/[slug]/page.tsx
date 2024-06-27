@@ -68,7 +68,7 @@ const Menu = async ({ params: { userId, slug } }: MenuProps) => {
 
   return (
     <div className="h-svh antialiased w-full">
-      <NoteModal restaurant={restaurants[0]} />
+      {restaurants[0].note && <NoteModal restaurant={restaurants[0]} />}
 
       <MenuHeader restaurant={restaurants[0]} />
 
