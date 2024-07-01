@@ -7,5 +7,4 @@ export const advertiserProfile = z.object({
   personType: z.string(),
   userId: z.string(),
   customerId: z.string(),
-  plan: z.string(),
 });

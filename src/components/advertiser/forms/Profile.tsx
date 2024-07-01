@@ -18,7 +18,8 @@ import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAc
 import { updateUser } from "@/actions/user/updateUser";
 import { CustumerProps, CustumersArrayProps } from "@/types/asaas";
 import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 
 interface AdvertiserProfileFormProps {
   defaultValues?: AdvertiserAccount;
@@ -45,7 +46,6 @@ const AdvertiserProfileForm = ({
           phone: "",
           userId: user.id,
           customerId: "",
-          plan: "basic",
         },
   });
 
@@ -68,8 +68,9 @@ const AdvertiserProfileForm = ({
     } catch (error) {
       console.log(error);
       toast.error("Algo deu errado");
+      redirect("/advertiser/dashboard");
     } finally {
-      revalidatePath && redirect(revalidatePath);
+      revalidateRoute({ fullPath: pathname });
     }
   };
 
@@ -135,14 +136,14 @@ const AdvertiserProfileForm = ({
       }
 
       toast.success("Salvo com sucesso!");
+      redirect("/advertiser/dashboard");
     } catch (error) {
       if (error instanceof Error) {
         console.log(error);
       }
       toast.error("Ocorreu um erro");
     } finally {
-      revalidatePath && redirect(revalidatePath);
-      setLoading(false);
+      revalidateRoute({ fullPath: pathname });
     }
   };
 
@@ -196,19 +197,6 @@ const AdvertiserProfileForm = ({
           name="phone"
           title="Telefone Celular"
           fieldElement={<PatternFormat format="(##)#####-####" />}
-        />
-
-        <SelectBuilder
-          control={form.control}
-          name="plan"
-          title="Plano"
-          selectItem={
-            <>
-              <SelectItem value="basic">Básico (R$100,00)</SelectItem>
-              <SelectItem value="pro">Profissional (R$150,00)</SelectItem>
-              <SelectItem value="ultra">Ultra (R$200,00)</SelectItem>
-            </>
-          }
         />
 
         <input value={user.id} {...form.register("userId")} hidden />

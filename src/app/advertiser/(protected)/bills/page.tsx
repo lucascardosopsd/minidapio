@@ -32,7 +32,6 @@ const BillsPage = async () => {
       {!hasPaid && (
         <>
           <NewBillCard
-            user={user!}
             advertiserAccount={advertiserAccount!}
             title="Clique no botão para gerar seu pagamento"
           />

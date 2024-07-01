@@ -14,17 +14,15 @@ import { useState } from "react";
 import { toast } from "sonner";
 import Moment from "moment";
 import axios from "axios";
-import { AdvertiserAccount, User } from "@prisma/client";
-import { plans } from "@/constants/plans";
+import { AdvertiserAccount } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 interface NewBillCardProps {
-  user: User;
   advertiserAccount: AdvertiserAccount;
   title: string;
 }
 
-const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
+const NewBillCard = ({ title, advertiserAccount }: NewBillCardProps) => {
   const [loading, setLoading] = useState(false);
   const [option, setOption] = useState("pix");
   const router = useRouter();
@@ -40,15 +38,12 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
         {
           customer: advertiserAccount?.customerId || "",
           billingType: option.toUpperCase(),
-          value: plans[advertiserAccount?.plan!],
+          value: 150,
           dueDate: moment.add(24, "hours"),
         }
       );
 
-      option == "pix" && router.push(`/advertiser/bills/pix/${newPayment.id}`);
-
-      option == "boleto" &&
-        router.push(`/advertiser/bills/boleto/${newPayment.id}`);
+      router.push(`/advertiser/bills/pix/${newPayment.id}`);
     } catch (error) {
       console.log(error);
       toast.error("Algo deu errado.");
@@ -76,7 +71,6 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
                 <SelectGroup>
                   <SelectLabel></SelectLabel>
                   <SelectItem value="pix">PIX</SelectItem>
-                  <SelectItem value="boleto">Boleto</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -91,8 +85,7 @@ const NewBillCard = ({ user, title, advertiserAccount }: NewBillCardProps) => {
           </Button>
         </div>
         <p className="text-xs text-center">
-          O pagamento no valor de{" "}
-          <span className="font-bold">R${plans[advertiserAccount?.plan!]}</span>{" "}
+          O pagamento no valor de <span className="font-bold">R$150,00</span>{" "}
           expira em 24 horas
         </p>
       </div>

@@ -197,8 +197,7 @@ model AdvertiserAccount {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   userId       String   @unique @db.ObjectId
-  afiliateCode Int?     @unique
-  plan         String   @default("basic")
+  afiliateCode Int?
 
   payments Payment[]
   user     User      @relation(fields: [userId], references: [id])
