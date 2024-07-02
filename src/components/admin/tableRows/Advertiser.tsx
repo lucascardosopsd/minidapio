@@ -18,7 +18,6 @@ import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAc
 import { createAdvertiserAccount } from "@/actions/advertiser/createAccount";
 import { updateUser } from "@/actions/user/updateUser";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { plansI18n } from "@/constants/plansI18n";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { usePathname } from "next/navigation";
 
@@ -148,8 +147,6 @@ const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
   return (
     <TableRow>
       <TableCell>{advertiser?.name}</TableCell>
-
-      <TableCell>{plansI18n[advertiser?.plan]}</TableCell>
 
       <TableCell>{afiliate?.name || "Desconhecido"}</TableCell>
 
