@@ -1,28 +1,40 @@
 "use server";
 import { Separator } from "@/components/ui/separator";
 import InputSearch from "@/components/restaurant/InputSearch";
-import { redirect } from "next/navigation";
-import { fetchUserItemsByQuery } from "@/actions/item/fetchUserItemsByQuery";
-import ItemCard from "@/components/restaurant/tableRows/Item";
 import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
-import Paginate from "@/components/restaurant/Pagination";
 import BottomFade from "@/components/restaurant/BottomFade";
 import ItemsActions from "@/components/restaurant/ItemsActions";
+import Paginate from "@/components/misc/Paginate";
+import { fetchManyItems } from "@/actions/item/fetchManyItems";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import ItemRow from "@/components/restaurant/tableRows/Item";
 
 interface PageProps {
   params: {
     restaurantId: string;
   };
-  searchParams?: { [key: string]: string };
+  searchParams?: {
+    page: string;
+    title?: string;
+    description?: string;
+    active?: string;
+    price?: string;
+    sale?: string;
+    categoryId?: string;
+  };
 }
 
 export default async function Restaurant({
   params: { restaurantId },
   searchParams,
 }: PageProps) {
-  if (!searchParams) {
-    redirect("/dashboard/restaurant/" + restaurantId);
-  }
+  const page = Number(searchParams?.page || 1);
 
   const categories = await fetchUserCategoriesByQuery({
     where: {
@@ -30,24 +42,30 @@ export default async function Restaurant({
     },
   });
 
-  const itemsPerPage = 10;
-
-  const { items, count } = await fetchUserItemsByQuery({
-    where: {
-      title: searchParams.title && searchParams.title,
-      description: searchParams.description && searchParams.description,
-      active:
-        searchParams.active && searchParams.active == "true" ? true : false,
-      price: searchParams.price ? parseFloat(searchParams.price!) : undefined,
-      sale: searchParams.sale && searchParams.sale == "true" ? true : false,
-      categoryId: searchParams.categoryId && searchParams.categoryId,
+  const { items, pages } = await fetchManyItems({
+    take: 20,
+    page: page - 1,
+    query: {
+      where: {
+        title: {
+          contains: searchParams?.title && searchParams?.title,
+          mode: "insensitive",
+        },
+        description: {
+          contains: searchParams?.description && searchParams?.description,
+          mode: "insensitive",
+        },
+        active:
+          searchParams?.active && searchParams?.active == "true" ? true : false,
+        price: searchParams?.price
+          ? parseFloat(searchParams?.price!)
+          : undefined,
+        sale: searchParams?.sale && searchParams?.sale == "true" ? true : false,
+        categoryId: searchParams?.categoryId && searchParams?.categoryId,
+        restaurantId,
+      },
     },
   });
-
-  const pageItems = items.slice(
-    (Number(searchParams.page) - 1) * itemsPerPage,
-    itemsPerPage * Number(searchParams.page)
-  );
 
   return (
     <main className="flex flex-col gap-4 pt-5 h-[90svh] ">
@@ -61,23 +79,33 @@ export default async function Restaurant({
       <ItemsActions categories={categories} items={items} visible />
 
       <div className="relative">
-        <div
-          className={`w-full mx-auto h-full tablet:h-[58svh] tablet:overflow-y-auto space-y-2 pb-10`}
-        >
-          {pageItems.map((item) => (
-            <ItemCard key={item.id} item={item} categories={categories} />
-          ))}
+        <div className="w-full mx-auto h-full tablet:h-[58svh] tablet:overflow-y-auto space-y-2 pb-10">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead></TableHead>
+                <TableHead>Img</TableHead>
+                <TableHead>Nome</TableHead>
+                <TableHead className="text-center">Descrito</TableHead>
+                <TableHead className="text-center max-w-32">Preço</TableHead>
+                <TableHead className="text-center">Promoção</TableHead>
+                <TableHead className="text-center">Destaque</TableHead>
+                <TableHead className="text-center">Status</TableHead>
+                <TableHead>Editar</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((item) => (
+                <ItemRow categories={categories} item={item} />
+              ))}
+            </TableBody>
+          </Table>
 
           {!items.length && <p>Nenhum item encontrado.</p>}
         </div>
         <BottomFade />
       </div>
-
-      <Paginate
-        initialPage={Number(searchParams.page)}
-        itemsCount={count}
-        itemsPerPage={itemsPerPage}
-      />
+      <Paginate current={page} pages={pages} />
     </main>
   );
 }
