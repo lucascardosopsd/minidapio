@@ -21,6 +21,7 @@ const ConfigPage = async () => {
       <AdvertiserProfileForm
         defaultValues={user?.AdvertiserAccount || undefined}
         user={user!}
+        code={user?.AdvertiserAccount?.afiliateCode || null}
       />
     </section>
   );

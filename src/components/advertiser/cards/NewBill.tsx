@@ -86,7 +86,8 @@ const NewBillCard = ({ title, advertiserAccount }: NewBillCardProps) => {
           </Button>
         </div>
         <p className="text-xs text-center">
-          O pagamento no valor de <span className="font-bold">R$150,00</span>{" "}
+          O pagamento no valor de{" "}
+          <span className="font-bold">R${plans[advertiserAccount.plan]}</span>{" "}
           expira em 24 horas
         </p>
       </div>

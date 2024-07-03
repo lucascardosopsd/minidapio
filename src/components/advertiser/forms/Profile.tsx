@@ -18,9 +18,7 @@ import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAc
 import { updateUser } from "@/actions/user/updateUser";
 import { CustumerProps, CustumersArrayProps } from "@/types/asaas";
 import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
-import { redirect, usePathname } from "next/navigation";
-import { revalidateRoute } from "@/actions/revalidateRoute";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { fetchAfiliatesByQuery } from "@/actions/afiliate/fetchAfiliatesByQuery";
 import Fence from "@/components/restaurant/Fence";
@@ -39,6 +37,7 @@ const AdvertiserProfileForm = ({
   const [loading, setLoading] = useState(false);
   const [afiliate, setAfiliate] = useState<Afiliate | null>({} as Afiliate);
   const pathname = usePathname();
+  const router = useRouter();
 
   const form = useAdvertiserProfileForm({
     defaultValues: defaultValues
@@ -53,6 +52,7 @@ const AdvertiserProfileForm = ({
           phone: "",
           userId: user.id,
           customerId: "",
+          plan: "",
         },
   });
 
@@ -95,30 +95,20 @@ const AdvertiserProfileForm = ({
   }: {
     advertiserData: z.infer<typeof advertiserProfile>;
   }) => {
-    try {
-      const newAdAccount = await createAdvertiserAccount({
-        data: advertiserData,
-      });
+    const newAdAccount = await createAdvertiserAccount({
+      data: advertiserData,
+    });
 
-      await updateUser({
-        id: user.id,
-        data: {
-          advertiserAccountId: newAdAccount.id,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      toast.error("Algo deu errado");
-      redirect("/advertiser/dashboard");
-    } finally {
-      revalidateRoute({ fullPath: pathname });
-    }
+    await updateUser({
+      id: user.id,
+      data: {
+        advertiserAccountId: newAdAccount.id,
+      },
+    });
   };
 
   const handleSubmit = async (data: z.infer<typeof advertiserProfile>) => {
     setLoading(true);
-
-    console.log(data);
 
     try {
       const { data: getRes } = await axios.get<CustumersArrayProps>(
@@ -188,7 +178,6 @@ const AdvertiserProfileForm = ({
       }
 
       toast.success("Salvo com sucesso!");
-      redirect("/advertiser/dashboard");
     } catch (error) {
       if (error instanceof Error) {
         console.log(error);
@@ -253,7 +242,7 @@ const AdvertiserProfileForm = ({
           title="Telefone Celular"
           fieldElement={<PatternFormat format="(##)#####-####" />}
         />
-        
+
         <SelectBuilder
           control={form.control}
           name="plan"
@@ -262,7 +251,7 @@ const AdvertiserProfileForm = ({
             <>
               <SelectItem value="basic">Básico (R$100,00)</SelectItem>
               <SelectItem value="pro">Profissional (R$150,00)</SelectItem>
-              <SelectItem value="ultra">Ultra (R$200,00)</SelectItem>
+              <SelectItem value="ultra">Ultra (R$175,00)</SelectItem>
             </>
           }
         />
