@@ -7,7 +7,7 @@ import { AnimatePresence, useInView, motion } from "framer-motion";
 import { createView } from "@/actions/createView";
 import AdCard from "./cards/adCard";
 import { currentCategoryStore } from "@/context/currentCategory";
-import { pickAd } from "@/actions/pickAd";
+import { pickAd } from "@/actions/ad/pickAd";
 
 interface ItemsListProps {
   items: Item[];

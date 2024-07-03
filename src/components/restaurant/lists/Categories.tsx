@@ -8,7 +8,7 @@ interface CategoriesListProps {
 
 const CategoriesList = ({ categories }: CategoriesListProps) => {
   return (
-    <div className="flex flex-col gap-2 h-[calc(100svh-160px)] overflow-y-auto pb-16">
+    <div className="flex flex-col gap-2 overflow-y-auto pb-16">
       {categories.map((category) => (
         <CategoryCard
           category={category}

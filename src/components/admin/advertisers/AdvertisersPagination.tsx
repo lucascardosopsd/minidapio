@@ -41,8 +41,6 @@ const AdvertisersPagination = async ({
               <TableRow>
                 <TableHead>Nome</TableHead>
 
-                <TableHead>Plano</TableHead>
-
                 <TableHead>Afiliado</TableHead>
 
                 <TableHead>Pagamento</TableHead>

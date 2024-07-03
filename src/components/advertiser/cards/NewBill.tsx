@@ -39,15 +39,12 @@ const NewBillCard = ({ title, advertiserAccount }: NewBillCardProps) => {
         {
           customer: advertiserAccount?.customerId!,
           billingType: option.toUpperCase(),
-          value: plans[advertiserAccount?.plan!],
+          value: 150,
           dueDate: moment.add(24, "hours"),
         }
       );
 
-      option == "pix" && router.push(`/advertiser/bills/pix/${newPayment.id}`);
-
-      option == "boleto" &&
-        router.push(`/advertiser/bills/boleto/${newPayment.id}`);
+      router.push(`/advertiser/bills/pix/${newPayment.id}`);
     } catch (error) {
       console.log(error);
       toast.error("Algo deu errado.");
@@ -75,7 +72,6 @@ const NewBillCard = ({ title, advertiserAccount }: NewBillCardProps) => {
                 <SelectGroup>
                   <SelectLabel></SelectLabel>
                   <SelectItem value="pix">PIX</SelectItem>
-                  <SelectItem value="boleto">Boleto</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -90,8 +86,7 @@ const NewBillCard = ({ title, advertiserAccount }: NewBillCardProps) => {
           </Button>
         </div>
         <p className="text-xs text-center">
-          O pagamento no valor de{" "}
-          <span className="font-bold">R${plans[advertiserAccount?.plan!]}</span>{" "}
+          O pagamento no valor de <span className="font-bold">R$150,00</span>{" "}
           expira em 24 horas
         </p>
       </div>

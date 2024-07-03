@@ -44,8 +44,6 @@ const AfiliateRelationsPagination = async ({
               <TableRow>
                 <TableHead>Anunciante</TableHead>
 
-                <TableHead>Plano</TableHead>
-
                 <TableHead>ID</TableHead>
 
                 <TableHead>Deletar</TableHead>

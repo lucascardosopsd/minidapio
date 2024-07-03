@@ -18,6 +18,8 @@ import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAc
 import { updateUser } from "@/actions/user/updateUser";
 import { CustumerProps, CustumersArrayProps } from "@/types/asaas";
 import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
+import { redirect, usePathname } from "next/navigation";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 import { usePathname } from "next/navigation";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { fetchAfiliatesByQuery } from "@/actions/afiliate/fetchAfiliatesByQuery";
@@ -51,7 +53,6 @@ const AdvertiserProfileForm = ({
           phone: "",
           userId: user.id,
           customerId: "",
-          plan: "basic",
         },
   });
 
@@ -108,10 +109,9 @@ const AdvertiserProfileForm = ({
     } catch (error) {
       console.log(error);
       toast.error("Algo deu errado");
+      redirect("/advertiser/dashboard");
     } finally {
-      revalidateRoute({
-        fullPath: pathname,
-      });
+      revalidateRoute({ fullPath: pathname });
     }
   };
 
@@ -188,6 +188,7 @@ const AdvertiserProfileForm = ({
       }
 
       toast.success("Salvo com sucesso!");
+      redirect("/advertiser/dashboard");
     } catch (error) {
       if (error instanceof Error) {
         console.log(error);
@@ -252,7 +253,7 @@ const AdvertiserProfileForm = ({
           title="Telefone Celular"
           fieldElement={<PatternFormat format="(##)#####-####" />}
         />
-
+        
         <SelectBuilder
           control={form.control}
           name="plan"
