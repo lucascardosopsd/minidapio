@@ -2,10 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { copyToClipboard } from "@/tools/copyToClipboard";
-import { BarCodeCodeResProps, PixCodeResProps } from "@/types/paymentProps";
+import { PaymentResProps, PixCodeResProps } from "@/types/paymentProps";
 import axios from "axios";
 import { Copy } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 import { toast } from "sonner";
@@ -25,25 +26,26 @@ const Payment = ({ params }: PaymentPageProps) => {
   const [methodCode, setMethodCode] = useState("");
   const [methodImage, setMethodImage] = useState("");
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const fetchPaymentData = async () => {
     try {
-      if (params.type == "pix") {
-        const { data: codeData } = await axios.get<PixCodeResProps>(
-          `/api/asaas/payment/${params.id}/pixQrCode`
-        );
-        setMethodCode(codeData.payload);
+      const { data: paymentData } = await axios.get<PaymentResProps>(
+        `/api/asaas/payment/${params.id}`
+      );
 
-        setMethodImage(`data:image/png;base64,${codeData.encodedImage}`);
+      if (paymentData.status.includes("RECEIVED")) {
+        router.push("/advertiser/dashboard");
+        return;
       }
 
-      if (params.type == "boleto") {
-        const { data: codeData } = await axios.get<BarCodeCodeResProps>(
-          `/api/asaas/payment/${params.id}/barCode`
-        );
+      const { data: codeData } = await axios.get<PixCodeResProps>(
+        `/api/asaas/payment/${params.id}/pixQrCode`
+      );
 
-        setMethodCode(codeData.barCode);
-      }
+      setMethodCode(codeData.payload);
+
+      setMethodImage(`data:image/png;base64,${codeData.encodedImage}`);
     } catch (error) {
       console.log(error);
       toast.error("Algo deu errado.");
@@ -65,9 +67,7 @@ const Payment = ({ params }: PaymentPageProps) => {
           <CardHeader>
             <p className="text-center">
               Pagamento via{" "}
-              <span className="font-semibold text-primary">
-                {params.type == "boleto" ? "Boleto" : "PIX"}
-              </span>
+              <span className="font-semibold text-primary">PIX</span>
             </p>
           </CardHeader>
 

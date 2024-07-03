@@ -5,7 +5,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -70,7 +69,6 @@ const NewBillCard = ({ title, advertiserAccount }: NewBillCardProps) => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel></SelectLabel>
                   <SelectItem value="pix">PIX</SelectItem>
                 </SelectGroup>
               </SelectContent>

@@ -1,3 +1,19 @@
+type StatusType =
+  | "PENDING"
+  | "RECEIVED"
+  | "CONFIRMED"
+  | "OVERDUE"
+  | "REFUNDED"
+  | "RECEIVED_IN_CASH"
+  | "REFUND_REQUESTED"
+  | "REFUND_IN_PROGRESS"
+  | "CHARGEBACK_REQUESTED"
+  | "CHARGEBACK_DISPUTE"
+  | "AWAITING_CHARGEBACK_REVERSAL"
+  | "DUNNING_REQUESTED"
+  | "DUNNING_RECEIVED"
+  | "AWAITING_RISK_ANALYSIS";
+
 export interface PaymentResProps {
   object: string;
   id: string;
@@ -10,7 +26,7 @@ export interface PaymentResProps {
   billingType: string;
   canBePaidAfterDueDate: boolean;
   pixTransaction: string | null;
-  status: string;
+  status: StatusType;
   description: string;
   externalReference: string;
   originalValue: number | null;
