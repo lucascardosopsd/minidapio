@@ -28,34 +28,34 @@ const Payment = ({ params }: PaymentPageProps) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const fetchPaymentData = async () => {
-    try {
-      const { data: paymentData } = await axios.get<PaymentResProps>(
-        `/api/asaas/payment/${params.id}`
-      );
-
-      if (paymentData.status.includes("RECEIVED")) {
-        router.push("/advertiser/dashboard");
-        return;
-      }
-
-      const { data: codeData } = await axios.get<PixCodeResProps>(
-        `/api/asaas/payment/${params.id}/pixQrCode`
-      );
-
-      setMethodCode(codeData.payload);
-
-      setMethodImage(`data:image/png;base64,${codeData.encodedImage}`);
-    } catch (error) {
-      console.log(error);
-      toast.error("Algo deu errado.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchPaymentData();
+    var paymentInterval = setInterval(async () => {
+      try {
+        const { data: paymentData } = await axios.get<PaymentResProps>(
+          `/api/asaas/payment/${params.id}`
+        );
+
+        if (!paymentData.status.includes("RECEIVED")) {
+          const { data: codeData } = await axios.get<PixCodeResProps>(
+            `/api/asaas/payment/${params.id}/pixQrCode`
+          );
+
+          setMethodCode(codeData.payload);
+
+          setMethodImage(`data:image/png;base64,${codeData.encodedImage}`);
+          return;
+        }
+
+        clearInterval(paymentInterval);
+
+        router.push("/advertiser/dashboard");
+      } catch (error) {
+        console.log(error);
+        toast.error("Algo deu errado.");
+      } finally {
+        setLoading(false);
+      }
+    }, 15000);
   }, []);
 
   return (
