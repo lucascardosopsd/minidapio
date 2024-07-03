@@ -7,8 +7,8 @@ import { Input } from "@/components/ui/input";
 import { SelectItem } from "@/components/ui/select";
 import { useAdvertiserProfileForm } from "@/hooks/useAdvertiserProfileForm";
 import { advertiserProfile } from "@/validators/advertiserProfile";
-import { AdvertiserAccount, User } from "@prisma/client";
-import { useState } from "react";
+import { AdvertiserAccount, Afiliate, User } from "@prisma/client";
+import { useEffect, useState } from "react";
 import { PatternFormat } from "react-number-format";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -20,17 +20,24 @@ import { CustumerProps, CustumersArrayProps } from "@/types/asaas";
 import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
 import { redirect, usePathname } from "next/navigation";
 import { revalidateRoute } from "@/actions/revalidateRoute";
+import { usePathname } from "next/navigation";
+import { revalidateRoute } from "@/actions/revalidateRoute";
+import { fetchAfiliatesByQuery } from "@/actions/afiliate/fetchAfiliatesByQuery";
+import Fence from "@/components/restaurant/Fence";
 
 interface AdvertiserProfileFormProps {
   defaultValues?: AdvertiserAccount;
   user: User;
+  code: number | null;
 }
 
 const AdvertiserProfileForm = ({
   defaultValues,
   user,
+  code,
 }: AdvertiserProfileFormProps) => {
   const [loading, setLoading] = useState(false);
+  const [afiliate, setAfiliate] = useState<Afiliate | null>({} as Afiliate);
   const pathname = usePathname();
 
   const form = useAdvertiserProfileForm({
@@ -48,6 +55,40 @@ const AdvertiserProfileForm = ({
           customerId: "",
         },
   });
+
+  const handleFetchAfiliate = async (code: number) => {
+    if (code) {
+      try {
+        const afiliate = await fetchAfiliatesByQuery({
+          query: {
+            where: { code },
+          },
+        });
+
+        if (afiliate[0]) {
+          setAfiliate(afiliate[0]);
+
+          return true;
+        }
+
+        form.setValue("afiliateCode", 0);
+        form.setError("afiliateCode", {
+          message: "Digite um afiliado válido!",
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    form.setValue("afiliateCode", code);
+
+    if (code) {
+      handleFetchAfiliate(code);
+    }
+  }, []);
 
   const createUserAdvertiserAcccount = async ({
     advertiserData,
@@ -76,6 +117,8 @@ const AdvertiserProfileForm = ({
 
   const handleSubmit = async (data: z.infer<typeof advertiserProfile>) => {
     setLoading(true);
+
+    console.log(data);
 
     try {
       const { data: getRes } = await axios.get<CustumersArrayProps>(
@@ -128,10 +171,19 @@ const AdvertiserProfileForm = ({
 
         if (!checkAccount) {
           await createUserAdvertiserAcccount({
-            advertiserData: data,
+            advertiserData: {
+              ...data,
+              customerId: checkCostumer.id,
+            },
           });
         } else {
-          await updateAdvertiserAccount({ userId: user.id, data: data });
+          await updateAdvertiserAccount({
+            userId: user.id,
+            data: {
+              ...data,
+              customerId: checkCostumer.id,
+            },
+          });
         }
       }
 
@@ -143,7 +195,10 @@ const AdvertiserProfileForm = ({
       }
       toast.error("Ocorreu um erro");
     } finally {
-      revalidateRoute({ fullPath: pathname });
+      revalidateRoute({
+        fullPath: pathname,
+      });
+      setLoading(false);
     }
   };
 
@@ -151,7 +206,7 @@ const AdvertiserProfileForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="w-full max-w-md space-y-5"
+        className="w-full max-w-md space-y-5 py-5 h-screen overflow-y-auto"
       >
         <FieldBuilder
           control={form.control}
@@ -198,6 +253,27 @@ const AdvertiserProfileForm = ({
           title="Telefone Celular"
           fieldElement={<PatternFormat format="(##)#####-####" />}
         />
+        
+        <SelectBuilder
+          control={form.control}
+          name="plan"
+          title="Plano"
+          selectItem={
+            <>
+              <SelectItem value="basic">Básico (R$100,00)</SelectItem>
+              <SelectItem value="pro">Profissional (R$150,00)</SelectItem>
+              <SelectItem value="ultra">Ultra (R$200,00)</SelectItem>
+            </>
+          }
+        />
+
+        <div className="space-y-2 flex-1">
+          {afiliate?.id && (
+            <Fence>
+              <p className="flex-1 text-center">{afiliate.name}</p>
+            </Fence>
+          )}
+        </div>
 
         <input value={user.id} {...form.register("userId")} hidden />
 

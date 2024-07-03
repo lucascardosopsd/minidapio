@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import Moment from "moment";
 import axios from "axios";
 import { AdvertiserAccount } from "@prisma/client";
+import { plans } from "@/constants/plans";
 import { useRouter } from "next/navigation";
 
 interface NewBillCardProps {
@@ -36,7 +37,7 @@ const NewBillCard = ({ title, advertiserAccount }: NewBillCardProps) => {
       const { data: newPayment } = await axios.post<PaymentResProps>(
         "/api/asaas/payment",
         {
-          customer: advertiserAccount?.customerId || "",
+          customer: advertiserAccount?.customerId!,
           billingType: option.toUpperCase(),
           value: 150,
           dueDate: moment.add(24, "hours"),

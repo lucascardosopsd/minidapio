@@ -38,9 +38,9 @@ const DateRange = ({
 
   const form = useForm({
     defaultValues: {
+      endDate: endDate || moment.format("YYYY-MM-DD"),
       startDate:
         startDate || moment.subtract(range || 30, "days").format("YYYY-MM-DD"),
-      endDate: endDate || moment.format("YYYY-MM-DD"),
     },
   });
 

@@ -37,6 +37,7 @@ export const POST = async (req: Request) => {
         deleted: payment.deleted,
         userId: advertiserAccount?.userId,
         advertiserAccountId: advertiserAccount?.id!,
+        afiliateCode: advertiserAccount?.afiliateCode,
       },
     });
 

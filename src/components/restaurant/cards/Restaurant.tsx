@@ -34,6 +34,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { slugGen } from "@/tools/slugGen";
 interface RestaurantCardProps {
   restaurant: RestaurantProps;
   session: Session | null;
@@ -48,6 +50,7 @@ const RestaurantCard = ({
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const [newName, setNewName] = useState("");
 
   const handleUpdateRestaurant = async (
     data: z.infer<typeof restaurantValidator>
@@ -91,6 +94,22 @@ const RestaurantCard = ({
   };
 
   const handleDuplicateRestaurant = async () => {
+    const restaurantExists = await fetchUserRestaurantsByQuery({
+      where: {
+        title: newName,
+      },
+    });
+
+    if (restaurantExists[0]) {
+      toast.error("O nome do restaurante já existe. Escolha outro.");
+      return;
+    }
+
+    if (newName.length < 4) {
+      toast.error("O nome precisa ser maior");
+      return;
+    }
+
     toast.info(
       <p className="flex items-center gap-2">
         duplicando, aguarde <ImSpinner className="animate-spin" />
@@ -104,14 +123,14 @@ const RestaurantCard = ({
         },
       });
 
-      if (userRestaurants.length >= 5) {
-        toast.error("Limite de 5 restaurantes atingido");
+      if (userRestaurants.length >= 2) {
+        toast.error("Limite de 2 restaurantes atingido");
         setLoading(false);
         return;
       }
 
       const newRestaurant = await createNewRestaurant({
-        title: restaurant.title + "-" + userRestaurants.length + 1,
+        title: newName,
         active: restaurant.active,
         activeMenu: restaurant.activeMenu,
         address: restaurant.address,
@@ -119,7 +138,7 @@ const RestaurantCard = ({
         logo: restaurant.logo,
         methods: restaurant.methods,
         regionId: restaurant.regionId,
-        slug: restaurant.slug + userRestaurants.length + 1,
+        slug: slugGen(newName),
         workHours: restaurant.workHours,
         landline: restaurant.landline,
         linkMaps: restaurant.linkMaps,
@@ -218,12 +237,21 @@ const RestaurantCard = ({
                       </p>
                     }
                     dialogDescription={
-                      <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-2 text-foreground">
                         <div className="flex gap-2">
                           <p>Você está duplicando</p>
                           <Badge className="text-center">
                             {restaurant.title}
                           </Badge>
+                        </div>
+
+                        <div className="flex flex-col">
+                          <p>Novo nome</p>
+                          <Input
+                            placeholder="Digite o nome da cópia"
+                            value={newName}
+                            onChange={(e) => setNewName(e.target.value)}
+                          />
                         </div>
                       </div>
                     }

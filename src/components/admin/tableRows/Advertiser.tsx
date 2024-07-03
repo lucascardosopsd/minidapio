@@ -3,7 +3,7 @@ import { FaPen, FaTrash } from "react-icons/fa6";
 import DeleteModal from "@/components/restaurant/ConfirmModal";
 import { Button } from "@/components/ui/button";
 import { copyToClipboard } from "@/tools/copyToClipboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AdvertiserAccount, Afiliate, User } from "@prisma/client";
 import ReusableDialog from "@/components/misc/ReusableDialog";
 import { toast } from "sonner";
@@ -20,6 +20,9 @@ import { updateUser } from "@/actions/user/updateUser";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { usePathname } from "next/navigation";
+import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
+import { Badge } from "@/components/ui/badge";
+import { Copy } from "lucide-react";
 
 interface AdvertiserRowProps {
   advertiser: AdvertiserAccount;
@@ -30,7 +33,13 @@ interface AdvertiserRowProps {
 const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [hasPaid, setHasPaid] = useState(false);
   const pathname = usePathname();
+
+  const handleCheckPayment = async () => {
+    let hasPaidRes = await checkMonthlyPayment({ userId: user?.id! });
+    setHasPaid(hasPaidRes);
+  };
 
   const handleDelete = async () => {
     try {
@@ -144,11 +153,23 @@ const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
     }
   };
 
+  useEffect(() => {
+    handleCheckPayment();
+  }, []);
+
   return (
     <TableRow>
       <TableCell>{advertiser?.name}</TableCell>
 
       <TableCell>{afiliate?.name || "Desconhecido"}</TableCell>
+
+      <TableCell>
+        <Badge className="w-full">
+          <p className="text-center w-full">
+            {hasPaid ? "Em dia" : "Atrasado"}
+          </p>
+        </Badge>
+      </TableCell>
 
       <TableCell>
         <Button
@@ -157,7 +178,7 @@ const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
           className="right-5 top-5"
           variant="secondary"
         >
-          ID
+          <Copy size={16} />
         </Button>
       </TableCell>
 

@@ -1,3 +1,5 @@
+"use server";
+
 import { fetchUserPayments } from "./fetchUserPayments";
 import moment from "moment";
 
