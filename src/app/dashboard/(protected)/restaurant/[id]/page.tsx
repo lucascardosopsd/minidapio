@@ -6,6 +6,7 @@ import ItemsActions from "@/components/restaurant/ItemsActions";
 import CategoriesList from "@/components/restaurant/lists/Categories";
 import { CategoriesWithItemsProps } from "@/types/category";
 import RestaurantActionbar from "@/components/restaurant/Actionbar";
+import { Item } from "@prisma/client";
 
 interface PageProps {
   params: {
@@ -36,15 +37,17 @@ export default async function Restaurant({
 
   const items = categories.flatMap(
     (category) => category.items && category.items
-  );
+  ) as Item[];
 
   return (
     <main className="flex flex-col gap-4 pt-5 h-[90svh] overflow-y-auto">
       <RestaurantActionbar restaurantId={restaurantId} />
 
       <Separator />
-      {/* @ts-ignore */}
-      <ItemsActions categories={categories} items={items!} />
+
+      <div className="fixed flex justify-center bottom-0 left-0 p-5 bg-gradient-to-t from-background via-background to-transparent z-50 w-full">
+        <ItemsActions categories={categories} items={items!} />
+      </div>
       <div className="w-full mx-auto h-full">
         <Accordion type="multiple">
           <CategoriesList categories={categories} />
