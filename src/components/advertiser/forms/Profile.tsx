@@ -52,7 +52,7 @@ const AdvertiserProfileForm = ({
           phone: "",
           userId: user.id,
           customerId: "",
-          plan: "",
+          plan: "basic",
         },
   });
 

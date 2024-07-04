@@ -55,7 +55,7 @@ const AdminAdvertiserProfileForm = ({
           userId: userData.id,
           customerId: "",
           afiliateCode: 0,
-          plan: "",
+          plan: "basic",
         },
   });
 
