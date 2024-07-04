@@ -33,7 +33,7 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
 
   useEffect(() => {
     handlePickAd();
-  }, [regionId]);
+  }, []);
 
   const handleCreateView = () => {
     try {
@@ -60,8 +60,8 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
   }, [categoryId]);
 
   return (
-    <div className="flex flex-col gap-5">
-      <AnimatePresence>
+    <AnimatePresence>
+      <div className="flex flex-col gap-5">
         {items
           .filter((item) => item.categoryId == categoryId)
           .sort((a, b) => Number(b.highlight) - Number(a.highlight))
@@ -70,12 +70,11 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              style={{
+                order: index,
+              }}
             >
-              <span
-                style={{
-                  order: index,
-                }}
-              >
+              <span>
                 <ItemCard
                   item={item}
                   themeColor={themeColor}
@@ -91,19 +90,17 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            style={{
+              order: adOrder,
+            }}
           >
-            <span
-              ref={adRef}
-              style={{
-                order: adOrder,
-              }}
-            >
+            <span ref={adRef} key={adOrder + currentAd.title}>
               <AdCard ad={currentAd} />
             </span>
           </motion.div>
         )}
-      </AnimatePresence>
-    </div>
+      </div>
+    </AnimatePresence>
   );
 };
 

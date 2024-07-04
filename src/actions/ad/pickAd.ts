@@ -34,7 +34,7 @@ export const pickAd = async ({
     const ad = ads[random];
 
     const hasPaid = !!moment().diff(
-      moment(ad.AdvertiserAccount?.payments[0]?.createdAt, "months", true)
+      moment(ad?.AdvertiserAccount?.payments[0]?.createdAt, "months", true)
     );
 
     if (hasPaid) picked = ad;
