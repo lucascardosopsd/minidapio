@@ -12,11 +12,13 @@ import {
 } from "@/components/ui/table";
 import AdRow from "@/components/admin/tableRows/Ad";
 import { Ad, AdvertiserAccount } from "@prisma/client";
+import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
 
 interface AdminPageProps {
   searchParams?: {
     page: string;
     title?: string;
+    advertiser?: string;
   };
 }
 
@@ -33,40 +35,40 @@ const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
   const regions = await fetchRegions();
   const page = Number(searchParams?.page || 1);
   const title = searchParams?.title || "";
+  const advertiser = searchParams?.advertiser || "";
 
   const { ads, pages } = await fetchAds<AdFetchReturn>({
     page: page - 1,
     take: 20,
-    query: title
-      ? {
-          where: {
+    query: {
+      where: !advertiser
+        ? {
             title: {
               contains: title,
               mode: "insensitive",
             },
+          }
+        : {
+            title: {
+              contains: title,
+              mode: "insensitive",
+            },
+            advertiserAccountId: advertiser,
           },
-          include: {
-            AdvertiserAccount: true,
-          },
-          orderBy: {
-            title: "asc",
-          },
-        }
-      : {
-          orderBy: {
-            title: "asc",
-          },
-          include: {
-            AdvertiserAccount: true,
-          },
-        },
+      include: {
+        AdvertiserAccount: true,
+      },
+      orderBy: {
+        title: "asc",
+      },
+    },
   });
 
-  console.log(ads);
+  const { advertisers } = await fetchManyAdvertisers({ page: 0, take: 10000 });
 
   return (
     <section className="w-full h-full pt-5 flex flex-col gap-5 relative">
-      <ActionBar regions={regions} />
+      <ActionBar regions={regions} advertisers={advertisers} />
 
       <Separator />
 

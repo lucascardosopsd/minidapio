@@ -8,10 +8,31 @@ import ReusableModal from "../misc/ReusableModal";
 import { createNewAd } from "@/actions/ad/createNewAd";
 import SearchField from "../misc/SearchField";
 import AdForm from "./forms/Ad";
+import { AdvertiserAccount } from "@prisma/client";
+import ReusableComboSearch from "../misc/ReusableComboSearch";
 
-const ActionBar = ({ regions }: { regions: RegionProps[] }) => {
+interface ActionBarProps {
+  regions: RegionProps[];
+  advertisers: AdvertiserAccount[] | null;
+}
+
+const ActionBar = ({ regions, advertisers }: ActionBarProps) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  let commandOptions = [];
+
+  commandOptions?.push({
+    label: "Limpar",
+    value: "",
+  });
+
+  advertisers?.forEach((advertiser) => {
+    commandOptions.push({
+      label: advertiser.name,
+      value: advertiser.id,
+    });
+  });
 
   const handleOnSubmit = async (data: z.infer<typeof adValidator>) => {
     try {
@@ -34,11 +55,21 @@ const ActionBar = ({ regions }: { regions: RegionProps[] }) => {
     <div className="flex justify-between items-center w-full gap-5">
       <p className="text-2xl">Anúncios</p>
 
-      <SearchField
-        keyName="title"
-        placeholder="Busque um anúncio"
-        inputClassName="w-64"
-      />
+      <div className="flex gap-5">
+        {commandOptions && (
+          <ReusableComboSearch
+            items={commandOptions}
+            title="Filtrar anunciante"
+            queryTitle="advertiser"
+          />
+        )}
+
+        <SearchField
+          keyName="title"
+          placeholder="Busque um anúncio"
+          inputClassName="w-64"
+        />
+      </div>
 
       <div className="flex gap-5">
         <ReusableModal
