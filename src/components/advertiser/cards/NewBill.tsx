@@ -39,7 +39,7 @@ const NewBillCard = ({ title, advertiserAccount }: NewBillCardProps) => {
           customer: advertiserAccount?.customerId!,
           billingType: option.toUpperCase(),
           value: 150,
-          dueDate: moment.add(24, "hours"),
+          dueDate: moment.add(1, "hour"),
         }
       );
 
@@ -86,7 +86,7 @@ const NewBillCard = ({ title, advertiserAccount }: NewBillCardProps) => {
         <p className="text-xs text-center">
           O pagamento no valor de{" "}
           <span className="font-bold">R${plans[advertiserAccount.plan]}</span>{" "}
-          expira em 24 horas
+          expira em 1 hora
         </p>
       </div>
     </div>
