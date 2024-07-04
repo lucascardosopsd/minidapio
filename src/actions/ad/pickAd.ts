@@ -29,7 +29,7 @@ export const pickAd = async ({
   let picked = null;
 
   while (!picked) {
-    const random = Math.floor(Math.random() * ads.length) + 1;
+    const random = Math.floor(Math.random() * (ads.length - 0 + 1) + 0);
 
     const ad = ads[random];
 
