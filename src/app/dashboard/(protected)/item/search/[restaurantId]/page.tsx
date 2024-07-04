@@ -13,7 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import ItemRow from "@/components/restaurant/tableRows/Item";
+import SearchItemRow from "@/components/search/restaurant/ItemRow";
+import { Category, Item } from "@prisma/client";
 
 interface PageProps {
   params: {
@@ -30,6 +31,15 @@ interface PageProps {
   };
 }
 
+interface FetchItemsProps extends Item {
+  Category: Category;
+}
+
+interface FetchManyItemsResProps {
+  items: FetchItemsProps[];
+  pages: number;
+}
+
 export default async function Restaurant({
   params: { restaurantId },
   searchParams,
@@ -42,7 +52,7 @@ export default async function Restaurant({
     },
   });
 
-  const { items, pages } = await fetchManyItems({
+  const { items, pages } = await fetchManyItems<FetchManyItemsResProps>({
     take: 20,
     page: page - 1,
     query: {
@@ -63,6 +73,9 @@ export default async function Restaurant({
         sale: searchParams?.sale && searchParams?.sale == "true" ? true : false,
         categoryId: searchParams?.categoryId && searchParams?.categoryId,
         restaurantId,
+      },
+      include: {
+        Category: true,
       },
     },
   });
@@ -87,6 +100,7 @@ export default async function Restaurant({
                 <TableHead>Img</TableHead>
                 <TableHead>Nome</TableHead>
                 <TableHead className="text-center">Descrito</TableHead>
+                <TableHead>Categoria</TableHead>
                 <TableHead className="text-center max-w-32">Preço</TableHead>
                 <TableHead className="text-center">Promoção</TableHead>
                 <TableHead className="text-center">Destaque</TableHead>
@@ -96,7 +110,7 @@ export default async function Restaurant({
             </TableHeader>
             <TableBody>
               {items.map((item) => (
-                <ItemRow categories={categories} item={item} />
+                <SearchItemRow categories={categories} item={item} />
               ))}
             </TableBody>
           </Table>

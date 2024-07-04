@@ -13,11 +13,11 @@ interface FetchManyItemsProps {
   query?: Prisma.ItemFindManyArgs;
 }
 
-export const fetchManyItems = async ({
+export const fetchManyItems = async <T = FetchManyItemsResProps>({
   page,
   take,
   query = {},
-}: FetchManyItemsProps): Promise<FetchManyItemsResProps> => {
+}: FetchManyItemsProps): Promise<T> => {
   const count = await prisma.afiliate.count();
   const pages = Math.ceil(count / take);
 
@@ -32,5 +32,5 @@ export const fetchManyItems = async ({
   return {
     items,
     pages,
-  };
+  } as T;
 };
