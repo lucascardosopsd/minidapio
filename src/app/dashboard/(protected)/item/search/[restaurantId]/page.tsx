@@ -110,7 +110,11 @@ export default async function Restaurant({
             </TableHeader>
             <TableBody>
               {items.map((item) => (
-                <SearchItemRow categories={categories} item={item} />
+                <SearchItemRow
+                  categories={categories}
+                  item={item}
+                  key={item.id}
+                />
               ))}
             </TableBody>
           </Table>
