@@ -45,7 +45,7 @@ export default async function Restaurant({
       <Separator />
       {/* @ts-ignore */}
       <ItemsActions categories={categories} items={items!} />
-      <div className="w-full mx-auto h-full tablet:overflow-y-auto ">
+      <div className="w-full mx-auto h-full">
         <Accordion type="multiple">
           <CategoriesList categories={categories} />
         </Accordion>
