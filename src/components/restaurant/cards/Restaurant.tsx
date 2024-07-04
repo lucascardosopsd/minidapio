@@ -51,6 +51,7 @@ const RestaurantCard = ({
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const [newName, setNewName] = useState("");
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
   const handleUpdateRestaurant = async (
     data: z.infer<typeof restaurantValidator>
@@ -204,14 +205,17 @@ const RestaurantCard = ({
               {restaurant.active ? "Ativo" : "Inativo"}
             </Badge>
 
-            <Popover>
+            <Popover onOpenChange={setPopoverOpen} open={popoverOpen}>
               <div>
                 <PopoverTrigger>
                   <EllipsisVertical />
                 </PopoverTrigger>
               </div>
               <PopoverContent>
-                <div className="flex flex-col gap-2 w-full">
+                <div
+                  className="flex flex-col gap-2 w-full"
+                  onClick={() => setPopoverOpen(false)}
+                >
                   <Button
                     type="button"
                     variant="outline"
