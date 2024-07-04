@@ -21,7 +21,7 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
   const [adOrder, setAdOrder] = useState(0);
 
   const adRef = useRef(null);
-  const isAdInView = useInView(adRef, { once: true });
+  const isAdInView = useInView(adRef);
 
   const handlePickAd = async () => {
     const ad = await pickAd({
