@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import AdRow from "@/components/admin/tableRows/Ad";
+import { Ad, AdvertiserAccount } from "@prisma/client";
 
 interface AdminPageProps {
   searchParams?: {
@@ -19,12 +20,21 @@ interface AdminPageProps {
   };
 }
 
+interface AdReturn extends Ad {
+  AdvertiserAccount: AdvertiserAccount;
+}
+
+interface AdFetchReturn {
+  ads: AdReturn[];
+  pages: number;
+}
+
 const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
   const regions = await fetchRegions();
   const page = Number(searchParams?.page || 1);
   const title = searchParams?.title || "";
 
-  const { ads, pages } = await fetchAds({
+  const { ads, pages } = await fetchAds<AdFetchReturn>({
     page: page - 1,
     take: 20,
     query: title
@@ -35,6 +45,9 @@ const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
               mode: "insensitive",
             },
           },
+          include: {
+            AdvertiserAccount: true,
+          },
           orderBy: {
             title: "asc",
           },
@@ -43,8 +56,13 @@ const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
           orderBy: {
             title: "asc",
           },
+          include: {
+            AdvertiserAccount: true,
+          },
         },
   });
+
+  console.log(ads);
 
   return (
     <section className="w-full h-full pt-5 flex flex-col gap-5 relative">
@@ -63,6 +81,8 @@ const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
               <TableHead>Região</TableHead>
 
               <TableHead>Status</TableHead>
+
+              <TableHead>Anunciante</TableHead>
 
               <TableHead>Editar</TableHead>
 

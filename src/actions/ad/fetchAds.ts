@@ -13,11 +13,11 @@ interface FetchAdsProps {
   query?: Prisma.AdFindManyArgs;
 }
 
-export const fetchAds = async ({
+export const fetchAds = async <T = FetchManyAdsResProps>({
   take,
   page,
   query,
-}: FetchAdsProps): Promise<FetchManyAdsResProps> => {
+}: FetchAdsProps): Promise<T> => {
   const count = await prisma.ad.count();
   const pages = Math.ceil(count / take);
 
@@ -39,5 +39,5 @@ export const fetchAds = async ({
   return {
     ads,
     pages,
-  };
+  } as T;
 };

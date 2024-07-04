@@ -13,11 +13,15 @@ import { deleteAd } from "@/actions/ad/deleteAd";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { Ad } from "@prisma/client";
+import { Ad, AdvertiserAccount } from "@prisma/client";
 import { TableCell, TableRow } from "@/components/ui/table";
 
+interface AdPops extends Ad {
+  AdvertiserAccount: AdvertiserAccount;
+}
+
 interface AdRowProps {
-  ad: Ad;
+  ad: AdPops;
   regions: RegionProps[];
 }
 
@@ -84,6 +88,8 @@ const AdRow = ({ ad, regions }: AdRowProps) => {
       <TableCell>
         <Badge>{ad.active ? "Ativo" : "Inativo"}</Badge>
       </TableCell>
+
+      <TableCell>{ad.AdvertiserAccount.name}</TableCell>
 
       <TableCell>
         <ReusableDialog
