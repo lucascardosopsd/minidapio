@@ -23,7 +23,7 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
           <Link
             href={route.route}
             onClick={() => router.push(route.route)}
-            className="flex gap-2 text-muted-foreground "
+            className="gap-2 text-muted-foreground hidden tablet:flex"
             key={index}
           >
             <p className="hover:text-accent-foreground transition">
@@ -32,6 +32,10 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
             <p>/</p>
           </Link>
         ))}
+
+        <Link href="/dashboard/restaurants">
+          <p className="block tablet:hidden text-muted-foreground">Início</p>
+        </Link>
       </div>
       <div className="flex gap-2 items-center">
         <ThemeToggle />
@@ -42,7 +46,7 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
           target="_blank"
         >
           <Button className="gap-2">
-            Suporte <Headset />
+            <span className="hidden tablet:block">Suporte</span> <Headset />
           </Button>
         </Link>
 

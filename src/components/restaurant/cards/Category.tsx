@@ -99,56 +99,59 @@ const CategoryCard = ({
       className="flex flex-col mx-4 border-none bg-background"
       value={category.id}
     >
-      <AccordionTrigger className="flex items-center p-4 h-16 w-full border border-border rounded">
-        <p>{category.title}</p>
-        <div className="flex gap-4 ml-auto">
-          <ReusableSheet
-            content={
-              <ItemForm
-                categoryId={category.id.toString()}
-                categories={categories}
-                onSubmit={handleNewItem}
-                loading={loading}
-              />
-            }
-            title="Novo Item"
-            trigger={<CopyPlus size={18} />}
-            triggerClassName="w-full"
-            triggerVariant="default"
-            isOpen={openItem}
-            onOpen={setOpenItem}
-          />
+      <AccordionTrigger className="w-full h-24 tablet:h-16 border border-border rounded !flex-[0.2] tablet:!flex-[0.05] !justify-center">
+        <div className="flex items-center flex-col tablet:flex-row w-full gap-2">
+          <p className="text-center tablet:text-start w-full">
+            {category.title}
+          </p>
+          <div className="flex w-full justify-center tablet:justify-end tablet:w-auto gap-4 tablet:ml-auto mx-auto">
+            <ReusableSheet
+              content={
+                <ItemForm
+                  categoryId={category.id.toString()}
+                  categories={categories}
+                  onSubmit={handleNewItem}
+                  loading={loading}
+                />
+              }
+              title="Novo Item"
+              trigger={<CopyPlus size={18} />}
+              triggerVariant="default"
+              isOpen={openItem}
+              onOpen={setOpenItem}
+            />
 
-          <ReusableSheet
-            title="Editar Categoria"
-            trigger={<FaPen />}
-            triggerVariant="outline"
-            content={
-              <CategoryForm
-                defaultValues={category}
-                restaurantId={restaurantId}
-                onSubmit={handleUpdateCategory}
-                loading={loading}
-              />
-            }
-            isOpen={openEditCategory}
-            onOpen={setOpenEditCategory}
-          />
+            <ReusableSheet
+              title="Editar Categoria"
+              trigger={<FaPen />}
+              triggerVariant="outline"
+              content={
+                <CategoryForm
+                  defaultValues={category}
+                  restaurantId={restaurantId}
+                  onSubmit={handleUpdateCategory}
+                  loading={loading}
+                />
+              }
+              isOpen={openEditCategory}
+              onOpen={setOpenEditCategory}
+            />
 
-          <DeleteModal
-            action={handleDeleteCategory}
-            dialogTitle="Deletar Categoria"
-            triggerText={<FaTrash />}
-            dialogDescription={
-              <div className="flex flex-col gap-2">
-                <div className="flex gap-2">
-                  <p>Você está apagando a categoria</p>
-                  <Badge>{category.title}</Badge>
+            <DeleteModal
+              action={handleDeleteCategory}
+              dialogTitle="Deletar Categoria"
+              triggerText={<FaTrash />}
+              dialogDescription={
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <p>Você está apagando a categoria</p>
+                    <Badge>{category.title}</Badge>
+                  </div>
                 </div>
-              </div>
-            }
-            triggerVariant="destructive"
-          />
+              }
+              triggerVariant="destructive"
+            />
+          </div>
         </div>
       </AccordionTrigger>
       <AccordionContent>
