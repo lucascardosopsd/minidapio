@@ -26,12 +26,12 @@ const AdCard = ({ ad }: AdCardProps) => {
           height={500}
           width={500}
           alt="Anúncio"
-          className="w-32 h-32 rounded-tl-md object-cover"
+          className="rounded-tl-md object-cover flex-1 w-44 h-auto"
         />
-        <div className="flex flex-col gap-2 p-5">
+        <div className="flex flex-col justify-center gap-2 p-5 flex-[4]">
           <p className="text-xs text-muted-foreground">Anúncio</p>
           <p className="font-semibold text-primary">{ad.title}</p>
-          <p className="text-xs">{ad.description}</p>
+          <p className="text-xs break-all ">{ad.description}</p>
         </div>
       </CardContent>
       <CardFooter className="p-0">
