@@ -25,6 +25,8 @@ import SelectBuilder from "../../builders/SelectBuilder";
 import { CategoriesWithItemsProps } from "@/types/category";
 import { isEmpty } from "@/tools/isEmpty";
 import { Item } from "@prisma/client";
+import { Copy } from "lucide-react";
+import { copyToClipboard } from "@/tools/copyToClipboard";
 
 interface ItemFormProps {
   defaultValues?: Item;
@@ -99,6 +101,27 @@ const ItemForm = ({
         />
 
         <UploadImage control={form.control} name="image" />
+
+        {!form.watch("image") && (
+          <FieldBuilder
+            title="URL da imagem"
+            name="image"
+            control={form.control}
+            fieldElement={<Input placeholder="Ou cole uma URL já existente" />}
+          />
+        )}
+
+        {form.watch("image") && (
+          <Button
+            type="button"
+            className="space-x-2"
+            onClick={() =>
+              copyToClipboard(form.watch("image"), "", "Link copiado!")
+            }
+          >
+            Link da Imagem <Copy />
+          </Button>
+        )}
 
         <div className="flex flex-col gap-2">
           <Fence className="!justify-start">
