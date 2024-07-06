@@ -30,7 +30,7 @@ const AdCard = ({ ad }: AdCardProps) => {
         />
         <div className="flex flex-col gap-2 p-5">
           <p className="text-xs text-muted-foreground">Anúncio</p>
-          <p className="font-semibold">{ad.title}</p>
+          <p className="font-semibold text-primary">{ad.title}</p>
           <p className="text-xs">{ad.description}</p>
         </div>
       </CardContent>
