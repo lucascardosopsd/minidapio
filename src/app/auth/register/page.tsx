@@ -46,8 +46,6 @@ export default function Login() {
         toast.info("Usuário já existe");
         return;
       }
-
-      router.push("/auth/login");
     } catch (error) {
       console.log(error);
       toast.error("Ocorreu um erro");
