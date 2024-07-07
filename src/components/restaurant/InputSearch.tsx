@@ -82,7 +82,7 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
         />
 
         <Sheet>
-          <SheetTrigger>
+          <SheetTrigger asChild>
             <Button type="button">Filtros</Button>
           </SheetTrigger>
           <SheetContent>
@@ -143,7 +143,7 @@ const InputSearch = ({ restaurantId, disableParams }: InputSearchProps) => {
                   </Fence>
 
                   <div className="flex gap-2">
-                    <SheetClose className="w-full">
+                    <SheetClose className="w-full" asChild>
                       <Button className="w-full" type="button">
                         Fechar
                       </Button>
