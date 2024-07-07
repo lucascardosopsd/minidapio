@@ -1,8 +1,6 @@
 "use client";
 import LoginIllustration from "@/components/restaurant/illustration/Login";
 import { Separator } from "@/components/ui/separator";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Logo from "@/components/misc/Logo";
 import { useForm } from "react-hook-form";
 import FieldBuilder from "@/components/builders/FieldBuilder";
@@ -17,14 +15,6 @@ import axios from "axios";
 import { toast } from "sonner";
 
 export default function Login() {
-  const { data: session } = useSession();
-  const router = useRouter();
-
-  if (session) {
-    router.push("/dashboard/restaurants");
-    return <></>;
-  }
-
   const form = useForm({
     defaultValues: {
       name: "",
