@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -18,7 +19,9 @@ const Footer = () => {
           <div className="flex flex-col">
             <p className="text-2xl font-semibold">Legal</p>
             <p>Termos de uso</p>
-            <p>Política de Privacidade</p>
+            <Link href="/politica_de_privacidade.pdf">
+              <p>Política de Privacidade</p>
+            </Link>
             <p>Cookies</p>
           </div>
 
