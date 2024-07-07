@@ -83,7 +83,7 @@ export default function Login() {
 
         <GoogleLoginButton variant="outline" />
 
-        <Link href="/auth/signin">
+        <Link href="/auth/register">
           <p className="text-end text-sm text-primary">Criar uma conta</p>
         </Link>
       </div>
