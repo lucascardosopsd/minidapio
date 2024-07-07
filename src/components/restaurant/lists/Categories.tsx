@@ -14,6 +14,7 @@ const CategoriesList = ({ categories }: CategoriesListProps) => {
           category={category}
           restaurantId={category.restaurantId!}
           categories={categories}
+          key={category.id}
         />
       ))}
     </div>
