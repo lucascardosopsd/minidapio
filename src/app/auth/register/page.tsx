@@ -3,7 +3,6 @@ import LoginIllustration from "@/components/restaurant/illustration/Login";
 import { Separator } from "@/components/ui/separator";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import GoogleLoginButton from "@/components/misc/GoogleLoginButton";
 import Logo from "@/components/misc/Logo";
 import { useForm } from "react-hook-form";
 import FieldBuilder from "@/components/builders/FieldBuilder";
@@ -123,8 +122,6 @@ export default function Login() {
             </form>
           </Form>
         </div>
-
-        <GoogleLoginButton variant="outline" />
 
         <Link href="/auth/login">
           <p className="text-end text-sm text-primary">Entrar na conta</p>
