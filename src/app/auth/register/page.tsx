@@ -13,6 +13,7 @@ import Link from "next/link";
 import { registerValidator } from "@/validators/register";
 import axios from "axios";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const form = useForm({
@@ -24,6 +25,8 @@ export default function Login() {
     },
     resolver: zodResolver(registerValidator),
   });
+
+  const router = useRouter();
 
   const handleSubmit = async (data: z.infer<typeof registerValidator>) => {
     try {
@@ -46,6 +49,8 @@ export default function Login() {
         toast.info("Usuário já existe");
         return;
       }
+
+      router.push("/auth/login");
     } catch (error) {
       console.log(error);
       toast.error("Ocorreu um erro");
