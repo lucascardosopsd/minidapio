@@ -118,7 +118,7 @@ export default function Login() {
                 }
               />
 
-              <Button className="w-full">Entrar</Button>
+              <Button className="w-full">Registrar</Button>
             </form>
           </Form>
         </div>
