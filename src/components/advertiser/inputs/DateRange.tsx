@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 import Moment from "moment";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -22,6 +23,7 @@ export interface DateRangeProps {
   nameStart?: string;
   nameEnd?: string;
   queryKeyNames?: string[];
+  className?: string;
 }
 
 const DateRange = ({
@@ -33,6 +35,7 @@ const DateRange = ({
   nameStart,
   nameEnd,
   queryKeyNames = ["startDate", "endDate"],
+  className,
 }: DateRangeProps) => {
   const moment = Moment();
 
@@ -62,7 +65,7 @@ const DateRange = ({
   return (
     <Form {...form}>
       <form
-        className="flex gap-5 border rounded p-5"
+        className={cn("flex gap-5 border rounded p-5", className)}
         onSubmit={
           onSubmit
             ? form.handleSubmit(onSubmit)

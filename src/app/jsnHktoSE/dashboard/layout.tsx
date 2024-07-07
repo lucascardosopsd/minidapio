@@ -19,7 +19,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     where: { email: session?.user?.email! },
   });
 
-  if (!user) return redirect("/admin/login");
+  if (!user) return redirect("/jsnHktoSE/login");
 
   if (user.role !== "admin") return redirect("/jsnHktoSE/signout");
 

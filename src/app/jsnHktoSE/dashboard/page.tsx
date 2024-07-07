@@ -4,6 +4,7 @@ import { fetchManyPayments } from "@/actions/payments/fetchManyPayments";
 import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
 import { fetchManyUsers } from "@/actions/user/fetchManyUsers";
 import StatsCard from "@/components/advertiser/cards/Stats";
+import DateRange from "@/components/advertiser/inputs/DateRange";
 import { formatPrice } from "@/tools/formatPrice";
 import {
   DollarSign,
@@ -13,27 +14,82 @@ import {
   UtensilsCrossed,
 } from "lucide-react";
 
-const AdminDashboard = async () => {
-  const { users } = await fetchManyUsers({ page: 0, take: 1000000 });
+interface AdminDashboardProps {
+  searchParams?: {
+    startDate?: Date;
+    endDate?: Date;
+  };
+}
+
+const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
+  const startDate = searchParams?.startDate;
+  const endDate = searchParams?.endDate;
+
+  const { users } = await fetchManyUsers({
+    page: 0,
+    take: 1000000,
+    query: {
+      where: endDate &&
+        startDate && {
+          createdAt: {
+            lte: new Date(endDate),
+            gte: new Date(startDate),
+          },
+        },
+    },
+  });
+
   const { restaurants } = await fetchManyRestaurants({
     page: 0,
     take: 1000000,
   });
+
   const { ads } = await fetchAds({
     page: 0,
     take: 1000,
     query: {
-      where: {
-        active: true,
-      },
+      where:
+        startDate && endDate
+          ? {
+              createdAt: {
+                lte: new Date(endDate),
+                gte: new Date(startDate),
+              },
+              active: true,
+            }
+          : {
+              active: true,
+            },
     },
   });
+
   const { advertisers } = await fetchManyAdvertisers({
     page: 0,
     take: 1000000,
+    query: {
+      where: endDate &&
+        startDate && {
+          createdAt: {
+            lte: new Date(endDate),
+            gte: new Date(startDate),
+          },
+        },
+    },
   });
 
-  const { payments } = await fetchManyPayments({ page: 0, take: 10000 });
+  const { payments } = await fetchManyPayments({
+    page: 0,
+    take: 10000,
+    query: {
+      where: endDate &&
+        startDate && {
+          createdAt: {
+            lte: new Date(endDate),
+            gte: new Date(startDate),
+          },
+        },
+    },
+  });
 
   const revenue = payments.reduce(
     (prev, current) => (prev += current.value),
@@ -41,9 +97,15 @@ const AdminDashboard = async () => {
   );
 
   return (
-    <section className="flex items-center justify-center">
+    <section className="flex flex-col items-center justify-center">
       <div className="border rounded p-5 flex flex-col gap-5">
-        <p className="text-2xl text-primary">Global</p>
+        <p className="text-2xl text-primary">Período</p>
+
+        <DateRange
+          startDate={startDate || undefined}
+          endDate={endDate || undefined}
+          className="justify-center"
+        />
 
         <div className="grid grid-cols-1 tablet:grid-cols-3 gap-5">
           <StatsCard
