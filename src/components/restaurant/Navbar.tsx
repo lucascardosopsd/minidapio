@@ -58,7 +58,7 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
           variant="outline"
           onClick={() => {
             signOut({
-              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/dashboard/login`,
+              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/auth/login`,
             });
           }}
           size="sm"

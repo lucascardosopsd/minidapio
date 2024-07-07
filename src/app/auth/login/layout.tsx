@@ -1,14 +1,14 @@
-import { ReactNode } from "react";
 import { ThemeProvider } from "@/components/misc/ThemeProvider";
-import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "@/lib/authProviders";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { ReactNode } from "react";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
 
-  if (!session) {
-    redirect("/auth/login");
+  if (session) {
+    redirect("/dashboard/restaurants");
   }
 
   return (
@@ -18,7 +18,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
       enableSystem
       defaultTheme="dark"
     >
-      {children}
+      <div className="container">{children}</div>
     </ThemeProvider>
   );
 };

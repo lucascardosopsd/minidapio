@@ -23,7 +23,7 @@ const Navbar = () => {
           <div className="flex items-center gap-5">
             {/* <Button>Afiliado</Button> */}
 
-            <Link href="/dashboard/login">
+            <Link href="/auth/login">
               <Button>Restaurante</Button>
             </Link>
 
@@ -61,7 +61,7 @@ const Navbar = () => {
                 </p>
               </Link>
 
-              <Link href="/dashboard/login" className="order-1 tablet:order-2">
+              <Link href="/auth/login" className="order-1 tablet:order-2">
                 <p className="text-primary font-semibold border-b text-4xl ">
                   Restaurante
                 </p>
