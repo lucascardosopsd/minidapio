@@ -2,7 +2,7 @@ import { getUserServerSession } from "@/actions/session/getUserServerSession";
 import AdvertiserProfileForm from "@/components/advertiser/forms/Profile";
 import { Button } from "@/components/ui/button";
 import { nextAuthOptions } from "@/lib/authProviders";
-import { UserAdPaymentProps } from "@/types/user";
+import { UserAdAccountProps } from "@/types/user";
 import { LogOutIcon } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
@@ -19,7 +19,7 @@ const NewAdvertiserAccount = async ({
 }: NewAdvertiserAccountProps) => {
   const session = await getServerSession(nextAuthOptions);
 
-  const user = await getUserServerSession<UserAdPaymentProps>({
+  const user = await getUserServerSession<UserAdAccountProps>({
     query: {
       include: {
         AdvertiserAccount: true,

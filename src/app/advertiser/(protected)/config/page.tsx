@@ -1,9 +1,9 @@
 import { getUserServerSession } from "@/actions/session/getUserServerSession";
 import AdvertiserProfileForm from "@/components/advertiser/forms/Profile";
-import { UserAdPaymentProps } from "@/types/user";
+import { UserAdAccountProps } from "@/types/user";
 
 const ConfigPage = async () => {
-  const user = await getUserServerSession<UserAdPaymentProps>({
+  const user = await getUserServerSession<UserAdAccountProps>({
     query: {
       include: {
         AdvertiserAccount: true,

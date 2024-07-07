@@ -7,7 +7,7 @@ import Sidebar from "@/components/misc/ReusableSidebar";
 import { advertiserSidebarOptions } from "@/constants/advertiserSidebar";
 import Navbar from "@/components/advertiser/Navbar";
 import { getUserServerSession } from "@/actions/session/getUserServerSession";
-import { UserAdPaymentProps } from "@/types/user";
+import { UserAdAccountProps } from "@/types/user";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
@@ -16,7 +16,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     return redirect("/advertiser/login");
   }
 
-  const user = await getUserServerSession<UserAdPaymentProps>({
+  const user = await getUserServerSession<UserAdAccountProps>({
     query: {
       include: {
         AdvertiserAccount: true,
