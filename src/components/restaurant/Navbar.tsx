@@ -7,6 +7,11 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Headset, LogOutIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "../ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 interface NavbarProps {
   breadcrumb?: BreadcrumbRouteProps[];
@@ -50,25 +55,41 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
           </Button>
         </Link>
 
-        <Avatar>
-          <AvatarImage src={session?.user?.image!} />
-        </Avatar>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            {session?.user?.image && (
+              <Avatar>
+                <AvatarImage src={session?.user?.image!} />
+              </Avatar>
+            )}
 
-        <Button
-          variant="outline"
-          onClick={() => {
-            signOut({
-              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/auth/login`,
-            });
-          }}
-          size="sm"
-          className="group hover:bg-primary hover:border-primary transition"
-        >
-          <LogOutIcon
-            size={18}
-            className="text-primary group-hover:text-background "
-          />
-        </Button>
+            {!session?.user?.image && (
+              <div className="flex-1 w-full">
+                <span className="rounded-full h-12 w-12 border border-border transition hover:border-primary flex items-center justify-center">
+                  <p className="text-lg">{session?.user?.name?.slice(0, 1)}</p>
+                </span>
+              </div>
+            )}
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56 p-2 space-y-2">
+            <p>{session?.user?.name}</p>
+
+            <Button
+              variant="outline"
+              onClick={() => {
+                signOut({
+                  callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/auth/login`,
+                });
+              }}
+              size="sm"
+              className="flex items-center gap-2 justify-center w-full"
+            >
+              <LogOutIcon size={18} />
+
+              <p>Sair</p>
+            </Button>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
