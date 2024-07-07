@@ -14,6 +14,8 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
+import { usePathname } from "next/navigation";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 
 export default function Login() {
   const form = useForm({
@@ -23,6 +25,8 @@ export default function Login() {
     },
     resolver: zodResolver(loginValidator),
   });
+
+  const pathname = usePathname();
 
   const handleSubmit = async (data: z.infer<typeof loginValidator>) => {
     const result = await signIn("credentials", {
@@ -36,6 +40,8 @@ export default function Login() {
 
       return;
     }
+
+    revalidateRoute({ fullPath: pathname });
   };
 
   return (
