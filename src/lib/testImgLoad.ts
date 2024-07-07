@@ -15,14 +15,14 @@ export const testImgLoad = ({
   let timer: ReturnType<typeof setTimeout>;
   const img = new Image();
 
-  img.onerror = img.onabort = function () {
+  img.onerror = img.onabort = () => {
     if (!timedOut) {
       clearTimeout(timer);
       callback(url, "error");
     }
   };
 
-  img.onload = function () {
+  img.onload = () => {
     if (!timedOut) {
       clearTimeout(timer);
       callback(url, "success");
@@ -31,7 +31,7 @@ export const testImgLoad = ({
 
   img.src = url;
 
-  timer = setTimeout(function () {
+  timer = setTimeout(() => {
     timedOut = true;
     img.src = "//!!!!/test.jpg";
     callback(url, "timeout");
