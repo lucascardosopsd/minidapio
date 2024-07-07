@@ -9,6 +9,7 @@ import {
 } from "../ui/form";
 import { Control, useWatch } from "react-hook-form";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface UploadImageProps {
   control: Control<any>;
@@ -30,14 +31,14 @@ const UploadImage = ({ control, name }: UploadImageProps) => {
           <FormItem>
             <FormLabel>Upload da imagem</FormLabel>
             <FormControl>
-              <div className="relative">
+              <div className="relative group">
                 {watchChange && (
                   <Image
                     src={watchChange}
                     alt={name}
                     width={500}
                     height={500}
-                    className="h-full w-full object-cover absolute bottom-0 -z-10 opacity-50 rounded-lg"
+                    className="h-full w-full object-cover absolute group-hover:opacity-50 bottom-0 -z-10 rounded-lg"
                   />
                 )}
                 <UploadDropzone
@@ -58,7 +59,10 @@ const UploadImage = ({ control, name }: UploadImageProps) => {
                     uploadIcon: "text-primary",
                     container: "w-full h-full -mt-2",
                   }}
-                  className="border border-primary hover:border-primary/60"
+                  className={cn(
+                    "border border-primary hover:border-primary/60",
+                    watchChange && "opacity-0 hover:opacity-100 transition"
+                  )}
                 />
               </div>
             </FormControl>
