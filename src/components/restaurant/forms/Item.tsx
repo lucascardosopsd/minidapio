@@ -185,9 +185,10 @@ const ItemForm = ({
         {form.watch("image") && !imgUrl && (
           <Button
             type="button"
-            className="flex gap-2"
+            variant={!defaultValues ? "default" : "outline"}
             onClick={() => {
               form.resetField("image");
+              form.setValue("image", "");
               setImgUrl("");
             }}
           >
