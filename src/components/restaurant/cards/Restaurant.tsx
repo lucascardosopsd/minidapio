@@ -124,8 +124,8 @@ const RestaurantCard = ({
         },
       });
 
-      if (userRestaurants.length >= 2) {
-        toast.error("Limite de 2 restaurantes atingido");
+      if (userRestaurants.length >= 4) {
+        toast.error("Limite de 4 restaurantes atingido");
         setLoading(false);
         return;
       }
@@ -212,10 +212,7 @@ const RestaurantCard = ({
                 </PopoverTrigger>
               </div>
               <PopoverContent>
-                <div
-                  className="flex flex-col gap-2 w-full"
-                  onClick={() => setPopoverOpen(false)}
-                >
+                <div className="flex flex-col gap-2 w-full">
                   <Button
                     type="button"
                     variant="outline"
