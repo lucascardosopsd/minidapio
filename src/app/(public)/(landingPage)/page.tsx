@@ -7,7 +7,15 @@ import PlansSection from "@/components/landingPage/sections/Plans";
 import { InfiniteMovingCards } from "@/components/ui/infinity-moving-cards";
 
 const LandingPage = async () => {
-  const { restaurants } = await fetchManyRestaurants({ page: 0, take: 20 });
+  const { restaurants } = await fetchManyRestaurants({
+    page: 0,
+    take: 20,
+    query: {
+      orderBy: {
+        title: "asc",
+      },
+    },
+  });
 
   const carouselItems = restaurants.map((restaurant) => ({
     imageUrl: restaurant.logo,
