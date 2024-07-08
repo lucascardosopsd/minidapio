@@ -27,7 +27,7 @@ const Navbar = () => {
               <Button>Restaurante</Button>
             </Link>
 
-            <Link href="https://api.whatsapp.com/send?phone=5517996484654">
+            <Link href="https://api.whatsapp.com/send?phone=5517988421625">
               <Button variant="secondary">Anuncie</Button>
             </Link>
 
