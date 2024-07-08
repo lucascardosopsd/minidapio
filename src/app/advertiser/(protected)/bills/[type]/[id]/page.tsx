@@ -35,10 +35,7 @@ const Payment = ({ params }: PaymentPageProps) => {
           `/api/asaas/payment/${params.id}`
         );
 
-        if (
-          !paymentData.status.includes("RECEIVED") ||
-          paymentData.status !== "OVERDUE"
-        ) {
+        if (paymentData.status == "PENDING") {
           const { data: codeData } = await axios.get<PixCodeResProps>(
             `/api/asaas/payment/${params.id}/pixQrCode`
           );

@@ -1,4 +1,4 @@
-type StatusType =
+export type StatusType =
   | "PENDING"
   | "RECEIVED"
   | "CONFIRMED"
