@@ -38,7 +38,7 @@ const NewBillCard = ({ title, advertiserAccount }: NewBillCardProps) => {
         {
           customer: advertiserAccount?.customerId!,
           billingType: option.toUpperCase(),
-          value: 150,
+          value: plans[advertiserAccount.plan],
           dueDate: moment.add(1, "hour"),
         }
       );
