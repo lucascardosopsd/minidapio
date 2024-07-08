@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 interface InfiniteMovingCardsProps {
@@ -91,20 +92,22 @@ export const InfiniteMovingCards = ({
         )}
       >
         {items.map((item, idx) => (
-          <div className="flex flex-col justify-center items-center">
-            <Image
-              width={170}
-              height={1}
-              src={item.imageUrl}
-              alt={item.href}
-              className="relative rounded-full object-cover w-32 h-32"
-              key={item.href}
-              style={{
-                WebkitFilter: "saturate(0%) contrast(150%)",
-              }}
-            />
-            <p className="text-center font-medium">{item.title}</p>
-          </div>
+          <Link href={item.href}>
+            <div className="flex flex-col justify-center items-center">
+              <Image
+                width={170}
+                height={1}
+                src={item.imageUrl}
+                alt={item.href}
+                className="relative rounded-full object-cover w-32 h-32"
+                key={item.href}
+                style={{
+                  WebkitFilter: "saturate(0%) contrast(150%)",
+                }}
+              />
+              <p className="text-center font-medium">{item.title}</p>
+            </div>
+          </Link>
         ))}
       </ul>
     </div>

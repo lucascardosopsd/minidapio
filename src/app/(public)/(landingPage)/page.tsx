@@ -11,7 +11,7 @@ const LandingPage = async () => {
 
   const carouselItems = restaurants.map((restaurant) => ({
     imageUrl: restaurant.logo,
-    href: `${process.env.NEXT_PUBLIC_HOST}/${restaurant.userId}/${restaurant.slug}`,
+    href: `${process.env.NEXT_PUBLIC_HOST}/menu/${restaurant.userId}/${restaurant.slug}`,
     title: restaurant.title,
   }));
 
