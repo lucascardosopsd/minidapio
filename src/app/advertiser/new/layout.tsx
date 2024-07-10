@@ -9,7 +9,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
 
   if (!session) {
-    return redirect("/advertiser/login");
+    return redirect("/advertiser/auth/login");
   }
 
   const user = await getUserServerSession<UserAdAccountProps>({
