@@ -1,7 +1,6 @@
 import { getUserServerSession } from "@/actions/session/getUserServerSession";
 import AdvertiserProfileForm from "@/components/advertiser/forms/Profile";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -74,19 +73,6 @@ const NewAdvertiserAccount = async ({
               </Link>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <Link href="/advertiser/signout">
-            <Button
-              variant="outline"
-              size="sm"
-              className="group hover:bg-primary hover:border-primary transition"
-            >
-              <LogOutIcon
-                size={18}
-                className="text-primary group-hover:text-background "
-              />
-            </Button>
-          </Link>
         </div>
       </div>
 
