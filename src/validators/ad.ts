@@ -13,6 +13,6 @@ export const adValidator = z.object({
     .nullable(),
   regionId: z.string(),
   active: z.boolean().default(true),
-  expiration: z.date().optional().nullable(),
+  cta: z.string().nullable(),
   advertiserAccountId: z.string().nullable(),
 });

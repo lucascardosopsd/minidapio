@@ -38,7 +38,7 @@ const AdCard = ({ ad }: AdCardProps) => {
         {ad.link && (
           <Link href={ad.link} target="_blank" className="w-full">
             <Button className="w-full rounded-t-none" onClick={handleClick}>
-              Saiba mais
+              {ad.cta}
             </Button>
           </Link>
         )}

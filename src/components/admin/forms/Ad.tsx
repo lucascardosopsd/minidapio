@@ -54,6 +54,7 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
       link: "",
       active: true,
       userId: "",
+      cta: "Saiba mais",
       regionId: regionsOptions[0].value,
       advertiserAccountId: "",
     },
@@ -151,6 +152,25 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
     }
   }, []);
 
+  const buttonTitleOptions = [
+    {
+      label: "Saiba mais",
+      value: "Saiba mais",
+    },
+    {
+      label: "Peça agora",
+      value: "Peça agora",
+    },
+    {
+      label: "Fale conosco",
+      value: "Fale conosco",
+    },
+    {
+      label: "Contato",
+      value: "Contato",
+    },
+  ];
+
   return (
     <Form {...form}>
       <form
@@ -189,6 +209,15 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
               {option.label} - {option.state}
             </SelectItem>
           ))}
+        />
+
+        <SelectBuilder
+          name="cta"
+          title="CTA"
+          selectItem={buttonTitleOptions.map((option) => (
+            <SelectItem value={option.value}>{option.label}</SelectItem>
+          ))}
+          control={form.control}
         />
 
         <div className="flex flex-col space-y-5">
