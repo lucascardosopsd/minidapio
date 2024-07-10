@@ -45,13 +45,14 @@ const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
     try {
       await deleteAdvertiserAccount({ accountId: advertiser.id });
 
-      toast.success("Anúncio deletado");
+      toast.success("Anunciante deletado");
 
       setIsModalOpen(false);
     } catch (error) {
       console.log(error);
       toast.error("Ocorreu um erro");
     } finally {
+      revalidateRoute({ fullPath: pathname });
     }
   };
 
@@ -202,7 +203,7 @@ const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
       <TableCell>
         <DeleteModal
           action={handleDelete}
-          dialogTitle="Apagar afiliado"
+          dialogTitle="Apagar anunciante"
           triggerText={<FaTrash />}
           dialogDescription={
             <>
