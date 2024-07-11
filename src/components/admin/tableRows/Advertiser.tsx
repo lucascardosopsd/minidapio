@@ -24,20 +24,24 @@ import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
 import { Badge } from "@/components/ui/badge";
 import { Copy } from "lucide-react";
 
-interface AdvertiserRowProps {
-  advertiser: AdvertiserAccount;
+interface AdvertiserWithPaidProps extends AdvertiserAccount {
   user: User;
+  paid: boolean;
+}
+
+interface AdvertiserRowProps {
+  advertiser: AdvertiserWithPaidProps;
   afiliate: Afiliate | null;
 }
 
-const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
+const AdvertiserRow = ({ advertiser, afiliate }: AdvertiserRowProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasPaid, setHasPaid] = useState(false);
   const pathname = usePathname();
 
   const handleCheckPayment = async () => {
-    let hasPaidRes = await checkMonthlyPayment({ userId: user?.id! });
+    let hasPaidRes = await checkMonthlyPayment({ userId: advertiser.userId });
     setHasPaid(hasPaidRes);
   };
 
@@ -175,7 +179,7 @@ const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
       <TableCell>
         <Button
           size="icon"
-          onClick={() => copyToClipboard(user?.id!, "", "Id copiado!")}
+          onClick={() => copyToClipboard(advertiser.userId, "", "Id copiado!")}
           className="right-5 top-5"
           variant="secondary"
         >
@@ -190,7 +194,7 @@ const AdvertiserRow = ({ advertiser, user, afiliate }: AdvertiserRowProps) => {
           content={
             <AdminAdvertiserProfileForm
               defaultValues={advertiser}
-              userData={user}
+              userData={advertiser.user}
               onSubmit={handleSubmit}
               loading={loading}
             />

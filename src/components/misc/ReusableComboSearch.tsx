@@ -18,21 +18,23 @@ interface ItemProps {
   value: string;
 }
 
-interface ReusableCommandProps {
-  items: ItemProps[];
-  title?: string;
-  queryTitle: string;
-}
-
 type Status = {
   value: string;
   label: string;
 };
 
+interface ReusableCommandProps {
+  items: ItemProps[];
+  title?: string;
+  queryTitle: string;
+  onChange?: () => void;
+}
+
 const ReusableComboSearch = ({
   items,
   title,
   queryTitle,
+  onChange,
 }: ReusableCommandProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -46,9 +48,13 @@ const ReusableComboSearch = ({
     if (value) {
       params.set(queryTitle, value);
       replace(`${pathname}?${params.toString()}`);
+
+      onChange && onChange();
     } else {
       params.set(queryTitle, "");
       replace(`${pathname}?${params.toString()}`);
+
+      onChange && onChange();
     }
   };
 

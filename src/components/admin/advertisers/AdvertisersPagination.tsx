@@ -1,6 +1,6 @@
 import Paginate from "@/components/misc/Paginate";
 import { Separator } from "@/components/ui/separator";
-import { Prisma } from "@prisma/client";
+import { AdvertiserAccount, Prisma, User } from "@prisma/client";
 import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
 
 import AdvertiserActionBar from "./ActionBar";
@@ -13,20 +13,54 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchAfiliatesByQuery } from "@/actions/afiliate/fetchAfiliatesByQuery";
+import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
+
 interface AdvertisersPaginationprops {
   page: number;
+  paymentFilter?: "paid" | "unpaid" | null;
   query?: Prisma.AdvertiserAccountFindManyArgs;
+}
+
+interface AdvertiserWithPaidProps extends AdvertiserAccount {
+  user: User;
+  paid: boolean;
 }
 
 const AdvertisersPagination = async ({
   page,
   query,
+  paymentFilter,
 }: AdvertisersPaginationprops) => {
   const { advertisers, pages } = await fetchManyAdvertisers({
     page: page - 1,
     take: 10,
     query,
   });
+
+  let advertisersByFilter: AdvertiserWithPaidProps[] = [];
+
+  for (let advertiser of advertisers) {
+    let hasPaidRes = await checkMonthlyPayment({ userId: advertiser.userId });
+
+    if (hasPaidRes && paymentFilter === "paid") {
+      advertisersByFilter.push({
+        ...advertiser,
+        paid: true,
+      });
+    } else if (!hasPaidRes && paymentFilter === "unpaid") {
+      advertisersByFilter.push({
+        ...advertiser,
+        paid: false,
+      });
+    } else if (!paymentFilter) {
+      let hasPaidRes = await checkMonthlyPayment({ userId: advertiser.userId });
+
+      advertisersByFilter.push({
+        ...advertiser,
+        paid: hasPaidRes,
+      });
+    }
+  }
 
   return (
     <>
@@ -54,7 +88,7 @@ const AdvertisersPagination = async ({
             </TableHeader>
 
             <TableBody>
-              {advertisers.map(async (advertiser) => {
+              {advertisersByFilter.map(async (advertiser) => {
                 const afiliate = await fetchAfiliatesByQuery({
                   query: {
                     where: {
@@ -67,7 +101,6 @@ const AdvertisersPagination = async ({
                   <AdvertiserRow
                     advertiser={advertiser}
                     key={advertiser.id}
-                    user={advertiser.user}
                     afiliate={afiliate[0]}
                   />
                 );
