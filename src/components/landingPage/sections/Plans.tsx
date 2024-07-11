@@ -66,7 +66,7 @@ const PlansSection = () => {
           </div>
         </CardHeader>
         <Link
-          href="https://api.whatsapp.com/send?phone=556796641461"
+          href="https://api.whatsapp.com/send?phone=5517996484654"
           className="w-full flex justify-center"
         >
           <Button className="w-full max-w-[200px] tablet:ml-7 mb-5">

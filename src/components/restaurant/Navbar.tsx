@@ -46,7 +46,7 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
         <ThemeToggle />
 
         <Link
-          href="https://api.whatsapp.com/send?phone=5517988421625"
+          href="https://api.whatsapp.com/send?phone=5517996484654"
           className="w-full"
           target="_blank"
         >
