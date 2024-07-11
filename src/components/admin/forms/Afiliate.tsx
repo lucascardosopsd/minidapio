@@ -109,7 +109,7 @@ const AfiliateForm = ({
       handleFetchUser({ userId: defaultValues?.userId });
     }
 
-    if (!defaultValues) {
+    if (!defaultValues?.code) {
       handleGenCode();
     }
   }, []);
@@ -181,7 +181,10 @@ const AfiliateForm = ({
           {user?.id && <UserCard user={user!} preview />}
         </div>
 
-        <Fence>{defaultValues?.code}</Fence>
+        <div className="flex flex-col">
+          <p>Código</p>
+          <Fence>{defaultValues?.code || form.watch("code")}</Fence>
+        </div>
 
         <Button type="submit" disabled={loading} className="w-full">
           Confirmar
