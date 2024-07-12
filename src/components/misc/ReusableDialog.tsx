@@ -12,7 +12,7 @@ import {
 } from "../ui/dialog";
 
 interface ReusableDialogProps {
-  trigger: string | ReactNode;
+  trigger?: string | ReactNode;
   title: string | ReactNode;
   content: string | ReactNode;
   description?: string;
@@ -24,6 +24,8 @@ interface ReusableDialogProps {
   triggerStyle?: CSSProperties;
   onSubmit?: () => void;
   submitTitle?: string;
+  submitVariant?: ButtonVariants;
+  submitClassName?: string;
   loading?: boolean;
 }
 
@@ -40,17 +42,21 @@ const ReusableDialog = ({
   onSubmit,
   submitTitle = "Confirmar",
   loading = false,
+  submitVariant,
+  submitClassName,
 }: ReusableDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpen}>
       <DialogTrigger asChild>
-        <Button
-          className={triggerClassName}
-          variant={triggerVariant}
-          style={triggerStyle}
-        >
-          {trigger}
-        </Button>
+        {trigger && (
+          <Button
+            className={triggerClassName}
+            variant={triggerVariant}
+            style={triggerStyle}
+          >
+            {trigger}
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent>
@@ -61,13 +67,17 @@ const ReusableDialog = ({
           <DrawerDescription>{description}</DrawerDescription>
         </DialogHeader>
 
-        <div className="px-8 h-[calc(100svh-250px)] overflow-y-auto">
-          {content}
-        </div>
+        <div className="px-8 overflow-y-auto">{content}</div>
 
         {onSubmit && (
           <DialogFooter>
-            <Button type="submit" onClick={onSubmit} disabled={loading}>
+            <Button
+              type="submit"
+              onClick={onSubmit}
+              disabled={loading}
+              variant={submitVariant}
+              className={submitClassName}
+            >
               {submitTitle}
             </Button>
           </DialogFooter>
