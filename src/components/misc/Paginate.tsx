@@ -23,7 +23,7 @@ const Paginate = ({ pages }: PaginateProps) => {
   const paramsPage = Number(params.get("page"));
 
   const handleNext = () => {
-    if (Number(paramsPage) <= pages) {
+    if (Number(paramsPage) < pages) {
       params.set("page", String(paramsPage + 1));
 
       replace(`${pathname}?${params.toString()}`);
