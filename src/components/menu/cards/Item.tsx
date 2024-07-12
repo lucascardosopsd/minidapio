@@ -119,7 +119,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
             </p>
           )}
           <p className="font-semibold text-sm text-start text-foreground flex items-center gap-2 ">
-            <p className="flex-[4]">{item.title}</p>
+            <p className="flex-[4] select-none">{item.title}</p>
 
             <div
               onClick={handleSetFavorite}
@@ -133,7 +133,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
               </div>
             </div>
           </p>
-          <p className="text-xs text-start text-muted-foreground">
+          <p className="text-xs text-start text-muted-foreground select-none">
             {item.description}
           </p>
 
@@ -142,13 +142,13 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
               {item.sale ? (
                 <>
                   {item.price && (
-                    <p className="text-xs line-through text-start">
+                    <p className="text-xs line-through text-start select-none">
                       {formatPrice(item?.price, "pt-BR", "BRL")}
                     </p>
                   )}
                   <p
                     className={cn(
-                      "text-md text-start",
+                      "text-md text-start select-none",
                       item.highlight && "text-background"
                     )}
                     style={{ color: !item.highlight ? themeColor : "" }}
@@ -158,7 +158,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
                 </>
               ) : item?.price ? (
                 <p
-                  className="font-bold text-start"
+                  className="font-bold text-start select-none"
                   style={{ color: themeColor }}
                 >
                   {formatPrice(item?.price, "pt-BR", "BRL")}
