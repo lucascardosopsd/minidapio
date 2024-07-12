@@ -81,9 +81,10 @@ const RestaurantCard = ({
     } catch (error) {
       toast("Ocorreu um erro.");
     } finally {
-      setLoading(false);
       setOpen(false);
     }
+
+    setLoading(false);
   };
 
   const handleDeleteRestaurant = async () => {
@@ -93,34 +94,36 @@ const RestaurantCard = ({
     } catch (error) {
       toast("Ocorreu um erro ao excluir.");
       throw new Error("Can't delete restaurant");
+    } finally {
+      setOpenDeleteModal(false);
     }
   };
 
   const handleDuplicateRestaurant = async () => {
     setLoading(true);
-    const restaurantExists = await fetchUserRestaurantsByQuery({
-      where: {
-        title: newName,
-      },
-    });
-
-    if (restaurantExists[0]) {
-      toast.error("O nome do restaurante já existe. Escolha outro.");
-      return;
-    }
-
-    if (newName.length < 4) {
-      toast.error("O nome precisa ser maior");
-      return;
-    }
-
-    toast.info(
-      <p className="flex items-center gap-2">
-        duplicando, aguarde <ImSpinner className="animate-spin" />
-      </p>
-    );
-
     try {
+      const restaurantExists = await fetchUserRestaurantsByQuery({
+        where: {
+          title: newName,
+        },
+      });
+
+      if (restaurantExists[0]) {
+        toast.error("O nome do restaurante já existe. Escolha outro.");
+        return;
+      }
+
+      if (newName.length < 4) {
+        toast.error("O nome precisa ser maior");
+        return;
+      }
+
+      toast.info(
+        <p className="flex items-center gap-2">
+          duplicando, aguarde <ImSpinner className="animate-spin" />
+        </p>
+      );
+
       const userRestaurants = await fetchRestaurantsByQuery({
         where: {
           userId: restaurant.userId,
@@ -191,7 +194,9 @@ const RestaurantCard = ({
     } catch (error) {
       console.log(error);
       toast.error("Ocorreu um erro ao duplicar");
+    } finally {
       setLoading(false);
+      setOpenDuplicateModal(false);
     }
   };
 
