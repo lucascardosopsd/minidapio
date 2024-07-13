@@ -14,8 +14,12 @@ import { registerValidator } from "@/validators/register";
 import axios from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
 
-export default function Login() {
+export default function Register() {
+  const [agree, setAgree] = useState(false);
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -111,7 +115,19 @@ export default function Login() {
                 }
               />
 
-              <Button className="w-full">Registrar</Button>
+              <div className="flex gap-2 items-center">
+                <Checkbox onCheckedChange={() => setAgree(!agree)} />
+
+                <Link href="/politica_de_privacidade.pdf">
+                  <p className="underline">
+                    Li e aceito os termos de privacidade
+                  </p>
+                </Link>
+              </div>
+
+              <Button className="w-full" disabled={!agree}>
+                Registrar
+              </Button>
             </form>
           </Form>
         </div>
