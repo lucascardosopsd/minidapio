@@ -1,6 +1,6 @@
 import Paginate from "@/components/misc/Paginate";
 import { Separator } from "@/components/ui/separator";
-import { Afiliate, Prisma, User } from "@prisma/client";
+import { AdvertiserAccount, Afiliate, Prisma, User } from "@prisma/client";
 
 import {
   Table,
@@ -12,6 +12,13 @@ import {
 import AfiliateRelationsActionBar from "./ActionBar";
 import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
 import AdvertiserRow from "../../tableRows/Advertiser";
+import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
+
+interface AdvertiserWithPaidProps extends AdvertiserAccount {
+  user: User;
+  paid: boolean;
+}
+
 interface AfiliateRelationsPaginationProps {
   page: number;
   query?: Prisma.AdvertiserAccountFindManyArgs;
@@ -30,6 +37,33 @@ const AfiliateRelationsPagination = async ({
     take: 10,
     query,
   });
+
+  const paymentFilter = null;
+
+  let advertisersByFilter: AdvertiserWithPaidProps[] = [];
+
+  for (let advertiser of advertisers) {
+    let hasPaidRes = await checkMonthlyPayment({ userId: advertiser.userId });
+
+    if (hasPaidRes && paymentFilter === "paid") {
+      advertisersByFilter.push({
+        ...advertiser,
+        paid: true,
+      });
+    } else if (!hasPaidRes && paymentFilter === "unpaid") {
+      advertisersByFilter.push({
+        ...advertiser,
+        paid: false,
+      });
+    } else if (!paymentFilter) {
+      let hasPaidRes = await checkMonthlyPayment({ userId: advertiser.userId });
+
+      advertisersByFilter.push({
+        ...advertiser,
+        paid: hasPaidRes,
+      });
+    }
+  }
 
   return (
     <>
@@ -51,12 +85,11 @@ const AfiliateRelationsPagination = async ({
             </TableHeader>
 
             <TableBody>
-              {advertisers.map((advertiser) => (
+              {advertisersByFilter.map((advertiser) => (
                 <AdvertiserRow
                   advertiser={advertiser}
                   afiliate={afiliate}
                   key={advertiser.id}
-                  user={user}
                 />
               ))}
             </TableBody>
