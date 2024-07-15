@@ -95,12 +95,14 @@ const AdRow = ({ ad, regions }: AdRowProps) => {
         <ReusableDialog
           title="Editar Anúncio"
           content={
-            <AdForm
-              onSubmit={handleOnSubmit}
-              defaultValues={ad}
-              regions={regions}
-              loading={loading}
-            />
+            <div className="h-[calc(70svh)] overflow-y-auto">
+              <AdForm
+                onSubmit={handleOnSubmit}
+                defaultValues={ad}
+                regions={regions}
+                loading={loading}
+              />
+            </div>
           }
           trigger={<FaPen />}
           description="Atualize os dados do anúncio"
