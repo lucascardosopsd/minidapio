@@ -1,10 +1,12 @@
 import { fetchAds } from "@/actions/ad/fetchAds";
 import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
 import { getUserServerSession } from "@/actions/session/getUserServerSession";
+import AdCard from "@/components/advertiser/cards/Ad";
 import StatsCard from "@/components/advertiser/cards/Stats";
 import DateRange from "@/components/advertiser/inputs/DateRange";
 import PersistentDialog from "@/components/advertiser/persistentDialog";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { FullAdProps } from "@/types/ad";
 import { User } from "@prisma/client";
 import { Eye, MousePointerClick } from "lucide-react";
@@ -137,35 +139,47 @@ const AdvertiserDashboard = async ({
           />
         </div>
 
-        {/* <Separator />
+        <Separator />
+        <div className="flex flex-col gap-5">
+          <p>Anuncios</p>
+          {ads.map((ad) => (
+            <AdCard ad={ad} key={ad.id} />
+          ))}
+        </div>
 
-        <div className="flex gap-5 w-full">
-          <div className="flex flex-col gap-5 flex-1">
-            <p className="2xl">Mais Vistos</p>
+        {ads.length > 1 && (
+          <>
+            <Separator />
 
-            <div className="flex flex-col gap-5 border rounded-lg p-5">
-              {views ? (
-                rankViewed.map((ad) => <AdCard ad={ad} key={ad.id} />)
-              ) : (
-                <></>
-              )}
+            <div className="flex gap-5 w-full">
+              <div className="flex flex-col gap-5 flex-1">
+                <p className="2xl">Mais Vistos</p>
+
+                <div className="flex flex-col gap-5 border rounded-lg p-5">
+                  {views ? (
+                    rankViewed.map((ad) => <AdCard ad={ad} key={ad.id} />)
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </div>
+
+              <Separator orientation="vertical" />
+
+              <div className="flex flex-col gap-5 flex-1">
+                <p className="2xl">Mais Clicados</p>
+
+                <div className="flex flex-col gap-5 border rounded-lg p-5">
+                  {clicks ? (
+                    rankClicked.map((ad) => <AdCard ad={ad} key={ad.id} />)
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-
-          <Separator orientation="vertical" />
-
-          <div className="flex flex-col gap-5 flex-1">
-            <p className="2xl">Mais Clicados</p>
-
-            <div className="flex flex-col gap-5 border rounded-lg p-5">
-              {clicks ? (
-                rankClicked.map((ad) => <AdCard ad={ad} key={ad.id} />)
-              ) : (
-                <></>
-              )}
-            </div>
-          </div>
-        </div> */}
+          </>
+        )}
       </div>
     </section>
   );
