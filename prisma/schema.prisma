@@ -207,7 +207,7 @@ model AdvertiserAccount {
   plan         String   @default("basic")
 
   payments Payment[]
-  user     User      @relation(fields: [userId], references: [id])
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   afiliate Afiliate? @relation(fields: [afiliateCode], references: [code])
   ads      Ad[]
 }
