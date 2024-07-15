@@ -169,7 +169,7 @@ model Ad {
   views               View[]
   clicks              Click[]
 
-  user              User?              @relation(fields: [userId], references: [id])
+  user              User?              @relation(fields: [userId], references: [id], onDelete: Cascade)
   region            Region             @relation(fields: [regionId], references: [id], onDelete: Cascade)
   AdvertiserAccount AdvertiserAccount? @relation(fields: [advertiserAccountId], references: [id])
 }
