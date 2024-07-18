@@ -185,12 +185,16 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
           fieldElement={<Input maxLength={40} />}
         />
 
-        <FieldBuilder
-          title="Descrição"
-          name="description"
-          control={form.control}
-          fieldElement={<Textarea maxLength={200} />}
-        />
+        <div className="flex flex-col gap-1">
+          <FieldBuilder
+            title="Descrição"
+            name="description"
+            control={form.control}
+            fieldElement={<Textarea maxLength={200} />}
+          />
+
+          <p className="text-end text-xs">Max. 200</p>
+        </div>
 
         <UploadImage name="image" control={form.control} />
 
