@@ -2,15 +2,15 @@
 import ReusableDialog from "@/components/misc/ReusableDialog";
 import { Card, CardHeader } from "@/components/ui/card";
 import { useState } from "react";
-import { AdProps } from "@/types/ad";
 import { updateAd } from "@/actions/ad/updateAd";
 import { toast } from "sonner";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import Image from "next/image";
 import { Power } from "lucide-react";
+import { Ad } from "@prisma/client";
 
 interface AdCardProps {
-  ad: AdProps;
+  ad: Ad;
 }
 
 const AdCard = ({ ad }: AdCardProps) => {

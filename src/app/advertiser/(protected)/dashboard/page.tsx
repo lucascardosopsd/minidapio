@@ -7,10 +7,15 @@ import DateRange from "@/components/advertiser/inputs/DateRange";
 import PersistentDialog from "@/components/advertiser/persistentDialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { FullAdProps } from "@/types/ad";
-import { User } from "@prisma/client";
+import { ClickProps, ViewProps } from "@/types/ad";
+import { Ad, User } from "@prisma/client";
 import { Eye, MousePointerClick } from "lucide-react";
 import Link from "next/link";
+
+export interface FullAdProps extends Ad {
+  clicks: ClickProps[];
+  views: ViewProps[];
+}
 
 interface AdvertiserDashboardprops {
   searchParams?: {
@@ -142,6 +147,7 @@ const AdvertiserDashboard = async ({
         <Separator />
         <div className="flex flex-col gap-5">
           <p>Anuncios</p>
+
           {ads.map((ad) => (
             <AdCard ad={ad} key={ad.id} />
           ))}
