@@ -12,7 +12,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(nextAuthOptions);
 
   if (!session) {
-    return redirect("/admin/login");
+    return redirect("/jsnHktoSE/login");
   }
 
   const user = await prisma.user.findUnique({

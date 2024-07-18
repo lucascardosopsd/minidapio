@@ -64,7 +64,15 @@ const AdminDashboard = async ({ searchParams }: AdminPageProps) => {
     },
   });
 
-  const { advertisers } = await fetchManyAdvertisers({ page: 0, take: 10000 });
+  const { advertisers } = await fetchManyAdvertisers({
+    page: 0,
+    take: 10000,
+    query: {
+      include: {
+        user: true,
+      },
+    },
+  });
 
   return (
     <section className="w-full h-full pt-5 flex flex-col gap-5 relative">

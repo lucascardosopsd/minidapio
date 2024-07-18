@@ -26,6 +26,7 @@ import { Copy } from "lucide-react";
 import AdForm from "../forms/Ad";
 import { createNewAd } from "@/actions/ad/createNewAd";
 import { adValidator } from "@/validators/ad";
+import { fetchRegionsByQuery } from "@/actions/region/fetchRegionsByQuery";
 
 interface AdvertiserWithPaidProps extends AdvertiserAccount {
   user: User;
@@ -47,7 +48,22 @@ const AdvertiserRow = ({
   const [isNewAdOpen, setIsNewAdOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasPaid, setHasPaid] = useState(false);
+  const [regionName, setRegionName] = useState("");
   const pathname = usePathname();
+
+  const handleFetchRegionName = async () => {
+    const region = await fetchRegionsByQuery({
+      query: {
+        where: { id: advertiser.regionId || "" },
+      },
+    });
+
+    setRegionName(region[0].title);
+  };
+
+  useEffect(() => {
+    handleFetchRegionName();
+  }, []);
 
   const handleCheckPayment = async () => {
     let hasPaidRes = await checkMonthlyPayment({ userId: advertiser.userId });
@@ -245,6 +261,8 @@ const AdvertiserRow = ({
           onOpen={setIsNewAdOpen}
         />
       </TableCell>
+
+      <TableCell>{regionName|| "Nenhuma"}</TableCell>
 
       <TableCell>
         <ReusableDialog

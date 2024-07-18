@@ -74,6 +74,9 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
             gte: new Date(startDate),
           },
         },
+      include: {
+        user: true,
+      },
     },
   });
 

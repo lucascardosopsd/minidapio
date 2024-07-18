@@ -43,9 +43,15 @@ const AdvertisersPage = async ({ searchParams }: AdvertisersPageProps) => {
                   },
                 },
                 orderBy: orderBy,
+                include: {
+                  region: true,
+                },
               }
             : {
                 orderBy: orderBy,
+                include: {
+                  region: true,
+                },
               }
         }
       />
