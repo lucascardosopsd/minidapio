@@ -13,6 +13,7 @@ import AfiliateRelationsActionBar from "./ActionBar";
 import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
 import AdvertiserRow from "../../tableRows/Advertiser";
 import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
+import { fetchRegions } from "@/actions/region/fetchRegions";
 
 interface AdvertiserWithPaidProps extends AdvertiserAccount {
   user: User;
@@ -37,6 +38,8 @@ const AfiliateRelationsPagination = async ({
     take: 10,
     query,
   });
+
+  const regions = await fetchRegions();
 
   const paymentFilter = null;
 
@@ -90,6 +93,7 @@ const AfiliateRelationsPagination = async ({
                   advertiser={advertiser}
                   afiliate={afiliate}
                   key={advertiser.id}
+                  regions={regions}
                 />
               ))}
             </TableBody>

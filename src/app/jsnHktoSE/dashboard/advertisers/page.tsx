@@ -1,3 +1,4 @@
+import { fetchRegions } from "@/actions/region/fetchRegions";
 import AdvertisersPagination from "@/components/admin/advertisers/AdvertisersPagination";
 
 interface AdvertisersPageProps {
@@ -24,11 +25,14 @@ const AdvertisersPage = async ({ searchParams }: AdvertisersPageProps) => {
     };
   }
 
+  const regions = await fetchRegions();
+
   return (
     <div className="relative w-full ">
       <AdvertisersPagination
         paymentFilter={paymentFilter}
         page={page}
+        regions={regions}
         query={
           name
             ? {

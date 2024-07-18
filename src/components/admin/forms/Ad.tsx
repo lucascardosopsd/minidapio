@@ -20,14 +20,15 @@ import { RegionProps } from "@/types/region";
 import { adValidator } from "@/validators/ad";
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import { Ad, AdvertiserAccount, User } from "@prisma/client";
+import { AdvertiserAccount, User } from "@prisma/client";
 import AdvertiserCard from "../cards/Advertiser";
 import { getAdvertiserAccountByQuery } from "@/actions/advertiser/getAdvertiserAccountByQuery";
 import { fetchUserByQuery } from "@/actions/user/fetchUserByQuery";
 import { ImSpinner2 } from "react-icons/im";
+import { CustomAdFormProps } from "@/types/ad";
 
 interface AdFormProps {
-  defaultValues: Ad | null;
+  defaultValues: CustomAdFormProps | null;
   onSubmit: (data: z.infer<typeof adValidator>) => Promise<void>;
   regions: RegionProps[];
   loading: boolean;
@@ -175,7 +176,7 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-5 pb-10 max-w-screen-mobile mx-auto"
+        className="space-y-5 pb-10 max-w-screen-mobile mx-auto h-[70svh] overflow-auto"
       >
         <FieldBuilder
           title="Título"
@@ -238,7 +239,12 @@ const AdForm = ({ defaultValues, onSubmit, regions, loading }: AdFormProps) => {
               />
 
               {advertiser && user && (
-                <AdvertiserCard advertiser={advertiser!} user={user!} preview />
+                <AdvertiserCard
+                  advertiser={advertiser!}
+                  user={user!}
+                  regions={null}
+                  preview
+                />
               )}
             </div>
 

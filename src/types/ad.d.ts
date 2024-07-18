@@ -1,19 +1,13 @@
-export interface AdProps {
-  id: string;
+export interface CustomAdFormProps {
   title: string;
   description: string;
   image: string;
   link?: string | null;
-  expiration?: Date | null;
   active: boolean;
   regionId: string;
-  regionId: string;
-  restaurantId?: string | null;
-  restaurant?: Restaurant | null;
   userId: string | null;
+  cta: string;
   advertiserAccountId: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface FullAdProps extends AdProps {

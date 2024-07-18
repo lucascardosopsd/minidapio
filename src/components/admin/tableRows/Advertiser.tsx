@@ -4,7 +4,7 @@ import DeleteModal from "@/components/restaurant/ConfirmModal";
 import { Button } from "@/components/ui/button";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import { useEffect, useState } from "react";
-import { AdvertiserAccount, Afiliate, User } from "@prisma/client";
+import { AdvertiserAccount, Afiliate, Region, User } from "@prisma/client";
 import ReusableDialog from "@/components/misc/ReusableDialog";
 import { toast } from "sonner";
 import { deleteAdvertiserAccount } from "@/actions/advertiser/deleteAdvertiser";
@@ -23,6 +23,9 @@ import { usePathname } from "next/navigation";
 import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
 import { Badge } from "@/components/ui/badge";
 import { Copy } from "lucide-react";
+import AdForm from "../forms/Ad";
+import { createNewAd } from "@/actions/ad/createNewAd";
+import { adValidator } from "@/validators/ad";
 
 interface AdvertiserWithPaidProps extends AdvertiserAccount {
   user: User;
@@ -32,10 +35,16 @@ interface AdvertiserWithPaidProps extends AdvertiserAccount {
 interface AdvertiserRowProps {
   advertiser: AdvertiserWithPaidProps;
   afiliate: Afiliate | null;
+  regions: Region[];
 }
 
-const AdvertiserRow = ({ advertiser, afiliate }: AdvertiserRowProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const AdvertiserRow = ({
+  advertiser,
+  afiliate,
+  regions,
+}: AdvertiserRowProps) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isNewAdOpen, setIsNewAdOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasPaid, setHasPaid] = useState(false);
   const pathname = usePathname();
@@ -51,7 +60,7 @@ const AdvertiserRow = ({ advertiser, afiliate }: AdvertiserRowProps) => {
 
       toast.success("Anunciante deletado");
 
-      setIsModalOpen(false);
+      setIsDeleteModalOpen(false);
     } catch (error) {
       console.log(error);
       toast.error("Ocorreu um erro");
@@ -154,7 +163,25 @@ const AdvertiserRow = ({ advertiser, afiliate }: AdvertiserRowProps) => {
         fullPath: pathname,
       });
       setLoading(false);
-      setIsModalOpen(false);
+      setIsDeleteModalOpen(false);
+    }
+  };
+
+  const handleNewAd = async (data: z.infer<typeof adValidator>) => {
+    try {
+      setLoading(true);
+
+      await createNewAd({ data });
+
+      toast.success("Anúncio criado");
+
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Ocorreu um erro");
+    } finally {
+      setLoading(false);
+      setIsNewAdOpen(false);
     }
   };
 
@@ -177,14 +204,46 @@ const AdvertiserRow = ({ advertiser, afiliate }: AdvertiserRowProps) => {
       </TableCell>
 
       <TableCell>
-        <Button
-          size="icon"
-          onClick={() => copyToClipboard(advertiser.userId, "", "Id copiado!")}
-          className="right-5 top-5"
-          variant="secondary"
-        >
-          <Copy size={16} />
-        </Button>
+        <div className="flex items-center justify-center w-full">
+          <Button
+            onClick={() =>
+              copyToClipboard(advertiser.userId, "", "Id copiado!")
+            }
+            className="gap-2"
+            variant="secondary"
+          >
+            <p>Copiar</p>
+            <Copy size={16} />
+          </Button>
+        </div>
+      </TableCell>
+
+      <TableCell>
+        <ReusableDialog
+          trigger="Vincular"
+          triggerClassName="w-full"
+          title="Vincular anúncio"
+          content={
+            <AdForm
+              defaultValues={{
+                title: "",
+                advertiserAccountId: advertiser.id,
+                regionId: advertiser.regionId || "",
+                active: true,
+                cta: "",
+                image: "",
+                link: "",
+                description: "",
+                userId: advertiser.userId,
+              }}
+              onSubmit={handleNewAd}
+              loading={loading}
+              regions={regions}
+            />
+          }
+          isOpen={isNewAdOpen}
+          onOpen={setIsNewAdOpen}
+        />
       </TableCell>
 
       <TableCell>
@@ -192,15 +251,18 @@ const AdvertiserRow = ({ advertiser, afiliate }: AdvertiserRowProps) => {
           title="Editar anunciante"
           trigger={<FaPen />}
           content={
-            <AdminAdvertiserProfileForm
-              defaultValues={advertiser}
-              userData={advertiser.user}
-              onSubmit={handleSubmit}
-              loading={loading}
-            />
+            <div className="h-[70svh] overflow-y-auto">
+              <AdminAdvertiserProfileForm
+                defaultValues={advertiser}
+                userData={advertiser.user}
+                onSubmit={handleSubmit}
+                loading={loading}
+                regions={regions}
+              />
+            </div>
           }
-          isOpen={isModalOpen}
-          onOpen={setIsModalOpen}
+          isOpen={isDeleteModalOpen}
+          onOpen={setIsDeleteModalOpen}
         />
       </TableCell>
 

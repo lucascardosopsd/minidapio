@@ -5,7 +5,7 @@ import DeleteModal from "@/components/restaurant/ConfirmModal";
 import { Button } from "@/components/ui/button";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import { useState } from "react";
-import { AdvertiserAccount, User } from "@prisma/client";
+import { AdvertiserAccount, Region, User } from "@prisma/client";
 import ReusableDialog from "@/components/misc/ReusableDialog";
 import { toast } from "sonner";
 import { deleteAdvertiserAccount } from "@/actions/advertiser/deleteAdvertiser";
@@ -23,12 +23,14 @@ interface AdvertiserCardProps {
   advertiser: AdvertiserAccount;
   user: User | null;
   preview?: boolean;
+  regions: Region[] | null;
 }
 
 const AdvertiserCard = ({
   advertiser,
   preview = false,
   user,
+  regions,
 }: AdvertiserCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -166,12 +168,15 @@ const AdvertiserCard = ({
               title="Editar anunciante"
               trigger={<FaPen />}
               content={
-                <AdminAdvertiserProfileForm
-                  defaultValues={advertiser}
-                  userData={user}
-                  onSubmit={handleSubmit}
-                  loading={loading}
-                />
+                <div className="h-[70svh] overflow-y-auto">
+                  <AdminAdvertiserProfileForm
+                    defaultValues={advertiser}
+                    userData={user}
+                    onSubmit={handleSubmit}
+                    loading={loading}
+                    regions={regions}
+                  />
+                </div>
               }
               isOpen={isModalOpen}
               onOpen={setIsModalOpen}

@@ -1,6 +1,6 @@
 import Paginate from "@/components/misc/Paginate";
 import { Separator } from "@/components/ui/separator";
-import { AdvertiserAccount, Prisma, User } from "@prisma/client";
+import { AdvertiserAccount, Prisma, Region, User } from "@prisma/client";
 import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
 
 import AdvertiserActionBar from "./ActionBar";
@@ -15,21 +15,23 @@ import {
 import { fetchAfiliatesByQuery } from "@/actions/afiliate/fetchAfiliatesByQuery";
 import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
 
+interface AdvertiserWithPaidProps extends AdvertiserAccount {
+  user: User;
+  paid: boolean;
+}
+
 interface AdvertisersPaginationprops {
   page: number;
   paymentFilter?: "paid" | "unpaid" | null;
   query?: Prisma.AdvertiserAccountFindManyArgs;
-}
-
-interface AdvertiserWithPaidProps extends AdvertiserAccount {
-  user: User;
-  paid: boolean;
+  regions: Region[];
 }
 
 const AdvertisersPagination = async ({
   page,
   query,
   paymentFilter,
+  regions,
 }: AdvertisersPaginationprops) => {
   const { advertisers, pages } = await fetchManyAdvertisers({
     page: page - 1,
@@ -81,6 +83,8 @@ const AdvertisersPagination = async ({
 
                 <TableHead className="text-center">ID</TableHead>
 
+                <TableHead className="text-center">Novo Anúncio</TableHead>
+
                 <TableHead>Editar</TableHead>
 
                 <TableHead>Deletar</TableHead>
@@ -102,6 +106,7 @@ const AdvertisersPagination = async ({
                     advertiser={advertiser}
                     key={advertiser.id}
                     afiliate={afiliate[0]}
+                    regions={regions}
                   />
                 );
               })}

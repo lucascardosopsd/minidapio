@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SelectItem } from "@/components/ui/select";
-import { AdvertiserAccount, Afiliate, User } from "@prisma/client";
+import { AdvertiserAccount, Afiliate, Region, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { PatternFormat } from "react-number-format";
 import { z } from "zod";
@@ -31,6 +31,7 @@ interface AdminAdvertiserProfileFormProps {
     data: z.infer<typeof adminAdvertiserProfile>,
     userData: User
   ) => Promise<void>;
+  regions: Region[] | null;
 }
 
 const AdminAdvertiserProfileForm = ({
@@ -38,6 +39,7 @@ const AdminAdvertiserProfileForm = ({
   userData,
   onSubmit,
   loading,
+  regions,
 }: AdminAdvertiserProfileFormProps) => {
   const [afiliate, setAfiliate] = useState<Afiliate | null>({} as Afiliate);
 
@@ -56,6 +58,7 @@ const AdminAdvertiserProfileForm = ({
           customerId: "",
           afiliateCode: 0,
           plan: "basic",
+          regionId: "",
         },
   });
 
@@ -84,6 +87,12 @@ const AdminAdvertiserProfileForm = ({
       return false;
     }
   };
+
+  const regionsOptions = regions?.map((region: Region) => ({
+    label: region.title,
+    value: region.id,
+    state: region.state,
+  }));
 
   useEffect(() => {
     if (defaultValues?.afiliateCode) {
@@ -146,6 +155,17 @@ const AdminAdvertiserProfileForm = ({
           name="phone"
           title="Telefone Celular"
           fieldElement={<PatternFormat format="+55(##)#####-####" />}
+        />
+
+        <SelectBuilder
+          control={form.control}
+          name="regionId"
+          title="Região"
+          selectItem={regionsOptions?.map((option) => (
+            <SelectItem value={option.value} key={option.label}>
+              {option.label} - {option.state}
+            </SelectItem>
+          ))}
         />
 
         <div className="space-y-2 flex-1">
