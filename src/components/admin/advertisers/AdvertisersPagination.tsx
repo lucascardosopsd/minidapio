@@ -83,9 +83,9 @@ const AdvertisersPagination = async ({
 
                 <TableHead>Pagamento</TableHead>
 
-                <TableHead className="text-center">ID</TableHead>
-
                 <TableHead>Região</TableHead>
+
+                {/* <TableHead className="text-center">ID</TableHead> */}
 
                 <TableHead className="text-center">Anúncio</TableHead>
                 <TableHead>Editar</TableHead>

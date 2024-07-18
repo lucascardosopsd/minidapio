@@ -1,8 +1,6 @@
 "use client";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import DeleteModal from "@/components/restaurant/ConfirmModal";
-import { Button } from "@/components/ui/button";
-import { copyToClipboard } from "@/tools/copyToClipboard";
 import { useEffect, useState } from "react";
 import { AdvertiserAccount, Afiliate, Region, User } from "@prisma/client";
 import ReusableDialog from "@/components/misc/ReusableDialog";
@@ -22,7 +20,7 @@ import { revalidateRoute } from "@/actions/revalidateRoute";
 import { usePathname } from "next/navigation";
 import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import AdForm from "../forms/Ad";
 import { createNewAd } from "@/actions/ad/createNewAd";
 import { adValidator } from "@/validators/ad";
@@ -222,7 +220,9 @@ const AdvertiserRow = ({
         </Badge>
       </TableCell>
 
-      <TableCell>
+      <TableCell>{regionName || "Nenhuma"}</TableCell>
+
+      {/* <TableCell>
         <div className="flex items-center justify-center w-full">
           <Button
             onClick={() =>
@@ -234,9 +234,7 @@ const AdvertiserRow = ({
             <Copy size={16} />
           </Button>
         </div>
-      </TableCell>
-
-      <TableCell>{regionName || "Nenhuma"}</TableCell>
+      </TableCell> */}
 
       <TableCell>
         <div className="flex justify-center">
