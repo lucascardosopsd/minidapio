@@ -22,11 +22,12 @@ import { revalidateRoute } from "@/actions/revalidateRoute";
 import { usePathname } from "next/navigation";
 import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
 import { Badge } from "@/components/ui/badge";
-import { Copy } from "lucide-react";
+import { Copy, Plus } from "lucide-react";
 import AdForm from "../forms/Ad";
 import { createNewAd } from "@/actions/ad/createNewAd";
 import { adValidator } from "@/validators/ad";
 import { fetchRegionsByQuery } from "@/actions/region/fetchRegionsByQuery";
+import { plansI18n } from "@/constants/plansI18n";
 
 interface AdvertiserWithPaidProps extends AdvertiserAccount {
   user: User;
@@ -209,6 +210,8 @@ const AdvertiserRow = ({
     <TableRow>
       <TableCell>{advertiser?.name}</TableCell>
 
+      <TableCell>{plansI18n[advertiser?.plan]}</TableCell>
+
       <TableCell>{afiliate?.name || "Desconhecido"}</TableCell>
 
       <TableCell>
@@ -225,44 +228,45 @@ const AdvertiserRow = ({
             onClick={() =>
               copyToClipboard(advertiser.userId, "", "Id copiado!")
             }
-            className="gap-2"
+            size="icon"
             variant="secondary"
           >
-            <p>Copiar</p>
             <Copy size={16} />
           </Button>
         </div>
       </TableCell>
 
-      <TableCell>
-        <ReusableDialog
-          trigger="Vincular"
-          triggerClassName="w-full"
-          title="Vincular anúncio"
-          content={
-            <AdForm
-              defaultValues={{
-                title: "",
-                advertiserAccountId: advertiser.id,
-                regionId: advertiser.regionId || "",
-                active: true,
-                cta: "",
-                image: "",
-                link: "",
-                description: "",
-                userId: advertiser.userId,
-              }}
-              onSubmit={handleNewAd}
-              loading={loading}
-              regions={regions}
-            />
-          }
-          isOpen={isNewAdOpen}
-          onOpen={setIsNewAdOpen}
-        />
-      </TableCell>
+      <TableCell>{regionName || "Nenhuma"}</TableCell>
 
-      <TableCell>{regionName|| "Nenhuma"}</TableCell>
+      <TableCell>
+        <div className="flex justify-center">
+          <ReusableDialog
+            trigger={<Plus />}
+            triggerSize="icon"
+            title="Vincular anúncio"
+            content={
+              <AdForm
+                defaultValues={{
+                  title: "",
+                  advertiserAccountId: advertiser.id,
+                  regionId: advertiser.regionId || "",
+                  active: true,
+                  cta: "",
+                  image: "",
+                  link: "",
+                  description: "",
+                  userId: advertiser.userId,
+                }}
+                onSubmit={handleNewAd}
+                loading={loading}
+                regions={regions}
+              />
+            }
+            isOpen={isNewAdOpen}
+            onOpen={setIsNewAdOpen}
+          />
+        </div>
+      </TableCell>
 
       <TableCell>
         <ReusableDialog

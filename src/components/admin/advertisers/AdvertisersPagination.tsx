@@ -77,16 +77,17 @@ const AdvertisersPagination = async ({
               <TableRow>
                 <TableHead>Nome</TableHead>
 
+                <TableHead>Plano</TableHead>
+
                 <TableHead>Afiliado</TableHead>
 
                 <TableHead>Pagamento</TableHead>
 
                 <TableHead className="text-center">ID</TableHead>
 
-                <TableHead className="text-center">Novo Anúncio</TableHead>
-
                 <TableHead>Região</TableHead>
 
+                <TableHead className="text-center">Anúncio</TableHead>
                 <TableHead>Editar</TableHead>
 
                 <TableHead>Deletar</TableHead>

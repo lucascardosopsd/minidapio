@@ -27,6 +27,7 @@ interface ReusableDialogProps {
   submitVariant?: ButtonVariants;
   submitClassName?: string;
   loading?: boolean;
+  triggerSize?: "default" | "sm" | "lg" | "icon" | null | undefined;
 }
 
 const ReusableDialog = ({
@@ -44,6 +45,7 @@ const ReusableDialog = ({
   loading = false,
   submitVariant,
   submitClassName,
+  triggerSize,
 }: ReusableDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpen}>
@@ -53,6 +55,7 @@ const ReusableDialog = ({
             className={triggerClassName}
             variant={triggerVariant}
             style={triggerStyle}
+            size={triggerSize || "default"}
           >
             {trigger}
           </Button>
