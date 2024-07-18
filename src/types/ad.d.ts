@@ -6,8 +6,8 @@ export interface CustomAdFormProps {
   active: boolean;
   regionId: string;
   userId: string | null;
-  cta: string;
-  advertiserAccountId: string;
+  cta: string | null;
+  advertiserAccountId: string | null;
 }
 
 export interface FullAdProps extends AdProps {
