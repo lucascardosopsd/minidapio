@@ -50,7 +50,7 @@ export default function Login() {
         return;
       }
 
-      router.push("/advertiser/auth/login");
+      toast.success("Usuário cadastrado");
     } catch (error) {
       console.log(error);
       toast.error("Ocorreu um erro");
