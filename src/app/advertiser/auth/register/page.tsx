@@ -31,7 +31,7 @@ export default function Login() {
   const handleSubmit = async (data: z.infer<typeof registerValidator>) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST}/api/auth/register`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/auth/register/`,
         {
           data: {
             name: data.name,
@@ -50,7 +50,7 @@ export default function Login() {
         return;
       }
 
-      toast.success("Usuário cadastrado");
+      router.push("/advertiser/auth/login/");
     } catch (error) {
       console.log(error);
       toast.error("Ocorreu um erro");
