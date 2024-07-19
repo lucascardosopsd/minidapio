@@ -28,7 +28,7 @@ const Payment = ({ params }: PaymentPageProps) => {
   const [methodCode, setMethodCode] = useState("");
   const [methodImage, setMethodImage] = useState("");
   const [loading, setLoading] = useState(true);
-  const [userOnPage, setUserOnPage] = useState(false);
+  const [userOnPage, setUserOnPage] = useState(true);
   const [paymentData, setPaymentData] = useState<PaymentResProps | null>(null);
   const router = useRouter();
 
