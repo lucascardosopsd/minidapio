@@ -82,6 +82,10 @@ export default function Login() {
                 }
               />
 
+              <Link href="/auth/reset/" className="text-xs text-primary">
+                Esqueci minha senha
+              </Link>
+
               <Button className="w-full">Entrar</Button>
             </form>
           </Form>
