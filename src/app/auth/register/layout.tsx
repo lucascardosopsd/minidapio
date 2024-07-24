@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@/components/misc/ThemeProvider";
 import { ReactNode } from "react";
 
-const Layout = async ({ children }: { children: ReactNode }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <ThemeProvider
       attribute="class"
