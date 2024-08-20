@@ -3,7 +3,6 @@
 import { SidebarOptionProps } from "@/types/sidebar";
 import {
   Grip,
-  Handshake,
   Image,
   MapPinned,
   Megaphone,
@@ -37,11 +36,11 @@ export const adminSidebarOptions: SidebarOptionProps[] = [
     icon: UtensilsCrossed,
     href: "/jsnHktoSE/dashboard/restaurants?page=1",
   },
-  {
-    label: "Afiliados",
-    icon: Handshake,
-    href: "/jsnHktoSE/dashboard/afiliates?page=1",
-  },
+  // {
+  //   label: "Afiliados",
+  //   icon: Handshake,
+  //   href: "/jsnHktoSE/dashboard/afiliates?page=1",
+  // },
   {
     label: "Anunciantes",
     icon: Megaphone,
