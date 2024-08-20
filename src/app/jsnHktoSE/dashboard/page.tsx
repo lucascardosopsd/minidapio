@@ -1,4 +1,4 @@
-import { fetchAds } from "@/actions/ad/fetchAds";
+import { fetchManyAds } from "@/actions/ad/fetchManyAds";
 import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
 import { fetchManyPayments } from "@/actions/payments/fetchManyPayments";
 import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
@@ -6,13 +6,24 @@ import { fetchManyUsers } from "@/actions/user/fetchManyUsers";
 import StatsCard from "@/components/advertiser/cards/Stats";
 import DateRange from "@/components/advertiser/inputs/DateRange";
 import { formatPrice } from "@/tools/formatPrice";
+import { Ad, View } from "@prisma/client";
 import {
   DollarSign,
+  Eye,
   Image,
   Megaphone,
   User,
   UtensilsCrossed,
 } from "lucide-react";
+
+interface AdWithViews extends Ad {
+  views: View[];
+}
+
+interface AdsWithViewsReturn extends Ad {
+  ads: AdWithViews[];
+  total: number;
+}
 
 interface AdminDashboardProps {
   searchParams?: {
@@ -44,7 +55,7 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
     take: 1000000,
   });
 
-  const { ads } = await fetchAds({
+  const { ads } = await fetchManyAds<AdsWithViewsReturn>({
     page: 0,
     take: 1000,
     query: {
@@ -60,6 +71,9 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
           : {
               active: true,
             },
+      include: {
+        views: true,
+      },
     },
   });
 
@@ -99,8 +113,13 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
     0
   );
 
+  const totalViews = ads.reduce(
+    (prev, current) => current.views.length + prev,
+    0
+  );
+
   return (
-    <section className="flex flex-col items-center justify-center">
+    <section className="flex flex-col items-center justify-center overflow-y-auto h-screen">
       <div className="border rounded p-5 flex flex-col gap-5">
         <p className="text-2xl text-primary">Período</p>
 
@@ -132,11 +151,23 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
           />
 
           <StatsCard
+            title="Anuncios totais"
+            icon={Image}
+            content={<p className="text-4xl text-center">{ads.length}</p>}
+          />
+
+          <StatsCard
             title="Restaurantes totais"
             icon={UtensilsCrossed}
             content={
               <p className="text-4xl text-center">{restaurants.length}</p>
             }
+          />
+
+          <StatsCard
+            title="Visualizações totais"
+            icon={Eye}
+            content={<p className="text-4xl text-center">{totalViews}</p>}
           />
 
           <StatsCard
