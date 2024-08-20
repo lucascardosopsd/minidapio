@@ -133,13 +133,13 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
 
         <div className="grid grid-cols-1 tablet:grid-cols-3 gap-5">
           <StatsCard
-            title="Usuários totais"
+            title="Usuários"
             icon={User}
             content={<p className="text-4xl text-center">{users.length}</p>}
           />
 
           <StatsCard
-            title="Anunciantes totais"
+            title="Anunciantes"
             icon={Megaphone}
             content={
               <p className="text-4xl text-center">{advertisers.length}</p>
@@ -147,19 +147,13 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
           />
 
           <StatsCard
-            title="Anuncios totais"
+            title="Anuncios"
             icon={Image}
             content={<p className="text-4xl text-center">{ads.length}</p>}
           />
 
           <StatsCard
-            title="Anuncios totais"
-            icon={Image}
-            content={<p className="text-4xl text-center">{ads.length}</p>}
-          />
-
-          <StatsCard
-            title="Restaurantes totais"
+            title="Restaurantes"
             icon={UtensilsCrossed}
             content={
               <p className="text-4xl text-center">{restaurants.length}</p>
@@ -167,13 +161,13 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
           />
 
           <StatsCard
-            title="Visualizações totais"
+            title="Visualizações de anúncio"
             icon={Eye}
             content={<p className="text-4xl text-center">{totalViews}</p>}
           />
 
           <StatsCard
-            title="Faturamento bruto total"
+            title="Faturamento bruto"
             icon={DollarSign}
             content={
               <p className="text-4xl text-center">
