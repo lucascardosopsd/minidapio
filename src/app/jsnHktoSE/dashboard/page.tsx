@@ -118,6 +118,8 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
     0
   );
 
+  console.log(ads);
+
   return (
     <section className="flex flex-col items-center justify-center overflow-y-auto h-screen">
       <div className="border rounded p-5 flex flex-col gap-5">

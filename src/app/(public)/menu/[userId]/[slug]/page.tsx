@@ -72,10 +72,14 @@ const Menu = async ({ params: { userId, slug } }: MenuProps) => {
 
       <SearchSection restaurant={restaurants[0]} />
 
-      <CategoriesBar
-        categories={restaurants[0].Categories}
-        themeColor={restaurants[0].color}
-      />
+      {restaurants[0].Categories.length ? (
+        <CategoriesBar
+          categories={restaurants[0].Categories}
+          themeColor={restaurants[0].color}
+        />
+      ) : (
+        <p className="text-center">Sem categorias</p>
+      )}
 
       <div className="h-[calc(100svh-28svh)] overflow-y-auto p-5 relative pb-32 mx-auto">
         {/* Gradient FX */}
@@ -85,6 +89,7 @@ const Menu = async ({ params: { userId, slug } }: MenuProps) => {
           items={items}
           themeColor={restaurants[0].color}
           regionId={restaurants[0].regionId!}
+          restaurantId={restaurants[0].id}
         />
       </div>
     </div>

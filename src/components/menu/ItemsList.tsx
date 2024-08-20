@@ -3,7 +3,7 @@ import { Item } from "@prisma/client";
 import ItemCard from "./cards/Item";
 import { adStore } from "@/context/ads";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, useInView, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { createView } from "@/actions/createView";
 import AdCard from "./cards/adCard";
 import { currentCategoryStore } from "@/context/currentCategory";
@@ -13,15 +13,20 @@ interface ItemsListProps {
   items: Item[];
   themeColor: string;
   regionId: string;
+  restaurantId: string;
 }
 
-const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
+const ItemsList = ({
+  items,
+  themeColor,
+  regionId,
+  restaurantId,
+}: ItemsListProps) => {
   const { currentAd, setCurrentAd } = adStore();
   const { categoryId } = currentCategoryStore();
   const [adOrder, setAdOrder] = useState(0);
 
   const adRef = useRef(null);
-  const isAdInView = useInView(adRef);
 
   const handlePickAd = async () => {
     const ad = await pickAd({
@@ -38,9 +43,10 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
   const handleCreateView = () => {
     try {
       createView({
-        restaurantId: items[0].restaurantId!,
+        restaurantId: restaurantId,
         adId: currentAd?.id!,
       });
+
       return;
     } catch (error) {
       console.log(error);
@@ -48,8 +54,26 @@ const ItemsList = ({ items, themeColor, regionId }: ItemsListProps) => {
   };
 
   useEffect(() => {
-    if (currentAd && isAdInView) return handleCreateView();
-  }, [isAdInView]);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          handleCreateView();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (adRef.current) {
+      observer.observe(adRef.current);
+    }
+
+    return () => {
+      if (adRef.current) {
+        observer.unobserve(adRef.current);
+      }
+    };
+  }, [currentAd]);
 
   useEffect(() => {
     const length = items.filter((item) => item.categoryId == categoryId).length;
