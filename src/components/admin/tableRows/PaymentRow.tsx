@@ -42,7 +42,7 @@ const PaymentRow = ({ payment }: AdRowProps) => {
 
       <TableCell>{plans[payment?.AdvertiserAccount?.plan]}</TableCell>
 
-      <TableCell>{payment?.createdAt.toDateString()}</TableCell>
+      <TableCell>{payment?.createdAt.toLocaleDateString()}</TableCell>
 
       <TableCell>
         <DeleteModal
