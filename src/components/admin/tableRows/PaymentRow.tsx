@@ -40,7 +40,12 @@ const PaymentRow = ({ payment }: AdRowProps) => {
 
       <TableCell>{plansI18n[payment?.AdvertiserAccount?.plan]}</TableCell>
 
-      <TableCell>{plans[payment?.AdvertiserAccount?.plan]}</TableCell>
+      <TableCell>
+        {new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(plans[payment?.AdvertiserAccount?.plan])}
+      </TableCell>
 
       <TableCell>{payment?.createdAt.toLocaleDateString()}</TableCell>
 
