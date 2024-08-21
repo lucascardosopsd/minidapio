@@ -155,7 +155,7 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
               <ReusableComboSearch
                 items={regionsOptions}
                 title="Filtrar região"
-                queryTitle="region"
+                queryTitle="regionId"
               />
             </div>
             <DateRange
