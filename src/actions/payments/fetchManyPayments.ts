@@ -13,11 +13,11 @@ interface FetchManyPaymentsProps {
   query?: Prisma.PaymentFindManyArgs;
 }
 
-export const fetchManyPayments = async ({
+export const fetchManyPayments = async <T = FetchManyPaymentsResProps>({
   page,
   take,
   query = {},
-}: FetchManyPaymentsProps): Promise<FetchManyPaymentsResProps> => {
+}: FetchManyPaymentsProps): Promise<T> => {
   const count = await prisma.user.count();
   const pages = Math.ceil(count / take);
 
@@ -32,5 +32,5 @@ export const fetchManyPayments = async ({
   return {
     payments,
     pages,
-  };
+  } as T;
 };

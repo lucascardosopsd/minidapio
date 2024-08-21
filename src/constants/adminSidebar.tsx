@@ -2,6 +2,7 @@
 
 import { SidebarOptionProps } from "@/types/sidebar";
 import {
+  DollarSign,
   Grip,
   Image,
   MapPinned,
@@ -45,5 +46,10 @@ export const adminSidebarOptions: SidebarOptionProps[] = [
     label: "Anunciantes",
     icon: Megaphone,
     href: "/jsnHktoSE/dashboard/advertisers?page=1",
+  },
+  {
+    label: "Pagamentos",
+    icon: DollarSign,
+    href: "/jsnHktoSE/dashboard/payments?page=1",
   },
 ];

@@ -26,7 +26,7 @@ const ReusableSidebar = ({ options, redirectLogout }: ReusableSidebarProps) => {
     pathname.split("?").length > 0 ? pathname.split("?")[0] : pathname;
 
   return (
-    <div className="h-full w-20 flex flex-col items-center border border-r gap-10 py-10">
+    <div className="h-full w-20 flex flex-col items-center border border-r gap-10 py-10 z-50">
       {options.map((option, index) => (
         <TooltipProvider key={index}>
           <Tooltip>
