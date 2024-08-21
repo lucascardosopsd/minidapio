@@ -146,21 +146,25 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
   return (
     <section className="flex flex-col items-center justify-center overflow-y-auto h-screen">
       <div className="border rounded p-5 flex flex-col gap-5">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 justify-between">
           <p className="text-2xl text-primary">Período</p>
 
-          <ReusableComboSearch
-            items={regionsOptions}
-            title="Filtrar região"
-            queryTitle="region"
-          />
+          <div className="flex items-center gap-10">
+            <div className="flex flex-col">
+              <p className="text-xs">Filtrar região</p>
+              <ReusableComboSearch
+                items={regionsOptions}
+                title="Filtrar região"
+                queryTitle="region"
+              />
+            </div>
+            <DateRange
+              startDate={startDate || undefined}
+              endDate={endDate || undefined}
+              className="justify-center"
+            />
+          </div>
         </div>
-
-        <DateRange
-          startDate={startDate || undefined}
-          endDate={endDate || undefined}
-          className="justify-center"
-        />
 
         <div className="grid grid-cols-1 tablet:grid-cols-3 gap-5">
           <StatsCard

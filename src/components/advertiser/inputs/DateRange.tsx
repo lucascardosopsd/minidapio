@@ -65,7 +65,7 @@ const DateRange = ({
   return (
     <Form {...form}>
       <form
-        className={cn("flex gap-5 border rounded p-5", className)}
+        className={cn("flex gap-5", className)}
         onSubmit={
           onSubmit
             ? form.handleSubmit(onSubmit)
