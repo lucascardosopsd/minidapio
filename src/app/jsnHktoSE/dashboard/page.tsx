@@ -1,10 +1,12 @@
 import { fetchManyAds } from "@/actions/ad/fetchManyAds";
 import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
 import { fetchManyPayments } from "@/actions/payments/fetchManyPayments";
+import { fetchRegions } from "@/actions/region/fetchRegions";
 import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
 import { fetchManyUsers } from "@/actions/user/fetchManyUsers";
 import StatsCard from "@/components/advertiser/cards/Stats";
 import DateRange from "@/components/advertiser/inputs/DateRange";
+import ReusableComboSearch from "@/components/misc/ReusableComboSearch";
 import { formatPrice } from "@/tools/formatPrice";
 import { Ad, View } from "@prisma/client";
 import {
@@ -29,12 +31,14 @@ interface AdminDashboardProps {
   searchParams?: {
     startDate?: Date;
     endDate?: Date;
+    regionId?: string;
   };
 }
 
 const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
   const startDate = searchParams?.startDate;
   const endDate = searchParams?.endDate;
+  const regionId = searchParams?.regionId;
 
   const { users } = await fetchManyUsers({
     page: 0,
@@ -53,6 +57,11 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
   const { restaurants } = await fetchManyRestaurants({
     page: 0,
     take: 1000000,
+    query: {
+      where: {
+        regionId: regionId || {},
+      },
+    },
   });
 
   const { ads } = await fetchManyAds<AdsWithViewsReturn>({
@@ -67,9 +76,11 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
                 gte: new Date(startDate),
               },
               active: true,
+              regionId: regionId || {},
             }
           : {
               active: true,
+              regionId: regionId || {},
             },
       include: {
         views: true,
@@ -83,6 +94,7 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
     query: {
       where: endDate &&
         startDate && {
+          regionId: regionId || {},
           createdAt: {
             lte: new Date(endDate),
             gte: new Date(startDate),
@@ -104,6 +116,7 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
             lte: new Date(endDate),
             gte: new Date(startDate),
           },
+          regionId: regionId || {},
         },
     },
   });
@@ -118,12 +131,30 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
     0
   );
 
-  console.log(ads);
+  const regions = await fetchRegions();
+
+  const regionsOptions = regions.map((region) => ({
+    label: region.title,
+    value: region.id,
+  }));
+
+  regionsOptions.unshift({
+    label: "Todas",
+    value: "",
+  });
 
   return (
     <section className="flex flex-col items-center justify-center overflow-y-auto h-screen">
       <div className="border rounded p-5 flex flex-col gap-5">
-        <p className="text-2xl text-primary">Período</p>
+        <div className="flex items-center gap-5">
+          <p className="text-2xl text-primary">Período</p>
+
+          <ReusableComboSearch
+            items={regionsOptions}
+            title="Filtrar região"
+            queryTitle="region"
+          />
+        </div>
 
         <DateRange
           startDate={startDate || undefined}

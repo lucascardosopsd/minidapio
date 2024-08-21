@@ -38,6 +38,7 @@ export const POST = async (req: Request) => {
         userId: advertiserAccount?.userId,
         advertiserAccountId: advertiserAccount?.id!,
         afiliateCode: advertiserAccount?.afiliateCode,
+        regionId: advertiserAccount?.regionId,
       },
     });
 

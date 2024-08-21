@@ -231,6 +231,7 @@ model Payment {
   updatedAt           DateTime @updatedAt
   advertiserAccountId String?  @db.ObjectId
   userId              String?  @db.ObjectId
+  regionId            String?  @db.ObjectId
   afiliateCode        Int?
 
   AdvertiserAccount AdvertiserAccount? @relation(fields: [advertiserAccountId], references: [id])
