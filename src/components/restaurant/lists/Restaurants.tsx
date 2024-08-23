@@ -9,7 +9,6 @@ import { z } from "zod";
 import RestaurantForm from "../forms/Restaurant";
 import { Separator } from "@/components/ui/separator";
 import { Session } from "@/types/session";
-import { Region } from "@prisma/client";
 import RestaurantCard from "../cards/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
 import { slugGen } from "@/tools/slugGen";
@@ -17,15 +16,10 @@ import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsBy
 
 interface RestaurantsListProps {
   session: Session;
-  regions: Region[];
   restaurants: RestaurantProps[];
 }
 
-const RestaurantsList = ({
-  session,
-  regions,
-  restaurants,
-}: RestaurantsListProps) => {
+const RestaurantsList = ({ session, restaurants }: RestaurantsListProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -82,11 +76,7 @@ const RestaurantsList = ({
           isOpen={open}
           onOpen={setOpen}
           content={
-            <RestaurantForm
-              regions={regions}
-              loading={loading}
-              onSubmit={handleNewRestaurant}
-            />
+            <RestaurantForm loading={loading} onSubmit={handleNewRestaurant} />
           }
         />
       </div>
@@ -100,7 +90,6 @@ const RestaurantsList = ({
               restaurant={restaurant!}
               session={session}
               key={restaurant.id}
-              regions={regions}
             />
           ))}
         </div>

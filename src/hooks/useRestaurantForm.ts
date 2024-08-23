@@ -12,6 +12,6 @@ export const useRestaurantForm = ({
 }: UseRestaurantFormProps) => {
   return useForm<RestaurantProps>({
     resolver: zodResolver(restaurantValidator),
-    defaultValues,
+    defaultValues: defaultValues || { state: "SP" },
   });
 };

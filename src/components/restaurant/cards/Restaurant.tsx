@@ -12,7 +12,6 @@ import { Session } from "@/types/session";
 import { toast } from "sonner";
 import { deleteRestaurant } from "@/actions/restaurant/deleteRestaurant";
 import { copyToClipboard } from "@/tools/copyToClipboard";
-import { RegionProps } from "@/types/region";
 
 import { restaurantValidator } from "@/validators/restaurant";
 import { z } from "zod";
@@ -39,14 +38,9 @@ import ReusableDialog from "@/components/misc/ReusableDialog";
 interface RestaurantCardProps {
   restaurant: RestaurantProps;
   session: Session | null;
-  regions: RegionProps[];
 }
 
-const RestaurantCard = ({
-  restaurant,
-  session,
-  regions,
-}: RestaurantCardProps) => {
+const RestaurantCard = ({ restaurant, session }: RestaurantCardProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -144,13 +138,14 @@ const RestaurantCard = ({
         color: restaurant.color,
         logo: restaurant.logo,
         methods: restaurant.methods,
-        regionId: restaurant.regionId,
         slug: slugGen(newName),
         workHours: restaurant.workHours,
         landline: restaurant.landline,
         linkMaps: restaurant.linkMaps,
         note: restaurant.note,
         whatsapp: restaurant.whatsapp,
+        province: restaurant.province,
+        state: restaurant.state,
       });
 
       const categories = await fetchUserCategoriesByQuery({
@@ -338,7 +333,6 @@ const RestaurantCard = ({
               content={
                 <RestaurantForm
                   defaultValues={restaurant}
-                  regions={regions}
                   loading={loading}
                   onSubmit={handleUpdateRestaurant}
                 />

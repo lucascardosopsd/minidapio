@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { AdvertiserAccount, User } from "@prisma/client";
 import AdvertiserCard from "../cards/Advertiser";
-import { getAdvertiserAccountByQuery } from "@/actions/advertiser/getAdvertiserAccountByQuery";
+import { getAdvertiserAccountByQuery } from "@/actions/paymentProfile/getAdvertiserAccountByQuery";
 import { fetchUserByQuery } from "@/actions/user/fetchUserByQuery";
 import { ImSpinner2 } from "react-icons/im";
 import { CustomAdFormProps } from "@/types/ad";

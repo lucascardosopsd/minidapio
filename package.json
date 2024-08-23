@@ -1,5 +1,5 @@
 {
-  "name": "reserva",
+  "name": "minidapio",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -44,6 +44,8 @@
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "card-validator": "^10.0.0",
+    "cep-promise": "^4.4.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",

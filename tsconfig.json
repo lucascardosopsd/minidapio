@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/advertiser/dashboard/regions"
+    "src/app/advertiser/dashboard/regions",
+    "src/actions/paymentProfile/fetchManyPaymentProfile.ts"
   ],
   "exclude": ["node_modules"]
 }

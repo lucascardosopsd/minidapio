@@ -85,12 +85,7 @@ const Menu = async ({ params: { userId, slug } }: MenuProps) => {
         {/* Gradient FX */}
         <div className="w-full h-32 fixed bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-50 pointer-events-none" />
 
-        <ItemsList
-          items={items}
-          themeColor={restaurants[0].color}
-          regionId={restaurants[0].regionId!}
-          restaurantId={restaurants[0].id}
-        />
+        <ItemsList items={items} themeColor={restaurants[0].color} />
       </div>
     </div>
   );

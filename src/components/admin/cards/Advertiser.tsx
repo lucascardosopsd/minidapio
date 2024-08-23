@@ -8,15 +8,15 @@ import { useState } from "react";
 import { AdvertiserAccount, Region, User } from "@prisma/client";
 import ReusableDialog from "@/components/misc/ReusableDialog";
 import { toast } from "sonner";
-import { deleteAdvertiserAccount } from "@/actions/advertiser/deleteAdvertiser";
+import { deleteAdvertiserAccount } from "@/actions/paymentProfile/deleteAdvertiser";
 import AdminAdvertiserProfileForm from "../forms/AdvertiserProfile";
 import { z } from "zod";
 import { adminAdvertiserProfile } from "@/validators/adminAdvertiserProfile";
 import axios from "axios";
 import { CustumerProps, CustumersArrayProps } from "@/types/asaas";
-import { getAdvertiserAccount } from "@/actions/advertiser/getAdvertiserAccount";
-import { updateAdvertiserAccount } from "@/actions/advertiser/updateAdvertiserAccount";
-import { createAdvertiserAccount } from "@/actions/advertiser/createAccount";
+import { getAdvertiserAccount } from "@/actions/paymentProfile/getPaymentProfile";
+import { updateAdvertiserAccount } from "@/actions/paymentProfile/updatePaymentProfile";
+import { createAdvertiserAccount } from "@/actions/paymentProfile/createUpdateProfile";
 import { updateUser } from "@/actions/user/updateUser";
 
 interface AdvertiserCardProps {

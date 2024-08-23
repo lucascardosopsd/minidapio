@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import AfiliateRelationsActionBar from "./ActionBar";
-import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
+import { fetchManyAdvertisers } from "@/actions/paymentProfile/fetchManyAdvertisers";
 import AdvertiserRow from "../../tableRows/Advertiser";
 import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
 import { fetchRegions } from "@/actions/region/fetchRegions";

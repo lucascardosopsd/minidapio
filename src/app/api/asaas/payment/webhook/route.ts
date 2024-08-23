@@ -6,7 +6,7 @@ export const POST = async (req: Request) => {
   try {
     const payment = (await req.json()).payment satisfies PaymentResProps;
 
-    const advertiserAccount = await prisma.advertiserAccount.findFirst({
+    const paymentProfile = await prisma.paymentProfile.findFirst({
       where: {
         customerId: payment.customer,
       },
@@ -35,10 +35,9 @@ export const POST = async (req: Request) => {
         description: payment.description,
         paymentDate: payment.paymentDate,
         deleted: payment.deleted,
-        userId: advertiserAccount?.userId,
-        advertiserAccountId: advertiserAccount?.id!,
-        afiliateCode: advertiserAccount?.afiliateCode,
-        regionId: advertiserAccount?.regionId,
+        userId: paymentProfile?.userId,
+        province: paymentProfile?.province!,
+        paymentProfileId: paymentProfile?.id,
       },
     });
 

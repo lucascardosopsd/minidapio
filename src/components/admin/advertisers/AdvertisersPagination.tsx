@@ -1,7 +1,7 @@
 import Paginate from "@/components/misc/Paginate";
 import { Separator } from "@/components/ui/separator";
 import { AdvertiserAccount, Prisma, Region, User } from "@prisma/client";
-import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
+import { fetchManyAdvertisers } from "@/actions/paymentProfile/fetchManyAdvertisers";
 
 import AdvertiserActionBar from "./ActionBar";
 import AdvertiserRow from "../tableRows/Advertiser";
