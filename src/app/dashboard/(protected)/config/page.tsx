@@ -17,7 +17,7 @@ const NewPaymentProfilePage = async () => {
   const userSubscriptions = await fetchUserSubscriptions({ userId: user?.id! });
 
   const currentPlan = plans.filter(
-    (plan) => plan.alias == userSubscriptions[0].plan
+    (plan) => plan.alias == userSubscriptions[0]?.plan
   )[0];
 
   return (

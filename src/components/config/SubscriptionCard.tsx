@@ -17,6 +17,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { revalidateRoute } from "@/actions/revalidateRoute";
+import { deleteSubscription } from "@/actions/subscription/deleteSubscription";
 
 interface SubscriptionCardProps {
   user: User;
@@ -38,6 +39,8 @@ const SubscriptionCard = ({
       await axios.delete(
         `/api/asaas/payment/subscription/cancel/${currentSub?.id}`
       );
+
+      await deleteSubscription({ id: currentSub.id });
 
       toast.success("Assinatura cancelada");
 
