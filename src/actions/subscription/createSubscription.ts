@@ -1,8 +1,8 @@
-import { Subscription } from "@prisma/client";
 import prisma from "@/lib/prisma";
+import { NewSubscriptionProps } from "@/types/subscription";
 
 interface CreatesubscriptionProps {
-  subscription: Subscription;
+  subscription: NewSubscriptionProps;
   userId: string;
 }
 

@@ -1,4 +1,4 @@
-import { fetchManyPayments } from "@/actions/payments/fetchManyPayments";
+import { fetchManyPayments } from "@/actions/subscription/fetchManySubscriptions";
 import { fetchRegions } from "@/actions/region/fetchRegions";
 import PaymentRow from "@/components/admin/tableRows/PaymentRow";
 import DateRange from "@/components/advertiser/inputs/DateRange";

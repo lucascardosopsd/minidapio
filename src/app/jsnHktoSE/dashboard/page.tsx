@@ -1,4 +1,4 @@
-import { fetchManyPayments } from "@/actions/payments/fetchManyPayments";
+import { fetchManyPayments } from "@/actions/subscription/fetchManySubscriptions";
 import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
 import { fetchManyUsers } from "@/actions/user/fetchManyUsers";
 import DateRange from "@/components/misc/DateRange";

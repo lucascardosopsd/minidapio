@@ -28,6 +28,8 @@ import { User } from "@prisma/client";
 import { useState } from "react";
 import moment from "moment";
 import { updateUser } from "@/actions/user/updateUser";
+import createSubscription from "@/actions/subscription/createSubscription";
+import { AsaasSubscriptionResObj } from "@/types/asaasSubscriptions";
 
 interface CheckoutCreditCardProps {
   plan: string;
@@ -90,7 +92,7 @@ const CheckoutCreditCard = ({
     };
 
     try {
-      await axios.post(
+      const { data } = await axios.post<AsaasSubscriptionResObj>(
         `${process.env.NEXT_PUBLIC_HOST}/api/asaas/payment/subscription`,
         fullData
       );
@@ -99,6 +101,15 @@ const CheckoutCreditCard = ({
         id: user.id,
         data: {
           plan: currentPlan.alias,
+        },
+      });
+
+      await createSubscription({
+        userId: user.id,
+        subscription: {
+          ...data,
+          asaasId: data.id,
+          userId: user.id,
         },
       });
 

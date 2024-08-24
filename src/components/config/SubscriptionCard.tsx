@@ -1,5 +1,4 @@
 "use client";
-
 import { formatPrice } from "@/tools/formatPrice";
 import {
   Card,
