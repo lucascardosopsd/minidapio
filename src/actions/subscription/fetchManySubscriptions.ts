@@ -1,16 +1,16 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { Payment, Prisma } from "@prisma/client";
+import { Prisma, Subscription } from "@prisma/client";
 
 interface FetchManyPaymentsResProps {
-  payments: Payment[];
+  subscriptions: Subscription[];
   pages: number;
 }
 
 interface FetchManyPaymentsProps {
   take: number;
   page: number;
-  query?: Prisma.PaymentFindManyArgs;
+  query?: Prisma.SubscriptionFindManyArgs;
 }
 
 export const fetchManyPayments = async <T = FetchManyPaymentsResProps>({
@@ -23,14 +23,14 @@ export const fetchManyPayments = async <T = FetchManyPaymentsResProps>({
 
   const skip = page * take;
 
-  const payments = await prisma.payment.findMany({
+  const subscriptions = await prisma.subscription.findMany({
     skip,
     take,
     ...query,
   });
 
   return {
-    payments,
+    subscriptions,
     pages,
   } as T;
 };

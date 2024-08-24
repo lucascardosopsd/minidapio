@@ -36,20 +36,20 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
-  email         String?      @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   password      String?
   lastPaymentId String?
-  role          String       @default("user")
+  role          String         @default("user")
   accounts      Account[]
   sessions      Session[]
   restaurants   Restaurant[]
   categories    Category[]
   items         Item[]
-  payments      Payment[]
+  subscriptions Subscription[]
   customerId    String?
   plan          String?
 
@@ -123,24 +123,22 @@ model Item {
   userId       String?     @db.ObjectId
 }
 
-model Payment {
+model Subscription {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  paymentId   String
+  object      String
+  asaasId     String
   dateCreated String
   customer    String
-  paymentLink String?
-  dueDate     String
   value       Int
+  nextDueDate String
+  cycle       String
+  description String
   billingType String
+  deleted     String
   status      String
-  description String?
-  paymentDate String
-  deleted     Boolean
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   userId      String?  @db.ObjectId
-  province    String
-  customerId  String
 
   User             User?   @relation(fields: [userId], references: [id])
   paymentProfileId String? @db.ObjectId

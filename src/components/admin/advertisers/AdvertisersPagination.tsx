@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchAfiliatesByQuery } from "@/actions/afiliate/fetchAfiliatesByQuery";
-import { checkMonthlyPayment } from "@/actions/payments/checkMonthlyPayment";
+import { checkMonthlyPayment } from "@/actions/subscription/checkMonthlyPayment";
 
 interface AdvertiserWithPaidProps extends AdvertiserAccount {
   user: User;
