@@ -8,7 +8,7 @@ export const POST = async (req: Request) => {
       .payment satisfies PaymentResProps;
 
     const { subscriptions } = await fetchSubscriptionsByQuery({
-      page: 1,
+      page: 0,
       take: 100,
       query: {
         where: { asaasId: payment.subscription },
@@ -17,7 +17,7 @@ export const POST = async (req: Request) => {
 
     await prisma.payment.create({
       data: {
-        paymentId: payment.id,
+        asaasId: payment.id,
         dateCreated: payment.dateCreated,
         customer: payment.customer,
         paymentLink: payment.paymentLink,
