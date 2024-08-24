@@ -52,8 +52,9 @@ model User {
   subscription  Subscription[]
   customerId    String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Payment   Payment[]
 }
 
 model VerificationToken {
@@ -140,6 +141,29 @@ model Subscription {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  User             User?   @relation(fields: [userId], references: [id])
-  paymentProfileId String? @db.ObjectId
+  User             User?     @relation(fields: [userId], references: [id])
+  paymentProfileId String?   @db.ObjectId
+  Payment          Payment[]
+}
+
+model Payment {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  paymentId      String
+  dateCreated    String
+  customer       String
+  paymentLink    String?
+  dueDate        String
+  value          Int
+  billingType    String
+  status         String
+  description    String?
+  paymentDate    String
+  deleted        Boolean
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         String   @db.ObjectId
+  subscriptionId String   @db.ObjectId
+
+  Subscription Subscription? @relation(fields: [subscriptionId], references: [id])
+  User         User?         @relation(fields: [userId], references: [id])
 }
