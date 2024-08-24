@@ -25,16 +25,23 @@ import axios from "axios";
 import { toast } from "sonner";
 import validator from "card-validator";
 import { useRouter } from "next/navigation";
+import { updateUser } from "@/actions/user/updateUser";
+import { User } from "@prisma/client";
+import { useState } from "react";
 
 interface CheckoutCreditCardProps {
   plan: string;
   customer: AsaasCustomerObj;
+  user: User;
 }
 
 const CheckoutCreditCard = ({
   plan: paramPlan,
   customer,
+  user,
 }: CheckoutCreditCardProps) => {
+  const [loading, setLoading] = useState(false);
+
   const cardForm = useForm({
     defaultValues: {
       name: "",
@@ -51,6 +58,8 @@ const CheckoutCreditCard = ({
   const handleSubscription = async (
     data: z.infer<typeof checkoutValidator>
   ) => {
+    setLoading(true);
+
     const card = {
       ...data,
       expiryMonth: data.expiry.split("/")[0],
@@ -84,6 +93,13 @@ const CheckoutCreditCard = ({
       },
     };
 
+    await updateUser({
+      id: user.id,
+      data: {
+        plan: currentPlan.alias,
+      },
+    });
+
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST}/api/asaas/payment/subscrible`,
@@ -101,6 +117,8 @@ const CheckoutCreditCard = ({
       toast.error(
         "Ocorreu um erro ao tentar criar a assinatura, verifique as informações preenchidas."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -220,7 +238,9 @@ const CheckoutCreditCard = ({
                     </p>
                   </div>
 
-                  <Button type="submit">Finalizar</Button>
+                  <Button type="submit" disabled={loading}>
+                    Finalizar
+                  </Button>
                 </div>
               </form>
             </Form>
