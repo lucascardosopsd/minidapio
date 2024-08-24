@@ -1,4 +1,4 @@
-import { PlanProps } from "@/components/restaurant/PlanCard";
+import { PlanProps } from "@/types/plan";
 
 export const plans: PlanProps[] = [
   {

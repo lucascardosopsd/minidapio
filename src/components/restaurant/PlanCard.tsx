@@ -8,15 +8,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import Link from "next/link";
-
-export interface PlanProps {
-  title: string;
-  features: string[];
-  price: number;
-  link: string;
-  highLight?: boolean;
-  alias: string;
-}
+import { PlanProps } from "@/types/plan";
 
 interface PlanCardProps {
   plan: PlanProps;

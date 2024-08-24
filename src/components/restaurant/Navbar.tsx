@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Headset, LogOutIcon, User } from "lucide-react";
+import { Bolt, Headset, LogOutIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import {
   DropdownMenu,
@@ -71,14 +71,14 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
               </div>
             )}
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 p-2 space-y-2">
+          <DropdownMenuContent className="w-56 flex flex-col gap-2">
             <p className="w-full p-2 border border-border rounded-lg text-center">
               {session?.user?.name}
             </p>
 
-            <Link href="/dashboard/profile">
+            <Link href="/dashboard/config">
               <Button className="w-full">
-                <User /> Perfil
+                <Bolt /> Configurações
               </Button>
             </Link>
 
