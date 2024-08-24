@@ -92,7 +92,7 @@ const CheckoutCreditCard = ({
 
     try {
       const { data } = await axios.post<AsaasSubscriptionResObj>(
-        `${process.env.NEXT_PUBLIC_HOST}/api/asaas/payment/subscription`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/asaas/subscription`,
         fullData
       );
 

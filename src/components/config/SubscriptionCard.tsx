@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Separator } from "../ui/separator";
-import { Subscription, User } from "@prisma/client";
+import { Subscription } from "@prisma/client";
 import { PlanProps } from "@/types/plan";
 import axios from "axios";
 import { toast } from "sonner";
@@ -20,13 +20,11 @@ import { revalidateRoute } from "@/actions/revalidateRoute";
 import { deleteSubscription } from "@/actions/subscription/deleteSubscription";
 
 interface SubscriptionCardProps {
-  user: User;
   currentPlan: PlanProps;
   currentSub: Subscription;
 }
 
 const SubscriptionCard = ({
-  user,
   currentPlan,
   currentSub,
 }: SubscriptionCardProps) => {
@@ -36,9 +34,7 @@ const SubscriptionCard = ({
     try {
       setCanceling(true);
 
-      await axios.delete(
-        `/api/asaas/payment/subscription/cancel/${currentSub?.id}`
-      );
+      await axios.delete(`/api/asaas/subscription/${currentSub?.asaasId}`);
 
       await deleteSubscription({ id: currentSub.id });
 

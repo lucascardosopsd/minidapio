@@ -1,4 +1,4 @@
-import { fetchUserSubscriptions } from "@/actions/subscription/fetchUserSubscriptions";
+import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { fetchUser } from "@/actions/user/fetchUser";
 import SubscriptionCard from "@/components/config/SubscriptionCard";
 import { plans } from "@/constants/plans";
@@ -14,10 +14,19 @@ const NewPaymentProfilePage = async () => {
 
   const user = await fetchUser({ email: session?.email! });
 
-  const userSubscriptions = await fetchUserSubscriptions({ userId: user?.id! });
+  const { subscriptions } = await fetchSubscriptionsByQuery({
+    page: 0,
+    take: 100,
+    query: {
+      where: {
+        userId: user?.id,
+        status: "ACTIVE",
+      },
+    },
+  });
 
   const currentPlan = plans.filter(
-    (plan) => plan.alias == userSubscriptions[0]?.plan
+    (plan) => plan.alias == subscriptions[0]?.plan
   )[0];
 
   return (
@@ -25,9 +34,8 @@ const NewPaymentProfilePage = async () => {
       <p className="text-3xl">Configurações</p>
 
       <SubscriptionCard
-        user={user!}
         currentPlan={currentPlan}
-        currentSub={userSubscriptions[0]}
+        currentSub={subscriptions[0]}
       />
     </div>
   );

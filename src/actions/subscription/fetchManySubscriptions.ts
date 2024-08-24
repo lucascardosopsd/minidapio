@@ -2,22 +2,24 @@
 import prisma from "@/lib/prisma";
 import { Prisma, Subscription } from "@prisma/client";
 
-interface FetchManyPaymentsResProps {
+interface FetchSubscriptionsByQueryResProps {
   subscriptions: Subscription[];
   pages: number;
 }
 
-interface FetchManyPaymentsProps {
+interface FetchSubscriptionsByQueryProps {
   take: number;
   page: number;
   query?: Prisma.SubscriptionFindManyArgs;
 }
 
-export const fetchManyPayments = async <T = FetchManyPaymentsResProps>({
+export const fetchSubscriptionsByQuery = async <
+  T = FetchSubscriptionsByQueryResProps
+>({
   page,
   take,
   query = {},
-}: FetchManyPaymentsProps): Promise<T> => {
+}: FetchSubscriptionsByQueryProps): Promise<T> => {
   const count = await prisma.user.count();
   const pages = Math.ceil(count / take);
 

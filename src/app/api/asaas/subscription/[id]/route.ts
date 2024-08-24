@@ -18,3 +18,24 @@ export async function DELETE(
     return Response.json({});
   }
 }
+
+export async function PUT(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const body = await req.json();
+
+    const { data } = await axiosAsaas.put(`/subscriptions/${params.id}`, body);
+
+    return Response.json(data);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    } else {
+      console.log("An unknown error occurred");
+    }
+
+    return Response.json({});
+  }
+}

@@ -49,7 +49,7 @@ model User {
   restaurants   Restaurant[]
   categories    Category[]
   items         Item[]
-  subscriptions Subscription[]
+  subscription  Subscription[]
   customerId    String?
 
   createdAt DateTime @default(now())
