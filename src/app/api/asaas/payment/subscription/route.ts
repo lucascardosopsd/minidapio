@@ -6,8 +6,6 @@ export async function POST(req: Request) {
 
     const { data } = await axiosAsaas.post("/subscriptions", body);
 
-    console.log(data);
-
     return Response.json(data);
   } catch (error: unknown) {
     if (error instanceof Error) {

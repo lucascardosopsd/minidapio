@@ -2,7 +2,7 @@ export interface NewSubscriptionProps {
   object: string;
   asaasId: string;
   dateCreated: string;
-  customer: string;
+  customerId: string;
   value: number;
   nextDueDate: string;
   cycle: string;
@@ -10,5 +10,6 @@ export interface NewSubscriptionProps {
   billingType: string;
   deleted: boolean;
   status: string;
-  userId?: string;
+  plan: string;
+  userId: string;
 }

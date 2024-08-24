@@ -51,7 +51,6 @@ model User {
   items         Item[]
   subscriptions Subscription[]
   customerId    String?
-  plan          String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -128,7 +127,7 @@ model Subscription {
   object      String
   asaasId     String
   dateCreated String
-  customer    String
+  customerId  String
   value       Int
   nextDueDate String
   cycle       String
@@ -136,6 +135,7 @@ model Subscription {
   billingType String
   deleted     Boolean
   status      String
+  plan        String
   userId      String?  @db.ObjectId
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

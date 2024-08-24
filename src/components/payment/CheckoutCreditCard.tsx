@@ -27,7 +27,6 @@ import { useRouter } from "next/navigation";
 import { User } from "@prisma/client";
 import { useState } from "react";
 import moment from "moment";
-import { updateUser } from "@/actions/user/updateUser";
 import createSubscription from "@/actions/subscription/createSubscription";
 import { AsaasSubscriptionResObj } from "@/types/asaasSubscriptions";
 
@@ -74,7 +73,7 @@ const CheckoutCreditCard = ({
     const fullData = {
       customer: customer.id,
       billingType: "CREDIT_CARD",
-      nextDueDate: moment().format("YYYY-MM-DD"), //to pay now
+      nextDueDate: moment().format("YYYY-MM-DD"),
       value: currentPlan.price,
       cycle: "MONTHLY",
       description: "Assinatura Plano Mensal Minidapio",
@@ -97,19 +96,22 @@ const CheckoutCreditCard = ({
         fullData
       );
 
-      await updateUser({
-        id: user.id,
-        data: {
-          plan: currentPlan.alias,
-        },
-      });
-
       await createSubscription({
         userId: user.id,
         subscription: {
-          ...data,
           asaasId: data.id,
+          billingType: data.billingType,
+          customerId: data.customer,
+          cycle: data.cycle,
+          dateCreated: data.dateCreated,
+          deleted: data.deleted,
+          description: data.description,
+          nextDueDate: data.nextDueDate,
+          object: data.object,
+          status: data.status,
+          value: data.value,
           userId: user.id,
+          plan: currentPlan.alias,
         },
       });
 
@@ -117,6 +119,7 @@ const CheckoutCreditCard = ({
 
       router.push("/dashboard/restaurants");
     } catch (error) {
+      console.log(error);
       toast.error(
         "Ocorreu um erro ao tentar criar a assinatura, verifique as informações preenchidas."
       );

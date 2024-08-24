@@ -1,3 +1,5 @@
+"use server";
+
 import prisma from "@/lib/prisma";
 import { NewSubscriptionProps } from "@/types/subscription";
 
@@ -11,10 +13,7 @@ const createSubscription = async ({
   userId,
 }: CreatesubscriptionProps) => {
   return await prisma.subscription.create({
-    data: {
-      ...subscription,
-      userId,
-    },
+    data: subscription,
   });
 };
 
