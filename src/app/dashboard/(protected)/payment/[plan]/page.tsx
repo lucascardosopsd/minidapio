@@ -36,7 +36,7 @@ const PaymentPage = async ({ params }: PaymentPageProps) => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-5">
       <CheckoutProfile
         user={user!}
         customerDefaultValues={
@@ -61,7 +61,11 @@ const PaymentPage = async ({ params }: PaymentPageProps) => {
       {customer && <Separator />}
 
       {customer && (
-        <CheckoutCreditCard plan={params.plan} customer={customer} />
+        <CheckoutCreditCard
+          plan={params.plan}
+          customer={customer}
+          user={user!}
+        />
       )}
     </div>
   );

@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Separator } from "../ui/separator";
@@ -25,9 +24,10 @@ import axios from "axios";
 import { toast } from "sonner";
 import validator from "card-validator";
 import { useRouter } from "next/navigation";
-import { updateUser } from "@/actions/user/updateUser";
 import { User } from "@prisma/client";
 import { useState } from "react";
+import moment from "moment";
+import { updateUser } from "@/actions/user/updateUser";
 
 interface CheckoutCreditCardProps {
   plan: string;
@@ -44,10 +44,11 @@ const CheckoutCreditCard = ({
 
   const cardForm = useForm({
     defaultValues: {
-      name: "",
+      holderName: "",
       number: "",
-      expiry: "",
-      cvv: "",
+      expiryMonth: "",
+      expiryYear: "",
+      ccv: "",
     },
     resolver: zodResolver(checkoutValidator),
   });
@@ -60,27 +61,22 @@ const CheckoutCreditCard = ({
   ) => {
     setLoading(true);
 
-    const card = {
-      ...data,
-      expiryMonth: data.expiry.split("/")[0],
-      expiryYear: data.expiry.split("/")[1],
-    };
-
-    const { isValid } = validator.number(card.number);
+    const { isValid } = validator.number(data.number);
 
     if (!isValid) {
       toast.error("Cartão inválido!");
+      setLoading(false);
       return;
     }
 
     const fullData = {
       customer: customer.id,
       billingType: "CREDIT_CARD",
-      nextDueDate: new Date().toLocaleDateString().replaceAll("/", "-"), //to pay now
+      nextDueDate: moment().format("YYYY-MM-DD"), //to pay now
       value: currentPlan.price,
       cycle: "MONTHLY",
       description: "Assinatura Plano Mensal Minidapio",
-      creditCard: card,
+      creditCard: data,
       creditCardHolderInfo: {
         name: customer.name,
         email: customer.email,
@@ -93,22 +89,18 @@ const CheckoutCreditCard = ({
       },
     };
 
-    await updateUser({
-      id: user.id,
-      data: {
-        plan: currentPlan.alias,
-      },
-    });
-
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST}/api/asaas/payment/subscrible`,
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST}/api/asaas/payment/subscription`,
         fullData
       );
 
-      if (res.status == 400) {
-        throw new Error("Error when subscrible");
-      }
+      await updateUser({
+        id: user.id,
+        data: {
+          plan: currentPlan.alias,
+        },
+      });
 
       toast.success("Inscrição realizada!");
 
@@ -136,50 +128,70 @@ const CheckoutCreditCard = ({
           <CardContent>
             <Form {...cardForm}>
               <form
-                className="flex flex-col tablet:flex-row gap-5 "
+                className="flex flex-col tablet:flex-row gap-5"
                 onSubmit={cardForm.handleSubmit(handleSubscription)}
               >
                 <div className="flex flex-col gap-2 flex-1">
                   <FieldBuilder
                     control={cardForm.control}
                     fieldElement={<Input maxLength={100} />}
-                    name="name"
+                    name="holderName"
                     title="Nome no cartão"
                   />
 
-                  <FormField
-                    control={cardForm.control}
-                    name="number"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>Número</FormLabel>
-                        <FormControl>
-                          <PatternFormat
-                            format="#### #### #### ####"
-                            placeholder="0000 0000 0000 0000"
-                            onValueChange={(values) => {
-                              field.onChange(values.value);
-                            }}
-                            value={field.value}
-                            onBlur={field.onBlur}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="flex gap-5 items-center">
+                  <div className="grid grid-cols-3 gap-5">
                     <FormField
                       control={cardForm.control}
-                      name="expiry"
+                      name="number"
                       render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormLabel>Expiração</FormLabel>
+                        <FormItem className="w-full col-span-3">
+                          <FormLabel>Número</FormLabel>
                           <FormControl>
                             <PatternFormat
-                              format="##/##"
-                              placeholder="00/00"
+                              format="#### #### #### ####"
+                              placeholder="0000 0000 0000 0000"
+                              onValueChange={(values) => {
+                                field.onChange(values.value);
+                              }}
+                              value={field.value}
+                              onBlur={field.onBlur}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={cardForm.control}
+                      name="expiryMonth"
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Vencimento</FormLabel>
+                          <FormControl>
+                            <PatternFormat
+                              format="##"
+                              placeholder="Mês"
+                              onValueChange={(values) => {
+                                field.onChange(values.formattedValue);
+                              }}
+                              value={field.value}
+                              onBlur={field.onBlur}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={cardForm.control}
+                      name="expiryYear"
+                      render={({ field }) => (
+                        <FormItem className="mt-auto flex-1">
+                          <FormControl>
+                            <PatternFormat
+                              format="##"
+                              placeholder="Ano"
                               onValueChange={(values) => {
                                 field.onChange(values.formattedValue);
                               }}
@@ -195,8 +207,8 @@ const CheckoutCreditCard = ({
                     <FieldBuilder
                       control={cardForm.control}
                       fieldElement={<Input maxLength={4} placeholder="0000" />}
-                      name="cvv"
-                      title="CVV"
+                      name="ccv"
+                      title="CCV"
                     />
                   </div>
                 </div>

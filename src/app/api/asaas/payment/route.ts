@@ -4,8 +4,6 @@ export const POST = async (req: Request) => {
   try {
     const body = await req.json();
 
-    console.log(body);
-
     const { data } = await axiosAsaas.post("/payments", body);
 
     return Response.json(data);
