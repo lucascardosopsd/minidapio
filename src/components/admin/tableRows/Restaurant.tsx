@@ -9,26 +9,18 @@ import { revalidateRoute } from "@/actions/revalidateRoute";
 import { deleteRestaurant } from "@/actions/restaurant/deleteRestaurant";
 import ReusableModal from "@/components/misc/ReusableModal";
 import RestaurantForm from "@/components/restaurant/forms/Restaurant";
-import { RegionProps } from "@/types/region";
 import { restaurantValidator } from "@/validators/restaurant";
 import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
 import { z } from "zod";
 import { updateRestaurant } from "@/actions/restaurant/updateRestaurant";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { Region } from "@prisma/client";
 import { RestaurantProps } from "@/types/restaurant";
 
 interface RestaurantRowProps {
   restaurant: RestaurantProps;
-  regions: RegionProps[];
-  restaurantRegion: Region;
 }
 
-const RestaurantRow = ({
-  restaurant,
-  regions,
-  restaurantRegion,
-}: RestaurantRowProps) => {
+const RestaurantRow = ({ restaurant }: RestaurantRowProps) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pathname = usePathname();
@@ -94,7 +86,9 @@ const RestaurantRow = ({
 
       <TableCell>{restaurant?.title}</TableCell>
 
-      <TableCell>{restaurantRegion.title}</TableCell>
+      <TableCell>
+        {restaurant.province}-{restaurant.state}
+      </TableCell>
 
       <TableCell>{restaurant?.active ? "Ativo" : "Inativo"}</TableCell>
 
@@ -105,7 +99,6 @@ const RestaurantRow = ({
             <div className="flex justify-center w-full">
               <RestaurantForm
                 defaultValues={restaurant}
-                regions={regions}
                 onSubmit={handleUpdateRestaurant}
                 loading={loading}
               />

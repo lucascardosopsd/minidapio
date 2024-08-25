@@ -27,14 +27,8 @@ const RestaurantsPage = ({ searchParams }: UsersPageProps) => {
                 orderBy: {
                   title: "asc",
                 },
-                include: {
-                  region: true,
-                },
               }
             : {
-                include: {
-                  region: true,
-                },
                 orderBy: {
                   title: "asc",
                 },
