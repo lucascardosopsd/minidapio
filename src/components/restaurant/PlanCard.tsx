@@ -12,9 +12,10 @@ import { PlanProps } from "@/types/plan";
 
 interface PlanCardProps {
   plan: PlanProps;
+  current: boolean;
 }
 
-const PlanCard = ({ plan }: PlanCardProps) => {
+const PlanCard = ({ plan, current }: PlanCardProps) => {
   return (
     <Card className={cn(plan.highLight && "border border-primary")}>
       <CardHeader>
@@ -45,10 +46,11 @@ const PlanCard = ({ plan }: PlanCardProps) => {
 
         <Link href={plan.link} className="w-full">
           <Button
-            className="w-full"
+            className={cn("w-full", !current && "border border-primary")}
             variant={plan.highLight ? "default" : "outline"}
+            disabled={current}
           >
-            Assinar
+            {current ? "Atual" : "Assinar"}
           </Button>
         </Link>
       </CardFooter>
