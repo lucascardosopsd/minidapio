@@ -43,6 +43,9 @@ const NewPaymentProfilePage = async () => {
       include: {
         Subscription: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     },
     page: 0,
     take: 12,
