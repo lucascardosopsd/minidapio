@@ -1,4 +1,4 @@
-import { fetchManyPayments } from "@/actions/subscription/fetchManySubscriptions";
+import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
 import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
 import { fetchManyUsers } from "@/actions/user/fetchManyUsers";
 import DateRange from "@/components/misc/DateRange";
@@ -14,6 +14,7 @@ interface AdminDashboardProps {
     startDate?: Date;
     endDate?: Date;
     province?: string;
+    userId: string;
   };
 }
 
@@ -21,6 +22,7 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
   const startDate = searchParams?.startDate;
   const endDate = searchParams?.endDate;
   const province = searchParams?.province;
+  const userId = searchParams?.userId;
 
   const { users } = await fetchManyUsers({
     page: 0,
@@ -41,12 +43,13 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
     take: 1000000,
     query: {
       where: {
-        province: province || {},
+        province: province,
+        userId: userId,
       },
     },
   });
 
-  const { payments } = await fetchManyPayments({
+  const { payments } = await fetchPaymentsByQuery({
     page: 0,
     take: 10000,
     query: {
@@ -56,6 +59,7 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
             lte: new Date(endDate),
             gte: new Date(startDate),
           },
+          userId: userId,
         },
     },
   });
@@ -75,11 +79,16 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
     value: "",
   });
 
+  const usersOptions = users.map((user) => ({
+    label: user.name!,
+    value: user.id!,
+  }));
+
   return (
     <section className="flex flex-col items-center justify-center overflow-y-auto h-screen">
       <div className="border rounded p-5 flex flex-col gap-5">
         <div className="flex items-center gap-5 justify-between">
-          <p className="text-2xl text-primary">Período</p>
+          <p className="text-2xl text-primary">Geral</p>
 
           <div className="flex items-center gap-10">
             <div className="flex flex-col">
@@ -90,6 +99,16 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
                 queryTitle="province"
               />
             </div>
+
+            <div className="flex flex-col">
+              <p className="text-xs">Filtrar usuário</p>
+              <ReusableComboSearch
+                items={usersOptions}
+                title="Filtrar usuário"
+                queryTitle="userId"
+              />
+            </div>
+
             <DateRange
               startDate={startDate || undefined}
               endDate={endDate || undefined}

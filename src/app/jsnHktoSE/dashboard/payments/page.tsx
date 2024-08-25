@@ -1,7 +1,3 @@
-import { fetchManyPayments } from "@/actions/subscription/fetchManySubscriptions";
-import { fetchRegions } from "@/actions/region/fetchRegions";
-import PaymentRow from "@/components/admin/tableRows/PaymentRow";
-import DateRange from "@/components/advertiser/inputs/DateRange";
 import Paginate from "@/components/misc/Paginate";
 import ReusableComboSearch from "@/components/misc/ReusableComboSearch";
 import { Separator } from "@/components/ui/separator";
@@ -12,11 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AdvertiserAccount, Payment } from "@prisma/client";
-
-interface PaymentProps extends Payment {
-  AdvertiserAccount: AdvertiserAccount;
-}
+import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
+import { fetchUserByQuery } from "@/actions/user/fetchUserByQuery";
 
 interface PaymentReturnProps {
   payments: PaymentProps[];
@@ -27,7 +20,7 @@ interface AdminDashboardProps {
   searchParams?: {
     startDate?: Date;
     endDate?: Date;
-    regionId?: string;
+    userId?: string;
     page: string;
   };
 }
@@ -35,10 +28,10 @@ interface AdminDashboardProps {
 const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
   const startDate = searchParams?.startDate;
   const endDate = searchParams?.endDate;
-  const regionId = searchParams?.regionId;
+  const userId = searchParams?.userId;
   const page = searchParams?.page;
 
-  const { payments, pages } = await fetchManyPayments<PaymentReturnProps>({
+  const { payments, pages } = await fetchPaymentsByQuery<PaymentReturnProps>({
     page: 0,
     take: 10000,
     query: {
@@ -48,15 +41,12 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
             lte: new Date(endDate),
             gte: new Date(startDate),
           },
-          regionId: regionId || {},
+          userId,
         },
-      include: {
-        AdvertiserAccount: true,
-      },
     },
   });
 
-  const regions = await fetchRegions();
+  const regions = await fetchUserByQuery();
 
   const regionsOptions = regions.map((region) => ({
     label: region.title,
