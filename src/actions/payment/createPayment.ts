@@ -5,7 +5,7 @@ interface NewPaymentProps {
   paymentId: string;
   dateCreated: string;
   customer: string;
-
+  asaasId: string;
   dueDate: string;
   value: number;
   billingType: string;
@@ -13,6 +13,7 @@ interface NewPaymentProps {
   description?: string;
   paymentDate: string;
   deleted: boolean;
+  plan: string;
   userId: string;
   subscriptionId: string;
 }

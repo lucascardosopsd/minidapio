@@ -153,14 +153,15 @@ model Payment {
   customer       String
   paymentLink    String?
   dueDate        String
-  value          Int
+  value          Float
   billingType    String
   status         String
   description    String?
   paymentDate    String?
   deleted        Boolean
+  plan           String
   userId         String   @db.ObjectId
-  subscriptionId String   @db.ObjectId
+  subscriptionId String?  @db.ObjectId
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 

@@ -1,3 +1,5 @@
+import { Payment, Subscription } from "@prisma/client";
+
 export type StatusType =
   | "PENDING"
   | "RECEIVED"
@@ -78,4 +80,8 @@ export interface PaymentResProps {
   postalService: boolean;
   custody: string | null;
   refunds: string | null;
+}
+
+export interface PaymentWithSubscriptionProps extends Payment {
+  Subscription: Subscription;
 }

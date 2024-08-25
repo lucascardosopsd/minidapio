@@ -1,9 +1,17 @@
+import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { fetchUser } from "@/actions/user/fetchUser";
+import PaymentsHistoryCard from "@/components/config/PaymentsHistoryCard";
 import SubscriptionCard from "@/components/config/SubscriptionCard";
 import { plans } from "@/constants/plans";
 
 import { useUserSession } from "@/hooks/useUserSession";
+import { PaymentWithSubscriptionProps } from "@/types/paymentProps";
+
+interface CustomPaymentsRes {
+  payments: PaymentWithSubscriptionProps[];
+  pages: number;
+}
 
 const NewPaymentProfilePage = async () => {
   const session = await useUserSession();
@@ -29,6 +37,17 @@ const NewPaymentProfilePage = async () => {
     (plan) => plan.alias == subscriptions[0]?.plan
   )[0];
 
+  const { payments } = await fetchPaymentsByQuery<CustomPaymentsRes>({
+    query: {
+      where: { userId: user?.id },
+      include: {
+        Subscription: true,
+      },
+    },
+    page: 0,
+    take: 1000,
+  });
+
   return (
     <div className="flex flex-col gap-5 items-center overflow-hidden">
       <p className="text-3xl">Configurações</p>
@@ -37,6 +56,8 @@ const NewPaymentProfilePage = async () => {
         currentPlan={currentPlan}
         currentSub={subscriptions[0]}
       />
+
+      <PaymentsHistoryCard payments={payments} />
     </div>
   );
 };
