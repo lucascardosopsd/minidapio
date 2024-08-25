@@ -50,7 +50,7 @@ const SubscriptionCard = ({
   };
 
   return (
-    <Card className="flex flex-col gap-5 max-w-[500px] w-full">
+    <Card className="flex flex-col gap-5 flex-1">
       <CardHeader>
         <CardTitle>Contábil</CardTitle>
         <CardDescription>

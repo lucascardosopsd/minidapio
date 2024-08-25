@@ -45,19 +45,21 @@ const NewPaymentProfilePage = async () => {
       },
     },
     page: 0,
-    take: 1000,
+    take: 12,
   });
 
   return (
-    <div className="flex flex-col gap-5 items-center overflow-hidden">
-      <p className="text-3xl">Configurações</p>
+    <div className="flex flex-col space-y-10 items-center overflow-hidden">
+      <p className="text-3xl w-full border-b mt-10 pb-5">Configurações</p>
 
-      <SubscriptionCard
-        currentPlan={currentPlan}
-        currentSub={subscriptions[0]}
-      />
+      <div className="flex min-h-screen gap-5">
+        <SubscriptionCard
+          currentPlan={currentPlan}
+          currentSub={subscriptions[0]}
+        />
 
-      <PaymentsHistoryCard payments={payments} />
+        <PaymentsHistoryCard payments={payments} />
+      </div>
     </div>
   );
 };

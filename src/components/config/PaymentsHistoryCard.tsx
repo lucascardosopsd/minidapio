@@ -17,6 +17,7 @@ import {
 import { PaymentWithSubscriptionProps } from "@/types/paymentProps";
 import { plans } from "@/constants/plans";
 import { statusI18n } from "@/constants/paymentStatusI18n";
+import moment from "moment";
 
 interface PaymentsHistoryCardProps {
   payments: PaymentWithSubscriptionProps[];
@@ -24,11 +25,11 @@ interface PaymentsHistoryCardProps {
 
 const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
   return (
-    <Card>
+    <Card className="flex-1">
       <CardHeader>
         <CardTitle>Histórico de pagamento</CardTitle>
         <CardDescription>
-          Últimos pagamentos realizados em sua assinatura
+          Últimos 12 pagamentos realizados em sua assinatura
         </CardDescription>
       </CardHeader>
 
@@ -40,12 +41,13 @@ const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
               <TableHead>Valor</TableHead>
               <TableHead>Plano</TableHead>
               <TableHead>Situação</TableHead>
-              <TableHead>Data</TableHead>
+              <TableHead>Pagamento</TableHead>
+              <TableHead>validade</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {payments.map((payment) => (
-              <TableRow key={payment.id}>
+            {payments.map((payment, index) => (
+              <TableRow key={index}>
                 <TableCell>{payment.asaasId}</TableCell>
                 <TableCell>
                   {formatPrice(payment.value, "pt-BR", "BRL")}
@@ -58,6 +60,11 @@ const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
                 </TableCell>
                 <TableCell>{statusI18n[payment.status]}</TableCell>
                 <TableCell>{payment.createdAt.toLocaleDateString()}</TableCell>
+                <TableCell>
+                  {moment(payment.createdAt)
+                    .add(1, "month")
+                    .format("DD/MM/YYYY")}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
