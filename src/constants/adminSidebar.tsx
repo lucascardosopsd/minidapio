@@ -1,7 +1,13 @@
 "use client";
 
 import { SidebarOptionProps } from "@/types/sidebar";
-import { DollarSign, Grip, User, UtensilsCrossed } from "lucide-react";
+import {
+  DollarSign,
+  Grip,
+  ListChecks,
+  User,
+  UtensilsCrossed,
+} from "lucide-react";
 
 export const adminSidebarOptions: SidebarOptionProps[] = [
   {
@@ -18,6 +24,11 @@ export const adminSidebarOptions: SidebarOptionProps[] = [
     label: "Restaurantes",
     icon: UtensilsCrossed,
     href: "/jsnHktoSE/dashboard/restaurants?page=1",
+  },
+  {
+    label: "Planos",
+    icon: ListChecks,
+    href: "/jsnHktoSE/dashboard/plans?page=1",
   },
   {
     label: "Pagamentos",

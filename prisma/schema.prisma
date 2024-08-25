@@ -123,27 +123,41 @@ model Item {
   userId       String?     @db.ObjectId
 }
 
-model Subscription {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  object      String
-  asaasId     String
-  dateCreated String
-  customerId  String
-  value       Int
-  nextDueDate String
-  cycle       String
-  description String
-  billingType String
-  deleted     Boolean
-  status      String
-  plan        String
-  userId      String?  @db.ObjectId
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Plan {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  subTitle     String?
+  alias        String
+  level        Int
+  price        Float
+  features     String[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Subscription Subscription[]
+}
 
-  User             User?     @relation(fields: [userId], references: [id])
-  paymentProfileId String?   @db.ObjectId
-  Payment          Payment[]
+model Subscription {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  object           String
+  asaasId          String
+  dateCreated      String
+  customerId       String
+  value            Int
+  nextDueDate      String
+  cycle            String
+  description      String
+  billingType      String
+  deleted          Boolean
+  status           String
+  planId           String?  @db.ObjectId
+  userId           String?  @db.ObjectId
+  paymentProfileId String?  @db.ObjectId
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  User    User?     @relation(fields: [userId], references: [id])
+  Plan    Plan?     @relation(fields: [planId], references: [id])
+  Payment Payment[]
 }
 
 model Payment {

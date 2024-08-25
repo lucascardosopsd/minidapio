@@ -60,7 +60,7 @@ const ReusableModal = ({
             {title}
             <DrawerClose
               asChild
-              className="text-red-500 cursor-pointer hover:scale-125 transition"
+              className="cursor-pointer hover:scale-125 transition"
             >
               <X />
             </DrawerClose>
