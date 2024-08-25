@@ -95,6 +95,13 @@ const SubscriptionCard = ({
           )}
         </Card>
       </CardContent>
+
+      <CardFooter>
+        <p className="text-sm text-center">
+          O último pagamento efetuado continuará a ser valido mesmo diante do
+          cancelamento do plano atual.
+        </p>
+      </CardFooter>
     </Card>
   );
 };

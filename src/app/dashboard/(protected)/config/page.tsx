@@ -50,7 +50,9 @@ const NewPaymentProfilePage = async () => {
 
   return (
     <div className="flex flex-col space-y-10 items-center overflow-hidden">
-      <p className="text-3xl w-full border-b mt-10 pb-5">Configurações</p>
+      <p className="text-3xl w-full border-b mt-10 pb-5 font-semibold">
+        Configurações
+      </p>
 
       <div className="flex min-h-screen gap-5">
         <SubscriptionCard
