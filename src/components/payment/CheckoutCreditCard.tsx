@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutValidator } from "@/validators/checkout";
 import FieldBuilder from "../builders/FieldBuilder";
-import { plans } from "@/constants/plans";
 import { Input } from "../ui/input";
 import { PatternFormat } from "react-number-format";
 import { Button } from "../ui/button";
@@ -24,24 +23,25 @@ import axios from "axios";
 import { toast } from "sonner";
 import validator from "card-validator";
 import { useRouter } from "next/navigation";
-import { User } from "@prisma/client";
+import { Plan, User } from "@prisma/client";
 import { useState } from "react";
 import moment from "moment";
 import createSubscription from "@/actions/subscription/createSubscription";
 import { AsaasSubscriptionResObj } from "@/types/asaasSubscriptions";
 
 interface CheckoutCreditCardProps {
-  plan: string;
+  plan: Plan;
   customer: AsaasCustomerObj;
   user: User;
 }
 
 const CheckoutCreditCard = ({
-  plan: paramPlan,
+  plan,
   customer,
   user,
 }: CheckoutCreditCardProps) => {
   const [loading, setLoading] = useState(false);
+  const planDescription = { __html: plan.description };
 
   const cardForm = useForm({
     defaultValues: {
@@ -54,7 +54,6 @@ const CheckoutCreditCard = ({
     resolver: zodResolver(checkoutValidator),
   });
 
-  const currentPlan = plans.filter((plan) => plan.alias == paramPlan)[0];
   const router = useRouter();
 
   const handleSubscription = async (
@@ -74,7 +73,7 @@ const CheckoutCreditCard = ({
       customer: customer.id,
       billingType: "CREDIT_CARD",
       nextDueDate: moment().format("YYYY-MM-DD"),
-      value: currentPlan.price,
+      value: plan.price,
       cycle: "MONTHLY",
       description: "Assinatura Plano Mensal Minidapio",
       creditCard: data,
@@ -111,7 +110,7 @@ const CheckoutCreditCard = ({
           status: data.status,
           value: data.value,
           userId: user.id,
-          plan: currentPlan.alias,
+          planId: plan.id,
         },
       });
 
@@ -233,18 +232,12 @@ const CheckoutCreditCard = ({
                   <div className="flex flex-col">
                     <div className="flex justify-between items-center w-full">
                       <p>Plano</p>
-                      <p>{currentPlan.title}</p>
+                      <p>{plan.title}</p>
                     </div>
-                    <p className="text-xs">
-                      {currentPlan.features.map(
-                        (feature, index) =>
-                          `${feature}${
-                            currentPlan.features.length - 2 > index ? ", " : ""
-                          } ${
-                            currentPlan.features.length - 2 == index ? "e " : ""
-                          }`
-                      )}
-                    </p>
+                    <p
+                      className="text-xs"
+                      dangerouslySetInnerHTML={planDescription}
+                    ></p>
                   </div>
 
                   <div className="flex justify-between items-center w-full">
@@ -257,7 +250,7 @@ const CheckoutCreditCard = ({
                   <div className="flex justify-between items-center w-full  text-xl text-primary">
                     <p>Total</p>
                     <p>
-                      {currentPlan.price.toLocaleString("pt-BR", {
+                      {plan.price.toLocaleString("pt-BR", {
                         currency: "BRL",
                         style: "currency",
                       })}

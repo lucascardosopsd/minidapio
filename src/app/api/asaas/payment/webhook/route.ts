@@ -28,7 +28,7 @@ export const POST = async (req: Request) => {
         description: payment.description,
         paymentDate: payment.paymentDate,
         deleted: payment.deleted,
-        plan: subscriptions[0].plan,
+        planId: subscriptions[0].planId,
         userId: subscriptions[0].userId!,
         subscriptionId: subscriptions[0].id,
       },

@@ -45,7 +45,7 @@ const PlansPage = async () => {
           <PlanCard
             plan={plan}
             key={index}
-            current={subscriptions[0].planId == plan.id}
+            current={subscriptions[0]?.planId == plan.id}
           />
         ))}
       </div>

@@ -10,6 +10,6 @@ export interface NewSubscriptionProps {
   billingType: string;
   deleted: boolean;
   status: string;
-  plan: string;
+  planId: string;
   userId: string;
 }

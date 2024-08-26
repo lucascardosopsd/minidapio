@@ -36,7 +36,7 @@ export const checkMonthlySubscription = async ({
 
   const subscriptions = await fetchUserSubscriptions({ userId });
 
-  if (!subscriptions) {
+  if (!subscriptions.length) {
     return {
       type: "paid",
       remaining: null,

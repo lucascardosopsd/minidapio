@@ -1,3 +1,4 @@
+import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
 import { fetchUser } from "@/actions/user/fetchUser";
 import CheckoutCreditCard from "@/components/payment/CheckoutCreditCard";
 import CheckoutProfile from "@/components/payment/CheckoutProfile";
@@ -35,6 +36,20 @@ const PaymentPage = async ({ params }: PaymentPageProps) => {
     }
   }
 
+  const { plans } = await fetchPlansByQuery({
+    page: 0,
+    take: 1,
+    query: {
+      where: {
+        alias: params.plan,
+      },
+    },
+  });
+
+  if (!plans.length) {
+    throw new Error("Missing plan");
+  }
+
   return (
     <div className="flex flex-col gap-5">
       <CheckoutProfile
@@ -61,11 +76,7 @@ const PaymentPage = async ({ params }: PaymentPageProps) => {
       {customer && <Separator />}
 
       {customer && (
-        <CheckoutCreditCard
-          plan={params.plan}
-          customer={customer}
-          user={user!}
-        />
+        <CheckoutCreditCard plan={plans[0]} customer={customer} user={user!} />
       )}
     </div>
   );
