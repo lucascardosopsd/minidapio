@@ -130,7 +130,7 @@ model Plan {
   alias        String
   level        Int
   price        Float
-  features     String[]
+  description  String
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   Subscription Subscription[]

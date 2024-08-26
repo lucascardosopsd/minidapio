@@ -34,7 +34,7 @@ const ReusableSidebar = ({ options, redirectLogout }: ReusableSidebarProps) => {
               className={cn(
                 "transition",
                 option.href.split("?")[0] == currentPath &&
-                  "text-primary border border-primary rounded p-2",
+                  "border border-primary rounded p-2",
                 option.href.split("?")[0] !== currentPath &&
                   "hover:scale-125 hover:text-primary"
               )}

@@ -6,5 +6,5 @@ export const planValidator = z.object({
   subTitle: z.string({ required_error: "Digite o sub título" }).nullable(),
   level: z.number({ required_error: "Digite o nível" }),
   price: z.number({ required_error: "Digite o preço" }),
-  features: z.string({ required_error: "Digite as funcionalidades" }).array(),
+  description: z.string(),
 });

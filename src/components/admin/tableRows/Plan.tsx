@@ -1,5 +1,4 @@
 "use client";
-import ReusableDialog from "@/components/misc/ReusableDialog";
 import { useState } from "react";
 import { z } from "zod";
 import { FaPen, FaTrash } from "react-icons/fa6";
@@ -17,6 +16,7 @@ import { updatePlan } from "@/actions/plan/updatePlan";
 import { deletePlan } from "@/actions/plan/deletePlan";
 import { formatPrice } from "@/tools/formatPrice";
 import PlanForm from "../forms/Plan";
+import ReusableModal from "@/components/misc/ReusableModal";
 
 interface PlanRowProps {
   plan: Plan;
@@ -32,7 +32,7 @@ const PlanRow = ({ plan }: PlanRowProps) => {
 
       await updatePlan({ id: plan.id, data });
 
-      revalidateRoute({ fullPath: "/jsnHktoSE/dashboard" });
+      revalidateRoute({ fullPath: "/jsnHktoSE/dashboard/plans" });
 
       toast.success("Plano atualizado");
 
@@ -77,20 +77,17 @@ const PlanRow = ({ plan }: PlanRowProps) => {
       <TableCell>{plan.level}</TableCell>
 
       <TableCell>
-        <ReusableDialog
+        <ReusableModal
           title="Editar Plano"
           content={
-            <div className="h-[calc(70svh)] overflow-y-auto">
-              <PlanForm
-                onSubmit={handleOnSubmit}
-                defaultValues={plan}
-                loading={loading}
-              />
-            </div>
+            <PlanForm
+              onSubmit={handleOnSubmit}
+              defaultValues={plan}
+              loading={loading}
+            />
           }
           trigger={<FaPen />}
-          description="Atualize os dados do anúncio"
-          loading={loading}
+          description="Atualize os dados do plano"
           onOpen={setIsModalOpen}
           isOpen={isModalOpen}
         />

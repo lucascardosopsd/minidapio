@@ -9,13 +9,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { planValidator } from "@/validators/plan";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plan } from "@prisma/client";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 import { z } from "zod";
+import dynamic from "next/dynamic";
+const RichTextEditor = dynamic(() => import("@/components/misc/Richtext"), {
+  ssr: false,
+});
 
 interface PlanFormProps {
   onSubmit: (data: z.infer<typeof planValidator>) => void;
@@ -31,7 +34,7 @@ const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
       alias: "",
       level: 0,
       price: 0,
-      features: [""],
+      description: "",
     },
     resolver: zodResolver(planValidator),
   });
@@ -64,12 +67,17 @@ const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
             fieldElement={<Input />}
           />
 
-          <FieldBuilder
-            control={form.control}
-            name="level"
-            title="Nível"
-            fieldElement={<Input type="number" />}
-          />
+          <div className="flex flex-col gap-2">
+            <p>Nível</p>
+            <Input
+              {...form.register("level", {
+                valueAsNumber: true,
+              })}
+            />
+            {form.formState.errors.level && (
+              <span>{form.formState.errors.level.message}</span>
+            )}
+          </div>
 
           <FormField
             control={form.control}
@@ -98,17 +106,19 @@ const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           <p>Funciondalidades</p>
-          <Textarea
-            onChange={(e) => {
-              const features: string[] = e.target.value.split(";");
-              form.setValue("features", features);
-            }}
+          <Controller
+            name="description"
+            rules={{ required: true }}
+            control={form.control}
+            defaultValue=""
+            render={({ field }) => (
+              <RichTextEditor onChange={field.onChange} value={field.value} />
+            )}
           />
-
           <p className="text-xs">
-            Separe cada funciondalidade por ponto e virgula (;)
+            {form.formState.errors.description?.message}
           </p>
         </div>
 
