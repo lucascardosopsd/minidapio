@@ -51,7 +51,7 @@ const PlanCard = ({ plan, current }: PlanCardProps) => {
           <p className="text-sm">/Mês</p>
         </span>
 
-        <Link href={`/payment/${plan.alias}`} className="w-full">
+        <Link href={`/dashboard//payment/${plan.alias}`} className="w-full">
           <Button
             className={cn("w-full", !current && "border border-primary")}
             variant={plan.highlighted ? "default" : "outline"}
