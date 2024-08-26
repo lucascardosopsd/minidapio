@@ -9,8 +9,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Separator } from "../ui/separator";
-import { Subscription } from "@prisma/client";
-import { PlanProps } from "@/types/plan";
+import { Plan, Subscription } from "@prisma/client";
 import axios from "axios";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -20,7 +19,7 @@ import { revalidateRoute } from "@/actions/revalidateRoute";
 import { deleteSubscription } from "@/actions/subscription/deleteSubscription";
 
 interface SubscriptionCardProps {
-  currentPlan: PlanProps;
+  currentPlan: Plan;
   currentSub: Subscription;
 }
 

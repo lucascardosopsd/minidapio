@@ -1,9 +1,9 @@
 import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
+import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { fetchUser } from "@/actions/user/fetchUser";
 import PaymentsHistoryCard from "@/components/config/PaymentsHistoryCard";
 import SubscriptionCard from "@/components/config/SubscriptionCard";
-import { plans } from "@/constants/plans";
 
 import { useUserSession } from "@/hooks/useUserSession";
 import { PaymentWithSubscriptionProps } from "@/types/paymentProps";
@@ -22,6 +22,8 @@ const NewPaymentProfilePage = async () => {
 
   const user = await fetchUser({ email: session?.email! });
 
+  const { plans } = await fetchPlansByQuery({ take: 0, page: 0, query: {} });
+
   const { subscriptions } = await fetchSubscriptionsByQuery({
     page: 0,
     take: 100,
@@ -34,7 +36,7 @@ const NewPaymentProfilePage = async () => {
   });
 
   const currentPlan = plans.filter(
-    (plan) => plan.alias == subscriptions[0]?.plan
+    (plan) => plan.id == subscriptions[0]?.planId
   )[0];
 
   const { payments } = await fetchPaymentsByQuery<CustomPaymentsRes>({
