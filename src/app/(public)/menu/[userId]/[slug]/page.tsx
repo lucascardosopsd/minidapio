@@ -5,6 +5,7 @@ import { FullRestaurantProps } from "@/types/restaurant";
 import ItemsList from "@/components/menu/ItemsList";
 import SearchSection from "@/components/menu/SearchSection";
 import NoteModal from "@/components/menu/NoteModal";
+import { checkMonthlySubscription } from "@/actions/subscription/checkMonthlySubscription";
 
 interface MenuProps {
   params: {
@@ -60,6 +61,18 @@ const Menu = async ({ params: { userId, slug } }: MenuProps) => {
     return (
       <div className="flex items-center justify-center h-svh w-full ">
         Restaurante não encontrado.
+      </div>
+    );
+  }
+
+  const currentSub = await checkMonthlySubscription({
+    userId: restaurants[0].userId!,
+  });
+
+  if (currentSub.remaining == null) {
+    return (
+      <div className="flex items-center justify-center h-svh w-full ">
+        Pagamento pendente.
       </div>
     );
   }
