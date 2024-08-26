@@ -72,6 +72,8 @@ const PlanRow = ({ plan }: PlanRowProps) => {
 
       <TableCell>{plan.alias}</TableCell>
 
+      <TableCell>{plan.order}</TableCell>
+
       <TableCell>
         <Badge>{formatPrice(plan.price, "pt-BR", "BRL")}</Badge>
       </TableCell>

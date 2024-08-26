@@ -38,6 +38,7 @@ const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
       description: "",
       highlighted: false,
       url: "",
+      order: 0,
     },
     resolver: zodResolver(planValidator),
   });
@@ -107,6 +108,18 @@ const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
               </FormItem>
             )}
           />
+
+          <div className="flex flex-col gap-2">
+            <p>Ordem</p>
+            <Input
+              {...form.register("order", {
+                valueAsNumber: true,
+              })}
+            />
+            {form.formState.errors.level && (
+              <span>{form.formState.errors.level.message}</span>
+            )}
+          </div>
 
           <div className="flex flex-col items-center gap-2">
             <p>Destacar</p>

@@ -9,4 +9,5 @@ export const planValidator = z.object({
   highlighted: z.boolean(),
   description: z.string(),
   url: z.string(),
+  order: z.number(),
 });

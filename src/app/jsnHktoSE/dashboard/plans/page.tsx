@@ -26,6 +26,7 @@ const PlansPage = async () => {
               <TableHead>Título</TableHead>
 
               <TableHead>Apelido</TableHead>
+              <TableHead>Ordem</TableHead>
 
               <TableHead>Preço</TableHead>
 
