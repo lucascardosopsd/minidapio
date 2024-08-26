@@ -18,6 +18,8 @@ interface PlanCardProps {
 const PlanCard = ({ plan, current }: PlanCardProps) => {
   const html = { __html: plan.description };
 
+  console.log(plan);
+
   return (
     <Card
       className={cn(
@@ -49,7 +51,7 @@ const PlanCard = ({ plan, current }: PlanCardProps) => {
           <p className="text-sm">/Mês</p>
         </span>
 
-        <Link href={plan.url} className="w-full">
+        <Link href={`/payment/${plan.alias}`} className="w-full">
           <Button
             className={cn("w-full", !current && "border border-primary")}
             variant={plan.highlighted ? "default" : "outline"}
