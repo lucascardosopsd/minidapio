@@ -21,7 +21,7 @@ const PlanCard = ({ plan, current }: PlanCardProps) => {
   return (
     <Card
       className={cn(
-        `min-w-64 order-${plan.order} h-80 flex flex-col`,
+        `min-w-64 order-${plan.order} h-80 flex flex-col bg-background/50 backdrop-blur-lg `,
         plan.highlighted && "border border-primary h-96"
       )}
     >
