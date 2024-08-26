@@ -12,6 +12,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import UpgradeButton from "./UpgradeButton";
 
 interface NavbarProps {
   breadcrumb?: BreadcrumbRouteProps[];
@@ -43,6 +44,8 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
         </Link>
       </div>
       <div className="flex gap-2 items-center">
+        <UpgradeButton />
+
         <ThemeToggle />
 
         <Link
