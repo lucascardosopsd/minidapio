@@ -1,8 +1,8 @@
+import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { fetchUser } from "@/actions/user/fetchUser";
 import PlanCard from "@/components/restaurant/PlanCard";
 import { Separator } from "@/components/ui/separator";
-import { plans } from "@/constants/plans";
 import { useUserSession } from "@/hooks/useUserSession";
 
 const PlansPage = async () => {
@@ -24,6 +24,8 @@ const PlansPage = async () => {
     },
   });
 
+  const { plans } = await fetchPlansByQuery({ page: 0, take: 100, query: {} });
+
   return (
     <div className="flex flex-col tablet:items-center tablet:flex-row gap-5 mx-auto">
       <div className="flex flex-col gap-2">
@@ -40,7 +42,7 @@ const PlansPage = async () => {
         <PlanCard
           plan={plan}
           key={index}
-          current={subscriptions[0].plan == plan.alias}
+          current={subscriptions[0].planId == plan.id}
         />
       ))}
     </div>

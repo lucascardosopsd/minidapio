@@ -8,33 +8,33 @@ import {
   CardTitle,
 } from "../ui/card";
 import Link from "next/link";
-import { PlanProps } from "@/types/plan";
+import { Plan } from "@prisma/client";
 
 interface PlanCardProps {
-  plan: PlanProps;
+  plan: Plan;
   current: boolean;
 }
 
 const PlanCard = ({ plan, current }: PlanCardProps) => {
+  const html = { __html: plan.description };
+
   return (
-    <Card className={cn(plan.highLight && "border border-primary")}>
+    <Card className={cn(plan.highlighted && "border border-primary min-w-60")}>
       <CardHeader>
         <CardTitle>
-          <p className={cn("text-center", plan.highLight && "text-primary")}>
+          <p className={cn("text-center", plan.highlighted && "text-primary")}>
             {plan.title}
           </p>
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        {plan.features.map((feature) => (
-          <p>☑️ {feature}</p>
-        ))}
+        <span dangerouslySetInnerHTML={html} />
       </CardContent>
       <CardFooter className="flex-col gap-5">
         <span
           className={cn(
             "text-2xl font-semibold flex items-center",
-            !plan.highLight && "font-light"
+            !plan.highlighted && "font-light"
           )}
         >
           {plan.price.toLocaleString("pt-BR", {
@@ -44,10 +44,10 @@ const PlanCard = ({ plan, current }: PlanCardProps) => {
           <p className="text-sm">/Mês</p>
         </span>
 
-        <Link href={plan.link} className="w-full">
+        <Link href={plan.url} className="w-full">
           <Button
             className={cn("w-full", !current && "border border-primary")}
-            variant={plan.highLight ? "default" : "outline"}
+            variant={plan.highlighted ? "default" : "outline"}
             disabled={current}
           >
             {current ? "Atual" : "Assinar"}
