@@ -1,4 +1,5 @@
 "use server";
+import { fetchPaymentsByQuery } from "../payment/fetchPaymentsByQuery";
 import { fetchUser } from "../user/fetchUser";
 import {
   SubscriptionWithPlan,
@@ -43,22 +44,31 @@ export const checkMonthlySubscription = async ({
     };
   }
 
-  const paidRemaining = moment().diff(
-    moment(subscriptions[0]?.createdAt, "months"),
-    "day"
-  );
+  const { payments } = await fetchPaymentsByQuery({
+    page: 0,
+    take: 1,
+    query: {
+      where: {
+        userId: user?.id,
+      },
+    },
+  });
+
+  const paidRemaining = moment(payments[0]?.createdAt)
+    .add(1, "month")
+    .diff(moment(), "day");
 
   if (paidRemaining < 0) {
     return {
       type: "paid",
-      remaining: paidRemaining,
+      remaining: null,
       subscription: subscriptions[0],
     };
   }
 
   return {
     type: "paid",
-    remaining: null,
+    remaining: paidRemaining,
     subscription: subscriptions[0],
   };
 };
