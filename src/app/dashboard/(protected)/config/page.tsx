@@ -22,8 +22,6 @@ const NewPaymentProfilePage = async () => {
 
   const user = await fetchUser({ email: session?.email! });
 
-  const { plans } = await fetchPlansByQuery({ take: 0, page: 0, query: {} });
-
   const { subscriptions } = await fetchSubscriptionsByQuery({
     page: 0,
     take: 100,
@@ -34,6 +32,7 @@ const NewPaymentProfilePage = async () => {
       },
     },
   });
+  const { plans } = await fetchPlansByQuery({ take: 10, page: 0, query: {} });
 
   const currentPlan = plans.filter(
     (plan) => plan.id == subscriptions[0]?.planId
