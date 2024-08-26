@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { planValidator } from "@/validators/plan";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Plan } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 import { z } from "zod";
@@ -19,7 +20,7 @@ import { z } from "zod";
 interface PlanFormProps {
   onSubmit: (data: z.infer<typeof planValidator>) => void;
   loading: boolean;
-  defaultValues: z.infer<typeof planValidator> | null;
+  defaultValues: Plan | null;
 }
 
 const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
