@@ -8,6 +8,7 @@ import { planValidator } from "@/validators/plan";
 import PlanForm from "../forms/Plan";
 import { Plan } from "@prisma/client";
 import ReusableModal from "@/components/misc/ReusableModal";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 
 interface PlansActionBarProps {
   plans: Plan[] | null;
@@ -24,6 +25,8 @@ const PlansActionBar = ({ plans }: PlansActionBarProps) => {
       await createNewPlan({ data });
 
       toast.success("Plano criado");
+
+      revalidateRoute({ fullPath: "/jsnHktoSE/dashboard/plans" });
 
       setIsModalOpen(false);
     } catch (error) {

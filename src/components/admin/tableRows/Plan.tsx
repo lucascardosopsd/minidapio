@@ -53,6 +53,8 @@ const PlanRow = ({ plan }: PlanRowProps) => {
 
       toast.success("Plano deletado");
 
+      revalidateRoute({ fullPath: "/jsnHktoSE/dashboard/plans" });
+
       setIsModalOpen(false);
     } catch (error) {
       console.log(error);
