@@ -32,7 +32,7 @@ export function ThemeToggle() {
           onClick={() => setTheme("dark")}
           className="rounded h-9"
         >
-          <MoonIcon className="h-[1rem] w-[1rem]" />
+          <MoonIcon className="h-[1rem] w-[1rem] dark:text-zinc-100" />
         </TabsTrigger>
       </TabsList>
     </Tabs>
