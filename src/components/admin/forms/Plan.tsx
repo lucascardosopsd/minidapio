@@ -37,6 +37,7 @@ const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
       price: 0,
       description: "",
       highlighted: false,
+      url: "",
     },
     resolver: zodResolver(planValidator),
   });
@@ -128,6 +129,19 @@ const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
               )}
             />
           </div>
+        </div>
+
+        <div className="flex">
+          <FieldBuilder
+            name="url"
+            title="Rota"
+            control={form.control}
+            disabled
+            fieldElement={
+              <Input placeholder={`/payment/${form.watch("alias")}`} />
+            }
+          />
+          <p></p>
         </div>
 
         <div className="flex flex-col gap-2">

@@ -8,4 +8,5 @@ export const planValidator = z.object({
   price: z.number({ required_error: "Digite o preço" }),
   highlighted: z.boolean(),
   description: z.string(),
+  url: z.string(),
 });
