@@ -129,6 +129,7 @@ model Plan {
   subTitle     String?
   alias        String
   level        Int
+  highlighted  Boolean
   price        Float
   description  String
   createdAt    DateTime       @default(now())

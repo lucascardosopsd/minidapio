@@ -16,6 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 import { z } from "zod";
 import dynamic from "next/dynamic";
+import { Checkbox } from "@/components/ui/checkbox";
 const RichTextEditor = dynamic(() => import("@/components/misc/Richtext"), {
   ssr: false,
 });
@@ -35,6 +36,7 @@ const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
       level: 0,
       price: 0,
       description: "",
+      highlighted: false,
     },
     resolver: zodResolver(planValidator),
   });
@@ -104,6 +106,28 @@ const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
               </FormItem>
             )}
           />
+
+          <div className="flex flex-col items-center gap-2">
+            <p>Destacar</p>
+            <FormField
+              control={form.control}
+              name="highlighted"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(e) => field.onChange(e)}
+                      onBlur={field.onBlur}
+                      className="w-10 h-10"
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">
