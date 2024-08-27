@@ -18,12 +18,10 @@ interface PlanCardProps {
 const PlanCard = ({ plan, current }: PlanCardProps) => {
   const html = { __html: plan.description };
 
-  console.log(plan);
-
   return (
     <Card
       className={cn(
-        `min-w-64 order-${plan.order} h-80 flex flex-col bg-background/50 backdrop-blur-lg `,
+        `min-w-64  h-80 flex flex-col bg-background/50 backdrop-blur-lg `,
         plan.highlighted && "border border-primary h-96"
       )}
     >
