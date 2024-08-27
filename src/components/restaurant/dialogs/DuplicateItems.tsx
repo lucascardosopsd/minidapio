@@ -59,7 +59,7 @@ const DuplicateItemsDialog = () => {
           }
         );
 
-      const limits = planLimits[subscriptions[0].Plan.alias];
+      const limits = planLimits[subscriptions[0]?.Plan?.alias || "free"];
 
       if (idList.length > 1) {
         for (const id of idList) {

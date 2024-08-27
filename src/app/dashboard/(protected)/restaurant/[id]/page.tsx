@@ -59,7 +59,7 @@ export default async function Restaurant({
       },
     });
 
-  const limits = planLimits[subscriptions[0].Plan.alias];
+  const limits = planLimits[subscriptions[0]?.Plan?.alias || "free"];
 
   return (
     <main className="flex flex-col gap-4 pt-5 h-[90svh] overflow-y-auto">

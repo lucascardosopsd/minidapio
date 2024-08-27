@@ -65,7 +65,7 @@ const RestaurantsList = ({ restaurants, limits }: RestaurantsListProps) => {
           content={
             <RestaurantForm loading={loading} onSubmit={handleNewRestaurant} />
           }
-          triggerDisabled={restaurants.length >= limits.restaurants}
+          triggerDisabled={restaurants.length >= limits?.restaurants}
         />
       </div>
 
