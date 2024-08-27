@@ -18,7 +18,7 @@ export const fetchManyItems = async <T = FetchManyItemsResProps>({
   take,
   query = {},
 }: FetchManyItemsProps): Promise<T> => {
-  const count = await prisma.afiliate.count();
+  const count = await prisma.item.count();
   const pages = Math.ceil(count / take);
 
   const skip = page * take;
