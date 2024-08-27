@@ -43,6 +43,6 @@ export const POST = async (req: Request) => {
     }
 
     // @ts-ignore
-    return Response.json({ error: error.response.data, status: 500 });
+    return Response.json({});
   }
 };
