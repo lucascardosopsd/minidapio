@@ -1,10 +1,9 @@
 import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
 import Footer from "@/components/landingPage/Footer";
-import AdvantagesSection from "@/components/landingPage/sections/Advantages";
 import HeroSection from "@/components/landingPage/sections/Hero";
-import HowWorksSection from "@/components/landingPage/sections/HowWorks";
+import Advantages from "@/components/landingPage/sections/Advantages";
+import Features from "@/components/landingPage/sections/Features";
 import PlansSection from "@/components/landingPage/sections/Plans";
-import { InfiniteMovingCards } from "@/components/ui/infinity-moving-cards";
 
 const LandingPage = async () => {
   const { restaurants } = await fetchManyRestaurants({
@@ -17,31 +16,14 @@ const LandingPage = async () => {
     },
   });
 
-  const carouselItems = restaurants.map((restaurant) => ({
-    imageUrl: restaurant.logo,
-    href: `${process.env.NEXT_PUBLIC_HOST}/menu/${restaurant.userId}/${restaurant.slug}`,
-    title: restaurant.title,
-  }));
-
   return (
-    <>
+    <div className="flex flex-col gap-y-44">
       <HeroSection />
-      <div className="flex flex-col py-24 border border-boder rounded gap-10">
-        <div className="flex flex-col">
-          <p className="text-center text-2xl text-primary font-semibold">
-            Restaurantes
-          </p>
-          <p className="text-center">
-            Conheça alguns dos nossos restaurantes parceiros
-          </p>
-        </div>
-        <InfiniteMovingCards items={carouselItems} direction="left" />
-      </div>
-      <HowWorksSection />
-      <AdvantagesSection />
+      <Advantages />
+      <Features />
       <PlansSection />
       <Footer />
-    </>
+    </div>
   );
 };
 

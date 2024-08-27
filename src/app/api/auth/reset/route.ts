@@ -1,5 +1,5 @@
 import { signToken } from "@/actions/auth/signToken";
-import { fetchUserByQuery } from "@/actions/user/fetchUserByQuery";
+import { fetchUser } from "@/actions/user/fetchUser";
 import ResetPass from "@/components/emails/ResetPass";
 import { sendEmail } from "@/tools/sendEmail";
 import { render } from "@react-email/components";
@@ -9,13 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
 
-    const users = await fetchUserByQuery({
-      query: {
-        where: { email: data.email },
-      },
-    });
-
-    const user = users && users[0];
+    const user = await fetchUser({ email: data.email });
 
     if (!user?.id) {
       NextResponse.json({ status: 404 });

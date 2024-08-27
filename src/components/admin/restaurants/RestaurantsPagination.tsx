@@ -1,7 +1,6 @@
 import Paginate from "@/components/misc/Paginate";
 import { Separator } from "@/components/ui/separator";
 import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
-import { fetchRegions } from "@/actions/region/fetchRegions";
 import { Prisma } from "@prisma/client";
 import SearchField from "@/components/misc/SearchField";
 import {
@@ -24,8 +23,6 @@ const RestaurantsPagination = async ({ page, query }: UserPaginationprops) => {
     take: 10,
     query,
   });
-
-  const regions = await fetchRegions();
 
   return (
     <>
@@ -55,16 +52,7 @@ const RestaurantsPagination = async ({ page, query }: UserPaginationprops) => {
             </TableHeader>
             <TableBody>
               {restaurants.map((restaurant) => (
-                <RestaurantRow
-                  restaurant={restaurant!}
-                  key={restaurant.id}
-                  regions={regions}
-                  restaurantRegion={
-                    regions.filter(
-                      (region) => region.id == restaurant.regionId
-                    )[0]
-                  }
-                />
+                <RestaurantRow restaurant={restaurant!} key={restaurant.id} />
               ))}
             </TableBody>
           </Table>

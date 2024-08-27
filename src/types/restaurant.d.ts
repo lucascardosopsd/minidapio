@@ -38,7 +38,8 @@ export interface RestaurantProps {
   createdAt: Date;
   updatedAt: Date;
   userId: string | null;
-  regionId: string | null;
+  state: string;
+  province: string;
 }
 
 export interface FullRestaurantProps extends RestaurantProps {

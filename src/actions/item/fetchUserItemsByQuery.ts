@@ -17,10 +17,6 @@ export const fetchUserItemsByQuery = async (
 ): Promise<fetchUserItemsByQueryReturnProps> => {
   const user = await useUserSession();
 
-  if (!user?.id) {
-    throw new Error("User not found");
-  }
-
   const safeQuery = {
     ...query,
     orderBy: {
@@ -39,7 +35,7 @@ export const fetchUserItemsByQuery = async (
       price: query.where?.price,
       active: query.where?.active,
       sale: query.where?.sale,
-      userId: user.id,
+      userId: user?.id,
     },
   } satisfies ItemsQuery;
 

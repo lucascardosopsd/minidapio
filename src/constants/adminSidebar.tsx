@@ -4,9 +4,7 @@ import { SidebarOptionProps } from "@/types/sidebar";
 import {
   DollarSign,
   Grip,
-  Image,
-  MapPinned,
-  Megaphone,
+  ListChecks,
   User,
   UtensilsCrossed,
 } from "lucide-react";
@@ -18,16 +16,6 @@ export const adminSidebarOptions: SidebarOptionProps[] = [
     href: "/jsnHktoSE/dashboard",
   },
   {
-    label: "Anúncios",
-    icon: Image,
-    href: "/jsnHktoSE/dashboard/ads?page=1",
-  },
-  {
-    label: "Regiões",
-    icon: MapPinned,
-    href: "/jsnHktoSE/dashboard/regions",
-  },
-  {
     label: "Usuários",
     icon: User,
     href: "/jsnHktoSE/dashboard/users?page=1",
@@ -37,15 +25,10 @@ export const adminSidebarOptions: SidebarOptionProps[] = [
     icon: UtensilsCrossed,
     href: "/jsnHktoSE/dashboard/restaurants?page=1",
   },
-  // {
-  //   label: "Afiliados",
-  //   icon: Handshake,
-  //   href: "/jsnHktoSE/dashboard/afiliates?page=1",
-  // },
   {
-    label: "Anunciantes",
-    icon: Megaphone,
-    href: "/jsnHktoSE/dashboard/advertisers?page=1",
+    label: "Planos",
+    icon: ListChecks,
+    href: "/jsnHktoSE/dashboard/plans?page=1",
   },
   {
     label: "Pagamentos",

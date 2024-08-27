@@ -1,7 +1,3 @@
-import { fetchManyPayments } from "@/actions/payments/fetchManyPayments";
-import { fetchRegions } from "@/actions/region/fetchRegions";
-import PaymentRow from "@/components/admin/tableRows/PaymentRow";
-import DateRange from "@/components/advertiser/inputs/DateRange";
 import Paginate from "@/components/misc/Paginate";
 import ReusableComboSearch from "@/components/misc/ReusableComboSearch";
 import { Separator } from "@/components/ui/separator";
@@ -12,14 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AdvertiserAccount, Payment } from "@prisma/client";
-
-interface PaymentProps extends Payment {
-  AdvertiserAccount: AdvertiserAccount;
-}
+import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
+import { fetchUsersByQuery } from "@/actions/user/fetchUsersByQuery";
+import DateRange from "@/components/misc/DateRange";
+import { PaymentWithSubscriptionWithPlan } from "@/types/subscription";
+import PaymentRow from "@/components/admin/tableRows/PaymentRow";
 
 interface PaymentReturnProps {
-  payments: PaymentProps[];
+  payments: PaymentWithSubscriptionWithPlan[];
   pages: number;
 }
 
@@ -27,7 +23,7 @@ interface AdminDashboardProps {
   searchParams?: {
     startDate?: Date;
     endDate?: Date;
-    regionId?: string;
+    userId?: string;
     page: string;
   };
 }
@@ -35,10 +31,10 @@ interface AdminDashboardProps {
 const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
   const startDate = searchParams?.startDate;
   const endDate = searchParams?.endDate;
-  const regionId = searchParams?.regionId;
+  const userId = searchParams?.userId;
   const page = searchParams?.page;
 
-  const { payments, pages } = await fetchManyPayments<PaymentReturnProps>({
+  const { payments, pages } = await fetchPaymentsByQuery<PaymentReturnProps>({
     page: 0,
     take: 10000,
     query: {
@@ -48,30 +44,34 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
             lte: new Date(endDate),
             gte: new Date(startDate),
           },
-          regionId: regionId || {},
+          userId,
         },
       include: {
-        AdvertiserAccount: true,
+        Subscription: {
+          include: {
+            Plan: true,
+          },
+        },
       },
     },
   });
 
-  const regions = await fetchRegions();
+  const { users } = await fetchUsersByQuery({ page: 0, take: 1000, query: {} });
 
-  const regionsOptions = regions.map((region) => ({
-    label: region.title,
-    value: region.id,
+  const usersOptions = users.map((user) => ({
+    label: user.name || "",
+    value: user.id || "",
   }));
 
   return (
     <section className="flex flex-col items-center justify-center overflow-y-auto h-screen w-full gap-5 my-5">
       <div className="flex items-center gap-10">
         <div className="flex flex-col">
-          <p className="text-xs">Filtrar região</p>
+          <p className="text-xs">Filtrar usuário</p>
           <ReusableComboSearch
-            items={regionsOptions}
-            title="Filtrar região"
-            queryTitle="regionId"
+            items={usersOptions}
+            title="Filtrar usuário"
+            queryTitle="userId"
           />
         </div>
         <DateRange
@@ -87,15 +87,16 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Anunciante</TableHead>
+              <TableHead>ID</TableHead>
+
+              <TableHead>Preço</TableHead>
 
               <TableHead>Plano</TableHead>
 
-              <TableHead>Valor</TableHead>
-
+              <TableHead>Status</TableHead>
               <TableHead>Data</TableHead>
 
-              <TableHead>Deletar</TableHead>
+              <TableHead>Validade</TableHead>
             </TableRow>
           </TableHeader>
 

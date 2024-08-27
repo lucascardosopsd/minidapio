@@ -23,6 +23,7 @@ interface ReusableSheetProps {
   triggerStyle?: CSSProperties;
   onClick?: () => void;
   triggerSize?: "default" | "sm" | "lg" | "icon" | null | undefined;
+  triggerDisabled?: boolean;
 }
 
 const ReusableSheet = ({
@@ -37,6 +38,7 @@ const ReusableSheet = ({
   triggerStyle,
   triggerSize,
   onClick,
+  triggerDisabled,
 }: ReusableSheetProps) => {
   return (
     <Sheet open={isOpen} onOpenChange={onOpen}>
@@ -47,6 +49,7 @@ const ReusableSheet = ({
           style={triggerStyle}
           onClick={onClick}
           size={triggerSize}
+          disabled={triggerDisabled}
         >
           {trigger}
         </Button>

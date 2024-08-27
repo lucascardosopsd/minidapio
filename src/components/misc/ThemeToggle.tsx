@@ -22,7 +22,7 @@ export function ThemeToggle() {
         <TabsTrigger
           value="light"
           onClick={() => setTheme("light")}
-          className="rounded h-9"
+          className="rounded-md h-10"
         >
           <SunIcon className="h-[1rem] w-[1rem]" />
         </TabsTrigger>
@@ -30,9 +30,9 @@ export function ThemeToggle() {
         <TabsTrigger
           value="dark"
           onClick={() => setTheme("dark")}
-          className="rounded h-9"
+          className="rounded-md h-10"
         >
-          <MoonIcon className="h-[1rem] w-[1rem]" />
+          <MoonIcon className="h-[1rem] w-[1rem] dark:text-zinc-100" />
         </TabsTrigger>
       </TabsList>
     </Tabs>

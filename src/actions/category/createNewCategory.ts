@@ -11,15 +11,11 @@ export const createNewCategory = async ({
 }) => {
   const user = await useUserSession();
 
-  if (!user?.id) {
-    throw new Error("User not found");
-  }
-
   try {
     const newCategory = await prisma.category.create({
       data: {
         ...data,
-        userId: user.id,
+        userId: user?.id,
       },
     });
 

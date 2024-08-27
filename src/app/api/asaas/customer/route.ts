@@ -13,7 +13,8 @@ export async function GET() {
       console.log("An unknown error occurred");
     }
 
-    return Response.json({});
+    // @ts-ignore
+    return Response.json({ error: error.response.data, status: 500 });
   }
 }
 
@@ -26,11 +27,12 @@ export async function POST(req: Request) {
     return Response.json({ customer: customer.data });
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.log(error.message);
+      throw new Error("Error when create customer");
     } else {
       console.log("An unknown error occurred");
     }
 
-    return Response.json({ error: error });
+    // @ts-ignore
+    return Response.json({ error: error.response.data, status: 500 });
   }
 }

@@ -8,11 +8,9 @@ import { FaArrowRight } from "react-icons/fa6";
 import RestaurantForm from "../forms/Restaurant";
 import { ImSpinner, ImSpinner2 } from "react-icons/im";
 import { useState } from "react";
-import { Session } from "@/types/session";
 import { toast } from "sonner";
 import { deleteRestaurant } from "@/actions/restaurant/deleteRestaurant";
 import { copyToClipboard } from "@/tools/copyToClipboard";
-import { RegionProps } from "@/types/region";
 
 import { restaurantValidator } from "@/validators/restaurant";
 import { z } from "zod";
@@ -38,15 +36,9 @@ import { slugGen } from "@/tools/slugGen";
 import ReusableDialog from "@/components/misc/ReusableDialog";
 interface RestaurantCardProps {
   restaurant: RestaurantProps;
-  session: Session | null;
-  regions: RegionProps[];
 }
 
-const RestaurantCard = ({
-  restaurant,
-  session,
-  regions,
-}: RestaurantCardProps) => {
+const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -136,21 +128,17 @@ const RestaurantCard = ({
         return;
       }
 
+      const {
+        id: id,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        ...rest
+      } = restaurant;
+
       const newRestaurant = await createNewRestaurant({
+        ...rest,
         title: newName,
-        active: restaurant.active,
-        activeMenu: restaurant.activeMenu,
-        address: restaurant.address,
-        color: restaurant.color,
-        logo: restaurant.logo,
-        methods: restaurant.methods,
-        regionId: restaurant.regionId,
         slug: slugGen(newName),
-        workHours: restaurant.workHours,
-        landline: restaurant.landline,
-        linkMaps: restaurant.linkMaps,
-        note: restaurant.note,
-        whatsapp: restaurant.whatsapp,
       });
 
       const categories = await fetchUserCategoriesByQuery({
@@ -172,17 +160,11 @@ const RestaurantCard = ({
         });
 
         category.items?.forEach(async (item) => {
+          const { id: id, ...rest } = item;
+
           await createNewItem({
             data: {
-              title: item.title,
-              description: item.description,
-              active: item.active,
-              image: item.image,
-              highlight: item.highlight,
-              order: item.order,
-              price: item.price,
-              sale: item.sale,
-              salePrice: item.salePrice,
+              ...rest,
               categoryId: newCategory.id,
               restaurantId: newRestaurant.id,
             },
@@ -273,7 +255,7 @@ const RestaurantCard = ({
                       type="button"
                       onClick={() =>
                         copyToClipboard(
-                          `${process.env.NEXT_PUBLIC_HOST}/menu/${session?.id}/${restaurant.slug}`,
+                          `${process.env.NEXT_PUBLIC_HOST}/menu/${restaurant.id}/${restaurant.slug}`,
                           "slug",
                           "Link do cardápio copiado!"
                         )
@@ -338,7 +320,6 @@ const RestaurantCard = ({
               content={
                 <RestaurantForm
                   defaultValues={restaurant}
-                  regions={regions}
                   loading={loading}
                   onSubmit={handleUpdateRestaurant}
                 />

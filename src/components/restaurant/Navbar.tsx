@@ -5,13 +5,14 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Headset, LogOutIcon } from "lucide-react";
+import { Bolt, Headset, LogOutIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import UpgradeButton from "./UpgradeButton";
 
 interface NavbarProps {
   breadcrumb?: BreadcrumbRouteProps[];
@@ -43,6 +44,8 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
         </Link>
       </div>
       <div className="flex gap-2 items-center">
+        <UpgradeButton />
+
         <ThemeToggle />
 
         <Link
@@ -71,8 +74,16 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
               </div>
             )}
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 p-2 space-y-2">
-            <p>{session?.user?.name}</p>
+          <DropdownMenuContent className="w-56 flex flex-col gap-2">
+            <p className="w-full p-2 border border-border rounded-lg text-center">
+              {session?.user?.name}
+            </p>
+
+            <Link href="/dashboard/config">
+              <Button className="w-full">
+                <Bolt /> Configurações
+              </Button>
+            </Link>
 
             <Button
               variant="outline"

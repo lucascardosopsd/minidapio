@@ -11,15 +11,11 @@ interface CreateNewItemProps {
 export const createNewItem = async ({ data }: CreateNewItemProps) => {
   const user = await useUserSession();
 
-  if (!user?.id) {
-    throw new Error("User not found");
-  }
-
   try {
     await prisma.item.create({
       data: {
         ...data,
-        userId: user.id,
+        userId: user?.id,
       },
     });
   } catch (error) {

@@ -8,24 +8,17 @@ import { toast } from "sonner";
 import { z } from "zod";
 import RestaurantForm from "../forms/Restaurant";
 import { Separator } from "@/components/ui/separator";
-import { Session } from "@/types/session";
-import { Region } from "@prisma/client";
 import RestaurantCard from "../cards/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
 import { slugGen } from "@/tools/slugGen";
-import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
+import { PlanLimitProps } from "@/constants/planLimits";
 
 interface RestaurantsListProps {
-  session: Session;
-  regions: Region[];
   restaurants: RestaurantProps[];
+  limits: PlanLimitProps;
 }
 
-const RestaurantsList = ({
-  session,
-  regions,
-  restaurants,
-}: RestaurantsListProps) => {
+const RestaurantsList = ({ restaurants, limits }: RestaurantsListProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -42,18 +35,6 @@ const RestaurantsList = ({
 
     if (restaurantExists[0]) {
       toast.error("Já existe um restaurante com este nome!");
-      setLoading(false);
-      return;
-    }
-
-    const userRestaurants = await fetchRestaurantsByQuery({
-      where: {
-        userId: session.id,
-      },
-    });
-
-    if (userRestaurants.length >= 5) {
-      toast.error("Limite de 5 restaurantes atingido");
       setLoading(false);
       return;
     }
@@ -82,12 +63,9 @@ const RestaurantsList = ({
           isOpen={open}
           onOpen={setOpen}
           content={
-            <RestaurantForm
-              regions={regions}
-              loading={loading}
-              onSubmit={handleNewRestaurant}
-            />
+            <RestaurantForm loading={loading} onSubmit={handleNewRestaurant} />
           }
+          triggerDisabled={restaurants.length >= limits?.restaurants}
         />
       </div>
 
@@ -96,12 +74,7 @@ const RestaurantsList = ({
       {restaurants.length ? (
         <div className="grid grid-cols-1 mobile:grid-cols-1 tablet:grid-cols-4 gap-4 pb-4 tablet:pb-0 h-[65vh] overflow-y-auto">
           {restaurants.map((restaurant) => (
-            <RestaurantCard
-              restaurant={restaurant!}
-              session={session}
-              key={restaurant.id}
-              regions={regions}
-            />
+            <RestaurantCard restaurant={restaurant!} key={restaurant.id} />
           ))}
         </div>
       ) : (

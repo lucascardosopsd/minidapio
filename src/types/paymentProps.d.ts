@@ -1,3 +1,5 @@
+import { Payment, Subscription } from "@prisma/client";
+
 export type StatusType =
   | "PENDING"
   | "RECEIVED"
@@ -14,58 +16,72 @@ export type StatusType =
   | "DUNNING_RECEIVED"
   | "AWAITING_RISK_ANALYSIS";
 
+interface CreditCardDetails {
+  creditCardNumber: string;
+  creditCardBrand: string;
+  creditCardToken: string;
+}
+
+interface DiscountDetails {
+  value: number;
+  limitDate: string | null;
+  dueDateLimitDays: number;
+  type: string;
+}
+
+interface FineDetails {
+  value: number;
+  type: string;
+}
+
+interface InterestDetails {
+  value: number;
+  type: string;
+}
+
 export interface PaymentResProps {
   object: string;
   id: string;
   dateCreated: string;
   customer: string;
+  subscription: string;
   paymentLink: string | null;
-  dueDate: string;
   value: number;
   netValue: number;
-  billingType: string;
-  canBePaidAfterDueDate: boolean;
-  pixTransaction: string | null;
-  status: StatusType;
-  description: string;
-  externalReference: string;
   originalValue: number | null;
   interestValue: number | null;
+  description: string;
+  billingType: string;
+  confirmedDate: string;
+  creditCard: CreditCardDetails;
+  pixTransaction: string | null;
+  status: StatusType;
+  dueDate: string;
   originalDueDate: string;
-  paymentDate: string | null;
-  clientPaymentDate: string | null;
-  installmentNumber: string | null;
-  transactionReceiptUrl: string | ull;
-  nossoNumero: string;
+  paymentDate: string;
+  clientPaymentDate: string;
+  installmentNumber: number | null;
   invoiceUrl: string;
-  bankSlipUrl: string;
   invoiceNumber: string;
-  discount: {
-    value: number;
-    dueDateLimitDays: number;
-  };
-  fine: {
-    value: number;
-  };
-  interest: {
-    value: number;
-  };
+  externalReference: string | null;
   deleted: boolean;
-  postalService: boolean;
   anticipated: boolean;
   anticipable: boolean;
-  refunds: number | null;
+  creditDate: string;
+  estimatedCreditDate: string;
+  transactionReceiptUrl: string;
+  nossoNumero: string | null;
+  bankSlipUrl: string | null;
+  lastInvoiceViewedDate: string | null;
+  lastBankSlipViewedDate: string | null;
+  discount: DiscountDetails;
+  fine: FineDetails;
+  interest: InterestDetails;
+  postalService: boolean;
+  custody: string | null;
+  refunds: string | null;
 }
 
-export interface PixCodeResProps {
-  encodedImage: string;
-  payload: string;
-  expirationDate: string;
-  image: Image;
-}
-
-export interface BarCodeCodeResProps {
-  identificationField: string;
-  nossoNumero: string;
-  barCode: string;
+export interface PaymentWithSubscriptionProps extends Payment {
+  Subscription: Subscription;
 }

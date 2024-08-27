@@ -12,10 +12,19 @@ import { useItemStore } from "@/context/item";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { fetchUserItemsByQuery } from "@/actions/item/fetchUserItemsByQuery";
 import { createNewItem } from "@/actions/item/createNewItem";
 import { ImSpinner2 } from "react-icons/im";
 import { revalidateRoute } from "@/actions/revalidateRoute";
+import { useUserSession } from "@/hooks/useUserSession";
+import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
+import { planLimits } from "@/constants/planLimits";
+import { SubscriptionWithPlanProps } from "@/types/subscription";
+import { fetchItemsByQuery } from "@/actions/item/fetchItemsByQuery";
+
+interface CustomFetchSubscriptionsByQueryResProps {
+  subscriptions: SubscriptionWithPlanProps[];
+  pages: number;
+}
 
 const DuplicateItemsDialog = () => {
   const { idList, setAllIds } = useItemStore();
@@ -32,14 +41,44 @@ const DuplicateItemsDialog = () => {
       </div>
     );
     try {
+      const user = await useUserSession();
+
+      const items = await fetchItemsByQuery({ where: { userId: user?.id } });
+
+      const { subscriptions } =
+        await fetchSubscriptionsByQuery<CustomFetchSubscriptionsByQueryResProps>(
+          {
+            page: 0,
+            take: 1,
+            query: {
+              where: { userId: user?.id },
+              include: {
+                Plan: true,
+              },
+            },
+          }
+        );
+
+      const limits = planLimits[subscriptions[0]?.Plan?.alias || "free"];
+
       if (idList.length > 1) {
         for (const id of idList) {
-          const { items } = await fetchUserItemsByQuery({ where: { id } });
+          const { id: currentId, ...rest } = items.filter(
+            (item) => item.id == id
+          )[0];
 
-          if (items[0]) {
-            const { id: _, ...rest } = items[0];
+          if (items.length >= limits.items) {
+            toast.info("Limite de itens atingido");
 
-            await createNewItem({ data: rest });
+            break;
+          }
+
+          if (currentId) {
+            await createNewItem({
+              data: {
+                ...rest,
+              },
+            });
 
             revalidateRoute({ fullPath: pathname });
           }
@@ -51,16 +90,18 @@ const DuplicateItemsDialog = () => {
         return;
       }
 
-      const { items } = await fetchUserItemsByQuery({
-        where: { id: idList[0] },
-      });
+      if (items.length >= limits.items) {
+        toast.info("Limite de itens atingido");
 
-      if (items[0]) {
-        const { id: _, ...rest } = items[0];
-
-        await createNewItem({ data: rest });
-        revalidateRoute({ fullPath: pathname });
+        return;
       }
+
+      const { id: _, ...rest } = items.filter(
+        (item) => item.id == idList[0]
+      )[0];
+
+      await createNewItem({ data: { ...rest } });
+      revalidateRoute({ fullPath: pathname });
 
       toast(`Item ${items[0].title} duplicado.`);
     } catch (error) {

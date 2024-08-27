@@ -12,10 +12,6 @@ export const updateManyItems = async (
 ) => {
   const user = await useUserSession();
 
-  if (!user?.id) {
-    throw new Error("User not found");
-  }
-
   try {
     await prisma.item.updateMany({
       where: {
@@ -25,7 +21,7 @@ export const updateManyItems = async (
       },
       data: {
         ...data,
-        userId: user.id,
+        userId: user?.id,
       },
     });
 

@@ -36,45 +36,25 @@ model Session {
 }
 
 model User {
-  id                  String             @id @default(auto()) @map("_id") @db.ObjectId
-  name                String?
-  email               String?            @unique
-  emailVerified       DateTime?
-  image               String?
-  password            String?
-  advertiserAccountId String?            @db.ObjectId
-  lastPaymentId       String?
-  role                String             @default("user")
-  afiliateId          String?
-  accounts            Account[]
-  sessions            Session[]
-  restaurants         Restaurant[]
-  categories          Category[]
-  items               Item[]
-  Ad                  Ad[]
-  AdvertiserAccount   AdvertiserAccount?
-  payments            Payment[]
-  Afiliate            Afiliate[]
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?        @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  lastPaymentId String?
+  role          String         @default("user")
+  accounts      Account[]
+  sessions      Session[]
+  restaurants   Restaurant[]
+  categories    Category[]
+  items         Item[]
+  subscription  Subscription[]
+  customerId    String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Afiliate {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  email     String
-  phone     String
-  pix       String
-  kickback  Int      @default(70)
-  code      Int      @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    String   @db.ObjectId
-
-  user              User                @relation(fields: [userId], references: [id])
-  AdvertiserAccount AdvertiserAccount[]
-  Payment           Payment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Payment   Payment[]
 }
 
 model VerificationToken {
@@ -104,10 +84,10 @@ model Restaurant {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   userId     String?  @db.ObjectId
-  regionId   String?  @db.ObjectId
+  province   String
+  state      String
 
   User       User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  region     Region?    @relation(fields: [regionId], references: [id])
   Categories Category[]
   Items      Item[]
 }
@@ -143,98 +123,66 @@ model Item {
   userId       String?     @db.ObjectId
 }
 
-model Region {
-  id                String              @id @default(auto()) @map("_id") @db.ObjectId
-  title             String
-  state             String
-  active            Boolean
-  ads               Ad[]
-  Restaurant        Restaurant[]
-  AdvertiserAccount AdvertiserAccount[]
+model Plan {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  subTitle     String?
+  alias        String
+  level        Int
+  highlighted  Boolean
+  price        Float
+  description  String
+  order        Int            @default(0)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Subscription Subscription[]
+  Payment      Payment[]
 }
 
-model Ad {
-  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
-  title               String
-  description         String
-  image               String
-  link                String?
-  active              Boolean
-  regionId            String   @db.ObjectId
-  userId              String?  @db.ObjectId
-  advertiserAccountId String?  @db.ObjectId
-  cta                 String?  @default("Saiba mais")
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  views               View[]
-  clicks              Click[]
+model Subscription {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  object           String
+  asaasId          String
+  dateCreated      String
+  customerId       String
+  value            Float
+  nextDueDate      String
+  cycle            String
+  description      String
+  billingType      String
+  deleted          Boolean
+  status           String
+  planId           String?  @db.ObjectId
+  userId           String?  @db.ObjectId
+  paymentProfileId String?  @db.ObjectId
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  user              User?              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  region            Region             @relation(fields: [regionId], references: [id], onDelete: Cascade)
-  AdvertiserAccount AdvertiserAccount? @relation(fields: [advertiserAccountId], references: [id])
-}
-
-model View {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  adId         String @db.ObjectId
-  restaurantId String @db.ObjectId
-  ad           Ad?    @relation(fields: [adId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Click {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  adId      String?  @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Ad Ad? @relation(fields: [adId], references: [id])
-}
-
-model AdvertiserAccount {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  cpfCnpj      String   @unique
-  phone        String
-  personType   String
-  customerId   String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  userId       String   @unique @db.ObjectId
-  afiliateCode Int?
-  regionId     String?  @db.ObjectId
-  plan         String   @default("basic")
-
-  payments Payment[]
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  region   Region?   @relation(fields: [regionId], references: [id])
-  afiliate Afiliate? @relation(fields: [afiliateCode], references: [code])
-  ads      Ad[]
+  User    User?     @relation(fields: [userId], references: [id])
+  Plan    Plan?     @relation(fields: [planId], references: [id])
+  Payment Payment[]
 }
 
 model Payment {
-  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
-  paymentId           String
-  dateCreated         String
-  customer            String
-  paymentLink         String?
-  dueDate             String
-  value               Int
-  billingType         String
-  status              String
-  description         String?
-  paymentDate         String
-  deleted             Boolean
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  advertiserAccountId String?  @db.ObjectId
-  userId              String?  @db.ObjectId
-  regionId            String?  @db.ObjectId
-  afiliateCode        Int?
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  asaasId        String
+  dateCreated    String
+  customer       String
+  paymentLink    String?
+  dueDate        String
+  value          Float
+  billingType    String
+  status         String
+  description    String?
+  paymentDate    String?
+  deleted        Boolean
+  userId         String   @db.ObjectId
+  planId         String?  @db.ObjectId
+  subscriptionId String?  @db.ObjectId
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  AdvertiserAccount AdvertiserAccount? @relation(fields: [advertiserAccountId], references: [id])
-  afiliate          Afiliate?          @relation(fields: [afiliateCode], references: [code])
-  User              User?              @relation(fields: [userId], references: [id])
+  Subscription Subscription? @relation(fields: [subscriptionId], references: [id])
+  Plan         Plan?         @relation(fields: [planId], references: [id])
+  User         User?         @relation(fields: [userId], references: [id])
 }

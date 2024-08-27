@@ -1,69 +1,25 @@
-"use client";
-import { FaTrash } from "react-icons/fa6";
-import DeleteModal from "@/components/restaurant/ConfirmModal";
-import { toast } from "sonner";
-import { AdvertiserAccount, Payment } from "@prisma/client";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { plansI18n } from "@/constants/plansI18n";
-import { plans } from "@/constants/plans";
-import { deletePayment } from "@/actions/payments/deletePayment";
-import { revalidateRoute } from "@/actions/revalidateRoute";
-import { usePathname } from "next/navigation";
+import { statusI18n } from "@/constants/paymentStatusI18n";
+import { formatPrice } from "@/tools/formatPrice";
+import { PaymentWithSubscriptionWithPlan } from "@/types/subscription";
+import moment from "moment";
 
-interface PaymentProps extends Payment {
-  AdvertiserAccount: AdvertiserAccount;
+interface PaymentRowProps {
+  payment: PaymentWithSubscriptionWithPlan;
 }
 
-interface AdRowProps {
-  payment: PaymentProps;
-}
-
-const PaymentRow = ({ payment }: AdRowProps) => {
-  const pathname = usePathname();
-
-  const handleDelete = async () => {
-    try {
-      await deletePayment({ id: payment.id });
-
-      toast.success("Anúncio deletado");
-
-      revalidateRoute({ fullPath: pathname });
-    } catch (error) {
-      console.log(error);
-      toast.error("Ocorreu um erro");
-    }
-  };
+const PaymentRow = ({ payment }: PaymentRowProps) => {
+  console.log(payment);
 
   return (
     <TableRow>
-      <TableCell>{payment?.AdvertiserAccount?.name}</TableCell>
-
-      <TableCell>{plansI18n[payment?.AdvertiserAccount?.plan]}</TableCell>
-
+      <TableCell>{payment.asaasId}</TableCell>
+      <TableCell>{formatPrice(payment.value, "pt-BR", "BRL")}</TableCell>
+      <TableCell>{payment.Subscription?.Plan?.title}</TableCell>
+      <TableCell>{statusI18n[payment.status]}</TableCell>
+      <TableCell>{payment.createdAt.toLocaleDateString()}</TableCell>
       <TableCell>
-        {new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(plans[payment?.AdvertiserAccount?.plan])}
-      </TableCell>
-
-      <TableCell>{payment?.createdAt.toLocaleDateString()}</TableCell>
-
-      <TableCell>
-        <DeleteModal
-          action={handleDelete}
-          dialogTitle="Deletar pagamento"
-          triggerText={<FaTrash />}
-          dialogDescription={
-            <>
-              <p>
-                Você está apagando o anúncio:{" "}
-                <span className="text-red-500">{payment.id}</span>
-              </p>
-              <p>Deseja continuar?</p>
-            </>
-          }
-        />
+        {moment(payment.createdAt).add(1, "month").format("DD/MM/YYYY")}
       </TableCell>
     </TableRow>
   );

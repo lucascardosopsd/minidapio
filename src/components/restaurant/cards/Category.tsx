@@ -30,22 +30,29 @@ import { revalidateRoute } from "@/actions/revalidateRoute";
 import ReusableSheet from "@/components/misc/ReusableSheet";
 import { updateCategory } from "@/actions/category/updateCategory";
 import { categoryValidator } from "@/validators/category";
+import { PlanLimitProps } from "@/constants/planLimits";
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
   restaurantId: string;
   categories: CategoriesWithItemsProps[];
+  limits: PlanLimitProps;
 }
 
 const CategoryCard = ({
   category,
   restaurantId,
   categories,
+  limits,
 }: CategoryCardProps) => {
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const [openItem, setOpenItem] = useState(false);
   const [openEditCategory, setOpenEditCategory] = useState(false);
+
+  const itemsCount = categories.flatMap(
+    (category) => category.items && category.items
+  ).length;
 
   const handleNewItem = async (data: z.infer<typeof ItemValidator>) => {
     data.restaurantId = restaurantId;
@@ -119,6 +126,7 @@ const CategoryCard = ({
               triggerVariant="default"
               isOpen={openItem}
               onOpen={setOpenItem}
+              triggerDisabled={itemsCount >= limits.items}
             />
 
             <ReusableSheet

@@ -25,6 +25,7 @@ interface ReusableModalProps {
   triggerStyle?: CSSProperties;
   onClick?: () => void;
   triggerSize?: "default" | "sm" | "lg" | "icon" | null | undefined;
+  triggerDisabled?: boolean;
 }
 
 const ReusableModal = ({
@@ -39,6 +40,7 @@ const ReusableModal = ({
   triggerStyle,
   triggerSize,
   onClick,
+  triggerDisabled,
 }: ReusableModalProps) => {
   return (
     <Drawer open={isOpen} onOpenChange={onOpen}>
@@ -49,6 +51,7 @@ const ReusableModal = ({
           style={triggerStyle}
           onClick={onClick}
           size={triggerSize}
+          disabled={triggerDisabled}
         >
           {trigger}
         </Button>
@@ -60,7 +63,7 @@ const ReusableModal = ({
             {title}
             <DrawerClose
               asChild
-              className="text-red-500 cursor-pointer hover:scale-125 transition"
+              className="cursor-pointer hover:scale-125 transition"
             >
               <X />
             </DrawerClose>

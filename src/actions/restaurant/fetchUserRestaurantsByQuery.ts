@@ -15,15 +15,11 @@ export const fetchUserRestaurantsByQuery = async (
 ): Promise<RestaurantProps[]> => {
   const user = await useUserSession();
 
-  if (!user?.id) {
-    throw new Error("User not found");
-  }
-
   const includeUserQuery = {
     ...query,
     where: {
       ...query.where,
-      userId: user.id,
+      userId: user?.id,
     },
   } satisfies RestaurantQuery;
 

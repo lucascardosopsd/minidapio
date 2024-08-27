@@ -1,44 +1,28 @@
-import { fetchManyAds } from "@/actions/ad/fetchManyAds";
-import { fetchManyAdvertisers } from "@/actions/advertiser/fetchManyAdvertisers";
-import { fetchManyPayments } from "@/actions/payments/fetchManyPayments";
-import { fetchRegions } from "@/actions/region/fetchRegions";
+import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
 import { fetchManyRestaurants } from "@/actions/restaurant/fetchManyRestaurants";
 import { fetchManyUsers } from "@/actions/user/fetchManyUsers";
-import StatsCard from "@/components/advertiser/cards/Stats";
-import DateRange from "@/components/advertiser/inputs/DateRange";
+import DateRange from "@/components/misc/DateRange";
 import ReusableComboSearch from "@/components/misc/ReusableComboSearch";
+import StatsCard from "@/components/misc/Stats";
+import { provinces } from "@/constants/brazilianProvinces";
 import { formatPrice } from "@/tools/formatPrice";
-import { Ad, View } from "@prisma/client";
-import {
-  DollarSign,
-  Eye,
-  Image,
-  Megaphone,
-  User,
-  UtensilsCrossed,
-} from "lucide-react";
 
-interface AdWithViews extends Ad {
-  views: View[];
-}
-
-interface AdsWithViewsReturn extends Ad {
-  ads: AdWithViews[];
-  total: number;
-}
+import { DollarSign, User, UtensilsCrossed } from "lucide-react";
 
 interface AdminDashboardProps {
   searchParams?: {
     startDate?: Date;
     endDate?: Date;
-    regionId?: string;
+    province?: string;
+    userId: string;
   };
 }
 
 const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
   const startDate = searchParams?.startDate;
   const endDate = searchParams?.endDate;
-  const regionId = searchParams?.regionId;
+  const province = searchParams?.province;
+  const userId = searchParams?.userId;
 
   const { users } = await fetchManyUsers({
     page: 0,
@@ -59,54 +43,13 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
     take: 1000000,
     query: {
       where: {
-        regionId: regionId || {},
+        province: province,
+        userId: userId,
       },
     },
   });
 
-  const { ads } = await fetchManyAds<AdsWithViewsReturn>({
-    page: 0,
-    take: 1000,
-    query: {
-      where:
-        startDate && endDate
-          ? {
-              createdAt: {
-                lte: new Date(endDate),
-                gte: new Date(startDate),
-              },
-              active: true,
-              regionId: regionId || {},
-            }
-          : {
-              active: true,
-              regionId: regionId || {},
-            },
-      include: {
-        views: true,
-      },
-    },
-  });
-
-  const { advertisers } = await fetchManyAdvertisers({
-    page: 0,
-    take: 1000000,
-    query: {
-      where: endDate &&
-        startDate && {
-          regionId: regionId || {},
-          createdAt: {
-            lte: new Date(endDate),
-            gte: new Date(startDate),
-          },
-        },
-      include: {
-        user: true,
-      },
-    },
-  });
-
-  const { payments } = await fetchManyPayments({
+  const { payments } = await fetchPaymentsByQuery({
     page: 0,
     take: 10000,
     query: {
@@ -116,7 +59,7 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
             lte: new Date(endDate),
             gte: new Date(startDate),
           },
-          regionId: regionId || {},
+          userId: userId,
         },
     },
   });
@@ -126,38 +69,46 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
     0
   );
 
-  const totalViews = ads.reduce(
-    (prev, current) => current.views.length + prev,
-    0
-  );
-
-  const regions = await fetchRegions();
-
-  const regionsOptions = regions.map((region) => ({
-    label: region.title,
-    value: region.id,
+  const provinceOptions = Object.keys(provinces).map((province) => ({
+    label: province,
+    value: province,
   }));
 
-  regionsOptions.unshift({
+  provinceOptions.unshift({
     label: "Todas",
     value: "",
   });
+
+  const usersOptions = users.map((user) => ({
+    label: user.name!,
+    value: user.id!,
+  }));
 
   return (
     <section className="flex flex-col items-center justify-center overflow-y-auto h-screen">
       <div className="border rounded p-5 flex flex-col gap-5">
         <div className="flex items-center gap-5 justify-between">
-          <p className="text-2xl text-primary">Período</p>
+          <p className="text-2xl text-primary">Geral</p>
 
           <div className="flex items-center gap-10">
             <div className="flex flex-col">
               <p className="text-xs">Filtrar região</p>
               <ReusableComboSearch
-                items={regionsOptions}
+                items={provinceOptions}
                 title="Filtrar região"
-                queryTitle="regionId"
+                queryTitle="province"
               />
             </div>
+
+            <div className="flex flex-col">
+              <p className="text-xs">Filtrar usuário</p>
+              <ReusableComboSearch
+                items={usersOptions}
+                title="Filtrar usuário"
+                queryTitle="userId"
+              />
+            </div>
+
             <DateRange
               startDate={startDate || undefined}
               endDate={endDate || undefined}
@@ -174,31 +125,11 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
           />
 
           <StatsCard
-            title="Anunciantes"
-            icon={Megaphone}
-            content={
-              <p className="text-4xl text-center">{advertisers.length}</p>
-            }
-          />
-
-          <StatsCard
-            title="Anuncios"
-            icon={Image}
-            content={<p className="text-4xl text-center">{ads.length}</p>}
-          />
-
-          <StatsCard
             title="Restaurantes"
             icon={UtensilsCrossed}
             content={
               <p className="text-4xl text-center">{restaurants.length}</p>
             }
-          />
-
-          <StatsCard
-            title="Visualizações de anúncio"
-            icon={Eye}
-            content={<p className="text-4xl text-center">{totalViews}</p>}
           />
 
           <StatsCard

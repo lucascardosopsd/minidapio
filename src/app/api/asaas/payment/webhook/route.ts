@@ -1,30 +1,23 @@
-import prisma from "@/lib/prisma";
+import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { PaymentResProps } from "@/types/paymentProps";
-import { revalidatePath } from "next/cache";
+import prisma from "@/lib/prisma";
 
 export const POST = async (req: Request) => {
   try {
-    const payment = (await req.json()).payment satisfies PaymentResProps;
+    const payment: PaymentResProps = (await req.json())
+      .payment satisfies PaymentResProps;
 
-    const advertiserAccount = await prisma.advertiserAccount.findFirst({
-      where: {
-        customerId: payment.customer,
+    const { subscriptions } = await fetchSubscriptionsByQuery({
+      page: 0,
+      take: 100,
+      query: {
+        where: { asaasId: payment.subscription },
       },
     });
-
-    const checkPayment = await prisma.payment.findFirst({
-      where: {
-        paymentId: payment.id,
-      },
-    });
-
-    if (checkPayment) {
-      return Response.json({ ok: false });
-    }
 
     await prisma.payment.create({
       data: {
-        paymentId: payment.id,
+        asaasId: payment.id,
         dateCreated: payment.dateCreated,
         customer: payment.customer,
         paymentLink: payment.paymentLink,
@@ -35,14 +28,11 @@ export const POST = async (req: Request) => {
         description: payment.description,
         paymentDate: payment.paymentDate,
         deleted: payment.deleted,
-        userId: advertiserAccount?.userId,
-        advertiserAccountId: advertiserAccount?.id!,
-        afiliateCode: advertiserAccount?.afiliateCode,
-        regionId: advertiserAccount?.regionId,
+        planId: subscriptions[0].planId,
+        userId: subscriptions[0].userId!,
+        subscriptionId: subscriptions[0].id,
       },
     });
-
-    revalidatePath("/advertiser/bills");
 
     return Response.json({ ok: true });
   } catch (error: unknown) {
@@ -52,6 +42,7 @@ export const POST = async (req: Request) => {
       console.log("An unknown error occurred");
     }
 
-    return Response.json({ ok: true });
+    // @ts-ignore
+    return Response.json({});
   }
 };

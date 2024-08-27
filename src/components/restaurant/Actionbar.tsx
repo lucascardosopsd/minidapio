@@ -10,12 +10,19 @@ import InputSearch from "./InputSearch";
 import ReusableSheet from "../misc/ReusableSheet";
 import CategoryForm from "./forms/Category";
 import { revalidateRoute } from "@/actions/revalidateRoute";
+import { PlanLimitProps } from "@/constants/planLimits";
 
 interface RestaurantActionBarProps {
   restaurantId: string;
+  limits: PlanLimitProps;
+  categoriesCount: number;
 }
 
-const RestaurantActionbar = ({ restaurantId }: RestaurantActionBarProps) => {
+const RestaurantActionbar = ({
+  restaurantId,
+  limits,
+  categoriesCount,
+}: RestaurantActionBarProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -60,6 +67,7 @@ const RestaurantActionbar = ({ restaurantId }: RestaurantActionBarProps) => {
           }
           isOpen={open}
           onOpen={setOpen}
+          triggerDisabled={categoriesCount >= limits.categories}
         />
       </div>
     </div>

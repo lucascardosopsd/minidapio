@@ -29,15 +29,14 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { RegionProps } from "@/types/region";
 import { restaurantValidator } from "@/validators/restaurant";
 import { ArrowDown } from "lucide-react";
 import { RestaurantProps } from "@/types/restaurant";
 import { slugGen } from "@/tools/slugGen";
+import { provinces } from "@/constants/brazilianProvinces";
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
-  regions: RegionProps[];
   onSubmit: (data: z.infer<typeof restaurantValidator>) => Promise<void>;
   loading: boolean;
 }
@@ -46,14 +45,8 @@ const RestaurantForm = ({
   defaultValues = undefined,
   onSubmit,
   loading,
-  regions,
 }: RestaurantFormProps) => {
   const form = useRestaurantForm({ defaultValues });
-
-  const regionsOptions = regions.map((region: RegionProps) => ({
-    label: region.title,
-    value: region.id,
-  }));
 
   const watchTitle = useWatch({
     control: form.control,
@@ -162,14 +155,32 @@ const RestaurantForm = ({
         </div>
 
         <SelectBuilder
-          title="Região"
+          title="Estado"
           control={form.control}
-          name="regionId"
-          selectItem={regionsOptions.map((option) => (
-            <SelectItem value={option.value} key={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
+          name="state"
+          selectItem={Object.keys(provinces)
+            .map((uf) => ({
+              label: provinces[uf].title,
+              value: uf,
+            }))
+            .map((option) => (
+              <SelectItem value={option.value} key={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+        />
+
+        <SelectBuilder
+          title="Cidade"
+          control={form.control}
+          name="province"
+          selectItem={provinces[form.watch("state")].provinces
+            .map((province) => ({ label: province, value: province }))
+            .map((option) => (
+              <SelectItem value={option.value} key={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
         />
 
         {/* Hours */}

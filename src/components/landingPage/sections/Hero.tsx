@@ -1,31 +1,38 @@
 "use client";
-import Image from "next/image";
+
+import BlurIn from "@/components/magicui/blur-in";
+import DotPattern from "@/components/magicui/dot-pattern";
+import WordRotate from "@/components/magicui/word-rotate";
+import { cn } from "@/lib/utils";
 
 const HeroSection = () => {
   return (
-    <section className="h-svh tablet:h-[calc(100svh-80px)] pt-10 tablet:py-0 w-full container">
-      <div className="flex flex-col tablet:flex-row gap-5 items-center justify-center h-full mx-auto ">
-        <div className="flex flex-col gap-5 flex-1 items-center justify-end tablet:justify-center tablet:items-start">
-          <p className="text-4xl tablet:text-6xl font-bold w-full max-w-lg text-center tablet:text-start text-primary">
-            MODERNIZE SEU RESTAURANTE
-          </p>
+    <section className="h-svh flex flex-col items-center justify-center tablet:h-[calc(100svh-80px)] pt-10 tablet:py-0 w-full container">
+      <DotPattern
+        width={20}
+        height={20}
+        className={cn(
+          "opacity-25 -z-50",
+          "[mask-image:linear-gradient(to_bottom,white,transparent,transparent)] "
+        )}
+      />
 
-          <p className="text-center tablet:text-start">
-            Cardápio digital gratuito para oferecer uma melhor experiência ao
-            seu cliente
-          </p>
-        </div>
+      <BlurIn
+        word="Eleve o nível do seu restaurante"
+        className="text-8xl tablet:text-4xl font-bold text-primary"
+      />
 
-        <div className="flex items-end justify-center flex-[2] tablet:flex-[1.4] self-end">
-          <Image
-            src="/vectors/waiters.svg"
-            alt="Garçons"
-            height={1000}
-            width={1000}
-            className="w-auto h-full object-cover tablet:w-auto tablet:h-full tablet:object-contain"
-          />
-        </div>
-      </div>
+      <WordRotate
+        className="text-2xl font-bold"
+        words={[
+          "Um cardápio digital",
+          "Simples de usar",
+          "Com Interface minimalista",
+          "Focado na usabilidade",
+          "Fácil de gerenciar",
+          "E confiável",
+        ]}
+      />
     </section>
   );
 };

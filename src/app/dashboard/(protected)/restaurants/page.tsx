@@ -1,20 +1,36 @@
 import { useUserSession } from "@/hooks/useUserSession";
 import { fetchUserRestaurants } from "@/actions/restaurant/fetchUserRestaurants";
-import { fetchRegions } from "@/actions/region/fetchRegions";
 import RestaurantsList from "@/components/restaurant/lists/Restaurants";
+import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
+import { SubscriptionWithPlanProps } from "@/types/plan";
+import { planLimits } from "@/constants/planLimits";
+
+interface CustomFetchSubscriptionsByQueryResProps {
+  subscriptions: SubscriptionWithPlanProps[];
+  pages: number;
+}
 
 export default async function Dashboard() {
-  const session = await useUserSession();
+  const user = await useUserSession();
   const restaurants = await fetchUserRestaurants();
-  const regions = await fetchRegions();
+
+  const { subscriptions } =
+    await fetchSubscriptionsByQuery<CustomFetchSubscriptionsByQueryResProps>({
+      page: 0,
+      take: 1,
+      query: {
+        where: { userId: user?.id },
+        include: {
+          Plan: true,
+        },
+      },
+    });
+
+  const limits = planLimits[subscriptions[0]?.Plan?.alias || "free"];
 
   return (
     <main className="flex flex-col items-center justify-center h-[calc(100svh-4rem)] gap-8 ">
-      <RestaurantsList
-        regions={regions}
-        restaurants={restaurants!}
-        session={session!}
-      />
+      <RestaurantsList restaurants={restaurants!} limits={limits} />
     </main>
   );
 }

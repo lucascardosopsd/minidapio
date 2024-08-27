@@ -1,14 +1,8 @@
 "use server";
 import { nextAuthOptions } from "@/lib/authProviders";
 import prisma from "@/lib/prisma";
+import { User } from "@prisma/client";
 import { getServerSession } from "next-auth";
-
-interface userSessionProps {
-  id: string | null;
-  email: string | null;
-  image: string | null;
-  name: string | null;
-}
 
 export const useUserSession = async () => {
   const session = await getServerSession(nextAuthOptions);
@@ -17,11 +11,5 @@ export const useUserSession = async () => {
 
   return (await prisma.user.findUnique({
     where: { email: session?.user?.email! },
-    select: {
-      id: true,
-      email: true,
-      image: true,
-      name: true,
-    },
-  })) satisfies userSessionProps | null;
+  })) satisfies User | null;
 };

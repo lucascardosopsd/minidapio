@@ -7,12 +7,20 @@ import CategoriesList from "@/components/restaurant/lists/Categories";
 import { CategoriesWithItemsProps } from "@/types/category";
 import RestaurantActionbar from "@/components/restaurant/Actionbar";
 import { Item } from "@prisma/client";
+import { planLimits } from "@/constants/planLimits";
+import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
+import { SubscriptionWithPlanProps } from "@/types/plan";
 
 interface PageProps {
   params: {
     id: string;
   };
   searchParams?: { [key: string]: string };
+}
+
+interface CustomFetchSubscriptionsByQueryResProps {
+  subscriptions: SubscriptionWithPlanProps[];
+  pages: number;
 }
 
 export default async function Restaurant({
@@ -39,9 +47,27 @@ export default async function Restaurant({
     (category) => category.items && category.items
   ) as Item[];
 
+  const { subscriptions } =
+    await fetchSubscriptionsByQuery<CustomFetchSubscriptionsByQueryResProps>({
+      page: 0,
+      take: 1,
+      query: {
+        where: { userId: categories[0].userId },
+        include: {
+          Plan: true,
+        },
+      },
+    });
+
+  const limits = planLimits[subscriptions[0]?.Plan?.alias || "free"];
+
   return (
     <main className="flex flex-col gap-4 pt-5 h-[90svh] overflow-y-auto">
-      <RestaurantActionbar restaurantId={restaurantId} />
+      <RestaurantActionbar
+        restaurantId={restaurantId}
+        limits={limits}
+        categoriesCount={categories.length}
+      />
 
       <Separator />
 
@@ -50,7 +76,7 @@ export default async function Restaurant({
       </div>
       <div className="w-full mx-auto h-full">
         <Accordion type="multiple">
-          <CategoriesList categories={categories} />
+          <CategoriesList categories={categories} limits={limits} />
         </Accordion>
       </div>
     </main>

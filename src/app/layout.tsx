@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import AuthProvider from "@/components/misc/AuthProvider";
 
 import "swiper/css";
+import "react-quill/dist/quill.bubble.css";
 
 const poppins = Poppins({
   subsets: ["latin"],

@@ -12,10 +12,6 @@ interface UpdateCategoryProps {
 export const updateCategory = async ({ data, id }: UpdateCategoryProps) => {
   const user = await useUserSession();
 
-  if (!user?.id) {
-    throw new Error("User not found");
-  }
-
   try {
     await prisma.category.update({
       where: {
@@ -23,7 +19,7 @@ export const updateCategory = async ({ data, id }: UpdateCategoryProps) => {
       },
       data: {
         ...data,
-        userId: user.id,
+        userId: user?.id,
       },
     });
   } catch (error) {
