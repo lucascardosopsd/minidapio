@@ -42,6 +42,7 @@ export const POST = async (req: Request) => {
       console.log("An unknown error occurred");
     }
 
-    return Response.json({ ok: true });
+    // @ts-ignore
+    return Response.json({ error: error.response.data, status: 500 });
   }
 };

@@ -17,6 +17,7 @@ export async function GET(
       console.log("An unknown error occurred");
     }
 
-    return Response.json({});
+    // @ts-ignore
+    return Response.json({ error: error.response.data, status: 500 });
   }
 }
