@@ -11,7 +11,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-muted rounded-full;
+  @apply bg-foreground/75 rounded-full;
 }
 
 input[type="color"]::-moz-color-swatch {

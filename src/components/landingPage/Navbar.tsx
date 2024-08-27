@@ -1,34 +1,28 @@
 "use client";
-
-import Image from "next/image";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
-import { Menu } from "lucide-react";
+import { ChevronRight, Menu } from "lucide-react";
 import { ThemeToggle } from "../misc/ThemeToggle";
+import { Button } from "../ui/button";
 
 const Navbar = () => {
   return (
     <>
-      <div className="hidden tablet:flex border-b w-full px-[16px] tablet:px-[80px] desktop:px-[162px] h-20">
+      <div className="hidden tablet:flex w-full px-[16px] tablet:px-[80px] desktop:px-[162px] h-20">
         <div className="flex items-center justify-between mx-auto w-full p-2">
-          <Image
-            src="/logo-banner.svg"
-            alt="logo"
-            height={500}
-            width={500}
-            className="h-14 w-auto"
-          />
+          <p className="font-semibold text-primary">Minidapio</p>
 
           <div className="flex items-center gap-5">
             {/* <Button>Afiliado</Button> */}
 
             <Link href="/auth/login">
-              <Button>Restaurante</Button>
-            </Link>
-
-            <Link href="https://api.whatsapp.com/send?phone=5517996484654">
-              <Button variant="secondary">Anuncie</Button>
+              <Button
+                className="border border-border p-3 rounded-md dark:bg-zinc-950 group hover:border-primary hover:bg-background"
+                variant="outline"
+              >
+                <p className="text-primary">Dashboard</p>
+                <ChevronRight className="group-hover:text-primary text-border" />
+              </Button>
             </Link>
 
             <ThemeToggle />
@@ -37,33 +31,23 @@ const Navbar = () => {
       </div>
 
       <Drawer>
-        <DrawerTrigger className="flex tablet:hidden">
-          <div className="fixed right-2 top-2 p-1 rounded bg-primary">
+        <DrawerTrigger className="flex tablet:hidden z-50">
+          <div className="fixed right-2 top-2 p-1 rounded bg-background border border-border text-primary">
             <Menu size={32} />
           </div>
         </DrawerTrigger>
         <DrawerContent>
           <div className="flex flex-col gap-10 h-[calc(100svh-80px)] p-5 mx-auto">
-            <Image
-              src="/logo-banner.svg"
-              alt="logo"
-              height={500}
-              width={500}
-              className="h-auto w-32 mx-auto"
-            />
+            <p className="text-2xl text-primary text-center font-semibold">
+              Minidapio
+            </p>
 
             <div className="flex flex-col items-center justify-center gap-10 my-auto h-full ">
               {/* <Button>Afiliado</Button> */}
 
-              <Link href="/advertiser/login" className="order-2 tablet:order-1">
-                <p className="text-primary font-semibold border-b text-4xl ">
-                  Anuncie
-                </p>
-              </Link>
-
               <Link href="/auth/login" className="order-1 tablet:order-2">
                 <p className="text-primary font-semibold border-b text-4xl ">
-                  Restaurante
+                  Dashboard
                 </p>
               </Link>
             </div>

@@ -1,15 +1,21 @@
 import type { Config } from "tailwindcss";
 import { withUt } from "uploadthing/tw";
 
-export const config = {
+const config = {
   darkMode: ["class"],
   content: [
     "./src/pages/**/*.{ts,tsx}",
     "./src/components/**/*.{ts,tsx}",
     "./src/app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
+    "./src/src/**/*.{ts,tsx}",
   ],
   prefix: "",
+  safelist: [
+    {
+      pattern: /col-span-.+/,
+      variants: ["tablet"],
+    },
+  ],
   theme: {
     container: {
       center: true,

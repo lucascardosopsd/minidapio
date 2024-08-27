@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 const Footer = () => {
@@ -6,14 +5,7 @@ const Footer = () => {
     <footer className="p-10 flex border">
       <div className="container flex flex-col tablet:flex-row items-center justify-between mx-auto w-full gap-5 ">
         <div className="flex items-center gap-2">
-          <Image
-            src="/logo.svg"
-            alt="logo"
-            height={500}
-            width={500}
-            className="h-14 w-auto"
-          />
-          <p className="text-2xl font-bold">Reserva</p>
+          <p className="text-2xl font-bold">Minidapio</p>
         </div>
         <div className="flex gap-5">
           <div className="flex flex-col">

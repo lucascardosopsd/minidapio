@@ -101,9 +101,6 @@ export const InfiniteMovingCards = ({
                 alt={item.href}
                 className="relative rounded-full object-cover w-32 h-32"
                 key={item.href}
-                style={{
-                  WebkitFilter: "saturate(0%) contrast(150%)",
-                }}
               />
               <p className="text-center font-medium">{item.title}</p>
             </div>
