@@ -76,7 +76,7 @@ export default async function Restaurant({
       </div>
       <div className="w-full mx-auto h-full">
         <Accordion type="multiple">
-          <CategoriesList categories={categories} />
+          <CategoriesList categories={categories} limits={limits} />
         </Accordion>
       </div>
     </main>

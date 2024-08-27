@@ -17,11 +17,5 @@ export const useUserSession = async () => {
 
   return (await prisma.user.findUnique({
     where: { email: session?.user?.email! },
-    select: {
-      id: true,
-      email: true,
-      image: true,
-      name: true,
-    },
   })) satisfies userSessionProps | null;
 };
