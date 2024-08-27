@@ -268,7 +268,7 @@ const RestaurantCard = ({ restaurant, session }: RestaurantCardProps) => {
                       type="button"
                       onClick={() =>
                         copyToClipboard(
-                          `${process.env.NEXT_PUBLIC_HOST}/menu/${session?.id}/${restaurant.slug}`,
+                          `${process.env.NEXT_PUBLIC_HOST}/menu/${restaurant.id}/${restaurant.slug}`,
                           "slug",
                           "Link do cardápio copiado!"
                         )

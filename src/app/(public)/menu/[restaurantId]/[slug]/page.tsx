@@ -9,14 +9,14 @@ import { checkMonthlySubscription } from "@/actions/subscription/checkMonthlySub
 
 interface MenuProps {
   params: {
-    userId: string;
+    restaurantId: string;
     slug: string;
   };
 }
 
-const Menu = async ({ params: { userId, slug } }: MenuProps) => {
+const Menu = async ({ params: { restaurantId } }: MenuProps) => {
   const restaurants = (await fetchRestaurantsByQuery({
-    where: { slug, userId },
+    where: { id: restaurantId },
     include: {
       Items: {
         orderBy: {
