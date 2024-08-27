@@ -9,10 +9,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
-import { fetchUserByQuery } from "@/actions/user/fetchUserByQuery";
+import { fetchUsersByQuery } from "@/actions/user/fetchUsersByQuery";
+import DateRange from "@/components/misc/DateRange";
+import { PaymentWithSubscriptionWithPlan } from "@/types/subscription";
+import PaymentRow from "@/components/admin/tableRows/PaymentRow";
 
 interface PaymentReturnProps {
-  payments: PaymentProps[];
+  payments: PaymentWithSubscriptionWithPlan[];
   pages: number;
 }
 
@@ -43,25 +46,32 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
           },
           userId,
         },
+      include: {
+        Subscription: {
+          include: {
+            Plan: true,
+          },
+        },
+      },
     },
   });
 
-  const regions = await fetchUserByQuery();
+  const { users } = await fetchUsersByQuery({ page: 0, take: 1000, query: {} });
 
-  const regionsOptions = regions.map((region) => ({
-    label: region.title,
-    value: region.id,
+  const usersOptions = users.map((user) => ({
+    label: user.name || "",
+    value: user.id || "",
   }));
 
   return (
     <section className="flex flex-col items-center justify-center overflow-y-auto h-screen w-full gap-5 my-5">
       <div className="flex items-center gap-10">
         <div className="flex flex-col">
-          <p className="text-xs">Filtrar região</p>
+          <p className="text-xs">Filtrar usuário</p>
           <ReusableComboSearch
-            items={regionsOptions}
-            title="Filtrar região"
-            queryTitle="regionId"
+            items={usersOptions}
+            title="Filtrar usuário"
+            queryTitle="userId"
           />
         </div>
         <DateRange
@@ -77,15 +87,16 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Anunciante</TableHead>
+              <TableHead>ID</TableHead>
+
+              <TableHead>Preço</TableHead>
 
               <TableHead>Plano</TableHead>
 
-              <TableHead>Valor</TableHead>
-
+              <TableHead>Status</TableHead>
               <TableHead>Data</TableHead>
 
-              <TableHead>Deletar</TableHead>
+              <TableHead>Validade</TableHead>
             </TableRow>
           </TableHeader>
 
