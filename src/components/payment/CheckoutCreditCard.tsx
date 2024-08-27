@@ -28,6 +28,8 @@ import { useState } from "react";
 import moment from "moment";
 import createSubscription from "@/actions/subscription/createSubscription";
 import { AsaasSubscriptionResObj } from "@/types/asaasSubscriptions";
+import { deleteSubscription } from "@/actions/subscription/deleteSubscription";
+import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 
 interface CheckoutCreditCardProps {
   plan: Plan;
@@ -94,6 +96,18 @@ const CheckoutCreditCard = ({
         `${process.env.NEXT_PUBLIC_HOST}/api/asaas/subscription`,
         fullData
       );
+
+      const { subscriptions } = await fetchSubscriptionsByQuery({
+        page: 0,
+        take: 1,
+        query: {
+          where: { userId: user.id },
+        },
+      });
+
+      if (subscriptions.length) {
+        await deleteSubscription({ id: subscriptions[0].id });
+      }
 
       await createSubscription({
         userId: user.id,

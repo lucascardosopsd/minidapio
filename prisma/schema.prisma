@@ -145,7 +145,7 @@ model Subscription {
   asaasId          String
   dateCreated      String
   customerId       String
-  value            Int
+  value            Float
   nextDueDate      String
   cycle            String
   description      String

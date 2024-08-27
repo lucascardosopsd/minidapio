@@ -54,6 +54,8 @@ export const checkMonthlySubscription = async ({
     },
   });
 
+  console.log(payments);
+
   const paidRemaining = moment(payments[0]?.createdAt)
     .add(1, "month")
     .diff(moment(), "day");
