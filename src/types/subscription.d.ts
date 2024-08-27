@@ -1,3 +1,5 @@
+import { WithProperty } from "./common";
+
 export interface NewSubscriptionProps {
   object: string;
   asaasId: string;
@@ -13,3 +15,14 @@ export interface NewSubscriptionProps {
   planId: string;
   userId: string;
 }
+
+export interface SubscriptionWithPlanProps extends Subscription {
+  Plan: Plan;
+}
+
+export type SubscriptionWithPlan = WithProperty<Subscription, "Plan", Plan>;
+export type PaymentWithSubscriptionWithPlan = WithProperty<
+  Payment,
+  "Subscription",
+  SubscriptionWithPlan
+>;

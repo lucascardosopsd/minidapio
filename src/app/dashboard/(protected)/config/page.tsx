@@ -42,7 +42,11 @@ const NewPaymentProfilePage = async () => {
     query: {
       where: { userId: user?.id },
       include: {
-        Subscription: true,
+        Subscription: {
+          include: {
+            Plan: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",

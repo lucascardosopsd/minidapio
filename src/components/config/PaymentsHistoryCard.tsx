@@ -14,13 +14,12 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { PaymentWithSubscriptionProps } from "@/types/paymentProps";
-import { plans } from "@/constants/plans";
 import { statusI18n } from "@/constants/paymentStatusI18n";
 import moment from "moment";
+import { PaymentWithSubscriptionWithPlan } from "@/types/subscription";
 
 interface PaymentsHistoryCardProps {
-  payments: PaymentWithSubscriptionProps[];
+  payments: PaymentWithSubscriptionWithPlan[];
 }
 
 const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
@@ -52,12 +51,7 @@ const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
                 <TableCell>
                   {formatPrice(payment.value, "pt-BR", "BRL")}
                 </TableCell>
-                <TableCell>
-                  {
-                    plans.filter((plan) => plan.alias == payment?.plan)[0]
-                      ?.title
-                  }
-                </TableCell>
+                <TableCell>{payment.Subscription?.Plan?.title}</TableCell>
                 <TableCell>{statusI18n[payment.status]}</TableCell>
                 <TableCell>{payment.createdAt.toLocaleDateString()}</TableCell>
                 <TableCell>
