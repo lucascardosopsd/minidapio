@@ -13,13 +13,19 @@ import RestaurantCard from "../cards/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
 import { slugGen } from "@/tools/slugGen";
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
+import { PlanLimitProps } from "@/constants/planLimits";
 
 interface RestaurantsListProps {
   session: Session;
   restaurants: RestaurantProps[];
+  limits: PlanLimitProps;
 }
 
-const RestaurantsList = ({ session, restaurants }: RestaurantsListProps) => {
+const RestaurantsList = ({
+  session,
+  restaurants,
+  limits,
+}: RestaurantsListProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -78,6 +84,7 @@ const RestaurantsList = ({ session, restaurants }: RestaurantsListProps) => {
           content={
             <RestaurantForm loading={loading} onSubmit={handleNewRestaurant} />
           }
+          triggerDisabled={restaurants.length == limits.restaurants}
         />
       </div>
 
