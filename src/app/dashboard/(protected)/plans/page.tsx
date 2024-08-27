@@ -48,7 +48,7 @@ const PlansPage = async () => {
 
         <Separator orientation="horizontal" />
 
-        <div className="flex items-center gap-5">
+        <div className="flex flex-col tablet:flex-row items-center gap-5">
           {plans.map((plan, index) => (
             <PlanCard
               plan={plan}
