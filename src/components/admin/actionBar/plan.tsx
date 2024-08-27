@@ -26,7 +26,7 @@ const PlansActionBar = ({ plans }: PlansActionBarProps) => {
 
       toast.success("Plano criado");
 
-      revalidateRoute({ fullPath: "/jsnHktoSE/dashboard/plans" });
+      revalidateRoute({ fullPath: "/" });
 
       setIsModalOpen(false);
     } catch (error) {

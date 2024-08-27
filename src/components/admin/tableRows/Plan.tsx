@@ -32,7 +32,7 @@ const PlanRow = ({ plan }: PlanRowProps) => {
 
       await updatePlan({ id: plan.id, data });
 
-      revalidateRoute({ fullPath: "/jsnHktoSE/dashboard/plans" });
+      revalidateRoute({ fullPath: "/" });
 
       toast.success("Plano atualizado");
 
@@ -53,7 +53,7 @@ const PlanRow = ({ plan }: PlanRowProps) => {
 
       toast.success("Plano deletado");
 
-      revalidateRoute({ fullPath: "/jsnHktoSE/dashboard/plans" });
+      revalidateRoute({ fullPath: "/" });
 
       setIsModalOpen(false);
     } catch (error) {
