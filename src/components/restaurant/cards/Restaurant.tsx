@@ -8,7 +8,6 @@ import { FaArrowRight } from "react-icons/fa6";
 import RestaurantForm from "../forms/Restaurant";
 import { ImSpinner, ImSpinner2 } from "react-icons/im";
 import { useState } from "react";
-import { Session } from "@/types/session";
 import { toast } from "sonner";
 import { deleteRestaurant } from "@/actions/restaurant/deleteRestaurant";
 import { copyToClipboard } from "@/tools/copyToClipboard";
@@ -37,10 +36,9 @@ import { slugGen } from "@/tools/slugGen";
 import ReusableDialog from "@/components/misc/ReusableDialog";
 interface RestaurantCardProps {
   restaurant: RestaurantProps;
-  session: Session | null;
 }
 
-const RestaurantCard = ({ restaurant, session }: RestaurantCardProps) => {
+const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();

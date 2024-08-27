@@ -1,5 +1,4 @@
 import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
-import { fetchUser } from "@/actions/user/fetchUser";
 import CheckoutCreditCard from "@/components/payment/CheckoutCreditCard";
 import CheckoutProfile from "@/components/payment/CheckoutProfile";
 import { Separator } from "@/components/ui/separator";
@@ -15,13 +14,7 @@ interface PaymentPageProps {
 }
 
 const PaymentPage = async ({ params }: PaymentPageProps) => {
-  const session = await useUserSession();
-
-  if (!session) {
-    return;
-  }
-
-  const user = await fetchUser({ email: session.email! });
+  const user = await useUserSession();
 
   let customer: AsaasCustomerObj | null = null;
 

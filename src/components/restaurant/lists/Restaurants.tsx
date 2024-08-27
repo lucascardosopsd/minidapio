@@ -8,23 +8,17 @@ import { toast } from "sonner";
 import { z } from "zod";
 import RestaurantForm from "../forms/Restaurant";
 import { Separator } from "@/components/ui/separator";
-import { Session } from "@/types/session";
 import RestaurantCard from "../cards/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
 import { slugGen } from "@/tools/slugGen";
 import { PlanLimitProps } from "@/constants/planLimits";
 
 interface RestaurantsListProps {
-  session: Session;
   restaurants: RestaurantProps[];
   limits: PlanLimitProps;
 }
 
-const RestaurantsList = ({
-  session,
-  restaurants,
-  limits,
-}: RestaurantsListProps) => {
+const RestaurantsList = ({ restaurants, limits }: RestaurantsListProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -80,11 +74,7 @@ const RestaurantsList = ({
       {restaurants.length ? (
         <div className="grid grid-cols-1 mobile:grid-cols-1 tablet:grid-cols-4 gap-4 pb-4 tablet:pb-0 h-[65vh] overflow-y-auto">
           {restaurants.map((restaurant) => (
-            <RestaurantCard
-              restaurant={restaurant!}
-              session={session}
-              key={restaurant.id}
-            />
+            <RestaurantCard restaurant={restaurant!} key={restaurant.id} />
           ))}
         </div>
       ) : (

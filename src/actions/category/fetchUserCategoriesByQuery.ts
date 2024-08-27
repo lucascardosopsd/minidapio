@@ -11,10 +11,6 @@ export const fetchUserCategoriesByQuery = async (
 ): Promise<CategoriesWithItemsProps[]> => {
   const user = await useUserSession();
 
-  if (!user) {
-    throw new Error("User not found");
-  }
-
   const includeUserQuery = {
     ...query,
     include: {
@@ -22,7 +18,7 @@ export const fetchUserCategoriesByQuery = async (
     },
     where: {
       ...query.where,
-      userId: user.id,
+      userId: user?.id,
     },
   } satisfies CategoryQuery;
 

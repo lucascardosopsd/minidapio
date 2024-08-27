@@ -12,10 +12,6 @@ interface UpdateItemProps {
 export const updateItem = async ({ data, id }: UpdateItemProps) => {
   const user = await useUserSession();
 
-  if (!user?.id) {
-    throw new Error("User not found");
-  }
-
   try {
     await prisma.item.update({
       where: {
@@ -23,7 +19,7 @@ export const updateItem = async ({ data, id }: UpdateItemProps) => {
       },
       data: {
         ...data,
-        userId: user.id,
+        userId: user?.id,
       },
     });
   } catch (error) {

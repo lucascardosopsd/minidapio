@@ -11,15 +11,11 @@ export const createNewRestaurant = async (
 ): Promise<Restaurant> => {
   const user = await useUserSession();
 
-  if (!user?.id) {
-    throw new Error("User not found");
-  }
-
   try {
     const newRestaurant = await prisma.restaurant.create({
       data: {
         ...data,
-        userId: user.id,
+        userId: user?.id,
       },
     });
 

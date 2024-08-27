@@ -1,18 +1,11 @@
 import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
-import { fetchUser } from "@/actions/user/fetchUser";
 import PlanCard from "@/components/restaurant/PlanCard";
 import { Separator } from "@/components/ui/separator";
 import { useUserSession } from "@/hooks/useUserSession";
 
 const PlansPage = async () => {
-  const session = await useUserSession();
-
-  if (!session) {
-    return;
-  }
-
-  const user = await fetchUser({ email: session?.email! });
+  const user = await useUserSession();
 
   const { subscriptions } = await fetchSubscriptionsByQuery({
     take: 10,

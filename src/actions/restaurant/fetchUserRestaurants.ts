@@ -6,14 +6,10 @@ import { PaymentMethodProps, WorkHourProps } from "@/types/restaurant";
 export const fetchUserRestaurants = async () => {
   const user = await useUserSession();
 
-  if (!user?.id) {
-    throw new Error("User not found");
-  }
-
   try {
     const restaurants = await prisma.restaurant.findMany({
       where: {
-        userId: user.id,
+        userId: user?.id,
       },
     });
 
