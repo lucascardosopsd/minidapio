@@ -35,6 +35,8 @@ export default async function Dashboard() {
 
   const limits = planLimits[subscriptions[0].Plan.alias];
 
+  console.log(limits);
+
   return (
     <main className="flex flex-col items-center justify-center h-[calc(100svh-4rem)] gap-8 ">
       <RestaurantsList

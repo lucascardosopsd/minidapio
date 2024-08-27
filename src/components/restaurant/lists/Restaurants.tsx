@@ -12,7 +12,6 @@ import { Session } from "@/types/session";
 import RestaurantCard from "../cards/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
 import { slugGen } from "@/tools/slugGen";
-import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import { PlanLimitProps } from "@/constants/planLimits";
 
 interface RestaurantsListProps {
@@ -46,18 +45,6 @@ const RestaurantsList = ({
       return;
     }
 
-    const userRestaurants = await fetchRestaurantsByQuery({
-      where: {
-        userId: session.id,
-      },
-    });
-
-    if (userRestaurants.length >= 5) {
-      toast.error("Limite de 5 restaurantes atingido");
-      setLoading(false);
-      return;
-    }
-
     try {
       await createNewRestaurant({
         ...data,
@@ -84,7 +71,7 @@ const RestaurantsList = ({
           content={
             <RestaurantForm loading={loading} onSubmit={handleNewRestaurant} />
           }
-          triggerDisabled={restaurants.length == limits.restaurants}
+          triggerDisabled={restaurants.length >= limits.restaurants}
         />
       </div>
 
