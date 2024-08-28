@@ -32,12 +32,6 @@ const Footer = () => {
               <p>Política de Privacidade</p>
             </Link>
           </div>
-
-          <div className="flex flex-col">
-            <p className="text-2xl font-semibold">Suporte</p>
-            <p>FAQ</p>
-            <p>Contato</p>
-          </div>
         </div>
       </div>
     </footer>
