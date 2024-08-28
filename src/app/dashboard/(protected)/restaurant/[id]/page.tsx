@@ -10,6 +10,7 @@ import { Item } from "@prisma/client";
 import { planLimits } from "@/constants/planLimits";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { SubscriptionWithPlanProps } from "@/types/plan";
+import { useUserSession } from "@/hooks/useUserSession";
 
 interface PageProps {
   params: {
@@ -26,6 +27,8 @@ interface CustomFetchSubscriptionsByQueryResProps {
 export default async function Restaurant({
   params: { id: restaurantId },
 }: PageProps) {
+  const user = await useUserSession();
+
   const categories: CategoriesWithItemsProps[] =
     await fetchUserCategoriesByQuery({
       where: {
@@ -52,7 +55,7 @@ export default async function Restaurant({
       page: 0,
       take: 1,
       query: {
-        where: { userId: categories[0].userId },
+        where: { userId: user?.id },
         include: {
           Plan: true,
         },
