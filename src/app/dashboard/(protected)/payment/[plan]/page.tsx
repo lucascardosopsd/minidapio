@@ -66,11 +66,9 @@ const PaymentPage = async ({ params }: PaymentPageProps) => {
         }
       />
 
-      {customer && <Separator />}
+      <Separator />
 
-      {customer && (
-        <CheckoutCreditCard plan={plans[0]} customer={customer} user={user!} />
-      )}
+      <CheckoutCreditCard plan={plans[0]} customer={customer} user={user!} />
     </div>
   );
 };

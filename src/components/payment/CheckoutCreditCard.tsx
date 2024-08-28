@@ -28,11 +28,10 @@ import { useState } from "react";
 import moment from "moment";
 import createSubscription from "@/actions/subscription/createSubscription";
 import { AsaasSubscriptionResObj } from "@/types/asaasSubscriptions";
-import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 
 interface CheckoutCreditCardProps {
   plan: Plan;
-  customer: AsaasCustomerObj;
+  customer: AsaasCustomerObj | null;
   user: User;
 }
 
@@ -71,7 +70,7 @@ const CheckoutCreditCard = ({
     }
 
     const fullData = {
-      customer: customer.id,
+      customer: customer?.id,
       billingType: "CREDIT_CARD",
       nextDueDate: moment().format("YYYY-MM-DD"),
       value: plan.price,
@@ -79,14 +78,14 @@ const CheckoutCreditCard = ({
       description: "Assinatura Plano Mensal Minidapio",
       creditCard: data,
       creditCardHolderInfo: {
-        name: customer.name,
-        email: customer.email,
-        cpfCnpj: customer.cpfCnpj,
-        postalCode: customer.postalCode,
-        addressNumber: customer.addressNumber,
+        name: customer?.name,
+        email: customer?.email,
+        cpfCnpj: customer?.cpfCnpj,
+        postalCode: customer?.postalCode,
+        addressNumber: customer?.addressNumber,
         addressComplement: null,
-        phone: customer.mobilePhone,
-        mobilePhone: customer.mobilePhone,
+        phone: customer?.mobilePhone,
+        mobilePhone: customer?.mobilePhone,
       },
     };
 
@@ -95,14 +94,6 @@ const CheckoutCreditCard = ({
         `${process.env.NEXT_PUBLIC_HOST}/api/asaas/subscription`,
         fullData
       );
-
-      const { subscriptions } = await fetchSubscriptionsByQuery({
-        page: 0,
-        take: 1,
-        query: {
-          where: { userId: user.id },
-        },
-      });
 
       await createSubscription({
         subscription: {
@@ -265,8 +256,10 @@ const CheckoutCreditCard = ({
                     </p>
                   </div>
 
-                  <Button type="submit" disabled={loading}>
-                    Finalizar
+                  <Button type="submit" disabled={loading || !customer}>
+                    {customer
+                      ? "Finalizar"
+                      : "Salve as informações do primeiro bloco"}
                   </Button>
                 </div>
               </form>

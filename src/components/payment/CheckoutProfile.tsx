@@ -25,6 +25,7 @@ import { CepPromiseReturnProps } from "@/types/cep";
 import { toast } from "sonner";
 import { createUpdateAsaasCustomer } from "@/actions/paymentProfile/createUpdateAsaasCustomer";
 import { useState } from "react";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 
 interface CheckoutProps {
   customerDefaultValues?: z.infer<typeof customerProfileValidator> | null;
@@ -72,6 +73,8 @@ const CheckoutProfile = ({ user, customerDefaultValues }: CheckoutProps) => {
       });
 
       toast.success("Conta de pagamento criada/atualizada");
+
+      revalidateRoute({ fullPath: "/dashboard" });
     } catch (error) {
       toast.error("Algo deu errado.");
     } finally {
@@ -82,7 +85,7 @@ const CheckoutProfile = ({ user, customerDefaultValues }: CheckoutProps) => {
   return (
     <section className="flex flex-col gap-5 justify-center items-center ">
       <div className="flex flex-col">
-        <p className="text-2xl text-center font-semibold">
+        <p className="text-2xl text-center font-semibold text-primary">
           Formulário de assinatura
         </p>
         <p className="text-sm text-center">
