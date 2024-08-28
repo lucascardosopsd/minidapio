@@ -4,6 +4,7 @@ import HeroSection from "@/components/landingPage/sections/Hero";
 import Advantages from "@/components/landingPage/sections/Advantages";
 import Features from "@/components/landingPage/sections/Features";
 import PlansSection from "@/components/landingPage/sections/Plans";
+import Faq from "@/components/landingPage/sections/Faq";
 
 const LandingPage = async () => {
   const { restaurants } = await fetchManyRestaurants({
@@ -22,6 +23,7 @@ const LandingPage = async () => {
       <Advantages />
       <Features />
       <PlansSection />
+      <Faq />
       <Footer />
     </div>
   );
