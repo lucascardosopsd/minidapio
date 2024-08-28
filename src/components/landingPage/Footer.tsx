@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="p-10 flex border">
+    <footer className="p-10 flex border-t border-border">
       <div className="container flex flex-col tablet:flex-row items-center justify-between mx-auto w-full gap-5 ">
         <div className="flex items-center gap-2">
           <p className="text-2xl font-bold">Minidapio</p>
