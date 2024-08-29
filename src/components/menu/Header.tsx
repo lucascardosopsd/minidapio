@@ -30,7 +30,7 @@ const MenuHeader = ({ restaurant }: MenuHeaderProps) => {
   }
 
   return (
-    <div className="flex items-center justify-between h-20 border-b w-full pr-2">
+    <div className="flex items-center justify-between h-22 border-b w-full pr-2 py-3">
       <div className="flex gap-5 items-center">
         <div className="h-full w-auto">
           <Image
@@ -38,7 +38,7 @@ const MenuHeader = ({ restaurant }: MenuHeaderProps) => {
             src={restaurant.logo}
             height={500}
             width={500}
-            className="w-auto h-20 object-cover"
+            className="h-20 w-20 object-cover"
           />
         </div>
 

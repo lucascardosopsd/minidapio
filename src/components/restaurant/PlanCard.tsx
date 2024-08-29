@@ -13,9 +13,10 @@ import { Plan } from "@prisma/client";
 interface PlanCardProps {
   plan: Plan;
   current: boolean;
+  disabled?: boolean;
 }
 
-const PlanCard = ({ plan, current }: PlanCardProps) => {
+const PlanCard = ({ plan, current, disabled }: PlanCardProps) => {
   const html = { __html: plan.description };
 
   return (
@@ -53,7 +54,7 @@ const PlanCard = ({ plan, current }: PlanCardProps) => {
           <Button
             className={cn("w-full", !current && "border border-primary")}
             variant={plan.highlighted ? "default" : "outline"}
-            disabled={current}
+            disabled={current || disabled}
           >
             {current ? "Atual" : "Assinar"}
           </Button>
