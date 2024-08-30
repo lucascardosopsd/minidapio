@@ -22,14 +22,18 @@ const Footer = () => {
 
         <div className="flex gap-5">
           <div className="flex flex-col">
-            <p className="text-2xl font-semibold text-center">Legal</p>
+            <p className="text-2xl font-semibold text-center tablet:text-start">
+              Legal
+            </p>
 
             <Link href="/termos_de_uso.pdf">
-              <p className="text-center">Termos de Uso</p>
+              <p className="text-center tablet:text-start">Termos de Uso</p>
             </Link>
 
             <Link href="/politica_de_privacidade.pdf">
-              <p className="text-center">Política de Privacidade</p>
+              <p className="text-center tablet:text-start">
+                Política de Privacidade
+              </p>
             </Link>
           </div>
         </div>
