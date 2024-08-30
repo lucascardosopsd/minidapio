@@ -28,7 +28,9 @@ const PlansSection = async () => {
         <p className="text-4xl text-primary font-semibold text-center">
           Planos
         </p>
-        <p className="2xl">Cabem no seu bolso e acompanham sua empresa</p>
+        <p className="2xl text-center">
+          Cabem no seu bolso e acompanham sua empresa
+        </p>
       </div>
 
       <AnimatedList delay={200} className="flex-col tablet:flex-row">
@@ -75,7 +77,7 @@ const PlansSection = async () => {
       <Link href="/auth/register">
         <Button
           variant="outline"
-          className="hover:border-primary hover:bg-background text-xl p-10"
+          className="border-primary hover:bg-background text-xl p-10 text-primary"
         >
           Experimente Agora
         </Button>
