@@ -38,17 +38,17 @@ const Faq = () => {
 
   return (
     <section className="container min-h-svh tablet:h-svh flex flex-col items-center justify-center gap-10">
-      <p className="text-4xl text-primary font-semibold">
+      <p className="text-4xl text-primary font-semibold text-center">
         Responda sua pergunta
       </p>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full">
         {questions.map((question, index) => (
           <Accordion
             type="single"
             collapsible
             key={index}
-            className="w-full max-w-[500px]"
+            className="w-full max-w-[600px] mx-auto"
           >
             <AccordionItem value="item-1">
               <AccordionTrigger>{question.question}</AccordionTrigger>

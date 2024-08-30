@@ -28,7 +28,9 @@ const PlansSection = async () => {
         <p className="text-4xl text-primary font-semibold text-center">
           Planos
         </p>
-        <p className="2xl">Cabem no seu bolso e acompanham sua empresa</p>
+        <p className="2xl text-center">
+          Cabem no seu bolso e acompanham sua empresa
+        </p>
       </div>
 
       <AnimatedList delay={200} className="flex-col tablet:flex-row">
