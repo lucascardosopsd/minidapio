@@ -22,6 +22,8 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
   const router = useRouter();
   const { data: session } = useSession();
 
+  console.log(session);
+
   return (
     <div className="container flex justify-between items-center p-4 border-b border-border h-16">
       <div className="flex gap-2">
@@ -43,7 +45,7 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
           <p className="block tablet:hidden text-muted-foreground">Início</p>
         </Link>
       </div>
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center justify-end">
         <UpgradeButton />
 
         <ThemeToggle />
@@ -61,7 +63,7 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
         <DropdownMenu>
           <DropdownMenuTrigger>
             {session?.user?.image && (
-              <Avatar>
+              <Avatar className="border border-primary">
                 <AvatarImage src={session?.user?.image!} />
               </Avatar>
             )}
