@@ -22,41 +22,43 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  console.log(session);
-
   return (
     <div className="container flex justify-between items-center p-4 border-b border-border h-16">
       <div className="flex gap-2">
-        {breadcrumb?.map((route, index) => (
-          <Link
-            href={route.route}
-            onClick={() => router.push(route.route)}
-            className="gap-2 text-muted-foreground hidden tablet:flex"
-            key={index}
-          >
-            <p className="hover:text-accent-foreground transition">
-              {route.title}
-            </p>
-            <p>/</p>
-          </Link>
-        ))}
+        <div className="hidden tablet:block">
+          {breadcrumb?.map((route, index) => (
+            <Link
+              href={route.route}
+              onClick={() => router.push(route.route)}
+              className="gap-2 text-muted-foreground hidden tablet:flex"
+              key={index}
+            >
+              <p className="hover:text-accent-foreground transition">
+                {route.title}
+              </p>
+              <p>/</p>
+            </Link>
+          ))}
 
-        <Link href="/dashboard/restaurants">
-          <p className="block tablet:hidden text-muted-foreground">Início</p>
-        </Link>
+          <Link href="/dashboard/restaurants">
+            <p className="block tablet:hidden text-muted-foreground">Início</p>
+          </Link>
+        </div>
       </div>
-      <div className="flex gap-2 items-center justify-end">
+      <div className="flex gap-2 items-center mx-auto justify-between w-full tablet:w-auto tablet:m-0 tablet:justify-end">
         <UpgradeButton />
 
-        <ThemeToggle />
+        <div className="hidden tablet:block">
+          <ThemeToggle />
+        </div>
 
         <Link
           href="https://api.whatsapp.com/send?phone=5517996484654"
-          className="w-full"
+          className="tablet:w-full"
           target="_blank"
         >
-          <Button className="gap-2">
-            <span className="hidden tablet:block">Suporte</span> <Headset />
+          <Button className="gap-2 rounded-full">
+            <span>Suporte</span> <Headset />
           </Button>
         </Link>
 

@@ -55,7 +55,7 @@ const RestaurantsList = ({ restaurants, limits }: RestaurantsListProps) => {
 
   return (
     <div className="flex flex-col w-full gap-5">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col tablet:flex-row items-center justify-between">
         <p className="text-2xl">Restaurantes</p>
         <ReusableModal
           title="Novo Restaurante"
