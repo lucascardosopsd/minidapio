@@ -25,7 +25,7 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
   return (
     <div className="container flex justify-between items-center p-4 border-b border-border h-16">
       <div className="flex gap-2">
-        <div className="hidden tablet:block">
+        <div className="hidden tablet:flex gap-2">
           {breadcrumb?.map((route, index) => (
             <Link
               href={route.route}
