@@ -15,6 +15,9 @@ const PlansPage = async () => {
       where: {
         userId: user?.id,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     },
   });
 
@@ -47,14 +50,17 @@ const PlansPage = async () => {
         <Separator orientation="horizontal" />
 
         <div className="flex flex-col tablet:flex-row items-center gap-5">
-          {plans.map((plan, index) => (
-            <PlanCard
-              plan={plan}
-              key={index}
-              current={subscriptions[0]?.planId == plan.id}
-              disabled={trialRemaining < 0 && plan.alias == "free"}
-            />
-          ))}
+          {plans.map(
+            (plan, index) =>
+              trialRemaining < 0 &&
+              plan.alias !== "free" && (
+                <PlanCard
+                  plan={plan}
+                  key={index}
+                  current={subscriptions[0]?.planId == plan.id}
+                />
+              )
+          )}
         </div>
       </div>
     </>
