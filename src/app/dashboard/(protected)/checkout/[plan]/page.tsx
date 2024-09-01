@@ -1,7 +1,7 @@
 import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
 import CheckoutCreditCard from "@/components/payment/CheckoutCreditCard";
 import CheckoutProfile from "@/components/payment/CheckoutProfile";
-import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserSession } from "@/hooks/useUserSession";
 import { checkDoc } from "@/tools/checkDoc";
 import { AsaasCustomerObj, AsaasCustomerResProps } from "@/types/asaasCustomer";
@@ -45,30 +45,46 @@ const PaymentPage = async ({ params }: PaymentPageProps) => {
 
   return (
     <div className="flex flex-col gap-5">
-      <CheckoutProfile
-        user={user!}
-        customerDefaultValues={
-          customer
-            ? {
-                name: customer?.name,
-                email: customer?.email,
-                address: customer?.address,
-                addressComplement: null,
-                addressNumber: customer?.addressNumber,
-                city: customer?.cityName,
-                cpfCnpj: customer?.cpfCnpj,
-                mobilePhone: customer?.mobilePhone,
-                personType: checkDoc(customer?.cpfCnpj),
-                postalCode: customer?.postalCode,
-                state: customer?.state,
-              }
-            : null
-        }
-      />
-
-      <Separator />
-
-      <CheckoutCreditCard plan={plans[0]} customer={customer} user={user!} />
+      <Tabs
+        defaultValue={user?.customerId ? "checkout" : "person"}
+        className="w-[800px] mx-auto [&_button[data-state=active]]:bg-primary [&_button[data-state=active]]:text-white"
+      >
+        <TabsList>
+          <TabsTrigger value="person">Informações pessoais</TabsTrigger>
+          <TabsTrigger value="checkout" disabled={!user?.customerId}>
+            Pagamento
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="person">
+          <CheckoutProfile
+            user={user!}
+            customerDefaultValues={
+              customer
+                ? {
+                    name: customer?.name,
+                    email: customer?.email,
+                    address: customer?.address,
+                    addressComplement: null,
+                    addressNumber: customer?.addressNumber,
+                    city: customer?.cityName,
+                    cpfCnpj: customer?.cpfCnpj,
+                    mobilePhone: customer?.mobilePhone,
+                    postalCode: customer?.postalCode,
+                    personType: checkDoc(customer?.cpfCnpj),
+                    state: customer?.state,
+                  }
+                : null
+            }
+          />
+        </TabsContent>
+        <TabsContent value="checkout">
+          <CheckoutCreditCard
+            plan={plans[0]}
+            customer={customer}
+            user={user!}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
