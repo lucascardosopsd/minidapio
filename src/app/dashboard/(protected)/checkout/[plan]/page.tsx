@@ -1,6 +1,6 @@
 import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
-import CheckoutCreditCard from "@/components/payment/CheckoutCreditCard";
-import CheckoutProfile from "@/components/payment/CheckoutProfile";
+import CheckoutCreditCard from "@/components/checkout/CheckoutCreditCard";
+import CheckoutProfile from "@/components/checkout/CheckoutProfile";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserSession } from "@/hooks/useUserSession";
 import { checkDoc } from "@/tools/checkDoc";
