@@ -13,7 +13,7 @@ export const fetchUserSubscriptions = async ({
   return prisma.subscription.findMany({
     where: { userId },
     orderBy: {
-      dateCreated: "desc",
+      createdAt: "desc",
     },
     include: {
       Plan: true,
