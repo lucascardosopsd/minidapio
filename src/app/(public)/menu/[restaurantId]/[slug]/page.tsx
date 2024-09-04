@@ -1,11 +1,11 @@
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import CategoriesBar from "@/components/menu/CategoriesBar";
 import MenuHeader from "@/components/menu/Header";
-import { FullRestaurantProps } from "@/types/restaurant";
 import ItemsList from "@/components/menu/ItemsList";
 import SearchSection from "@/components/menu/SearchSection";
 import NoteModal from "@/components/menu/NoteModal";
 import { checkMonthlySubscription } from "@/actions/subscription/checkMonthlySubscription";
+import { FullRestaurantProps } from "@/types/restaurant";
 
 interface MenuProps {
   params: {
@@ -14,32 +14,41 @@ interface MenuProps {
   };
 }
 
+interface CustomRestaurantRes {
+  pages: number;
+  restaurants: FullRestaurantProps[];
+}
+
 const Menu = async ({ params: { restaurantId } }: MenuProps) => {
-  const restaurants = (await fetchRestaurantsByQuery({
-    where: { id: restaurantId },
-    include: {
-      Items: {
-        orderBy: {
-          order: "asc",
+  const { restaurants } = await fetchRestaurantsByQuery<CustomRestaurantRes>({
+    page: 0,
+    take: 10,
+    query: {
+      where: { id: restaurantId },
+      include: {
+        Items: {
+          orderBy: {
+            order: "asc",
+          },
+          where: {
+            active: true,
+          },
         },
-        where: {
-          active: true,
-        },
-      },
-      Categories: {
-        orderBy: {
-          order: "asc",
-        },
-        include: {
-          items: {
-            where: {
-              active: true,
+        Categories: {
+          orderBy: {
+            order: "asc",
+          },
+          include: {
+            items: {
+              where: {
+                active: true,
+              },
             },
           },
         },
       },
     },
-  })) as FullRestaurantProps[];
+  });
 
   if (!restaurants[0]?.Items) {
     return;

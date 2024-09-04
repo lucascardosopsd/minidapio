@@ -17,8 +17,12 @@ export const generateMetadata = async (
   { params }: GenerateMetadataProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
-  const restaurants = await fetchRestaurantsByQuery({
-    where: { slug: params?.slug, userId: params?.userId },
+  const { restaurants } = await fetchRestaurantsByQuery({
+    take: 10,
+    page: 1,
+    query: {
+      where: { slug: params?.slug, userId: params?.userId },
+    },
   });
   const previousImages = (await parent).openGraph?.images || [];
 
