@@ -16,7 +16,7 @@ export const planLimits: PlanLimitsProps = {
   },
   full: {
     restaurants: 4,
-    categories: Infinity,
-    items: Infinity,
+    categories: 50,
+    items: 1000,
   },
 };
