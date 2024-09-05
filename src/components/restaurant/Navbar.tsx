@@ -83,7 +83,7 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
               {session?.user?.name}
             </p>
 
-            <Link href="/dashboard/config">
+            <Link href="/dashboard/settings">
               <Button className="w-full">
                 <Bolt /> Configurações
               </Button>
