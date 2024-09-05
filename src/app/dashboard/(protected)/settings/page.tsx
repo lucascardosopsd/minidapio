@@ -3,6 +3,7 @@ import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import PaymentsHistoryCard from "@/components/config/PaymentsHistoryCard";
 import SubscriptionCard from "@/components/config/SubscriptionCard";
+import UpdateProfileCard from "@/components/restaurant/Profile";
 
 import { useUserSession } from "@/hooks/useUserSession";
 import { PaymentWithSubscriptionProps } from "@/types/paymentProps";
@@ -55,14 +56,25 @@ const NewPaymentProfilePage = async () => {
         Configurações
       </p>
 
-      <div className="flex min-h-screen gap-5">
+      <section className="flex min-h-screen gap-5">
         <SubscriptionCard
           currentPlan={currentPlan}
           currentSub={subscriptions[0]}
         />
 
-        <PaymentsHistoryCard payments={payments} />
-      </div>
+        <div className="flex flex-col gap-5">
+          <PaymentsHistoryCard payments={payments} />
+
+          <UpdateProfileCard
+            data={{
+              email: user?.email!,
+              image: user?.image!,
+              name: user?.name!,
+            }}
+            userId={user?.id!}
+          />
+        </div>
+      </section>
     </div>
   );
 };
