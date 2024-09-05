@@ -4,7 +4,6 @@ import RestaurantsList from "@/components/restaurant/lists/Restaurants";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { SubscriptionWithPlanProps } from "@/types/plan";
 import { planLimits } from "@/constants/planLimits";
-import DowngradeModal from "@/components/restaurant/downgrade/DowngradeModal";
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import { FullRestaurantNestedProps } from "@/types/restaurant";
 
@@ -59,13 +58,6 @@ export default async function Dashboard() {
 
   return (
     <main className="flex flex-col items-center justify-center h-[calc(100svh-4rem)] gap-8 ">
-      {subscriptions[0].Plan.level < subscriptions[1].Plan.level && (
-        <DowngradeModal
-          fullNestedRestaurants={fullNestedRestaurant}
-          subscriptions={subscriptions}
-        />
-      )}
-
       <RestaurantsList restaurants={restaurants!} limits={limits} />
     </main>
   );
