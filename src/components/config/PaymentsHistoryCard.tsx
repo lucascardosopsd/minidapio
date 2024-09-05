@@ -17,6 +17,7 @@ import {
 import { statusI18n } from "@/constants/paymentStatusI18n";
 import moment from "moment";
 import { PaymentWithSubscriptionWithPlan } from "@/types/subscription";
+import { Separator } from "../ui/separator";
 
 interface PaymentsHistoryCardProps {
   payments: PaymentWithSubscriptionWithPlan[];
@@ -24,13 +25,15 @@ interface PaymentsHistoryCardProps {
 
 const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
   return (
-    <Card className="flex-1">
+    <Card>
       <CardHeader>
         <CardTitle>Histórico de pagamento</CardTitle>
         <CardDescription>
           Últimos 12 pagamentos realizados em sua assinatura
         </CardDescription>
       </CardHeader>
+
+      <Separator />
 
       <CardContent>
         <Table className="block">
@@ -44,7 +47,7 @@ const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
               <TableHead>validade</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="block h-64 overflow-scroll">
+          <TableBody className="block h-80 overflow-scroll">
             {payments.map((payment, index) => (
               <TableRow key={index}>
                 <TableCell>{payment.asaasId}</TableCell>
