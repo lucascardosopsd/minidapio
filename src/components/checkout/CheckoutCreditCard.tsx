@@ -47,6 +47,9 @@ const CheckoutCreditCard = ({
     defaultValues: {
       holderName: "",
       number: "",
+      month: "",
+      year: "",
+      expiry: "",
       expiryMonth: "",
       expiryYear: "",
       ccv: "",
@@ -69,6 +72,8 @@ const CheckoutCreditCard = ({
       return;
     }
 
+    const { expiry, ...rest } = data;
+
     const fullData = {
       customer: customer?.id,
       billingType: "CREDIT_CARD",
@@ -76,7 +81,7 @@ const CheckoutCreditCard = ({
       value: plan.price,
       cycle: "MONTHLY",
       description: "Assinatura Plano Mensal Minidapio",
-      creditCard: data,
+      creditCard: rest,
       creditCardHolderInfo: {
         name: customer?.name,
         email: customer?.email,
@@ -90,24 +95,26 @@ const CheckoutCreditCard = ({
     };
 
     try {
-      const { data } = await axios.post<AsaasSubscriptionResObj>(
+      console.log(data);
+
+      const { data: asaasRes } = await axios.post<AsaasSubscriptionResObj>(
         `${process.env.NEXT_PUBLIC_HOST}/api/asaas/subscription`,
         fullData
       );
 
       await createSubscription({
         subscription: {
-          asaasId: data.id,
-          billingType: data.billingType,
-          customerId: data.customer,
-          cycle: data.cycle,
-          dateCreated: data.dateCreated,
-          deleted: data.deleted,
-          description: data.description,
-          nextDueDate: data.nextDueDate,
-          object: data.object,
-          status: data.status,
-          value: data.value,
+          asaasId: asaasRes.id,
+          billingType: asaasRes.billingType,
+          customerId: asaasRes.customer,
+          cycle: asaasRes.cycle,
+          dateCreated: asaasRes.dateCreated,
+          deleted: asaasRes.deleted,
+          description: asaasRes.description,
+          nextDueDate: asaasRes.nextDueDate,
+          object: asaasRes.object,
+          status: asaasRes.status,
+          value: asaasRes.value,
           userId: user.id,
           planId: plan.id,
         },
@@ -176,35 +183,23 @@ const CheckoutCreditCard = ({
 
                     <FormField
                       control={cardForm.control}
-                      name="expiryMonth"
+                      name="expiry"
                       render={({ field }) => (
                         <FormItem className="flex-1">
                           <FormLabel>Vencimento</FormLabel>
                           <FormControl>
                             <PatternFormat
-                              format="##"
-                              placeholder="Mês"
+                              format="##/##"
+                              placeholder="00/00"
                               onValueChange={(values) => {
-                                field.onChange(values.formattedValue);
-                              }}
-                              value={field.value}
-                              onBlur={field.onBlur}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={cardForm.control}
-                      name="expiryYear"
-                      render={({ field }) => (
-                        <FormItem className="mt-auto flex-1">
-                          <FormControl>
-                            <PatternFormat
-                              format="##"
-                              placeholder="Ano"
-                              onValueChange={(values) => {
+                                const month =
+                                  values.formattedValue.split("/")[0];
+                                const year =
+                                  values.formattedValue.split("/")[1];
+
+                                cardForm.setValue("expiryMonth", month);
+                                cardForm.setValue("expiryYear", year);
+
                                 field.onChange(values.formattedValue);
                               }}
                               value={field.value}
