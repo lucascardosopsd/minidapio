@@ -67,7 +67,7 @@ const UpdateProfileCard = ({ data, userId }: ProfileFormProps) => {
   return (
     <Form {...form}>
       <form
-        className="flex gap-6 w-full  border border-border p-5 rounded-lg"
+        className="flex gap-6 w-full flex-1 border border-border rounded-lg"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <Card className="flex flex-col gap-5 flex-1 border-none">
@@ -117,7 +117,7 @@ const UpdateProfileCard = ({ data, userId }: ProfileFormProps) => {
 
               <Button
                 type="submit"
-                className="self-start min-w-[150px]"
+                className="w-full"
                 disabled={isLoading || imgUploading}
               >
                 {isLoading ? (
