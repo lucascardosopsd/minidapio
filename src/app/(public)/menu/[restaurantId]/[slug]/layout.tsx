@@ -19,7 +19,7 @@ export const generateMetadata = async (
 ): Promise<Metadata> => {
   const { restaurants } = await fetchRestaurantsByQuery({
     take: 10,
-    page: 1,
+    page: 0,
     query: {
       where: { slug: params?.slug, userId: params?.userId },
     },
