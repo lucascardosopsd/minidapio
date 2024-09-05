@@ -33,7 +33,7 @@ const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
       </CardHeader>
 
       <CardContent>
-        <Table>
+        <Table className="block">
           <TableHeader>
             <TableRow>
               <TableHead>Id</TableHead>
@@ -44,7 +44,7 @@ const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
               <TableHead>validade</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="block h-64 overflow-scroll">
             {payments.map((payment, index) => (
               <TableRow key={index}>
                 <TableCell>{payment.asaasId}</TableCell>
