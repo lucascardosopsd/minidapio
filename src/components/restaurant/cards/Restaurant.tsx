@@ -116,13 +116,17 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
         </p>
       );
 
-      const userRestaurants = await fetchRestaurantsByQuery({
-        where: {
-          userId: restaurant.userId,
+      const { restaurants } = await fetchRestaurantsByQuery({
+        page: 0,
+        take: 10,
+        query: {
+          where: {
+            userId: restaurant.userId,
+          },
         },
       });
 
-      if (userRestaurants.length >= 4) {
+      if (restaurants.length >= 4) {
         toast.error("Limite de 4 restaurantes atingido");
         setLoading(false);
         return;
