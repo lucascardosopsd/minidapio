@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Separator } from "../ui/separator";
-import { Plan, Subscription } from "@prisma/client";
 import axios from "axios";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -17,15 +16,16 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { deleteSubscription } from "@/actions/subscription/deleteSubscription";
+import { PaymentWithSubscriptionWithPlan } from "@/types/subscription";
 
 interface SubscriptionCardProps {
-  currentPlan: Plan;
-  currentSub: Subscription;
+  lastPayment: PaymentWithSubscriptionWithPlan;
+  isValidSubscription: boolean;
 }
 
 const SubscriptionCard = ({
-  currentPlan,
-  currentSub,
+  lastPayment,
+  isValidSubscription,
 }: SubscriptionCardProps) => {
   const [canceling, setCanceling] = useState(false);
 
@@ -33,9 +33,11 @@ const SubscriptionCard = ({
     try {
       setCanceling(true);
 
-      await axios.delete(`/api/asaas/subscription/${currentSub?.asaasId}`);
+      await axios.delete(
+        `/api/asaas/subscription/${lastPayment.Subscription.asaasId}`
+      );
 
-      await deleteSubscription({ id: currentSub.id });
+      await deleteSubscription({ id: lastPayment.Subscription.Plan.id });
 
       toast.success("Assinatura cancelada");
 
@@ -62,15 +64,24 @@ const SubscriptionCard = ({
       <p className="text-2xl text-center">Plano</p>
 
       <CardContent>
-        <Card className="flex flex-col gap-5">
-          {currentSub?.status == "ACTIVE" && (
+        <Card className="flex flex-col gap-5 border-none">
+          {isValidSubscription && (
             <CardHeader className="flex items-center justify-center bg-primary rounded-lg h-60">
-              <p className="text-2xl font-semibold">{currentPlan.title}</p>
-              <p>{formatPrice(currentPlan.price, "pt-BR", "BRL")}/Mês</p>
+              <p className="text-2xl font-semibold">
+                {lastPayment.Subscription.Plan.title}
+              </p>
+              <p>
+                {formatPrice(
+                  lastPayment.Subscription.Plan.price,
+                  "pt-BR",
+                  "BRL"
+                )}
+                /Mês
+              </p>
             </CardHeader>
           )}
 
-          {currentSub?.status !== "ACTIVE" && (
+          {!isValidSubscription && (
             <CardHeader className="flex items-center justify-center h-60">
               <p className="2xl">Nenhum</p>
               <Link href="/dashboard/plans">
@@ -81,16 +92,14 @@ const SubscriptionCard = ({
             </CardHeader>
           )}
 
-          {currentSub?.status == "ACTIVE" && (
-            <CardFooter className="flex items-center justify-centerp-0">
-              <Button
-                variant="destructive"
-                className="w-full"
-                onClick={handleCancelSubscription}
-              >
-                Cancelar
-              </Button>
-            </CardFooter>
+          {isValidSubscription && (
+            <Button
+              variant="destructive"
+              className="w-full"
+              onClick={handleCancelSubscription}
+            >
+              Cancelar
+            </Button>
           )}
         </Card>
       </CardContent>

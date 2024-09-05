@@ -1,5 +1,6 @@
 import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
 import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
+import { checkMonthlySubscription } from "@/actions/subscription/checkMonthlySubscription";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import PaymentsHistoryCard from "@/components/config/PaymentsHistoryCard";
 import SubscriptionCard from "@/components/config/SubscriptionCard";
@@ -15,11 +16,11 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 import { useUserSession } from "@/hooks/useUserSession";
-import { PaymentWithSubscriptionProps } from "@/types/paymentProps";
+import { PaymentWithSubscriptionWithPlan } from "@/types/subscription";
 import { Trash } from "lucide-react";
 
 interface CustomPaymentsRes {
-  payments: PaymentWithSubscriptionProps[];
+  payments: PaymentWithSubscriptionWithPlan[];
   pages: number;
 }
 
@@ -48,7 +49,11 @@ const NewPaymentProfilePage = async () => {
       include: {
         Subscription: {
           include: {
-            Plan: true,
+            Plan: {
+              include: {
+                Subscription: true,
+              },
+            },
           },
         },
       },
@@ -60,6 +65,8 @@ const NewPaymentProfilePage = async () => {
     take: 12,
   });
 
+  const checkPayment = await checkMonthlySubscription({ userId: user?.id! });
+
   return (
     <div className="flex flex-col space-y-10 items-center overflow-hidden">
       <p className="text-3xl w-full border-b mt-10 pb-5 font-semibold">
@@ -69,8 +76,13 @@ const NewPaymentProfilePage = async () => {
       <section className="flex min-h-screen gap-5">
         <div className="flex flex-col gap-5">
           <SubscriptionCard
-            currentPlan={currentPlan}
-            currentSub={subscriptions[0]}
+            isValidSubscription={
+              (checkPayment?.remaining &&
+                checkPayment?.remaining > 0 &&
+                checkPayment.type == "paid") ||
+              false
+            }
+            lastPayment={payments[0]}
           />
 
           <Card className="flex flex-col gap-5 flex-1">
