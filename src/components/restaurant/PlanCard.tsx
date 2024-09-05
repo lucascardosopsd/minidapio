@@ -22,21 +22,26 @@ const PlanCard = ({ plan, current, disabled }: PlanCardProps) => {
   return (
     <Card
       className={cn(
-        `min-w-64  h-80 flex flex-col bg-background/50 backdrop-blur-lg `,
-        plan.highlighted && "border border-primary h-96"
+        `w-full flex flex-col tablet:flex-row items-center bg-background/50 backdrop-blur-lg p-10 gap-10`,
+        plan.highlighted && "border border-primary"
       )}
     >
       <CardHeader>
         <CardTitle>
-          <p className={cn("text-center", plan.highlighted && "text-primary")}>
+          <p
+            className={cn(
+              "text-center p-0",
+              plan.highlighted && "text-primary"
+            )}
+          >
             {plan.title}
           </p>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-2 flex-1 items-center justify-center">
+      <CardContent className="flex flex-col gap-2 flex-1 items-center justify-center p-0">
         <span dangerouslySetInnerHTML={html} />
       </CardContent>
-      <CardFooter className="flex-col gap-5">
+      <CardFooter className="flex-col gap-5 p-0">
         <span
           className={cn(
             "text-2xl font-semibold flex items-center",

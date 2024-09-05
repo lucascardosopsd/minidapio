@@ -37,13 +37,14 @@ const PlansPage = async () => {
 
   return (
     <>
-      <div className="flex flex-col tablet:items-center gap-5 mx-auto p-5 tablet:p-0">
+      <section className="flex flex-col tablet:justify-center tablet:items-center gap-5 mx-auto p-5 tablet:p-0 w-full">
         <div className="flex flex-col gap-2">
           <p className="text-4xl text-center text-primary font-semibold">
             Eleve o nível do seu restaurante
           </p>
           <p className="max-w-[450px] text-center mx-auto">
-            Escolha um plano e agregue ainda mais à experiência do seu cliente
+            O período de testes acabou e está na hora de dar início ao seu plano
+            profissional
           </p>
         </div>
 
@@ -62,7 +63,7 @@ const PlansPage = async () => {
               )
           )}
         </div>
-      </div>
+      </section>
     </>
   );
 };
