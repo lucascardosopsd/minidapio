@@ -73,7 +73,7 @@ const NewPaymentProfilePage = async () => {
         Configurações
       </p>
 
-      <section className="flex min-h-screen gap-5">
+      <section className="flex flex-col tablet:flex-row min-h-screen gap-5 mx-auto">
         <div className="flex flex-col gap-5">
           <SubscriptionCard
             isValidSubscription={
@@ -85,7 +85,7 @@ const NewPaymentProfilePage = async () => {
             lastPayment={payments[0]}
           />
 
-          <Card className="flex flex-col gap-5 flex-1">
+          <Card className="flex flex-col gap-5">
             <CardHeader>
               <CardTitle>Encerrar</CardTitle>
               <CardDescription>

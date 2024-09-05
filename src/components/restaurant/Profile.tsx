@@ -80,7 +80,7 @@ const UpdateProfileCard = ({ data, userId }: ProfileFormProps) => {
 
           <Separator />
 
-          <CardContent className="flex gap-5">
+          <CardContent className="flex flex-col tablet:flex-row gap-5">
             <FormField
               control={form.control}
               name="image"

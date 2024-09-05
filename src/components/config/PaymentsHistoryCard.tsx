@@ -35,8 +35,8 @@ const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
 
       <Separator />
 
-      <CardContent>
-        <Table className="block">
+      <CardContent className="w-[90svw] tablet:w-full h-[500px] overflow-y-auto">
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Id</TableHead>
@@ -47,7 +47,7 @@ const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
               <TableHead>validade</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="block h-80 overflow-scroll">
+          <TableBody>
             {payments.map((payment, index) => (
               <TableRow key={index}>
                 <TableCell>{payment.asaasId}</TableCell>
