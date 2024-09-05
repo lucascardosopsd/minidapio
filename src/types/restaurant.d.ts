@@ -46,3 +46,7 @@ export interface FullRestaurantProps extends RestaurantProps {
   Items: Item[];
   Categories: CategoriesWithItemsProps[];
 }
+
+export interface FullRestaurantNestedProps extends RestaurantProps {
+  categories: CategoriesWithItemsProps[];
+}
