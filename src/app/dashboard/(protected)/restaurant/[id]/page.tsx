@@ -56,6 +56,9 @@ export default async function Restaurant({
       take: 1,
       query: {
         where: { userId: user?.id },
+        orderBy: {
+          createdAt: "desc",
+        },
         include: {
           Plan: true,
         },
