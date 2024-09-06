@@ -16,7 +16,7 @@ const CategoryList = ({ category, themeColor }: CategoryListProps) => {
       </div>
 
       {/* Category Items */}
-      <div className="flex flex-col gap-2 mt-2">
+      <div className="flex flex-col gap-2 mt-2 px-2">
         {category?.items?.map((item) => (
           <ItemCard
             item={item}
@@ -27,7 +27,7 @@ const CategoryList = ({ category, themeColor }: CategoryListProps) => {
         ))}
       </div>
 
-      <Separator className="mt-5" />
+      <Separator className="mt-2 opacity-25" />
     </div>
   );
 };

@@ -91,7 +91,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
 
       <div
         className={
-          "flex gap-4 bg-card rounded-lg border min-h-36 relative w-full dark:bg-gradient-to-tl from-zinc-900/50 to-transparent"
+          "flex gap-4 bg-card rounded-lg border border-border/50 min-h-36 relative w-full dark:bg-gradient-to-tl from-zinc-900/50 to-transparent"
         }
         style={{
           borderColor: highlight ? themeColor : "",
