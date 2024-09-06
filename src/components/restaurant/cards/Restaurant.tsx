@@ -18,7 +18,7 @@ import { updateRestaurant } from "@/actions/restaurant/updateRestaurant";
 import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
 import ReusableModal from "@/components/misc/ReusableModal";
 import { RestaurantProps } from "@/types/restaurant";
-import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
+import { fetchUserCategoriesByQuery } from "@/actions/category/fetchCategoriesByQuery";
 import { createNewRestaurant } from "@/actions/restaurant/createNewRestaurant";
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import { createNewCategory } from "@/actions/category/createNewCategory";

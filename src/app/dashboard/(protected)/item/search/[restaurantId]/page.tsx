@@ -1,7 +1,7 @@
 "use server";
 import { Separator } from "@/components/ui/separator";
 import InputSearch from "@/components/restaurant/InputSearch";
-import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
+import { fetchUserCategoriesByQuery } from "@/actions/category/fetchCategoriesByQuery";
 import BottomFade from "@/components/restaurant/BottomFade";
 import ItemsActions from "@/components/restaurant/ItemsActions";
 import Paginate from "@/components/misc/Paginate";

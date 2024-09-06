@@ -1,11 +1,9 @@
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
-import CategoriesBar from "@/components/menu/CategoriesBar";
 import MenuHeader from "@/components/menu/Header";
-import ItemsList from "@/components/menu/ItemsList";
-import SearchSection from "@/components/menu/SearchSection";
 import NoteModal from "@/components/menu/NoteModal";
 import { checkMonthlySubscription } from "@/actions/subscription/checkMonthlySubscription";
 import { FullRestaurantProps } from "@/types/restaurant";
+import CategoryList from "@/components/menu/CategoriesList";
 
 interface MenuProps {
   params: {
@@ -26,14 +24,7 @@ const Menu = async ({ params: { restaurantId } }: MenuProps) => {
     query: {
       where: { id: restaurantId },
       include: {
-        Items: {
-          orderBy: {
-            order: "asc",
-          },
-          where: {
-            active: true,
-          },
-        },
+        Items: true,
         Categories: {
           orderBy: {
             order: "asc",
@@ -43,28 +34,15 @@ const Menu = async ({ params: { restaurantId } }: MenuProps) => {
               where: {
                 active: true,
               },
+              orderBy: {
+                highlight: "desc",
+              },
             },
           },
         },
       },
     },
   });
-
-  if (!restaurants[0]?.Items) {
-    return;
-  }
-
-  const sortHighLightedItems = restaurants[0]?.Items.filter(
-    (item) => item.highlight
-  );
-
-  sortHighLightedItems.sort((a, b) => a.order - b.order);
-
-  const sortOrdered = restaurants[0]?.Items.filter(
-    (item) => !item.highlight
-  ).sort((a, b) => a.order - b.order);
-
-  const items = [...sortHighLightedItems, ...sortOrdered];
 
   if (!restaurants[0]) {
     return (
@@ -87,27 +65,18 @@ const Menu = async ({ params: { restaurantId } }: MenuProps) => {
   }
 
   return (
-    <div className="h-svh antialiased w-full">
+    <div className="h-svh antialiased w-full overflow-hidden ">
       {restaurants[0].note && <NoteModal restaurant={restaurants[0]} />}
-
       <MenuHeader restaurant={restaurants[0]} />
 
-      <SearchSection restaurant={restaurants[0]} />
-
-      {restaurants[0].Categories.length ? (
-        <CategoriesBar
-          categories={restaurants[0].Categories}
-          themeColor={restaurants[0].color}
-        />
-      ) : (
-        <p className="text-center">Sem categorias</p>
-      )}
-
-      <div className="h-[calc(100svh-28svh)] overflow-y-auto p-5 relative pb-32 mx-auto">
-        {/* Gradient FX */}
-        <div className="w-full h-32 fixed bottom-0 left-0 bg-gradient-to-t from-background to-transparent z-50 pointer-events-none" />
-
-        <ItemsList items={items} themeColor={restaurants[0].color} />
+      <div className="flex flex-col gap-5 h-[88svh] overflow-y-auto px-5">
+        {restaurants[0].Categories.map((category) => (
+          <CategoryList
+            category={category}
+            themeColor={restaurants[0].color}
+            key={category.id}
+          />
+        ))}
       </div>
     </div>
   );

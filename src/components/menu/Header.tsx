@@ -30,7 +30,7 @@ const MenuHeader = ({ restaurant }: MenuHeaderProps) => {
   }
 
   return (
-    <div className="flex items-center justify-between h-22 border-b w-full pr-2 py-3">
+    <div className="flex items-center justify-between h-[12svh] w-full px-5">
       <div className="flex gap-5 items-center">
         <div className="h-full w-auto">
           <Image
@@ -58,7 +58,7 @@ const MenuHeader = ({ restaurant }: MenuHeaderProps) => {
       <div className="flex items-center gap-2">
         <FavoritesModal
           themeColor={restaurant.color}
-          items={restaurant.Items}
+          items={restaurant?.Items}
         />
 
         <ReusableModal

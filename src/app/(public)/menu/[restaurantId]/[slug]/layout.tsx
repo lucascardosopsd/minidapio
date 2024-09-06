@@ -40,7 +40,11 @@ export const generateMetadata = async (
 };
 
 const Layout = async ({ children }: LayoutProps) => {
-  return <div className="mx-auto max-w-[600px]">{children}</div>;
+  return (
+    <div className="dark:bg-gradient-to-t from-zinc-900/50 via-transparent to-zinc-900/50">
+      <div className="mx-auto max-w-[600px]">{children}</div>;
+    </div>
+  );
 };
 
 export default Layout;
