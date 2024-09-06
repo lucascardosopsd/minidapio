@@ -52,10 +52,16 @@ const Advantages = () => {
           <motion.div
             className={`col-span-1 tablet:col-span-${item.cols}`}
             key={index}
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
+            initial="hidden"
+            whileInView="visible"
+            variants={{
+              visible: { scale: 1 },
+              hidden: { scale: 0 },
+            }}
+            viewport={{ once: true }}
             transition={{
-              delay: index,
+              duration: 0.3,
+              delay: index / 2,
             }}
           >
             <WobbleCard
