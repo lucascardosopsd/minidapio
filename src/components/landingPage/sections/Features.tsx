@@ -54,7 +54,7 @@ const Features = () => {
       <Separator orientation="vertical" className="hidden tablet:block" />
 
       <div className="flex-[4] tablet:flex-1">
-        <AnimatedList delay={1000}>
+        <AnimatedList delay={200}>
           {items.map((item, idx) => (
             <Notification {...item} key={idx} />
           ))}
