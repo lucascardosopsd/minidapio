@@ -18,7 +18,7 @@ import { updateRestaurant } from "@/actions/restaurant/updateRestaurant";
 import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
 import ReusableModal from "@/components/misc/ReusableModal";
 import { RestaurantProps } from "@/types/restaurant";
-import { fetchUserCategoriesByQuery } from "@/actions/category/fetchCategoriesByQuery";
+import { fetchCategoriesByQuery } from "@/actions/category/fetchCategoriesByQuery";
 import { createNewRestaurant } from "@/actions/restaurant/createNewRestaurant";
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import { createNewCategory } from "@/actions/category/createNewCategory";
@@ -34,6 +34,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { slugGen } from "@/tools/slugGen";
 import ReusableDialog from "@/components/misc/ReusableDialog";
+import { CategoriesWithItemsProps } from "@/types/category";
 interface RestaurantCardProps {
   restaurant: RestaurantProps;
 }
@@ -145,12 +146,19 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
         slug: slugGen(newName),
       });
 
-      const categories = await fetchUserCategoriesByQuery({
-        where: {
-          restaurantId: restaurant.id,
-        },
-        include: {
-          items: true,
+      const { categories } = await fetchCategoriesByQuery<{
+        pages: number;
+        categories: CategoriesWithItemsProps[];
+      }>({
+        page: 0,
+        take: 10000,
+        query: {
+          where: {
+            restaurantId: restaurant.id,
+          },
+          include: {
+            items: true,
+          },
         },
       });
 

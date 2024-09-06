@@ -1,7 +1,7 @@
 "use server";
 import { Separator } from "@/components/ui/separator";
 import InputSearch from "@/components/restaurant/InputSearch";
-import { fetchUserCategoriesByQuery } from "@/actions/category/fetchCategoriesByQuery";
+import { fetchCategoriesByQuery } from "@/actions/category/fetchCategoriesByQuery";
 import BottomFade from "@/components/restaurant/BottomFade";
 import ItemsActions from "@/components/restaurant/ItemsActions";
 import Paginate from "@/components/misc/Paginate";
@@ -46,9 +46,14 @@ export default async function Restaurant({
 }: PageProps) {
   const page = Number(searchParams?.page || 1);
 
-  const categories = await fetchUserCategoriesByQuery({
-    where: {
-      restaurantId,
+  const { categories } = await fetchCategoriesByQuery({
+    page: 0,
+    take: 10000,
+
+    query: {
+      where: {
+        restaurantId,
+      },
     },
   });
 
