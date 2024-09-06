@@ -27,7 +27,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="!scroll-smooth">
       <body className={poppins.className}>
-        <ThemeProvider attribute="class" disableTransitionOnChange enableSystem>
+        <ThemeProvider
+          attribute="class"
+          disableTransitionOnChange
+          defaultTheme="dark"
+          enableSystem
+        >
           <Toaster />
           <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
