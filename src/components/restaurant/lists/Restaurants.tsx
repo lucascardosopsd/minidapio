@@ -72,7 +72,10 @@ const RestaurantsList = ({ restaurants, limits }: RestaurantsListProps) => {
       <Separator className="w-full" />
 
       {restaurants.length ? (
-        <div className="grid grid-cols-1 mobile:grid-cols-1 tablet:grid-cols-4 gap-4 pb-4 tablet:pb-0 h-[65vh] overflow-y-auto">
+        <div
+          className="grid grid-cols-1 mobile:grid-cols-1 tablet:grid-cols-3
+        desktop:grid.cols-4 gap-4 pb-4 tablet:pb-0 h-[65vh] overflow-y-auto"
+        >
           {restaurants.map((restaurant) => (
             <RestaurantCard restaurant={restaurant!} key={restaurant.id} />
           ))}
