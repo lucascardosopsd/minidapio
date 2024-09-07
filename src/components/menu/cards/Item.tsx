@@ -77,7 +77,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
   return (
     <>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="flex justify-center items-center p-0 h-svh w-svw">
+        <DialogContent className="flex justify-center items-center p-0 h-[90svh] w-svw">
           <Image
             height={1000}
             width={1000}
