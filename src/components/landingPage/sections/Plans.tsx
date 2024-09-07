@@ -25,10 +25,10 @@ const PlansSection = async () => {
   return (
     <section className="container w-full h-full flex-col gap-20 tablet:h-[70svh] flex items-center justify-center py-5">
       <div className="flex flex-col">
-        <p className="text-4xl text-primary font-semibold text-center">
+        <p className="text-4xl tablet:text-6xl text-primary font-semibold text-center">
           Planos
         </p>
-        <p className="2xl text-center">
+        <p className="text-xl tablet:text-2xl text-center">
           Cabem no seu bolso e acompanham sua empresa
         </p>
       </div>

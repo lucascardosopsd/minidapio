@@ -19,11 +19,11 @@ const HeroSection = () => {
 
       <BlurIn
         word="Eleve o nível do seu restaurante"
-        className="text-8xl tablet:text-4xl font-bold text-primary"
+        className="text-8xl font-bold text-primary"
       />
 
       <WordRotate
-        className="text-2xl font-bold"
+        className="text-4xl font-bold"
         words={[
           "Um cardápio digital",
           "Simples de usar",

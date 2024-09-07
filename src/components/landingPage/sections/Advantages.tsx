@@ -38,11 +38,11 @@ const Advantages = () => {
 
   return (
     <section className="container min-h-full tablet:min-h-svh flex flex-col items-center justify-center gap-5">
-      <h1 className="text-4xl font-semibold text-primary text-center">
+      <h1 className="text-4xl tablet:text-6xl font-semibold text-primary text-center">
         Vantagens do Cardápio Digital
       </h1>
 
-      <p className="pl-2 text-xl text-center">
+      <p className="pl-2 text-xl tablet:text-2xl text-center">
         Ter um cardápio digital muda completamente o seu formato de atendimento
       </p>
 
