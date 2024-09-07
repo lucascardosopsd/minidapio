@@ -38,13 +38,12 @@ const Advantages = () => {
 
   return (
     <section className="container min-h-full tablet:min-h-svh flex flex-col items-center justify-center gap-5">
-      <h1 className="text-6xl font-semibold text-primary text-center">
+      <h1 className="text-4xl font-semibold text-primary text-center">
         Vantagens do Cardápio Digital
       </h1>
 
-      <p className="pl-2 text-2xl text-center">
-        Ter um cardápio digital muda completamente o seu formato de atendimento,
-        seja via whatsapp ou na mesa
+      <p className="pl-2 text-xl text-center">
+        Ter um cardápio digital muda completamente o seu formato de atendimento
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mx-auto w-full">
@@ -74,7 +73,7 @@ const Advantages = () => {
                 {item.title}
               </h1>
 
-              <p className="text-2xl">{item.description}</p>
+              <p className="text-xl">{item.description}</p>
             </WobbleCard>
           </motion.div>
         ))}
