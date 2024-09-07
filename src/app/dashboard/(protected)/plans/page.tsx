@@ -34,7 +34,7 @@ const PlansPage = async () => {
 
   return (
     <>
-      <section className="flex flex-col tablet:justify-center tablet:items-center gap-5 mx-auto p-5 tablet:p-0 w-full">
+      <section className="flex flex-col tablet:flex-row justify-center items-center gap-5 mx-auto p-5 tablet:p-0 w-full">
         <div className="flex flex-col gap-2">
           <p className="text-4xl text-center text-primary font-semibold">
             Eleve o nível do seu restaurante
@@ -45,7 +45,8 @@ const PlansPage = async () => {
           </p>
         </div>
 
-        <Separator orientation="horizontal" />
+        <Separator orientation="vertical" className="hidden tablet:block" />
+        <Separator orientation="horizontal" className="block tablet:hidden" />
 
         <div className="flex flex-col tablet:flex-row items-center gap-5">
           {plans.map((plan, index) => (
