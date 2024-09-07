@@ -1,12 +1,12 @@
 "use client";
 import Image from "next/image";
 import { Badge } from "../../ui/badge";
-import { Card, CardContent } from "../../ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "../../ui/card";
 import Link from "next/link";
 import { Button } from "../../ui/button";
 import { FaArrowRight } from "react-icons/fa6";
 import RestaurantForm from "../forms/Restaurant";
-import { ImSpinner, ImSpinner2 } from "react-icons/im";
+import { ImSpinner } from "react-icons/im";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteRestaurant } from "@/actions/restaurant/deleteRestaurant";
@@ -23,14 +23,9 @@ import { createNewRestaurant } from "@/actions/restaurant/createNewRestaurant";
 import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import { createNewCategory } from "@/actions/category/createNewCategory";
 import { createNewItem } from "@/actions/item/createNewItem";
-import { Copy, EllipsisVertical, Link2, Trash } from "lucide-react";
+import { Copy, Link2, Pen, Trash } from "lucide-react";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { usePathname } from "next/navigation";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { slugGen } from "@/tools/slugGen";
 import ReusableDialog from "@/components/misc/ReusableDialog";
@@ -196,6 +191,105 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
 
   return (
     <>
+      <div className="flex flex-col">
+        <Card
+          className="w-full flex flex-col tablet:flex-row rounded-none rounded-t-lg border-b-0"
+          key={restaurant.id}
+        >
+          <CardHeader className="items-center justify-center border-r">
+            <Image
+              alt="logo"
+              src={restaurant.logo}
+              width={0}
+              height={0}
+              sizes="1000px"
+              className="rounded-full h-20 w-20"
+            />
+          </CardHeader>
+          <CardContent className="flex items-center justify-between p-5 gap-5 flex-1">
+            <p className="line-clamp-1">{restaurant.title}</p>
+
+            <Badge
+              variant={restaurant.active ? "default" : "destructive"}
+              className="h-5"
+            >
+              {restaurant.active ? "Ativo" : "Inativo"}
+            </Badge>
+          </CardContent>
+
+          <CardFooter className="tablet:border-l flex items-center justify-center tablet:pb-0">
+            <Link
+              href={`/dashboard/restaurant/${restaurant.id}`}
+              className="w-full"
+            >
+              <Button
+                variant={restaurant.active ? "default" : "outline"}
+                className="gap-2 w-full tablet:w-min"
+              >
+                <p>Gerenciar</p>
+                <FaArrowRight />
+              </Button>
+            </Link>
+          </CardFooter>
+        </Card>
+
+        <div className="flex flex-col tablet:flex-row tablet:justify-evenly tablet:items-center p-5 border rounded-b-lg gap-5 ">
+          <Button
+            type="button"
+            className="w-full"
+            onClick={() =>
+              copyToClipboard(
+                `${process.env.NEXT_PUBLIC_HOST}/menu/${restaurant.id}/${restaurant.slug}`,
+                "slug",
+                "Link do cardápio copiado!"
+              )
+            }
+          >
+            <p className="flex items-center gap-2">
+              Link <Link2 />
+            </p>
+          </Button>
+
+          <ReusableModal
+            content={
+              <RestaurantForm
+                defaultValues={restaurant}
+                loading={loading}
+                onSubmit={handleUpdateRestaurant}
+              />
+            }
+            isOpen={open}
+            onOpen={setOpen}
+            title="Editar Restaurante"
+            trigger={
+              <div className="flex gap-2 items-center">
+                Editar <Pen />
+              </div>
+            }
+            triggerVariant="outline"
+            triggerClassName="w-full"
+          />
+
+          <Button
+            onClick={() => setOpenDuplicateModal(true)}
+            className="flex gap-2 w-full"
+            variant="outline"
+          >
+            Duplicar <Copy />
+          </Button>
+
+          <Button
+            onClick={() => setOpenDeleteModal(true)}
+            className="flex gap-2 text-red-500 hover:text-red-500 border-red-500 w-full"
+            variant="outline"
+          >
+            Deletar <Trash />
+          </Button>
+        </div>
+      </div>
+
+      {/* Modals */}
+
       <ReusableDialog
         isOpen={openDuplicateModal}
         onOpen={setOpenDuplicateModal}
@@ -239,113 +333,6 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
           </div>
         }
       />
-      <Card className="w-full h-[315px]" key={restaurant.id}>
-        <CardContent className="flex flex-col items-center p-5 gap-5">
-          <div className="flex flex-col justify-between w-full">
-            <p className="line-clamp-1 mb-2 border-b">{restaurant.title}</p>
-
-            <div className="flex gap-2 w-full justify-between">
-              <Badge
-                variant={restaurant.active ? "default" : "destructive"}
-                className="h-5"
-              >
-                {restaurant.active ? "Ativo" : "Inativo"}
-              </Badge>
-
-              <Popover onOpenChange={setPopoverOpen} open={popoverOpen}>
-                <div>
-                  <PopoverTrigger>
-                    <EllipsisVertical />
-                  </PopoverTrigger>
-                </div>
-                <PopoverContent>
-                  <div
-                    className="flex flex-col gap-2 w-full"
-                    onClick={() => setPopoverOpen(false)}
-                  >
-                    <Button
-                      type="button"
-                      onClick={() =>
-                        copyToClipboard(
-                          `${process.env.NEXT_PUBLIC_HOST}/menu/${restaurant.id}/${restaurant.slug}`,
-                          "slug",
-                          "Link do cardápio copiado!"
-                        )
-                      }
-                    >
-                      <p className="flex items-center gap-2">
-                        Link <Link2 size={16} />
-                      </p>
-                    </Button>
-
-                    <Button
-                      onClick={() => setOpenDuplicateModal(true)}
-                      className="flex gap-2"
-                      variant="outline"
-                    >
-                      Duplicar <Copy />
-                    </Button>
-
-                    <Button
-                      onClick={() => setOpenDeleteModal(true)}
-                      className="flex gap-2"
-                      variant="destructive"
-                    >
-                      Deletar <Trash />
-                    </Button>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
-          <Image
-            alt="logo"
-            src={restaurant.logo}
-            width={0}
-            height={0}
-            sizes="1000px"
-            className="rounded-full h-20 w-20"
-          />
-
-          <div className="flex flex-col gap-2 w-full">
-            <Link
-              href={`/dashboard/restaurant/${restaurant.id}`}
-              className="w-full space-y-4"
-            >
-              <Button
-                variant={restaurant.active ? "default" : "outline"}
-                className="w-full flex items-center justify-center gap-2"
-                onClick={() => setLoading(true)}
-              >
-                {!loading ? (
-                  <>
-                    <p>Gerenciar</p>
-                    <FaArrowRight />
-                  </>
-                ) : (
-                  <ImSpinner2 className="animate-spin" size={20} />
-                )}
-              </Button>
-            </Link>
-
-            <ReusableModal
-              content={
-                <RestaurantForm
-                  defaultValues={restaurant}
-                  loading={loading}
-                  onSubmit={handleUpdateRestaurant}
-                />
-              }
-              isOpen={open}
-              onOpen={setOpen}
-              title="Editar Restaurante"
-              trigger="Editar"
-              triggerVariant="outline"
-              triggerClassName="w-full"
-            />
-          </div>
-        </CardContent>
-      </Card>
     </>
   );
 };

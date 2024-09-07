@@ -12,6 +12,7 @@ import RestaurantCard from "../cards/Restaurant";
 import { RestaurantProps } from "@/types/restaurant";
 import { slugGen } from "@/tools/slugGen";
 import { PlanLimitProps } from "@/constants/planLimits";
+import { Plus } from "lucide-react";
 
 interface RestaurantsListProps {
   restaurants: RestaurantProps[];
@@ -54,12 +55,16 @@ const RestaurantsList = ({ restaurants, limits }: RestaurantsListProps) => {
   };
 
   return (
-    <div className="flex flex-col w-full gap-5">
-      <div className="flex flex-col tablet:flex-row items-center justify-between">
+    <div className="flex flex-col w-full gap-5 h-[90svh] overflow-y-auto">
+      <div className="flex flex-row items-center justify-between">
         <p className="text-2xl">Restaurantes</p>
         <ReusableModal
           title="Novo Restaurante"
-          trigger="Novo restaurante"
+          trigger={
+            <div className="flex gap-2">
+              Adicionar <Plus />
+            </div>
+          }
           isOpen={open}
           onOpen={setOpen}
           content={
@@ -72,10 +77,7 @@ const RestaurantsList = ({ restaurants, limits }: RestaurantsListProps) => {
       <Separator className="w-full" />
 
       {restaurants.length ? (
-        <div
-          className="grid grid-cols-1 mobile:grid-cols-1 tablet:grid-cols-3
-        desktop:grid.cols-4 gap-4 pb-4 tablet:pb-0 h-[65vh] overflow-y-auto"
-        >
+        <div className="flex flex-col gap-2">
           {restaurants.map((restaurant) => (
             <RestaurantCard restaurant={restaurant!} key={restaurant.id} />
           ))}
