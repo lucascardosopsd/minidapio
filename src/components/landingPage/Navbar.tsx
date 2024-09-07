@@ -1,11 +1,12 @@
-"use client";
 import Link from "next/link";
 import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
 import { ChevronRight, Menu } from "lucide-react";
 import { ThemeToggle } from "../misc/ThemeToggle";
 import { Button } from "../ui/button";
+import { useUserSession } from "@/hooks/useUserSession";
 
-const Navbar = () => {
+const Navbar = async () => {
+  const user = await useUserSession();
   return (
     <>
       <div className="hidden tablet:flex w-full px-[16px] tablet:px-[80px] desktop:px-[162px] h-20">
@@ -15,12 +16,12 @@ const Navbar = () => {
           <div className="flex items-center gap-5">
             {/* <Button>Afiliado</Button> */}
 
-            <Link href="/auth/login">
+            <Link href={!user ? "/auth/login" : "/dashboard/restaurants"}>
               <Button
-                className="border border-border p-3 rounded-md dark:bg-zinc-950 group hover:border-primary hover:bg-background"
+                className="border border-border p-3 rounded-md dark:bg-zinc-950 group hover:border-primary hover:bg-background min-w-44"
                 variant="outline"
               >
-                <p className="text-primary">Dashboard</p>
+                <p className="text-primary">{!user ? "Entrar" : "Dashboard"}</p>
                 <ChevronRight className="group-hover:text-primary text-border" />
               </Button>
             </Link>
