@@ -27,7 +27,7 @@ export const checkMonthlySubscription = async ({
     .add(1, "month")
     .diff(moment(), "day");
 
-  if (trialRemaining >= 0 && !subscriptions) {
+  if (trialRemaining >= 0 && !subscriptions.length) {
     return {
       type: "trial",
       remaining: trialRemaining,
