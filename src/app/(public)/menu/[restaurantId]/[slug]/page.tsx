@@ -69,7 +69,7 @@ const Menu = async ({ params: { restaurantId } }: MenuProps) => {
       {restaurants[0].note && <NoteModal restaurant={restaurants[0]} />}
       <MenuHeader restaurant={restaurants[0]} />
 
-      <div className="flex flex-col gap-2 h-[88svh] overflow-y-auto px-5">
+      <div className="flex flex-col gap-2 h-[88svh] overflow-y-auto px-5 pb-20">
         {restaurants[0].Categories.map((category) => (
           <CategoryList
             category={category}
