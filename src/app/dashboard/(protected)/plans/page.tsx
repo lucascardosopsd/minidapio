@@ -3,7 +3,6 @@ import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubsc
 import PlanCard from "@/components/restaurant/PlanCard";
 import { Separator } from "@/components/ui/separator";
 import { useUserSession } from "@/hooks/useUserSession";
-import moment from "moment";
 
 const PlansPage = async () => {
   const user = await useUserSession();
@@ -31,9 +30,7 @@ const PlansPage = async () => {
     },
   });
 
-  const trialRemaining = moment(user?.createdAt)
-    .add(1, "month")
-    .diff(moment(), "day");
+  delete plans[0];
 
   return (
     <>
@@ -51,17 +48,13 @@ const PlansPage = async () => {
         <Separator orientation="horizontal" />
 
         <div className="flex flex-col tablet:flex-row items-center gap-5">
-          {plans.map(
-            (plan, index) =>
-              trialRemaining < 0 &&
-              plan.alias !== "free" && (
-                <PlanCard
-                  plan={plan}
-                  key={index}
-                  current={subscriptions[0]?.planId == plan.id}
-                />
-              )
-          )}
+          {plans.map((plan, index) => (
+            <PlanCard
+              plan={plan}
+              key={index}
+              current={subscriptions[0]?.planId == plan.id}
+            />
+          ))}
         </div>
       </section>
     </>
