@@ -7,7 +7,7 @@ import Faq from "@/components/landingPage/sections/Faq";
 
 const LandingPage = async () => {
   return (
-    <div className="flex flex-col gap-y-44 overflow-hidden">
+    <div className="flex flex-col gap-y-44 overflow-x-hidden">
       <HeroSection />
       <Advantages />
       <Features />
