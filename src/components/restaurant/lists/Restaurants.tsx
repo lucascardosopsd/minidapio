@@ -87,7 +87,7 @@ const RestaurantsList = ({ restaurants, limits }: RestaurantsListProps) => {
           <p>Você não tem restaurantes criados.</p>
           <div className="flex">
             <p>👆 Crie um clicando em </p>
-            <p className="text-primary ml-1">"Novo Restaurante"</p>
+            <p className="text-primary ml-1">"Adicionar +"</p>
           </div>
         </div>
       )}
