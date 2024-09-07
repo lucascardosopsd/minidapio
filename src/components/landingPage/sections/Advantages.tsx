@@ -2,36 +2,36 @@
 
 import { WobbleCard } from "@/components/ui/wobble-card";
 import { motion } from "framer-motion";
-import { ChartNoAxesCombined, Component, Sparkle, User } from "lucide-react";
+import { Component, DollarSign, Sparkle, User } from "lucide-react";
 
 const Advantages = () => {
   const items = [
     {
       title: "Mão de Obra",
       description:
-        "Um cardápio digital exclui a necessidade do cardápio físico, possibilitando com que o cliente navegue pelo seu catálogo sem a necessidade de um atendente ao sentar à mesa. Além disso um leque de novas possibilidades se abre utilizando esta solução",
+        "Um cardápio digital exclui a necessidade do cardápio físico, possibilitando com que o cliente navegue pelo seu catálogo sem a necessidade de um atendente ao sentar à mesa. Além disso um leque de novas possibilidades se abre utilizando esta solução.",
       icon: User,
       cols: 2,
     },
     {
       title: "Experiência do usuário",
       description:
-        "O tempo de atendimento é drásticamente reduzido uma vez que não há necessidade de aguardar pelo cardápio",
+        "O tempo de atendimento é drásticamente reduzido uma vez que não há necessidade de aguardar pelo cardápio.",
       icon: Sparkle,
       cols: 1,
     },
     {
       title: "Design de Interface",
       description:
-        "O produto é pensado para ser simples, fácil, bonito e direto ao ponto",
+        "O produto é pensado para ser simples, fácil, bonito e direto ao ponto.",
       icon: Component,
       cols: 1,
     },
     {
-      title: "Planos Escaláveis",
+      title: "Economia",
       description:
-        "Comece gratuitamente sem cartão de crédito e depois escolha o plano que melhor se adequa ás suas necessidades, com propostas para pequenas, médias e grandes empresas e o gerenciamento de múltiplos estabelecimentos através de uma única conta",
-      icon: ChartNoAxesCombined,
+        "Não perca tempo e dinheiro refazendo cardápio físico ou remarcando preços a mão unidade a unidade. Gerencie os itens através do painel e altere preço, imagem, título e descrição facilmente.",
+      icon: DollarSign,
       cols: 2,
     },
   ];
