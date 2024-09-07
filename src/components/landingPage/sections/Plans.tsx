@@ -28,8 +28,10 @@ const PlansSection = async () => {
         <p className="text-4xl tablet:text-6xl text-primary font-semibold text-center">
           Planos
         </p>
-        <p className="text-xl tablet:text-2xl text-center">
-          Cabem no seu bolso e acompanham sua empresa
+        <p className="text-xl text-center max-w-[900px]">
+          Um único plano que atende toda a necessidade de cardápio digital da
+          sua empresa. Comece grátis por 30 dias e aproveite o plano mais
+          generoso do mercado.
         </p>
       </div>
 
