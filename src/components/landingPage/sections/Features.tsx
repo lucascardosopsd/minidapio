@@ -44,7 +44,7 @@ const Features = () => {
           Funcionalidades do Minidapio
         </h1>
 
-        <p className="pl-2 text-xl tablet:text-2xl text-center tablet:text-end">
+        <p className="pl-2 text-xl text-center tablet:text-end">
           O Minidapio possui diversas funcionalidades que o destaca de seus
           concorrentes, possibilitando com que o usuário tenha a experiência
           digna dos restaurantes de mais alto padrão
