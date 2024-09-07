@@ -93,34 +93,36 @@ model Restaurant {
 }
 
 model Category {
-  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
   title        String
-  order        Int?        @default(0)
-  items        Item[]
-  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  restaurantId String?     @db.ObjectId
-  User         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String?     @db.ObjectId
+  order        Int?    @default(0)
+  active       Boolean @default(true)
+  restaurantId String? @db.ObjectId
+  userId       String? @db.ObjectId
+
+  items      Item[]
+  Restaurant Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  User       User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Item {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String?
-  price       Float?
-  image       String
-  highlight   Boolean
-  active      Boolean
-  sale        Boolean
-  salePrice   Float?
-  order       Int     @default(0)
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  description  String?
+  price        Float?
+  image        String
+  highlight    Boolean
+  active       Boolean
+  sale         Boolean
+  salePrice    Float?
+  order        Int     @default(0)
+  restaurantId String? @db.ObjectId
+  categoryId   String? @db.ObjectId
 
-  categoryId   String?     @db.ObjectId
-  Category     Category?   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  restaurantId String?     @db.ObjectId
-  User         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String?     @db.ObjectId
+  Category   Category?   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  Restaurant Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  User       User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String?     @db.ObjectId
 }
 
 model Plan {

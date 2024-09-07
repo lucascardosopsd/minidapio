@@ -1,6 +1,7 @@
 import { Chrome, Component, SearchIcon, Star, TextSearch } from "lucide-react";
 import Notification, { NotificationProps } from "../Notification";
 import { AnimatedList } from "@/components/magicui/animated-list";
+import { Separator } from "@/components/ui/separator";
 
 const Features = () => {
   const items: NotificationProps[] = [
@@ -37,21 +38,23 @@ const Features = () => {
   ];
 
   return (
-    <section className="container min-h-svh tablet:h-svh flex flex-col tablet:flex-row items-center justify-center">
+    <section className="container min-h-svh tablet:h-svh flex flex-col tablet:flex-row items-center justify-center gap-5">
       <div className="flex flex-col gap-5 flex-1">
-        <h1 className="text-4xl font-semibold text-primary">
-          Vantagens do cardápio
+        <h1 className="text-6xl font-semibold text-primary text-center tablet:text-end">
+          Funcionalidades do Minidapio
         </h1>
 
-        <p className="pl-2 text-2xl">
-          O Minidapio possui diversas vantagens que o destaca de seus
+        <p className="pl-2 text-2xl text-center tablet:text-end">
+          O Minidapio possui diversas funcionalidades que o destaca de seus
           concorrentes, possibilitando com que o usuário tenha a experiência
           digna dos restaurantes de mais alto padrão
         </p>
       </div>
 
+      <Separator orientation="vertical" className="hidden tablet:block" />
+
       <div className="flex-[4] tablet:flex-1">
-        <AnimatedList delay={1000}>
+        <AnimatedList delay={200}>
           {items.map((item, idx) => (
             <Notification {...item} key={idx} />
           ))}

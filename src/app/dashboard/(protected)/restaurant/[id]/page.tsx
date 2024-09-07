@@ -1,15 +1,26 @@
 "use server";
 import { Accordion } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-import { fetchUserCategoriesByQuery } from "@/actions/category/fetchUserCategoriesByQuery";
 import ItemsActions from "@/components/restaurant/ItemsActions";
 import CategoriesList from "@/components/restaurant/lists/Categories";
-import { CategoriesWithItemsProps } from "@/types/category";
 import RestaurantActionbar from "@/components/restaurant/Actionbar";
 import { Item } from "@prisma/client";
 import { planLimits } from "@/constants/planLimits";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { SubscriptionWithPlanProps } from "@/types/plan";
+import { useUserSession } from "@/hooks/useUserSession";
+import { fetchCategoriesByQuery } from "@/actions/category/fetchCategoriesByQuery";
+import { CategoriesWithItemsProps } from "@/types/category";
+
+interface CustomFetchSubscriptionsByQueryResProps {
+  subscriptions: SubscriptionWithPlanProps[];
+  pages: number;
+}
+
+interface CustomFetchCategoriesRes {
+  categories: CategoriesWithItemsProps[];
+  pages: number;
+}
 
 interface PageProps {
   params: {
@@ -18,33 +29,35 @@ interface PageProps {
   searchParams?: { [key: string]: string };
 }
 
-interface CustomFetchSubscriptionsByQueryResProps {
-  subscriptions: SubscriptionWithPlanProps[];
-  pages: number;
-}
-
 export default async function Restaurant({
   params: { id: restaurantId },
 }: PageProps) {
-  const categories: CategoriesWithItemsProps[] =
-    await fetchUserCategoriesByQuery({
-      where: {
-        restaurantId,
-      },
-      orderBy: {
-        order: "asc",
-      },
-      include: {
-        items: {
-          orderBy: {
-            order: "desc",
+  const user = await useUserSession();
+
+  const { categories } = await fetchCategoriesByQuery<CustomFetchCategoriesRes>(
+    {
+      page: 0,
+      take: 10000,
+      query: {
+        where: {
+          restaurantId,
+        },
+        orderBy: {
+          order: "asc",
+        },
+        include: {
+          items: {
+            orderBy: {
+              order: "desc",
+            },
           },
         },
       },
-    });
+    }
+  );
 
   const items = categories.flatMap(
-    (category) => category.items && category.items
+    (category) => category?.items && category.items
   ) as Item[];
 
   const { subscriptions } =
@@ -52,7 +65,10 @@ export default async function Restaurant({
       page: 0,
       take: 1,
       query: {
-        where: { userId: categories[0].userId },
+        where: { userId: user?.id },
+        orderBy: {
+          createdAt: "desc",
+        },
         include: {
           Plan: true,
         },

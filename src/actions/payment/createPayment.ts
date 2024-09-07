@@ -19,13 +19,13 @@ interface NewPaymentProps {
 }
 
 interface CreatePaymentProps {
-  subscription: NewPaymentProps;
+  payment: NewPaymentProps;
   userId: string;
 }
 
-const createPayment = async ({ subscription }: CreatePaymentProps) => {
+const createPayment = async ({ payment }: CreatePaymentProps) => {
   return await prisma.payment.create({
-    data: subscription,
+    data: payment,
   });
 };
 

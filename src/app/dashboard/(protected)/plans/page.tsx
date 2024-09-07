@@ -3,6 +3,7 @@ import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubsc
 import PlanCard from "@/components/restaurant/PlanCard";
 import { Separator } from "@/components/ui/separator";
 import { useUserSession } from "@/hooks/useUserSession";
+import moment from "moment";
 
 const PlansPage = async () => {
   const user = await useUserSession();
@@ -14,10 +15,13 @@ const PlansPage = async () => {
       where: {
         userId: user?.id,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     },
   });
 
-  const { plans } = await fetchPlansByQuery({
+  let { plans } = await fetchPlansByQuery({
     page: 0,
     take: 100,
     query: {
@@ -27,30 +31,39 @@ const PlansPage = async () => {
     },
   });
 
+  const trialRemaining = moment(user?.createdAt)
+    .add(1, "month")
+    .diff(moment(), "day");
+
   return (
     <>
-      <div className="flex flex-col tablet:items-center gap-5 mx-auto p-5 tablet:p-0">
+      <section className="flex flex-col tablet:justify-center tablet:items-center gap-5 mx-auto p-5 tablet:p-0 w-full">
         <div className="flex flex-col gap-2">
           <p className="text-4xl text-center text-primary font-semibold">
             Eleve o nível do seu restaurante
           </p>
           <p className="max-w-[450px] text-center mx-auto">
-            Escolha um plano e agregue ainda mais à experiência do seu cliente
+            O período de testes acabou e está na hora de dar início ao seu plano
+            profissional
           </p>
         </div>
 
         <Separator orientation="horizontal" />
 
         <div className="flex flex-col tablet:flex-row items-center gap-5">
-          {plans.map((plan, index) => (
-            <PlanCard
-              plan={plan}
-              key={index}
-              current={subscriptions[0]?.planId == plan.id}
-            />
-          ))}
+          {plans.map(
+            (plan, index) =>
+              trialRemaining < 0 &&
+              plan.alias !== "free" && (
+                <PlanCard
+                  plan={plan}
+                  key={index}
+                  current={subscriptions[0]?.planId == plan.id}
+                />
+              )
+          )}
         </div>
-      </div>
+      </section>
     </>
   );
 };

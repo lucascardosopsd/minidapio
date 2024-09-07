@@ -91,7 +91,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
 
       <div
         className={
-          "flex gap-4 bg-card rounded border  min-h-36 relative w-full"
+          "flex gap-4 bg-card rounded-lg border border-border/50 min-h-36 relative w-full dark:bg-gradient-to-tl from-zinc-900/50 to-transparent"
         }
         style={{
           borderColor: highlight ? themeColor : "",
@@ -118,7 +118,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
               Destaque
             </p>
           )}
-          <p className="font-semibold text-sm text-start text-foreground flex items-center gap-2 ">
+          <div className="font-semibold text-sm text-start text-foreground flex items-center gap-2 ">
             <p className="flex-[4] select-none">{item.title}</p>
 
             <div
@@ -129,10 +129,10 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
               )}
             >
               <div className="self-start">
-                {!favorite ? <Star size={16} /> : <TbStarFilled size={16} />}
+                {!favorite ? <Star size={24} /> : <TbStarFilled size={26} />}
               </div>
             </div>
-          </p>
+          </div>
           <p className="text-xs text-start text-muted-foreground select-none">
             {item.description}
           </p>

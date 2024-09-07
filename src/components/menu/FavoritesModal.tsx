@@ -30,7 +30,7 @@ const FavoritesModal = ({ items, themeColor }: FavoritesModalProps) => {
       );
 
       // Add Items
-      const newFavorites = items.filter(
+      const newFavorites = items?.filter(
         (item) =>
           favoriteIds.has(item.id) &&
           !favoriteList.some((fav) => fav.id === item.id)

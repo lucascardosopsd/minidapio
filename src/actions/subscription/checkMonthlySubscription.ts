@@ -21,20 +21,19 @@ export const checkMonthlySubscription = async ({
   userId,
 }: CheckMonthlyPaymentProps): Promise<CheckMonthlyPaymentReturnProps> => {
   const user = await fetchUser({ id: userId });
+  const subscriptions = await fetchUserSubscriptions({ userId });
 
   const trialRemaining = moment(user?.createdAt)
     .add(1, "month")
     .diff(moment(), "day");
 
-  if (trialRemaining >= 0) {
+  if (trialRemaining >= 0 && !subscriptions) {
     return {
       type: "trial",
       remaining: trialRemaining,
       subscription: null,
     };
   }
-
-  const subscriptions = await fetchUserSubscriptions({ userId });
 
   if (!subscriptions.length) {
     return {

@@ -14,9 +14,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Reserva | Cardápio Digital",
+  title: "Minidapio | Cardápio Digital",
   description:
-    "Cardápio digital gratuito que atende as necessidades simples do seu estabelecimento",
+    "Cardápio digital minimalista que atende as necessidades simples do seu estabelecimento. 30 Dias grátis.",
 };
 
 export default function RootLayout({
@@ -27,7 +27,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="!scroll-smooth">
       <body className={poppins.className}>
-        <ThemeProvider attribute="class" disableTransitionOnChange enableSystem>
+        <ThemeProvider
+          attribute="class"
+          disableTransitionOnChange
+          defaultTheme="dark"
+          enableSystem
+        >
           <Toaster />
           <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>

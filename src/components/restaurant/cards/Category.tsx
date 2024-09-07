@@ -106,7 +106,7 @@ const CategoryCard = ({
       className="flex flex-col mx-4 border-none bg-background"
       value={category.id}
     >
-      <AccordionTrigger className="w-full h-24 tablet:h-16 border border-border rounded !flex-[0.2] tablet:!flex-[0.05] !justify-center">
+      <AccordionTrigger className="w-full px-5 gap-5 border border-border rounded-lg">
         <div className="flex items-center flex-col tablet:flex-row w-full gap-2">
           <p className="text-center tablet:text-start w-full">
             {category.title}

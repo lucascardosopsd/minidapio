@@ -17,6 +17,7 @@ import {
 import { statusI18n } from "@/constants/paymentStatusI18n";
 import moment from "moment";
 import { PaymentWithSubscriptionWithPlan } from "@/types/subscription";
+import { Separator } from "../ui/separator";
 
 interface PaymentsHistoryCardProps {
   payments: PaymentWithSubscriptionWithPlan[];
@@ -24,7 +25,7 @@ interface PaymentsHistoryCardProps {
 
 const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
   return (
-    <Card className="flex-1">
+    <Card>
       <CardHeader>
         <CardTitle>Histórico de pagamento</CardTitle>
         <CardDescription>
@@ -32,7 +33,9 @@ const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
         </CardDescription>
       </CardHeader>
 
-      <CardContent>
+      <Separator />
+
+      <CardContent className="w-[90svw] tablet:w-full h-[500px] overflow-y-auto">
         <Table>
           <TableHeader>
             <TableRow>

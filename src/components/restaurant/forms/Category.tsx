@@ -8,6 +8,7 @@ import FieldBuilder from "../../builders/FieldBuilder";
 import { Input } from "../../ui/input";
 import { isEmpty } from "@/tools/isEmpty";
 import { Category } from "@prisma/client";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface CategoryFormProps {
   defaultValues?: Category | undefined;
@@ -43,6 +44,17 @@ const CategoryForm = ({
             valueAsNumber: !isEmpty("order"),
           })}
         />
+
+        <div className="flex items-center gap-2">
+          <div>
+            <FieldBuilder
+              control={form.control}
+              fieldElement={<Checkbox defaultChecked={true} />}
+              name="active"
+            />
+          </div>
+          <p>Ativo?</p>
+        </div>
 
         <Button type="submit" className="w-full" disabled={loading}>
           {defaultValues ? "Atualizar" : "Confirmar"}

@@ -17,8 +17,12 @@ export const generateMetadata = async (
   { params }: GenerateMetadataProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
-  const restaurants = await fetchRestaurantsByQuery({
-    where: { slug: params?.slug, userId: params?.userId },
+  const { restaurants } = await fetchRestaurantsByQuery({
+    take: 10,
+    page: 0,
+    query: {
+      where: { slug: params?.slug, userId: params?.userId },
+    },
   });
   const previousImages = (await parent).openGraph?.images || [];
 
@@ -36,7 +40,12 @@ export const generateMetadata = async (
 };
 
 const Layout = async ({ children }: LayoutProps) => {
-  return <div className="mx-auto max-w-[600px]">{children}</div>;
+  return (
+    <div className="dark:bg-gradient-to-t from-zinc-900/50 via-transparent to-zinc-900/50">
+      <div className="bg-gradient-to-t from-background to-transparent h-44 w-full absolute bottom-0 left-0 z-[60]" />
+      <div className="mx-auto max-w-[600px]">{children}</div>
+    </div>
+  );
 };
 
 export default Layout;

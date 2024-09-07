@@ -1,3 +1,4 @@
+import { Payment, Plan, Subscription } from "@prisma/client";
 import { WithProperty } from "./common";
 
 export interface NewSubscriptionProps {
