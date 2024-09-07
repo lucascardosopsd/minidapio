@@ -14,9 +14,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Reserva | Cardápio Digital",
+  title: "Minidapio | Cardápio Digital",
   description:
-    "Cardápio digital gratuito que atende as necessidades simples do seu estabelecimento",
+    "Cardápio digital minimalista que atende as necessidades simples do seu estabelecimento. 30 Dias grátis.",
 };
 
 export default function RootLayout({
