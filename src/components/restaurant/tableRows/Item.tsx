@@ -88,7 +88,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         )}
       </TableCell>
 
-      <TableCell>
+      <TableCell className="w-max">
         <div className="flex items-center">
           <p>{item.title}</p>
 
@@ -98,7 +98,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
 
       <TableCell>
         {item.description ? (
-          <Badge className="w-full  flex justify-center">Sim</Badge>
+          <Badge className="w-full flex justify-center">Sim</Badge>
         ) : (
           <Badge variant="outline" className="w-full flex justify-center">
             Não
@@ -106,11 +106,11 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         )}
       </TableCell>
 
-      <TableCell>
+      <TableCell className="max-w-32">
         {item.price ? (
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="flex items-center justify-center w-full">
+              <TooltipTrigger className="flex items-center justify-center mx-auto">
                 <NumericFormat
                   decimalSeparator=","
                   valueIsNumericString
@@ -146,11 +146,11 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         )}
       </TableCell>
 
-      <TableCell>
+      <TableCell className="max-w-32">
         {item.sale ? (
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="flex items-center justify-center w-full">
+              <TooltipTrigger className="flex items-center justify-center mx-auto">
                 <NumericFormat
                   decimalSeparator=","
                   valueIsNumericString
@@ -201,9 +201,14 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
 
       <TableCell>
         {item.highlight ? (
-          <Badge className="w-full flex justify-center">Destaque</Badge>
+          <Badge className="w-full max-w-32 mx-auto flex justify-center">
+            Destaque
+          </Badge>
         ) : (
-          <Badge variant="outline" className="w-full flex justify-center">
+          <Badge
+            variant="outline"
+            className="w-full max-w-32 mx-auto flex justify-center"
+          >
             Não
           </Badge>
         )}
@@ -211,9 +216,14 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
 
       <TableCell>
         {item.active ? (
-          <Badge className="w-full flex justify-center">Ativo</Badge>
+          <Badge className="w-full max-w-32 mx-auto flex justify-center">
+            Ativo
+          </Badge>
         ) : (
-          <Badge variant="outline" className="w-full flex justify-center">
+          <Badge
+            variant="outline"
+            className="w-full max-w-32 mx-auto flex justify-center"
+          >
             Inativo
           </Badge>
         )}
