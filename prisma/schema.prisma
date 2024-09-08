@@ -160,8 +160,8 @@ model Subscription {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
-  User    User?     @relation(fields: [userId], references: [id])
-  Plan    Plan?     @relation(fields: [planId], references: [id])
+  User    User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Plan    Plan?     @relation(fields: [planId], references: [id], onDelete: Cascade)
   Payment Payment[]
 }
 
@@ -184,7 +184,7 @@ model Payment {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  Subscription Subscription? @relation(fields: [subscriptionId], references: [id])
-  Plan         Plan?         @relation(fields: [planId], references: [id])
-  User         User?         @relation(fields: [userId], references: [id])
+  Subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  Plan         Plan?         @relation(fields: [planId], references: [id], onDelete: Cascade)
+  User         User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
