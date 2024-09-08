@@ -22,12 +22,24 @@ export const checkMonthlySubscription = async ({
 }: CheckMonthlyPaymentProps): Promise<CheckMonthlyPaymentReturnProps> => {
   const user = await fetchUser({ id: userId });
   const subscriptions = await fetchUserSubscriptions({ userId });
+  const { payments } = await fetchPaymentsByQuery({
+    page: 0,
+    take: 1,
+    query: {
+      where: {
+        userId: user?.id,
+      },
+    },
+  });
 
   const trialRemaining = moment(user?.createdAt)
     .add(1, "month")
     .diff(moment(), "day");
 
-  if (trialRemaining >= 0 && !subscriptions.length) {
+  if (
+    (trialRemaining >= 0 && !subscriptions.length) ||
+    (trialRemaining >= 0 && !payments.length)
+  ) {
     return {
       type: "trial",
       remaining: trialRemaining,
@@ -42,16 +54,6 @@ export const checkMonthlySubscription = async ({
       subscription: null,
     };
   }
-
-  const { payments } = await fetchPaymentsByQuery({
-    page: 0,
-    take: 1,
-    query: {
-      where: {
-        userId: user?.id,
-      },
-    },
-  });
 
   const paidRemaining = moment(payments[0]?.createdAt)
     .add(1, "month")
