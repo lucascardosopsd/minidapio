@@ -45,7 +45,7 @@ const UploadImage = ({ control, name }: UploadImageProps) => {
                   content={{
                     label: "Enviar arquivo",
                     allowedContent: "Imagem de até 1MB",
-                    button: "Confirmar",
+                    button: "",
                   }}
                   endpoint="imageUploader"
                   onClientUploadComplete={(res) => onChange(res[0].url)}
