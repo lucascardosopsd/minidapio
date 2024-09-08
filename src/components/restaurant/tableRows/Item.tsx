@@ -133,7 +133,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
                     }
                   }}
                   getInputRef={priceRef}
-                  className="max-w-32 text-center"
+                  className="max-w-32 text-center !rounded-full"
                 />
               </TooltipTrigger>
               <TooltipContent>
@@ -181,7 +181,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
                     }
                   }}
                   getInputRef={saleRef}
-                  className="max-w-32 text-center"
+                  className="max-w-32 text-center !rounded-full"
                 />
               </TooltipTrigger>
               <TooltipContent>
@@ -192,7 +192,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         ) : (
           <Badge
             variant="outline"
-            className="flex justify-center max-w-32 mx-auto"
+            className="flex justify-center max-w-32 mx-auto py-3"
           >
             Não
           </Badge>
