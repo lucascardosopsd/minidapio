@@ -14,9 +14,22 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Minidapio | Cardápio Digital",
-  description:
-    "Cardápio digital minimalista que atende as necessidades simples do seu estabelecimento. 30 Dias grátis.",
+  openGraph: {
+    title: "Minidapio | Cardápio digital",
+    description:
+      "A solução simples, prática e definitiva para elevar o nível do atendimento do seu restaurante.",
+    url: "https://www.minidapio.com.br",
+    siteName: "Minidapio",
+    images: [
+      {
+        url: "https://i.imgur.com/3Oiin7K.png",
+        width: 557,
+        height: 291,
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
