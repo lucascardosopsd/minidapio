@@ -173,9 +173,7 @@ const CategoryCard = ({
                     <TableHead>Img</TableHead>
                     <TableHead>Nome</TableHead>
                     <TableHead className="text-center">Descrito</TableHead>
-                    <TableHead className="text-center max-w-32">
-                      Preço
-                    </TableHead>
+                    <TableHead className="text-center">Preço</TableHead>
                     <TableHead className="text-center">Promoção</TableHead>
                     <TableHead className="text-center">Destaque</TableHead>
                     <TableHead className="text-center">Status</TableHead>

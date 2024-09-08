@@ -32,7 +32,10 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
   const { toggleId, idList } = useItemStore();
 
   const [price, setPrice] = useState(0);
+  const [salePrice, setSalePrice] = useState(0);
+
   const priceRef = useRef<HTMLInputElement>(null);
+  const saleRef = useRef<HTMLInputElement>(null);
 
   const pathname = usePathname();
 
@@ -40,9 +43,9 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (item.price) {
-      setPrice(item.price);
-    }
+    if (item.price) setPrice(item.price);
+
+    if (item.salePrice) setSalePrice(item.salePrice);
   }, [item.price]);
 
   const handleUpdateItem = async (
@@ -141,24 +144,56 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         ) : (
           <p className="text-center">Sem preço</p>
         )}
-
-        {item.sale && (
-          <p className="text-primary">
-            {item?.salePrice &&
-              item?.salePrice > 0 &&
-              item?.salePrice.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })}
-          </p>
-        )}
       </TableCell>
 
       <TableCell>
         {item.sale ? (
-          <Badge className="w-full  flex justify-center">Promoção</Badge>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className="flex items-center justify-center w-full">
+                <NumericFormat
+                  decimalSeparator=","
+                  valueIsNumericString
+                  decimalScale={2}
+                  maxLength={8}
+                  prefix="R$"
+                  placeholder="R$0,00"
+                  onValueChange={(values) => setSalePrice(values.floatValue!)}
+                  value={salePrice}
+                  onKeyDown={(e) => {
+                    if (e.key == "Enter") {
+                      saleRef?.current && saleRef.current.blur();
+
+                      if (typeof salePrice == "undefined") {
+                        handleUpdateItem({ salePrice: 0 });
+                        return;
+                      }
+
+                      if (salePrice >= price) {
+                        toast.error(
+                          "Preço da promoção precisa ser menor que o preço do produto."
+                        );
+
+                        return;
+                      }
+
+                      handleUpdateItem({ salePrice });
+                    }
+                  }}
+                  getInputRef={saleRef}
+                  className="max-w-32 text-center"
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Enter</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         ) : (
-          <Badge variant="outline" className="w-full flex justify-center">
+          <Badge
+            variant="outline"
+            className="flex justify-center max-w-32 mx-auto"
+          >
             Não
           </Badge>
         )}
