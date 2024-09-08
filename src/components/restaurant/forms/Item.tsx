@@ -29,8 +29,6 @@ import { Copy } from "lucide-react";
 import { copyToClipboard } from "@/tools/copyToClipboard";
 import Image from "next/image";
 import { useState } from "react";
-import { testImgLoad } from "@/lib/testImgLoad";
-import { toast } from "sonner";
 
 interface ItemFormProps {
   defaultValues?: Item;
@@ -119,25 +117,8 @@ const ItemForm = ({
                   <Input
                     placeholder="Ou cole o link da imagem"
                     onChange={(e) => {
-                      testImgLoad({
-                        url: e.target.value,
-                        callback: (url: string, result) => {
-                          if (result == "error") {
-                            toast.error("Cole uma URL válida");
-
-                            return;
-                          }
-
-                          if (result == "timeout") {
-                            toast.error("Imagem não pode ser carregada");
-
-                            return;
-                          }
-
-                          field.onChange(e.target.value);
-                          setImgUrl(e.target.value);
-                        },
-                      });
+                      field.onChange(e.target.value);
+                      setImgUrl(e.target.value);
                     }}
                     value={field.value}
                   />
