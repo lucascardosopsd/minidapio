@@ -59,8 +59,7 @@ const UploadImage = ({ control, name }: UploadImageProps) => {
                     container: "w-full h-full -mt-2",
                   }}
                   className={cn(
-                    "border border-primary hover:border-primary/60 ut-button:bg-primary ut-button:text-white ut-button:after:bg-primary",
-                    watchChange && "opacity-0 hover:opacity-100 transition"
+                    "border border-primary hover:border-primary/60 ut-button:bg-primary ut-button:text-white ut-button:after:bg-primary"
                   )}
                   config={{
                     mode: "auto",
