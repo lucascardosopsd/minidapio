@@ -63,7 +63,7 @@ const SubscriptionCard = ({
 
       <p className="text-2xl text-center">Plano</p>
 
-      <CardContent>
+      <CardContent className="flex flex-col justify-center flex-1">
         <Card className="flex flex-col gap-5 border-none">
           {isValidSubscription && (
             <CardHeader className="flex items-center justify-center bg-primary rounded-lg h-60">

@@ -84,7 +84,7 @@ const SettingsPanel = ({
         </Card>
       </div>
 
-      <div className="flex flex-col gap-5 flex-1">
+      <div className="flex flex-col gap-5 flex-[2]">
         <PaymentsHistoryCard payments={payments} />
 
         <UpdateProfileCard
