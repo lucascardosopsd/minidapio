@@ -17,7 +17,6 @@ import { User } from "@prisma/client";
 import { PaymentWithSubscriptionWithPlan } from "@/types/subscription";
 import { deleteUser } from "@/actions/user/deleteUser";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { signOut } from "next-auth/react";
 
@@ -32,8 +31,6 @@ const SettingsPanel = ({
   user,
   payments,
 }: SettingsPanelProps) => {
-  const router = useRouter();
-
   const handleDeleteAccount = async () => {
     try {
       signOut({ redirect: true, callbackUrl: "/" });
