@@ -55,13 +55,16 @@ const PlanCard = ({ plan, current, disabled }: PlanCardProps) => {
           <p className="text-sm">/Mês</p>
         </span>
 
-        <Link href={`/dashboard/checkout/${plan.alias}`} className="w-full">
+        <Link
+          href={!current ? `/dashboard/checkout/${plan.alias}` : "#"}
+          className="w-full"
+        >
           <Button
             className={cn("w-full", !current && "border border-primary")}
             variant={plan.highlighted ? "default" : "outline"}
             disabled={current || disabled}
           >
-            {current ? "Atual" : "Assinar"}
+            {current ? "Em dia" : "Assinar"}
           </Button>
         </Link>
       </CardFooter>
