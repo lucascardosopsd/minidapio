@@ -9,14 +9,14 @@ interface CategoryListProps {
 
 const CategoryList = ({ category, themeColor }: CategoryListProps) => {
   return (
-    <div key={category.id}>
+    <div key={category.id} className="relative">
       {/* Category Header */}
       <div className="flex items-center justify-center w-full p-5 border border-border rounded-lg bg-background/50 backdrop-blur-md sticky top-0 dark:bg-gradient-to-tl from-zinc-900/50 to-transparent z-50">
         <p>{category.title}</p>
       </div>
 
       {/* Category Items */}
-      <div className="flex flex-col gap-2 mt-2 px-2">
+      <div className="flex flex-col gap-2 mt-2 px-4">
         {category?.items?.map((item) => (
           <ItemCard
             item={item}

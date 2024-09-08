@@ -83,7 +83,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
             width={1000}
             alt="Foto Produto"
             src={item.image}
-            className="h-full w-full object-cover rounded rounded-r-none"
+            className="h-full w-full object-cover rounded-lg rounded-r-none"
             priority
           />
         </DialogContent>
@@ -98,7 +98,7 @@ const ItemCard = ({ item, themeColor, highlight }: ItemCardProps) => {
         }}
       >
         <div
-          className="flex-1 max-h-full max-w-full rounded-l"
+          className="flex-1 max-h-full max-w-full rounded-l-lg"
           style={{
             backgroundImage: `url(${item.image})`,
             backgroundSize: "cover",
