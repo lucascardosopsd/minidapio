@@ -28,6 +28,7 @@ import { useState } from "react";
 import moment from "moment";
 import createSubscription from "@/actions/subscription/createSubscription";
 import { AsaasSubscriptionResObj } from "@/types/asaasSubscriptions";
+import { revalidateRoute } from "@/actions/revalidateRoute";
 
 interface CheckoutCreditCardProps {
   plan: Plan;
@@ -95,8 +96,6 @@ const CheckoutCreditCard = ({
     };
 
     try {
-      console.log(data);
-
       const { data: asaasRes } = await axios.post<AsaasSubscriptionResObj>(
         `${process.env.NEXT_PUBLIC_HOST}/api/asaas/subscription`,
         fullData
@@ -121,6 +120,8 @@ const CheckoutCreditCard = ({
       });
 
       toast.success("Inscrição realizada!");
+
+      revalidateRoute({ fullPath: "/" });
 
       router.push("/dashboard/restaurants");
     } catch (error) {
