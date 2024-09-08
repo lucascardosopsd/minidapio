@@ -54,15 +54,17 @@ const UploadImage = ({ control, name }: UploadImageProps) => {
                   }
                   appearance={{
                     label: "text-primary hover:text-primary/60 transition",
-                    button: "bg-primary text-background",
                     allowedContent: "text-primary/60",
                     uploadIcon: "text-primary",
                     container: "w-full h-full -mt-2",
                   }}
                   className={cn(
-                    "border border-primary hover:border-primary/60",
+                    "border border-primary hover:border-primary/60 ut-button:bg-primary ut-button:text-white ut-button:after:bg-primary",
                     watchChange && "opacity-0 hover:opacity-100 transition"
                   )}
+                  config={{
+                    mode: "auto",
+                  }}
                 />
               </div>
             </FormControl>
