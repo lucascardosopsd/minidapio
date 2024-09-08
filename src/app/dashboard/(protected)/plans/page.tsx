@@ -1,4 +1,6 @@
+import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
 import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
+import { checkMonthlySubscription } from "@/actions/subscription/checkMonthlySubscription";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import PlanCard from "@/components/restaurant/PlanCard";
 import { Separator } from "@/components/ui/separator";
@@ -10,6 +12,18 @@ const PlansPage = async () => {
   const { subscriptions } = await fetchSubscriptionsByQuery({
     take: 10,
     page: 0,
+    query: {
+      where: {
+        userId: user?.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    },
+  });
+  const { payments } = await fetchPaymentsByQuery({
+    page: 0,
+    take: 1,
     query: {
       where: {
         userId: user?.id,
@@ -32,6 +46,8 @@ const PlansPage = async () => {
 
   delete plans[0];
 
+  const checkPayment = await checkMonthlySubscription({ userId: user?.id! });
+
   return (
     <>
       <section className="flex flex-col tablet:flex-row justify-center items-center gap-5 mx-auto p-5 tablet:p-0 w-full">
@@ -53,7 +69,11 @@ const PlansPage = async () => {
             <PlanCard
               plan={plan}
               key={index}
-              current={subscriptions[0]?.planId == plan.id}
+              current={
+                checkPayment.type == "paid"
+                  ? subscriptions[0]?.planId == plan.id
+                  : false
+              }
             />
           ))}
         </div>
