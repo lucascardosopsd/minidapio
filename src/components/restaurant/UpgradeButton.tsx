@@ -44,7 +44,9 @@ const UpgradeButton = () => {
         (currentSub.type == "paid" && currentSub.remaining == null && (
           <Link href="/dashboard/plans">
             <span className="h-10 w-40 px-4 flex items-center justify-center bg-background border rounded-full border-primary text-sm">
-              Assinar Plano
+              {currentSub.lastPayMethod == "PIX"
+                ? "Pagamento"
+                : "Assinar Plano"}
             </span>
           </Link>
         ))}
