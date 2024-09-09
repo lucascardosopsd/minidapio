@@ -2,18 +2,17 @@
 import prisma from "@/lib/prisma";
 
 interface NewPaymentProps {
-  paymentId: string;
   dateCreated: string;
   customer: string;
   asaasId: string;
-  dueDate: string;
+  dueDate?: string;
   value: number;
   billingType: string;
   status: string;
   description?: string;
   paymentDate: string;
   deleted: boolean;
-  plan: string;
+  planId: string;
   userId: string;
   subscriptionId: string;
 }
