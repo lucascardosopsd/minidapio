@@ -61,9 +61,21 @@ const Faq = () => {
       <div className="flex flex-col items-center gap-2 text-center">
         <p>Sua dúvida não está aqui? Clique no botão abaixo</p>
 
+        {/* whatsapp app */}
+        <Link
+          href="https://api.whatsapp.com/send?phone=5517996484654"
+          className="w-full flex justify-center tablet:hidden"
+          target="_blank"
+        >
+          <Button className="gap-2">
+            <Headset />
+          </Button>
+        </Link>
+
+        {/* Whatsapp web */}
         <Link
           href="https://web.whatsapp.com/send?phone=17996484654"
-          className="w-full flex justify-center"
+          className="w-full justify-center hidden tablet:flex"
           target="_blank"
         >
           <Button className="gap-2">
