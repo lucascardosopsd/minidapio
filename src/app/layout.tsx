@@ -7,6 +7,7 @@ import AuthProvider from "@/components/misc/AuthProvider";
 
 import "swiper/css";
 import "react-quill/dist/quill.bubble.css";
+import Script from "next/script";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -39,6 +40,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="!scroll-smooth">
+      <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-G023WJD8Y3"
+        />
+        <Script>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          
+            gtag('config', 'G-G023WJD8Y3');
+          `}
+        </Script>
+      </head>
       <body className={poppins.className}>
         <ThemeProvider
           attribute="class"
