@@ -46,10 +46,10 @@ const PaymentPage = async ({ params }: PaymentPageProps) => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-5 h-full">
+    <div className="flex flex-col tablet:items-center tablet:justify-center gap-5 h-full">
       <Tabs
         defaultValue={user?.customerId ? "checkout" : "person"}
-        className="w-[1000px] mx-auto [&_button[data-state=active]]:bg-primary [&_button[data-state=active]]:text-white"
+        className="max-w-[1000px] mx-auto [&_button[data-state=active]]:bg-primary [&_button[data-state=active]]:text-white"
       >
         <TabsList>
           <TabsTrigger value="person">Informações pessoais</TabsTrigger>
@@ -80,8 +80,9 @@ const PaymentPage = async ({ params }: PaymentPageProps) => {
           />
         </TabsContent>
         <TabsContent value="checkout">
-          <div className="flex flex-col tablet:flex-row gap-5">
+          <div className="flex flex-col tablet:flex-row tablet:items-center gap-5 tablet:w-full">
             <CheckoutPixCard user={user!} plan={plans[0]} />
+            <p className="text-center">OU</p>
             <CheckoutCreditCard
               plan={plans[0]}
               customer={customer}
