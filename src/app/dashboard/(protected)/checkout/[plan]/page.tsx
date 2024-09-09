@@ -1,11 +1,13 @@
 import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
 import CheckoutCreditCard from "@/components/checkout/CheckoutCreditCard";
+import CheckoutPixCard from "@/components/checkout/CheckoutPixCard";
 import CheckoutProfile from "@/components/checkout/CheckoutProfile";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserSession } from "@/hooks/useUserSession";
 import { checkDoc } from "@/tools/checkDoc";
 import { AsaasCustomerObj, AsaasCustomerResProps } from "@/types/asaasCustomer";
 import axios from "axios";
+import Image from "next/image";
 
 interface PaymentPageProps {
   params: {
@@ -44,10 +46,10 @@ const PaymentPage = async ({ params }: PaymentPageProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col items-center justify-center gap-5 h-full">
       <Tabs
         defaultValue={user?.customerId ? "checkout" : "person"}
-        className="w-[800px] mx-auto [&_button[data-state=active]]:bg-primary [&_button[data-state=active]]:text-white"
+        className="w-[1000px] mx-auto [&_button[data-state=active]]:bg-primary [&_button[data-state=active]]:text-white"
       >
         <TabsList>
           <TabsTrigger value="person">Informações pessoais</TabsTrigger>
@@ -78,13 +80,33 @@ const PaymentPage = async ({ params }: PaymentPageProps) => {
           />
         </TabsContent>
         <TabsContent value="checkout">
-          <CheckoutCreditCard
-            plan={plans[0]}
-            customer={customer}
-            user={user!}
-          />
+          <div className="flex flex-col tablet:flex-row gap-5">
+            <CheckoutPixCard user={user!} plan={plans[0]} />
+            <CheckoutCreditCard
+              plan={plans[0]}
+              customer={customer}
+              user={user!}
+            />
+          </div>
         </TabsContent>
       </Tabs>
+      {/* Footer */}
+
+      <div className="flex items-center gap-5 border-t w-full py-5 justify-center">
+        <p className="max-w-96 text-center">
+          Esta compra é intermediada e assegurada pelo gateway de pagamentos
+          ASAAS
+        </p>
+
+        <Image
+          alt="logo asaas"
+          src="/logo-asaas.png"
+          sizes="1000px"
+          height={0}
+          width={0}
+          className="h-20 w-20 rounded-lg"
+        />
+      </div>
     </div>
   );
 };

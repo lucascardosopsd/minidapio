@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Separator } from "../ui/separator";
 import {
@@ -140,7 +139,10 @@ const CheckoutCreditCard = ({
         <Card>
           <CardHeader>
             <CardTitle>
-              <p className="mb-4">Sobre o pagamento</p>
+              <p className="mb-4">
+                Pagamento via{" "}
+                <span className="font-semibold text-primary">Cartão</span>
+              </p>
             </CardTitle>
             <Separator />
           </CardHeader>
@@ -262,24 +264,6 @@ const CheckoutCreditCard = ({
             </Form>
           </CardContent>
         </Card>
-      </div>
-
-      {/* Footer */}
-
-      <div className="flex items-center gap-5 border-t w-full py-5 justify-center">
-        <p className="max-w-96 text-center">
-          Esta compra é intermediada e assegurada pelo gateway de pagamentos
-          ASAAS
-        </p>
-
-        <Image
-          alt="logo asaas"
-          src="/logo-asaas.png"
-          sizes="1000px"
-          height={0}
-          width={0}
-          className="h-20 w-20 rounded-lg"
-        />
       </div>
     </section>
   );
