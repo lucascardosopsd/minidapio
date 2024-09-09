@@ -51,7 +51,14 @@ export interface PaymentResProps {
   originalValue: number | null;
   interestValue: number | null;
   description: string;
-  billingType: string;
+  billingType:
+    | "BOLETO"
+    | "CREDIT_CARD"
+    | "UNDEFINED"
+    | "DEBIT_CARD"
+    | "TRANSFER"
+    | "DEPOSIT"
+    | "PIX";
   confirmedDate: string;
   creditCard: CreditCardDetails;
   pixTransaction: string | null;
@@ -84,4 +91,10 @@ export interface PaymentResProps {
 
 export interface PaymentWithSubscriptionProps extends Payment {
   Subscription: Subscription;
+}
+
+export interface PixCodeResProps {
+  encodedImage: string;
+  payload: string;
+  expirationDate: string;
 }
