@@ -1,4 +1,3 @@
-import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
 import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
 import { checkMonthlySubscription } from "@/actions/subscription/checkMonthlySubscription";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
@@ -12,18 +11,6 @@ const PlansPage = async () => {
   const { subscriptions } = await fetchSubscriptionsByQuery({
     take: 10,
     page: 0,
-    query: {
-      where: {
-        userId: user?.id,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    },
-  });
-  const { payments } = await fetchPaymentsByQuery({
-    page: 0,
-    take: 1,
     query: {
       where: {
         userId: user?.id,
@@ -70,7 +57,7 @@ const PlansPage = async () => {
               plan={plan}
               key={index}
               current={
-                checkPayment.type == "paid"
+                checkPayment.type == "paid" && !!checkPayment?.remaining!
                   ? subscriptions[0]?.planId == plan.id
                   : false
               }
