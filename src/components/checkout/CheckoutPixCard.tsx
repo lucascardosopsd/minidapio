@@ -1,6 +1,6 @@
 "use client";
 import { PaymentResProps, PixCodeResProps } from "@/types/paymentProps";
-import { Plan, User } from "@prisma/client";
+import { Plan, Subscription, User } from "@prisma/client";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -20,6 +20,7 @@ import { Separator } from "../ui/separator";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import createSubscription from "@/actions/subscription/createSubscription";
 import createPayment from "@/actions/payment/createPayment";
+import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 
 interface CheckoutPixCard {
   plan: Plan;
@@ -85,18 +86,36 @@ const CheckoutPixCard = ({ plan, user }: CheckoutPixCard) => {
       );
 
       if (data.status == "RECEIVED") {
-        const subscription = await createSubscription({
-          subscription: {
-            billingType: data.billingType,
-            customerId: data.customer,
-            dateCreated: moment().format(),
-            deleted: data.deleted,
-            description: data.description,
-            value: data.value,
-            userId: user.id,
-            planId: plan.id,
+        const { subscriptions: lastSubs } = await fetchSubscriptionsByQuery({
+          page: 0,
+          take: 1,
+          query: {
+            where: {
+              userId: user.id,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
           },
         });
+
+        const isSameBillingType = lastSubs[0].billingType == data.billingType;
+        let newSub: Subscription | null = null;
+
+        if (!isSameBillingType) {
+          newSub = await createSubscription({
+            subscription: {
+              billingType: data.billingType,
+              customerId: data.customer,
+              dateCreated: moment().format(),
+              deleted: data.deleted,
+              description: data.description,
+              value: data.value,
+              userId: user.id,
+              planId: plan.id,
+            },
+          });
+        }
 
         await createPayment({
           userId: user.id,
@@ -111,7 +130,7 @@ const CheckoutPixCard = ({ plan, user }: CheckoutPixCard) => {
             value: data.value,
             status: data.status,
             userId: user.id,
-            subscriptionId: subscription.id,
+            subscriptionId: newSub ? newSub?.id! : lastSubs[0].id,
           },
         });
 

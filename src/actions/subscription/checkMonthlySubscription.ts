@@ -42,12 +42,12 @@ export const checkMonthlySubscription = async ({
     .diff(moment(), "day");
 
   if (
-    (trialRemaining >= 0 && !subscriptions.length) ||
-    (trialRemaining >= 0 && !payments.length)
+    (trialRemaining >= 0 && !subscriptions.length && payments.length >= 0) ||
+    (trialRemaining >= 0 && !payments.length && payments.length >= 0)
   ) {
     return {
       type: "trial",
-      lastPayMethod: payments[0].billingType,
+      lastPayMethod: payments[0]?.billingType,
       remaining: trialRemaining,
       subscription: null,
     };
