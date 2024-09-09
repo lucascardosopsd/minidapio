@@ -15,24 +15,26 @@ export const POST = async (req: Request) => {
       },
     });
 
-    await prisma.payment.create({
-      data: {
-        asaasId: payment.id,
-        dateCreated: payment.dateCreated,
-        customer: payment.customer,
-        paymentLink: payment.paymentLink,
-        dueDate: payment.dueDate,
-        value: payment.value,
-        billingType: payment.billingType,
-        status: payment.status,
-        description: payment.description,
-        paymentDate: payment.paymentDate,
-        deleted: payment.deleted,
-        planId: subscriptions[0].planId,
-        userId: subscriptions[0].userId!,
-        subscriptionId: subscriptions[0].id,
-      },
-    });
+    if (payment.billingType == "CREDIT_CARD") {
+      await prisma.payment.create({
+        data: {
+          asaasId: payment.id,
+          dateCreated: payment.dateCreated,
+          customer: payment.customer,
+          paymentLink: payment.paymentLink,
+          dueDate: payment.dueDate,
+          value: payment.value,
+          billingType: payment.billingType,
+          status: payment.status,
+          description: payment.description,
+          paymentDate: payment.paymentDate,
+          deleted: payment.deleted,
+          planId: subscriptions[0].planId,
+          userId: subscriptions[0].userId!,
+          subscriptionId: subscriptions[0].id,
+        },
+      });
+    }
 
     return Response.json({ ok: true });
   } catch (error: unknown) {
