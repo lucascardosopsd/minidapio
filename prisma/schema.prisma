@@ -143,17 +143,17 @@ model Plan {
 
 model Subscription {
   id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  object           String
-  asaasId          String
+  object           String?
+  asaasId          String?
   dateCreated      String
   customerId       String
   value            Float
-  nextDueDate      String
-  cycle            String
+  nextDueDate      String?
+  cycle            String?
   description      String
   billingType      String
   deleted          Boolean
-  status           String
+  status           String?
   planId           String?  @db.ObjectId
   userId           String?  @db.ObjectId
   paymentProfileId String?  @db.ObjectId
@@ -171,7 +171,7 @@ model Payment {
   dateCreated    String
   customer       String
   paymentLink    String?
-  dueDate        String
+  dueDate        String?
   value          Float
   billingType    String
   status         String
