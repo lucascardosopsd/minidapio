@@ -2,17 +2,17 @@ import { Payment, Plan, Subscription } from "@prisma/client";
 import { WithProperty } from "./common";
 
 export interface NewSubscriptionProps {
-  object: string;
-  asaasId: string;
+  object?: string;
+  asaasId?: string;
   dateCreated: string;
   customerId: string;
   value: number;
-  nextDueDate: string;
-  cycle: string;
+  nextDueDate?: string;
+  cycle?: string;
   description: string;
   billingType: string;
   deleted: boolean;
-  status: string;
+  status?: string;
   planId: string;
   userId: string;
 }
