@@ -53,7 +53,7 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
         </div>
 
         <Link
-          href="https://api.whatsapp.com/send?phone=5517996484654"
+          href="https://web.whatsapp.com/send?phone=17996484654"
           className="tablet:w-full"
           target="_blank"
         >

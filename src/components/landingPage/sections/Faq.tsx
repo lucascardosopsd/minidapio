@@ -62,7 +62,7 @@ const Faq = () => {
         <p>Sua dúvida não está aqui? Clique no botão abaixo</p>
 
         <Link
-          href="https://api.whatsapp.com/send?phone=5517996484654"
+          href="https://web.whatsapp.com/send?phone=17996484654"
           className="w-full flex justify-center"
           target="_blank"
         >
