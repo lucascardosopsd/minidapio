@@ -15,6 +15,7 @@ export interface CheckMonthlyPaymentReturnProps {
   type: "trial" | "paid";
   remaining: number | null;
   subscription: SubscriptionWithPlan | null;
+  lastPayMethod: string | "PIX" | "CREDIT_CARD";
 }
 
 export const checkMonthlySubscription = async ({
@@ -22,12 +23,16 @@ export const checkMonthlySubscription = async ({
 }: CheckMonthlyPaymentProps): Promise<CheckMonthlyPaymentReturnProps> => {
   const user = await fetchUser({ id: userId });
   const subscriptions = await fetchUserSubscriptions({ userId });
+
   const { payments } = await fetchPaymentsByQuery({
     page: 0,
     take: 1,
     query: {
       where: {
         userId: user?.id,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     },
   });
@@ -42,6 +47,7 @@ export const checkMonthlySubscription = async ({
   ) {
     return {
       type: "trial",
+      lastPayMethod: payments[0].billingType,
       remaining: trialRemaining,
       subscription: null,
     };
@@ -52,6 +58,7 @@ export const checkMonthlySubscription = async ({
       type: "paid",
       remaining: null,
       subscription: null,
+      lastPayMethod: payments[0].billingType,
     };
   }
 
@@ -64,6 +71,7 @@ export const checkMonthlySubscription = async ({
       type: "paid",
       remaining: null,
       subscription: subscriptions[0],
+      lastPayMethod: payments[0].billingType,
     };
   }
 
@@ -71,5 +79,6 @@ export const checkMonthlySubscription = async ({
     type: "paid",
     remaining: paidRemaining,
     subscription: subscriptions[0],
+    lastPayMethod: payments[0].billingType,
   };
 };
