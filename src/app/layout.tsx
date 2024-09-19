@@ -15,6 +15,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  title: "Minidapio | Cardápio digital",
+  description:
+    "A solução simples, prática e definitiva para elevar o nível do atendimento do seu restaurante.",
   openGraph: {
     title: "Minidapio | Cardápio digital",
     description:
@@ -23,9 +26,9 @@ export const metadata: Metadata = {
     siteName: "Minidapio",
     images: [
       {
-        url: "https://i.imgur.com/3Oiin7K.png",
-        width: 557,
-        height: 291,
+        url: "https://i.imgur.com/QBGQlnz.png",
+        width: 200,
+        height: 200,
       },
     ],
     locale: "pt_BR",
