@@ -9,7 +9,7 @@ const Fence = ({ children, className, ...rest }: FenceProps) => {
   return (
     <div
       className={cn(
-        "flex items-center justify-center p-2 border border-border gap-2 rounded flex-1",
+        "flex items-center justify-center p-2 border border-border gap-2 rounded-lg flex-1",
         className
       )}
       {...rest}
