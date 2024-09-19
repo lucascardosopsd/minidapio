@@ -184,12 +184,12 @@ const RestaurantForm = ({
         />
 
         {/* Hours */}
-        <div className="border border-border p-2 rounded space-y-4 flex flex-col">
+        <div className="border border-border p-2 rounded-lg space-y-4 flex flex-col">
           <p>Horários*</p>
 
           {workHoursFields.map((field, index) => (
             <span key={field.id}>
-              <div className="flex flex-col gap-2 border border-primary rounded p-2">
+              <div className="flex flex-col gap-2 border border-primary rounded-lg p-2">
                 <FormField
                   control={form.control}
                   name={`workHours.${index}.weekDay`}
