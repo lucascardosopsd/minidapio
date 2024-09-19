@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/table";
 import ItemRow from "../tableRows/Item";
 import ItemForm from "../forms/Item";
-import { CopyPlus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import { createNewItem } from "@/actions/item/createNewItem";
@@ -122,7 +122,8 @@ const CategoryCard = ({
                 />
               }
               title="Novo Item"
-              trigger={<CopyPlus size={18} />}
+              triggerClassName="p-3"
+              trigger={<Plus size={26} />}
               triggerVariant="default"
               isOpen={openItem}
               onOpen={setOpenItem}
