@@ -196,8 +196,14 @@ const CategoryCard = ({
               </Table>
             </div>
 
-            {!category.items && (
-              <p className="text-center p-4">Categoria sem items.</p>
+            {!category.items?.length && (
+              <div className="flex flex-col items-center justify-center w-full mt-5">
+                <p>Esta categoria não possuí itens.</p>
+                <div className="flex">
+                  <p>👆 Crie itens clicando em </p>
+                  <p className="text-primary ml-1">"+"</p>
+                </div>
+              </div>
             )}
           </div>
         </div>
