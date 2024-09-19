@@ -11,6 +11,7 @@ import ReusableSheet from "../misc/ReusableSheet";
 import CategoryForm from "./forms/Category";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { PlanLimitProps } from "@/constants/planLimits";
+import { Plus } from "lucide-react";
 
 interface RestaurantActionBarProps {
   restaurantId: string;
@@ -54,8 +55,12 @@ const RestaurantActionbar = ({
 
       <div className="flex gap-2 w-full tablet:w-auto">
         <ReusableSheet
-          title="Criar Categoria"
-          trigger="Nova Categoria"
+          title="Adicionar Categoria"
+          trigger={
+            <span className="flex items-center gap-2">
+              Adicionar <Plus />
+            </span>
+          }
           triggerVariant="default"
           triggerClassName="w-full tablet:w-40"
           content={

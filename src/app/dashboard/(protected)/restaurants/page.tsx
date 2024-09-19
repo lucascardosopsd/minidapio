@@ -4,7 +4,6 @@ import RestaurantsList from "@/components/restaurant/lists/Restaurants";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { SubscriptionWithPlanProps } from "@/types/plan";
 import { planLimits } from "@/constants/planLimits";
-import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import { FullRestaurantNestedProps } from "@/types/restaurant";
 
 interface CustomRestaurantsRes {
@@ -37,24 +36,6 @@ export default async function Dashboard() {
     });
 
   const limits = planLimits[subscriptions[0]?.Plan?.alias || "free"];
-
-  const { restaurants: fullNestedRestaurant } =
-    await fetchRestaurantsByQuery<CustomRestaurantsRes>({
-      page: 0,
-      take: 10,
-      query: {
-        where: {
-          userId: user?.id!,
-        },
-        include: {
-          Categories: {
-            include: {
-              items: true,
-            },
-          },
-        },
-      },
-    });
 
   return (
     <main className="flex flex-col items-center justify-center h-[calc(100svh-4rem)] gap-8 ">
