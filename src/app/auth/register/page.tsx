@@ -16,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export default function Register() {
   const [agree, setAgree] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -30,6 +31,8 @@ export default function Register() {
   const router = useRouter();
 
   const handleSubmit = async (data: z.infer<typeof registerValidator>) => {
+    setLoading(true);
+
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST}/api/auth/register`,
@@ -55,6 +58,8 @@ export default function Register() {
     } catch (error) {
       console.log(error);
       toast.error("Ocorreu um erro");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -114,7 +119,7 @@ export default function Register() {
                 </Link>
               </div>
 
-              <Button className="w-full" disabled={!agree}>
+              <Button className="w-full" disabled={!agree || loading}>
                 Registrar
               </Button>
             </form>
