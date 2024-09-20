@@ -11,12 +11,12 @@ export interface PlanLimitsProps {
 export const planLimits: PlanLimitsProps = {
   free: {
     restaurants: 1,
-    categories: 10,
-    items: 50,
+    categories: 5,
+    items: 25,
   },
   pro: {
-    restaurants: 4,
-    categories: 50,
-    items: 1000,
+    restaurants: 2,
+    categories: 30,
+    items: 200,
   },
 };
