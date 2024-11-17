@@ -27,7 +27,7 @@ const UserForm = ({ defaultValues, onSubmit, loading }: UserFormProps) => {
       >
         <div className="flex flex-col">
           <p className="text-xs font-semibold">Imagem</p>
-          <UploadImage control={form.control} name="image" />
+          <UploadImage control={form.control} name="profileImage" />
         </div>
 
         <FieldBuilder

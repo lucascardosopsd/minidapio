@@ -2,11 +2,11 @@ import { axiosAsaas } from "@/lib/axiosAsaas";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    console.log(params);
-    const customer = await axiosAsaas.get(`/customers/${params.id}`);
+    const { id } = await params;
+    const customer = await axiosAsaas.get(`/customers/${id}`);
 
     return Response.json({ customer: customer.data });
   } catch (error: unknown) {
@@ -22,12 +22,13 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = await req.json();
 
-    const customer = await axiosAsaas.put(`/customers/${params.id}`, data);
+    const customer = await axiosAsaas.put(`/customers/${id}`, data);
 
     return Response.json({ customer: customer.data });
   } catch (error: unknown) {

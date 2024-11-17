@@ -2,10 +2,11 @@ import { axiosAsaas } from "@/lib/axiosAsaas";
 
 export const GET = async (
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
   try {
-    const { data } = await axiosAsaas.post(`/payments/${params.id}`);
+    const { id } = await params;
+    const { data } = await axiosAsaas.post(`/payments/${id}`);
 
     return Response.json({ ...data });
   } catch (error: unknown) {

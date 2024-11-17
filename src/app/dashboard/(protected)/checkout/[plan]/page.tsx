@@ -10,12 +10,13 @@ import axios from "axios";
 import Image from "next/image";
 
 interface PaymentPageProps {
-  params: {
+  params: Promise<{
     plan: string;
-  };
+  }>;
 }
 
 const PaymentPage = async ({ params }: PaymentPageProps) => {
+  const { plan } = await params;
   const user = await useCurrentUser();
 
   let customer: AsaasCustomerObj | null = null;
@@ -36,7 +37,7 @@ const PaymentPage = async ({ params }: PaymentPageProps) => {
     take: 1,
     query: {
       where: {
-        alias: params.plan,
+        alias: plan,
       },
     },
   });

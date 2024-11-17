@@ -17,10 +17,10 @@ import SearchItemRow from "@/components/search/restaurant/ItemRow";
 import { Category, Item } from "@prisma/client";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     restaurantId: string;
-  };
-  searchParams?: {
+  }>;
+  searchParams: Promise<{
     page: string;
     title?: string;
     description?: string;
@@ -28,7 +28,7 @@ interface PageProps {
     price?: string;
     sale?: string;
     categoryId?: string;
-  };
+  }>;
 }
 
 interface FetchItemsProps extends Item {
@@ -40,16 +40,14 @@ interface FetchManyItemsResProps {
   pages: number;
 }
 
-export default async function Restaurant({
-  params: { restaurantId },
-  searchParams,
-}: PageProps) {
-  const page = Number(searchParams?.page || 1);
+export default async function Restaurant({ params, searchParams }: PageProps) {
+  const sParams = await searchParams;
+  const { restaurantId } = await params;
+  const page = Number(sParams.page || 1);
 
   const { categories } = await fetchCategoriesByQuery({
     page: 0,
     take: 10000,
-
     query: {
       where: {
         restaurantId,
@@ -63,20 +61,17 @@ export default async function Restaurant({
     query: {
       where: {
         title: {
-          contains: searchParams?.title && searchParams?.title,
+          contains: sParams.title && sParams.title,
           mode: "insensitive",
         },
         description: {
-          contains: searchParams?.description && searchParams?.description,
+          contains: sParams.description && sParams.description,
           mode: "insensitive",
         },
-        active:
-          searchParams?.active && searchParams?.active == "true" ? true : false,
-        price: searchParams?.price
-          ? parseFloat(searchParams?.price!)
-          : undefined,
-        sale: searchParams?.sale && searchParams?.sale == "true" ? true : false,
-        categoryId: searchParams?.categoryId && searchParams?.categoryId,
+        active: sParams.active && sParams.active == "true" ? true : false,
+        price: sParams.price ? parseFloat(sParams.price!) : undefined,
+        sale: sParams.sale && sParams.sale == "true" ? true : false,
+        categoryId: sParams.categoryId && sParams.categoryId,
         restaurantId,
       },
       include: {

@@ -6,10 +6,10 @@ import { FullRestaurantProps } from "@/types/restaurant";
 import CategoryList from "@/components/menu/CategoriesList";
 
 interface MenuProps {
-  params: {
+  params: Promise<{
     restaurantId: string;
     slug: string;
-  };
+  }>;
 }
 
 interface CustomRestaurantRes {
@@ -17,7 +17,9 @@ interface CustomRestaurantRes {
   restaurants: FullRestaurantProps[];
 }
 
-const Menu = async ({ params: { restaurantId } }: MenuProps) => {
+const Menu = async ({ params }: MenuProps) => {
+  const { restaurantId } = await params;
+
   const { restaurants } = await fetchRestaurantsByQuery<CustomRestaurantRes>({
     page: 0,
     take: 10,

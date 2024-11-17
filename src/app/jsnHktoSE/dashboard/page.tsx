@@ -10,19 +10,16 @@ import { formatPrice } from "@/tools/formatPrice";
 import { DollarSign, User, UtensilsCrossed } from "lucide-react";
 
 interface AdminDashboardProps {
-  searchParams?: {
+  searchParams: Promise<{
     startDate?: Date;
     endDate?: Date;
     province?: string;
     userId: string;
-  };
+  }>;
 }
 
 const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
-  const startDate = searchParams?.startDate;
-  const endDate = searchParams?.endDate;
-  const province = searchParams?.province;
-  const userId = searchParams?.userId;
+  const { startDate, endDate, province, userId } = await searchParams;
 
   const { users } = await fetchManyUsers({
     page: 0,

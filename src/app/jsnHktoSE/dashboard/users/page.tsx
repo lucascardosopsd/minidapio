@@ -1,15 +1,16 @@
 import UserPagination from "@/components/admin/users/UserPagination";
 
 interface UsersPageProps {
-  searchParams?: {
+  searchParams: Promise<{
     page: string;
     name?: string;
-  };
+  }>;
 }
 
 const UsersPage = async ({ searchParams }: UsersPageProps) => {
-  const page = Number(searchParams?.page || 1);
-  const name = searchParams?.name || "";
+  const sParams = await searchParams;
+  const page = Number(sParams.page || 1);
+  const name = sParams.name || "";
 
   return (
     <div className="relative w-full ">

@@ -72,7 +72,7 @@ const UserRow = ({ user }: UserRowProps) => {
     <TableRow className="w-full">
       <TableCell>
         <Avatar>
-          <AvatarImage src={user?.image!} />
+          <AvatarImage src={user?.profileImage!} />
         </Avatar>
       </TableCell>
       <TableCell>

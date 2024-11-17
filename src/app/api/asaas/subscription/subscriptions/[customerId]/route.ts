@@ -2,11 +2,12 @@ import { axiosAsaas } from "@/lib/axiosAsaas";
 
 export async function GET(
   req: Request,
-  { params }: { params: { customerId: string } }
+  { params }: { params: Promise<{ customerId: string }> }
 ) {
   try {
+    const { customerId } = await params;
     const { data } = await axiosAsaas.get(
-      `subscriptions?customer=${params.customerId}`
+      `subscriptions?customer=${customerId}`
     );
 
     return Response.json(data);

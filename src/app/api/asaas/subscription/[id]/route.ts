@@ -2,10 +2,11 @@ import { axiosAsaas } from "@/lib/axiosAsaas";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { data } = await axiosAsaas.delete(`/subscriptions/${params.id}`);
+    const { id } = await params;
+    const { data } = await axiosAsaas.delete(`/subscriptions/${id}`);
 
     return Response.json(data);
   } catch (error: unknown) {
@@ -22,12 +23,13 @@ export async function DELETE(
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await req.json();
 
-    const { data } = await axiosAsaas.put(`/subscriptions/${params.id}`, body);
+    const { data } = await axiosAsaas.put(`/subscriptions/${id}`, body);
 
     return Response.json(data);
   } catch (error: unknown) {

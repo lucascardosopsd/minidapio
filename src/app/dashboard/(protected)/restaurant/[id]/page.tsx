@@ -23,15 +23,14 @@ interface CustomFetchCategoriesRes {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
-  searchParams?: { [key: string]: string };
+  }>;
 }
 
-export default async function Restaurant({
-  params: { id: restaurantId },
-}: PageProps) {
+export default async function Restaurant({ params }: PageProps) {
+  const { id: restaurantId } = await params;
+
   const user = await useCurrentUser();
 
   const { categories } = await fetchCategoriesByQuery<CustomFetchCategoriesRes>(

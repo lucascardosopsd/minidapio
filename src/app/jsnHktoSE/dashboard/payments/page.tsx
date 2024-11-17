@@ -20,19 +20,16 @@ interface PaymentReturnProps {
 }
 
 interface AdminDashboardProps {
-  searchParams?: {
+  searchParams: Promise<{
     startDate?: Date;
     endDate?: Date;
     userId?: string;
     page: string;
-  };
+  }>;
 }
 
 const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
-  const startDate = searchParams?.startDate;
-  const endDate = searchParams?.endDate;
-  const userId = searchParams?.userId;
-  const page = searchParams?.page;
+  const { startDate, endDate, userId, page } = await searchParams;
 
   const { payments, pages } = await fetchPaymentsByQuery<PaymentReturnProps>({
     page: 0,

@@ -4,16 +4,18 @@ import Navbar from "@/components/restaurant/Navbar";
 import { BreadcrumbRouteProps } from "@/types/breacrumb";
 import { RestaurantProps } from "@/types/restaurant";
 import { useSearchParams } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, use, useEffect, useState } from "react";
 
 interface LayoutProps {
-  params: {
+  params: Promise<{
     restaurantId: string;
-  };
+  }>;
   children: ReactNode;
 }
 
-const Layout = ({ children, params: { restaurantId } }: LayoutProps) => {
+const Layout = ({ children, params }: LayoutProps) => {
+  const { restaurantId } = use(params);
+
   const [restaurant, setRestaurant] = useState<RestaurantProps>(
     {} as RestaurantProps
   );

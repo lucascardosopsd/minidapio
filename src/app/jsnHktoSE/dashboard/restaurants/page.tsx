@@ -1,15 +1,17 @@
 import RestaurantsPagination from "@/components/admin/restaurants/RestaurantsPagination";
+import { use } from "react";
 
 interface UsersPageProps {
-  searchParams?: {
+  searchParams: Promise<{
     page: string;
     title?: string;
-  };
+  }>;
 }
 
 const RestaurantsPage = ({ searchParams }: UsersPageProps) => {
-  const page = Number(searchParams?.page || 1);
-  const title = searchParams?.title || "";
+  const sParams = use(searchParams);
+  const page = Number(sParams.page || 1);
+  const title = sParams.title || "";
 
   return (
     <div className="relative w-full ">

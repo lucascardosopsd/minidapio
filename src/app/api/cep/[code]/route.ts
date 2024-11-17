@@ -2,10 +2,11 @@ import cep from "cep-promise";
 
 export const GET = async (
   req: Request,
-  { params }: { params: { code: string } }
+  { params }: { params: Promise<{ code: string }> }
 ) => {
   try {
-    const data = await cep(Number(params.code));
+    const { code } = await params;
+    const data = await cep(Number(code));
 
     return Response.json(data);
   } catch (error: unknown) {

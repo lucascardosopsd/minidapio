@@ -2,12 +2,11 @@ import { axiosAsaas } from "@/lib/axiosAsaas";
 
 export const GET = async (
   req: Request,
-  { params }: { params: { paymentId: string } }
+  { params }: { params: Promise<{ paymentId: string }> }
 ) => {
   try {
-    const { data } = await axiosAsaas.get(
-      `/payments/${params.paymentId}/pixQrCode`
-    );
+    const { paymentId } = await params;
+    const { data } = await axiosAsaas.get(`/payments/${paymentId}/pixQrCode`);
 
     return Response.json({ ...data, status: 201 });
   } catch (error: unknown) {

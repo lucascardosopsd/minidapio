@@ -4,12 +4,9 @@ import { ReactNode } from "react";
 
 interface LayoutProps {
   children: ReactNode;
-  params: {
-    id: string;
-  };
 }
 
-const Layout = ({ params: { id }, children }: LayoutProps) => {
+const Layout = ({ children }: LayoutProps) => {
   return (
     <ThemeProvider
       attribute="class"
