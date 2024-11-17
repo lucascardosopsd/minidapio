@@ -49,9 +49,8 @@ const UploadImage = ({ control, name }: UploadImageProps) => {
                   }}
                   endpoint="imageUploader"
                   onClientUploadComplete={(res) => onChange(res[0].url)}
-                  onUploadError={(error: Error) =>
-                    toast("Erro ao enviar a logo.")
-                  }
+                  // @ts-ignore
+                  onUploadError={(_) => toast("Erro ao enviar a logo.")}
                   appearance={{
                     label: "text-primary hover:text-primary/60 transition",
                     allowedContent: "text-primary/60",
