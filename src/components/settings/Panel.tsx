@@ -18,7 +18,7 @@ import { PaymentWithSubscriptionWithPlan } from "@/types/subscription";
 import { deleteUser } from "@/actions/user/deleteUser";
 import { toast } from "sonner";
 import { revalidateRoute } from "@/actions/revalidateRoute";
-import { signOut } from "next-auth/react";
+import { useClerk } from "@clerk/nextjs";
 
 interface SettingsPanelProps {
   checkPayment: CheckMonthlyPaymentReturnProps;
@@ -31,9 +31,11 @@ const SettingsPanel = ({
   user,
   payments,
 }: SettingsPanelProps) => {
+  const { signOut } = useClerk();
+
   const handleDeleteAccount = async () => {
     try {
-      signOut({ redirect: true, callbackUrl: "/" });
+      signOut({ redirectUrl: "/" });
 
       await deleteUser({ id: user?.id! });
 
@@ -90,7 +92,7 @@ const SettingsPanel = ({
         <UpdateProfileCard
           data={{
             email: user?.email!,
-            image: user?.image!,
+            image: user?.profileImage!,
             name: user?.name!,
           }}
           userId={user?.id!}

@@ -6,7 +6,6 @@ import Script from "next/script";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import "react-quill/dist/quill.bubble.css";
-import "swiper/css";
 
 const poppins = Poppins({
   subsets: ["latin"],
