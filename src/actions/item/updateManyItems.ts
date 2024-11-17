@@ -1,16 +1,16 @@
 "use server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
-import { useUserSession } from "@/hooks/useUserSession";
 import { revalidatePath } from "next/cache";
 import { ItemValidator } from "@/validators/item";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export const updateManyItems = async (
   data: Partial<z.infer<typeof ItemValidator>>,
   ids: string[],
   path?: string
 ) => {
-  const user = await useUserSession();
+  const user = await useCurrentUser();
 
   try {
     await prisma.item.updateMany({

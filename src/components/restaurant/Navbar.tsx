@@ -3,7 +3,6 @@ import { BreadcrumbRouteProps } from "@/types/breacrumb";
 import { ThemeToggle } from "../misc/ThemeToggle";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Bolt, Headset, LogOutIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "../ui/avatar";
@@ -13,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import UpgradeButton from "./UpgradeButton";
+import { SignOutButton, useUser } from "@clerk/nextjs";
 
 interface NavbarProps {
   breadcrumb?: BreadcrumbRouteProps[];
@@ -20,7 +20,7 @@ interface NavbarProps {
 
 const Navbar = ({ breadcrumb }: NavbarProps) => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { user } = useUser();
 
   return (
     <div className="container flex justify-between items-center p-4 border-b border-border h-16">
@@ -64,23 +64,23 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
 
         <DropdownMenu>
           <DropdownMenuTrigger>
-            {session?.user?.image && (
+            {user?.imageUrl && (
               <Avatar className="border border-primary">
-                <AvatarImage src={session?.user?.image!} />
+                <AvatarImage src={user.imageUrl} />
               </Avatar>
             )}
 
-            {!session?.user?.image && (
+            {!user?.imageUrl && (
               <div className="flex-1 w-full">
                 <span className="rounded-full h-12 w-12 border border-border transition hover:border-primary flex items-center justify-center">
-                  <p className="text-lg">{session?.user?.name?.slice(0, 1)}</p>
+                  <p className="text-lg">{user?.firstName?.slice(0, 1)}</p>
                 </span>
               </div>
             )}
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 flex flex-col gap-2">
             <p className="w-full p-2 border border-border rounded-lg text-center">
-              {session?.user?.name}
+              {user?.firstName}
             </p>
 
             <Link href="/dashboard/settings">
@@ -89,20 +89,16 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
               </Button>
             </Link>
 
-            <Button
-              variant="outline"
-              onClick={() => {
-                signOut({
-                  callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}/auth/login`,
-                });
-              }}
-              size="sm"
-              className="flex items-center gap-2 justify-center w-full"
-            >
-              <LogOutIcon size={18} />
-
-              <p>Sair</p>
-            </Button>
+            <SignOutButton redirectUrl="/sign-in">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2 justify-center w-full"
+              >
+                <LogOutIcon size={18} />
+                <p>Sair</p>
+              </Button>
+            </SignOutButton>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

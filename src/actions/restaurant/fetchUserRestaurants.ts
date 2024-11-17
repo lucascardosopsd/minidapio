@@ -1,10 +1,10 @@
 "use server";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import prisma from "@/lib/prisma";
-import { useUserSession } from "@/hooks/useUserSession";
 import { PaymentMethodProps, WorkHourProps } from "@/types/restaurant";
 
 export const fetchUserRestaurants = async () => {
-  const user = await useUserSession();
+  const user = await useCurrentUser();
 
   try {
     const restaurants = await prisma.restaurant.findMany({

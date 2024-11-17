@@ -3,10 +3,10 @@ import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
 import { ChevronRight, Menu } from "lucide-react";
 import { ThemeToggle } from "../misc/ThemeToggle";
 import { Button } from "../ui/button";
-import { useUserSession } from "@/hooks/useUserSession";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 const Navbar = async () => {
-  const user = await useUserSession();
+  const user = await useCurrentUser();
   return (
     <>
       <div className="hidden tablet:flex w-full px-[16px] tablet:px-[80px] desktop:px-[162px] h-20">
@@ -14,9 +14,7 @@ const Navbar = async () => {
           <p className="font-semibold text-primary">Minidapio</p>
 
           <div className="flex items-center gap-5">
-            {/* <Button>Afiliado</Button> */}
-
-            <Link href={!user ? "/auth/login" : "/dashboard/restaurants"}>
+            <Link href={!user ? "/sign-in" : "/dashboard/restaurants"}>
               <Button
                 className="border border-border p-3 rounded-md dark:bg-zinc-950 group hover:border-primary hover:bg-background min-w-44"
                 variant="outline"

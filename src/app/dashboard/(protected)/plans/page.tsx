@@ -3,10 +3,10 @@ import { checkMonthlySubscription } from "@/actions/subscription/checkMonthlySub
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import PlanCard from "@/components/restaurant/PlanCard";
 import { Separator } from "@/components/ui/separator";
-import { useUserSession } from "@/hooks/useUserSession";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 const PlansPage = async () => {
-  const user = await useUserSession();
+  const user = await useCurrentUser();
 
   const { subscriptions } = await fetchSubscriptionsByQuery({
     take: 10,

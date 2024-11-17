@@ -2,22 +2,16 @@
 import { ReactNode } from "react";
 import Navbar from "@/components/admin/Navbar";
 import Sidebar from "@/components/misc/ReusableSidebar";
-import { getServerSession } from "next-auth";
-import prisma from "@/lib/prisma";
-import { nextAuthOptions } from "@/lib/authProviders";
 import { redirect } from "next/navigation";
 import { adminSidebarOptions } from "@/constants/adminSidebar";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
-  const session = await getServerSession(nextAuthOptions);
+  const user = await useCurrentUser();
 
-  if (!session) {
+  if (!user) {
     return redirect("/jsnHktoSE/login");
   }
-
-  const user = await prisma.user.findUnique({
-    where: { email: session?.user?.email! },
-  });
 
   if (!user) return redirect("/jsnHktoSE/login");
 

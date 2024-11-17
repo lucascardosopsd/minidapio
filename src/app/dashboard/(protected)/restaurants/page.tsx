@@ -1,10 +1,10 @@
-import { useUserSession } from "@/hooks/useUserSession";
 import { fetchUserRestaurants } from "@/actions/restaurant/fetchUserRestaurants";
 import RestaurantsList from "@/components/restaurant/lists/Restaurants";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { SubscriptionWithPlanProps } from "@/types/plan";
 import { planLimits } from "@/constants/planLimits";
 import { FullRestaurantNestedProps } from "@/types/restaurant";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 interface CustomRestaurantsRes {
   pages: number;
@@ -17,7 +17,7 @@ interface CustomFetchSubscriptionsByQueryResProps {
 }
 
 export default async function Dashboard() {
-  const user = await useUserSession();
+  const user = await useCurrentUser();
   const restaurants = await fetchUserRestaurants();
 
   const { subscriptions } =

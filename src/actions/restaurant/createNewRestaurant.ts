@@ -2,14 +2,14 @@
 import { restaurantValidator } from "@/validators/restaurant";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
-import { useUserSession } from "@/hooks/useUserSession";
 import { revalidatePath } from "next/cache";
 import { Restaurant } from "@prisma/client";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export const createNewRestaurant = async (
   data: z.infer<typeof restaurantValidator>
 ): Promise<Restaurant> => {
-  const user = await useUserSession();
+  const user = await useCurrentUser();
 
   try {
     const newRestaurant = await prisma.restaurant.create({

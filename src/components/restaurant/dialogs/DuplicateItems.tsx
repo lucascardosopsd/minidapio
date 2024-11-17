@@ -15,11 +15,11 @@ import { useState } from "react";
 import { createNewItem } from "@/actions/item/createNewItem";
 import { ImSpinner2 } from "react-icons/im";
 import { revalidateRoute } from "@/actions/revalidateRoute";
-import { useUserSession } from "@/hooks/useUserSession";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { planLimits } from "@/constants/planLimits";
 import { SubscriptionWithPlanProps } from "@/types/subscription";
 import { fetchItemsByQuery } from "@/actions/item/fetchItemsByQuery";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 interface CustomFetchSubscriptionsByQueryResProps {
   subscriptions: SubscriptionWithPlanProps[];
@@ -41,7 +41,7 @@ const DuplicateItemsDialog = () => {
       </div>
     );
     try {
-      const user = await useUserSession();
+      const user = await useCurrentUser();
 
       const items = await fetchItemsByQuery({ where: { userId: user?.id } });
 

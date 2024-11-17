@@ -3,7 +3,7 @@ import {
   CheckMonthlyPaymentReturnProps,
   checkMonthlySubscription,
 } from "@/actions/subscription/checkMonthlySubscription";
-import { useUserSession } from "@/hooks/useUserSession";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -13,7 +13,7 @@ const UpgradeButton = () => {
   );
 
   const fetchSub = async () => {
-    const user = await useUserSession();
+    const user = await useCurrentUser();
 
     if (!user) return;
 

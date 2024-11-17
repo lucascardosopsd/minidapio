@@ -1,8 +1,8 @@
 "use server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
-import { useUserSession } from "@/hooks/useUserSession";
 import { categoryValidator } from "@/validators/category";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 interface UpdateCategoryProps {
   data: z.infer<typeof categoryValidator>;
@@ -10,7 +10,7 @@ interface UpdateCategoryProps {
 }
 
 export const updateCategory = async ({ data, id }: UpdateCategoryProps) => {
-  const user = await useUserSession();
+  const user = await useCurrentUser();
 
   try {
     await prisma.category.update({

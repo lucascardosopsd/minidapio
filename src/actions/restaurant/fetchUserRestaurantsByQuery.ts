@@ -1,6 +1,6 @@
 "use server";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import prisma from "@/lib/prisma";
-import { useUserSession } from "@/hooks/useUserSession";
 import {
   PaymentMethodProps,
   RestaurantProps,
@@ -13,7 +13,7 @@ export type RestaurantQuery = Prisma.RestaurantFindFirstArgs;
 export const fetchUserRestaurantsByQuery = async (
   query: RestaurantQuery
 ): Promise<RestaurantProps[]> => {
-  const user = await useUserSession();
+  const user = await useCurrentUser();
 
   const includeUserQuery = {
     ...query,

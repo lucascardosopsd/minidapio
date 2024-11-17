@@ -1,8 +1,8 @@
 "use server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
-import { useUserSession } from "@/hooks/useUserSession";
 import { ItemValidator } from "@/validators/item";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 interface UpdateItemProps {
   id: string;
@@ -10,7 +10,7 @@ interface UpdateItemProps {
 }
 
 export const updateItem = async ({ data, id }: UpdateItemProps) => {
-  const user = await useUserSession();
+  const user = await useCurrentUser();
 
   try {
     await prisma.item.update({

@@ -1,15 +1,10 @@
 "use client";
-import { signOut, useSession } from "next-auth/react";
+import { useClerk } from "@clerk/nextjs";
 
 const SignOutPage = () => {
-  const session = useSession();
+  const { signOut } = useClerk();
 
-  if (session) {
-    signOut({
-      redirect: true,
-      callbackUrl: "/jsnHktoSE/login",
-    });
-  }
+  signOut({ redirectUrl: "/" });
 };
 
 export default SignOutPage;

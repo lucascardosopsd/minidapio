@@ -88,6 +88,11 @@ input[type="color"]::-webkit-color-swatch {
   * {
     @apply border-border;
   }
+
+  html {
+    @apply !scroll-smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
   }

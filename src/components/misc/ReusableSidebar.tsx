@@ -9,10 +9,10 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { LogOutIcon } from "lucide-react";
 import { Separator } from "../ui/separator";
-import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { SidebarOptionProps } from "@/types/sidebar";
+import { SignOutButton } from "@clerk/nextjs";
 
 interface ReusableSidebarProps {
   options: SidebarOptionProps[];
@@ -52,16 +52,11 @@ const ReusableSidebar = ({ options, redirectLogout }: ReusableSidebarProps) => {
 
       <div className="flex flex-col gap-5 mt-auto">
         <Separator />
-        <Button
-          size="icon"
-          onClick={() => {
-            signOut({
-              callbackUrl: `${process.env.NEXT_PUBLIC_HOST!}${redirectLogout}`,
-            });
-          }}
-        >
-          <LogOutIcon />
-        </Button>
+        <SignOutButton redirectUrl={redirectLogout}>
+          <Button size="icon">
+            <LogOutIcon />
+          </Button>
+        </SignOutButton>
       </div>
     </div>
   );

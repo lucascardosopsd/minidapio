@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import "./globals.css";
 import { ThemeProvider } from "@/components/misc/ThemeProvider";
 import { Toaster } from "sonner";
-import AuthProvider from "@/components/misc/AuthProvider";
-
-import "swiper/css";
-import "react-quill/dist/quill.bubble.css";
 import Script from "next/script";
+import { ClerkProvider } from "@clerk/nextjs";
+import "./globals.css";
+import "react-quill/dist/quill.bubble.css";
+import "swiper/css";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -42,33 +41,35 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className="!scroll-smooth">
-      <head>
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-G023WJD8Y3"
-        />
-        <Script>
-          {`
+    <ClerkProvider>
+      <html lang="pt-BR" suppressHydrationWarning>
+        <head>
+          <Script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-G023WJD8Y3"
+          />
+          <Script>
+            {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
           
             gtag('config', 'G-G023WJD8Y3');
           `}
-        </Script>
-      </head>
-      <body className={poppins.className}>
-        <ThemeProvider
-          attribute="class"
-          disableTransitionOnChange
-          defaultTheme="dark"
-          enableSystem
-        >
-          <Toaster />
-          <AuthProvider>{children}</AuthProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+          </Script>
+        </head>
+        <body className={poppins.className}>
+          <ThemeProvider
+            attribute="class"
+            disableTransitionOnChange
+            defaultTheme="dark"
+            enableSystem
+          >
+            <Toaster />
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

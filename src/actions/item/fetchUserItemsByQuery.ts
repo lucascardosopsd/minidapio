@@ -1,6 +1,6 @@
 "use server";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import prisma from "@/lib/prisma";
-import { useUserSession } from "@/hooks/useUserSession";
 import { Item, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
@@ -15,7 +15,7 @@ export const fetchUserItemsByQuery = async (
   query: ItemsQuery,
   path?: string
 ): Promise<fetchUserItemsByQueryReturnProps> => {
-  const user = await useUserSession();
+  const user = await useCurrentUser();
 
   const safeQuery = {
     ...query,

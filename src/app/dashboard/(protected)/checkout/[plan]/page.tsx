@@ -3,7 +3,7 @@ import CheckoutCreditCard from "@/components/checkout/CheckoutCreditCard";
 import CheckoutPixCard from "@/components/checkout/CheckoutPixCard";
 import CheckoutProfile from "@/components/checkout/CheckoutProfile";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useUserSession } from "@/hooks/useUserSession";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { checkDoc } from "@/tools/checkDoc";
 import { AsaasCustomerObj, AsaasCustomerResProps } from "@/types/asaasCustomer";
 import axios from "axios";
@@ -16,7 +16,7 @@ interface PaymentPageProps {
 }
 
 const PaymentPage = async ({ params }: PaymentPageProps) => {
-  const user = await useUserSession();
+  const user = await useCurrentUser();
 
   let customer: AsaasCustomerObj | null = null;
 
