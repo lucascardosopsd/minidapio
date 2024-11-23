@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/misc/ThemeProvider";
 import { Toaster } from "sonner";
 import Script from "next/script";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ptBR } from "@clerk/localizations";
 import "./globals.css";
 import "react-quill/dist/quill.bubble.css";
 
@@ -40,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={ptBR}>
       <html lang="pt-BR" suppressHydrationWarning>
         <head>
           <Script
