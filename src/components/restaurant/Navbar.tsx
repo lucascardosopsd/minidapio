@@ -4,7 +4,7 @@ import { ThemeToggle } from "../misc/ThemeToggle";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-import { Bolt, Headset, LogOutIcon } from "lucide-react";
+import { Bolt, Gauge, Headset, LogOutIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import {
   DropdownMenu,
@@ -79,12 +79,20 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
             )}
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 flex flex-col gap-2">
-            <p className="w-full p-2 border border-border rounded-lg text-center">
+            <p className="w-full p-2 border border-primary rounded-lg text-center cursor-default">
               {user?.firstName}
             </p>
 
+            {user?.publicMetadata.role == "admin" && (
+              <Link href="/jsnHktoSE/dashboard">
+                <Button className="w-full gap-2" variant="outline">
+                  <Gauge /> Painel ADM
+                </Button>
+              </Link>
+            )}
+
             <Link href="/dashboard/settings">
-              <Button className="w-full">
+              <Button className="w-full gap-2" variant="outline">
                 <Bolt /> Configurações
               </Button>
             </Link>

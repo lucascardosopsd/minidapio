@@ -2,21 +2,9 @@
 import { ReactNode } from "react";
 import Navbar from "@/components/admin/Navbar";
 import Sidebar from "@/components/misc/ReusableSidebar";
-import { redirect } from "next/navigation";
 import { adminSidebarOptions } from "@/constants/adminSidebar";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 
-const Layout = async ({ children }: { children: ReactNode }) => {
-  const user = await useCurrentUser();
-
-  if (!user) {
-    return redirect("/jsnHktoSE/login");
-  }
-
-  if (!user) return redirect("/jsnHktoSE/login");
-
-  if (user.role !== "admin") return redirect("/jsnHktoSE/signout");
-
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex h-svh w-full">
       <Sidebar

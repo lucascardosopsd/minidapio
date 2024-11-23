@@ -1,9 +1,10 @@
-import { useUser } from "@clerk/nextjs";
+"use server";
 import { ThemeToggle } from "../misc/ThemeToggle";
 import { Avatar, AvatarImage } from "../ui/avatar";
+import { currentUser } from "@clerk/nextjs/server";
 
 const Navbar = async () => {
-  const { user } = await useUser();
+  const user = await currentUser();
 
   return (
     <div className="container flex justify-end items-center p-4 border-b border-border h-16">
