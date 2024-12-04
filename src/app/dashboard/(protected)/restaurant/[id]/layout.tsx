@@ -5,17 +5,17 @@ import BottomFade from "@/components/restaurant/BottomFade";
 import Navbar from "@/components/restaurant/Navbar";
 import { BreadcrumbRouteProps } from "@/types/breacrumb";
 import { RestaurantProps } from "@/types/restaurant";
-import { ReactNode, use, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 interface LayoutProps {
-  params: Promise<{
+  params: {
     id: string;
-  }>;
+  };
   children: ReactNode;
 }
 
 const Layout = ({ children, params }: LayoutProps) => {
-  const { id } = use(params);
+  const { id } = params;
 
   const [restaurant, setRestaurant] = useState<RestaurantProps>(
     {} as RestaurantProps
