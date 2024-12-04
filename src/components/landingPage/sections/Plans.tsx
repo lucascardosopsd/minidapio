@@ -76,10 +76,10 @@ const PlansSection = async () => {
           </Card>
         ))}
       </AnimatedList>
-      <Link href="/auth/register">
+      <Link href="/sign-in">
         <Button
           variant="outline"
-          className="border-primary hover:bg-background text-xl p-10 text-primary"
+          className="border-primary hover:bg-background text-xl p-10 text-primary hover:text-foreground"
         >
           Experimente Agora
         </Button>
