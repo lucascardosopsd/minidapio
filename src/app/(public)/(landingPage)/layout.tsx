@@ -13,7 +13,7 @@ const Layout = ({ children }: LayoutProps) => {
       disableTransitionOnChange
       defaultTheme="light"
     >
-      <div className="flex flex-col h-full relative w-full">
+      <div className="flex flex-col h-full w-full">
         <Navbar />
         <div className="h-full mx-auto flex flex-col w-full">{children}</div>
       </div>

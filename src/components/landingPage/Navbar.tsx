@@ -9,7 +9,7 @@ const Navbar = async () => {
   const user = await useCurrentUser();
   return (
     <>
-      <div className="hidden tablet:flex w-full px-[16px] tablet:px-[80px] desktop:px-[162px] h-20">
+      <div className="hidden tablet:flex px-[16px] tablet:px-[80px] desktop:px-[162px] h-20 sticky top-0 left-0 w-full backdrop-blur-md bg-background/50 z-50 border-b border-foreground/5 ">
         <div className="flex items-center justify-between mx-auto w-full p-2">
           <p className="font-semibold text-primary">Minidapio</p>
 
