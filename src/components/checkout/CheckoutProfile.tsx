@@ -74,7 +74,7 @@ const CheckoutProfile = ({ user, customerDefaultValues }: CheckoutProps) => {
 
       toast.success("Conta de pagamento criada/atualizada");
 
-      revalidateRoute({ fullPath: "/dashboard" });
+      revalidateRoute({ fullPath: "/dashboard/restaurants" });
     } catch (error) {
       toast.error("Algo deu errado.");
     } finally {
