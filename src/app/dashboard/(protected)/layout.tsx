@@ -2,13 +2,13 @@ import { ReactNode } from "react";
 import { ThemeProvider } from "@/components/misc/ThemeProvider";
 
 import { redirect } from "next/navigation";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { currentUser } from "@clerk/nextjs/server";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
-  const session = await useCurrentUser();
+  const user = await currentUser();
 
-  if (!session) {
-    redirect("/auth/login");
+  if (!user) {
+    redirect("/sign-in");
   }
 
   return (
