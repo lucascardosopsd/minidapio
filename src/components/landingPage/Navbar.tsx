@@ -44,7 +44,10 @@ const Navbar = async () => {
             <div className="flex flex-col items-center justify-center gap-10 my-auto h-full ">
               {/* <Button>Afiliado</Button> */}
 
-              <Link href="/dashboard" className="order-1 tablet:order-2">
+              <Link
+                href="/dashboard/restaurants"
+                className="order-1 tablet:order-2"
+              >
                 <p className="text-primary font-semibold border-b text-4xl ">
                   Dashboard
                 </p>
