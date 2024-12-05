@@ -1,5 +1,4 @@
 import Navbar from "@/components/landingPage/Navbar";
-import { ThemeProvider } from "@/components/misc/ThemeProvider";
 import { ReactNode } from "react";
 
 interface LayoutProps {
@@ -8,16 +7,10 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <ThemeProvider
-      attribute="class"
-      disableTransitionOnChange
-      defaultTheme="light"
-    >
-      <div className="flex flex-col h-full w-full">
-        <Navbar />
-        <div className="h-full mx-auto flex flex-col w-full">{children}</div>
-      </div>
-    </ThemeProvider>
+    <div className="flex flex-col h-full w-full">
+      <Navbar />
+      <div className="h-full mx-auto flex flex-col w-full">{children}</div>
+    </div>
   );
 };
 

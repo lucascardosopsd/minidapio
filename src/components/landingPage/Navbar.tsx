@@ -4,6 +4,7 @@ import { ChevronRight, Menu } from "lucide-react";
 import { ThemeToggle } from "../misc/ThemeToggle";
 import { Button } from "../ui/button";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { cn } from "@/lib/utils";
 
 const Navbar = async () => {
   const user = await useCurrentUser();
@@ -16,11 +17,25 @@ const Navbar = async () => {
           <div className="flex items-center gap-5">
             <Link href={!user ? "/sign-in" : "/dashboard/restaurants"}>
               <Button
-                className="border border-border p-3 rounded-md dark:bg-zinc-950 group hover:border-primary hover:bg-background min-w-44"
-                variant="outline"
+                className={cn(
+                  "border border-border p-3 rounded-md group hover:border-primary bg-background min-w-44",
+                  user && "!bg-primary text-background border-none"
+                )}
               >
-                <p className="text-primary">{!user ? "Entrar" : "Dashboard"}</p>
-                <ChevronRight className="group-hover:text-primary text-border" />
+                <p
+                  className={cn(
+                    "text-primary group-hover:text-background",
+                    user && "text-background"
+                  )}
+                >
+                  {!user ? "Entrar" : "Acessar Painel"}
+                </p>
+                <ChevronRight
+                  className={cn(
+                    "text-primary group-hover:text-background",
+                    user && "text-background"
+                  )}
+                />
               </Button>
             </Link>
 
