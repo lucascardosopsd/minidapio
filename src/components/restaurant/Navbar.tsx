@@ -4,7 +4,7 @@ import { ThemeToggle } from "../misc/ThemeToggle";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-import { Bolt, Gauge, Headset, LogOutIcon } from "lucide-react";
+import { Bolt, ConciergeBell, Gauge, Headset, LogOutIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import {
   DropdownMenu,
@@ -90,6 +90,12 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
                 </Button>
               </Link>
             )}
+
+            <Link href="/dashboard/restaurants">
+              <Button className="w-full gap-2" variant="outline">
+                <ConciergeBell /> Restaurantes
+              </Button>
+            </Link>
 
             <Link href="/dashboard/settings">
               <Button className="w-full gap-2" variant="outline">
