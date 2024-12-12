@@ -4,7 +4,16 @@ import { ThemeToggle } from "../misc/ThemeToggle";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-import { Bolt, ConciergeBell, Gauge, Headset, LogOutIcon } from "lucide-react";
+import {
+  ArchiveRestore,
+  Bolt,
+  ConciergeBell,
+  Gauge,
+  Headset,
+  Home,
+  LogOutIcon,
+  Menu,
+} from "lucide-react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import {
   DropdownMenu,
@@ -63,7 +72,7 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
         </Link>
 
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <div className="flex items-center gap-2">
             {user?.imageUrl && (
               <Avatar className="border border-primary">
                 <AvatarImage src={user.imageUrl} />
@@ -77,8 +86,22 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
                 </span>
               </div>
             )}
-          </DropdownMenuTrigger>
+
+            <DropdownMenuTrigger asChild>
+              <Button
+                size="icon"
+                variant="outline"
+                className="border-primary text-primary"
+              >
+                <Menu />
+              </Button>
+            </DropdownMenuTrigger>
+          </div>
           <DropdownMenuContent className="w-56 flex flex-col gap-2">
+            <div className="tablet:hidden flex justify-center border-primary border rounded-full">
+              <ThemeToggle />
+            </div>
+
             <p className="w-full p-2 border border-primary rounded-lg text-center cursor-default">
               {user?.firstName}
             </p>
@@ -91,9 +114,21 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
               </Link>
             )}
 
+            <Link href="/dashboard">
+              <Button className="w-full gap-2" variant="outline">
+                <Home /> Início
+              </Button>
+            </Link>
+
             <Link href="/dashboard/restaurants">
               <Button className="w-full gap-2" variant="outline">
                 <ConciergeBell /> Restaurantes
+              </Button>
+            </Link>
+
+            <Link href="/dashboard/variants">
+              <Button className="w-full gap-2" variant="outline">
+                <ArchiveRestore /> Variações
               </Button>
             </Link>
 
@@ -105,7 +140,7 @@ const Navbar = ({ breadcrumb }: NavbarProps) => {
 
             <SignOutButton redirectUrl="/sign-in">
               <Button
-                variant="outline"
+                variant="destructive"
                 size="sm"
                 className="flex items-center gap-2 justify-center w-full"
               >
