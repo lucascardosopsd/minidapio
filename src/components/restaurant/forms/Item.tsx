@@ -87,7 +87,8 @@ const ItemForm = ({
               <FormControl>
                 <NumericFormat
                   decimalSeparator=","
-                  maxLength={8}
+                  thousandSeparator="."
+                  maxLength={20}
                   prefix="R$"
                   placeholder="R$0,00"
                   value={value}
