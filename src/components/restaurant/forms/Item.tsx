@@ -81,22 +81,19 @@ const ItemForm = ({
         <FormField
           control={form.control}
           name="price"
-          render={({ field }) => (
-            <FormItem className="w-full">
+          render={({ field: { onChange, value, onBlur } }) => (
+            <FormItem className="w-full flex flex-col">
               <FormLabel>Preço</FormLabel>
               <FormControl>
                 <NumericFormat
                   decimalSeparator=","
-                  valueIsNumericString
-                  decimalScale={2}
                   maxLength={8}
                   prefix="R$"
                   placeholder="R$0,00"
-                  onValueChange={(values) => {
-                    field.onChange(values.floatValue);
-                  }}
-                  value={field.value}
-                  onBlur={field.onBlur}
+                  value={value}
+                  onBlur={onBlur}
+                  onValueChange={(values) => onChange(values.floatValue)}
+                  className="p-2 px-3 bg-transparent border border-border rounded-lg text-sm"
                 />
               </FormControl>
               <FormMessage />
@@ -242,16 +239,19 @@ const ItemForm = ({
               <FormField
                 control={form.control}
                 name="salePrice"
-                render={({ field: { onChange } }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Preço Promocional*</FormLabel>
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <FormItem className="w-full flex flex-col">
+                    <FormLabel>Preço promocional*</FormLabel>
                     <FormControl>
                       <NumericFormat
                         decimalSeparator=","
                         maxLength={8}
                         prefix="R$"
                         placeholder="R$0,00"
+                        value={value}
+                        onBlur={onBlur}
                         onValueChange={(values) => onChange(values.floatValue)}
+                        className="p-2 px-3 bg-transparent border border-border rounded-lg text-sm"
                       />
                     </FormControl>
                     <FormMessage />
