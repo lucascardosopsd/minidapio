@@ -23,9 +23,10 @@ import { SelectItem } from "../ui/select";
 import SelectBuilder from "../builders/SelectBuilder";
 import { CepPromiseReturnProps } from "@/types/cep";
 import { toast } from "sonner";
-import { createUpdateAsaasCustomer } from "@/actions/paymentProfile/createUpdateAsaasCustomer";
 import { useState } from "react";
 import { revalidateRoute } from "@/actions/revalidateRoute";
+import { updateAsaasCustomer } from "@/actions/paymentProfile/updateAsaasCustomer";
+import { createAsaasCustomer } from "@/actions/paymentProfile/createAsaasCustomer";
 
 interface CheckoutProps {
   customerDefaultValues?: z.infer<typeof customerProfileValidator> | null;
@@ -58,19 +59,34 @@ const CheckoutProfile = ({ user, customerDefaultValues }: CheckoutProps) => {
     setCustomerLoading(true);
 
     try {
-      await createUpdateAsaasCustomer({
-        user,
-        data: {
-          name: data.name,
-          cpfCnpj: data.cpfCnpj,
-          email: data.email,
-          mobilePhone: data.mobilePhone,
-          address: data.address,
-          addressNumber: data.addressNumber,
-          postalCode: data.postalCode,
-          addressComplement: null,
-        },
-      });
+      if (user.customerId) {
+        await updateAsaasCustomer({
+          user,
+          data: {
+            name: data.name,
+            cpfCnpj: data.cpfCnpj,
+            email: data.email,
+            mobilePhone: data.mobilePhone,
+            address: data.address,
+            addressNumber: data.addressNumber,
+            postalCode: data.postalCode,
+            addressComplement: null,
+          },
+        });
+      } else {
+        await createAsaasCustomer({
+          data: {
+            name: data.name,
+            cpfCnpj: data.cpfCnpj,
+            email: data.email,
+            mobilePhone: data.mobilePhone,
+            address: data.address,
+            addressNumber: data.addressNumber,
+            postalCode: data.postalCode,
+            addressComplement: null,
+          },
+        });
+      }
 
       toast.success("Conta de pagamento criada/atualizada");
 
