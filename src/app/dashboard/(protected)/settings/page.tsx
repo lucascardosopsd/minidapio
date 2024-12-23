@@ -1,7 +1,5 @@
 import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
-import { fetchPlansByQuery } from "@/actions/plan/fetchPlansByQuery";
 import { checkMonthlySubscription } from "@/actions/subscription/checkMonthlySubscription";
-import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { PaymentWithSubscriptionWithPlan } from "@/types/subscription";
 import SettingsPanel from "@/components/settings/Panel";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -13,22 +11,6 @@ interface CustomPaymentsRes {
 
 const NewPaymentProfilePage = async () => {
   const user = await useCurrentUser();
-
-  const { subscriptions } = await fetchSubscriptionsByQuery({
-    page: 0,
-    take: 100,
-    query: {
-      where: {
-        userId: user?.id,
-        status: "ACTIVE",
-      },
-    },
-  });
-  const { plans } = await fetchPlansByQuery({ take: 10, page: 0, query: {} });
-
-  const currentPlan = plans.filter(
-    (plan) => plan.id == subscriptions[0]?.planId
-  )[0];
 
   const { payments } = await fetchPaymentsByQuery<CustomPaymentsRes>({
     query: {

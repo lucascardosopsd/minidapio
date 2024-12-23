@@ -59,34 +59,23 @@ const CheckoutProfile = ({ user, customerDefaultValues }: CheckoutProps) => {
     setCustomerLoading(true);
 
     try {
-      if (user.customerId) {
-        await updateAsaasCustomer({
-          user,
-          data: {
-            name: data.name,
-            cpfCnpj: data.cpfCnpj,
-            email: data.email,
-            mobilePhone: data.mobilePhone,
-            address: data.address,
-            addressNumber: data.addressNumber,
-            postalCode: data.postalCode,
-            addressComplement: null,
-          },
-        });
-      } else {
-        await createAsaasCustomer({
-          data: {
-            name: data.name,
-            cpfCnpj: data.cpfCnpj,
-            email: data.email,
-            mobilePhone: data.mobilePhone,
-            address: data.address,
-            addressNumber: data.addressNumber,
-            postalCode: data.postalCode,
-            addressComplement: null,
-          },
-        });
-      }
+      const customerFn = !user?.customerId
+        ? createAsaasCustomer
+        : updateAsaasCustomer;
+
+      await customerFn({
+        user,
+        data: {
+          name: data.name,
+          cpfCnpj: data.cpfCnpj,
+          email: data.email,
+          mobilePhone: data.mobilePhone,
+          address: data.address,
+          addressNumber: data.addressNumber,
+          postalCode: data.postalCode,
+          addressComplement: null,
+        },
+      });
 
       toast.success("Conta de pagamento criada/atualizada");
 
