@@ -3,13 +3,7 @@ import RestaurantsList from "@/components/restaurant/lists/Restaurants";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
 import { SubscriptionWithPlanProps } from "@/types/plan";
 import { planLimits } from "@/constants/planLimits";
-import { FullRestaurantNestedProps } from "@/types/restaurant";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-
-interface CustomRestaurantsRes {
-  pages: number;
-  restaurants: FullRestaurantNestedProps[];
-}
 
 interface CustomFetchSubscriptionsByQueryResProps {
   subscriptions: SubscriptionWithPlanProps[];
