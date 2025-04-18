@@ -5,12 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "../ui/form";
 import { Button } from "../ui/button";
 import { z } from "zod";
@@ -23,7 +23,7 @@ import { SelectItem } from "../ui/select";
 import SelectBuilder from "../builders/SelectBuilder";
 import { CepPromiseReturnProps } from "@/types/cep";
 import { toast } from "sonner";
-import { createUpdateAsaasCustomer } from "@/actions/paymentProfile/createUpdateAsaasCustomer";
+import { createUpdateStripeCustomer } from "@/actions/paymentProfile/createUpdateStripeCustomer";
 import { useState } from "react";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 
@@ -58,7 +58,7 @@ const CheckoutProfile = ({ user, customerDefaultValues }: CheckoutProps) => {
     setCustomerLoading(true);
 
     try {
-      await createUpdateAsaasCustomer({
+      await createUpdateStripeCustomer({
         user,
         data: {
           name: data.name,

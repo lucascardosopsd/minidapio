@@ -1,8 +1,7 @@
-import { ItemValidator } from "@/validators/item";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Item } from "@prisma/client";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { ItemValidator } from '@/validators/item';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const mockDefault = {
   highlight: false,
@@ -15,7 +14,7 @@ interface UseItemFormHookProps {
 }
 
 export const useItemFormHook = ({ defaultValues }: UseItemFormHookProps) => {
-  return useForm<Item>({
+  return useForm<z.infer<typeof ItemValidator>>({
     resolver: zodResolver(ItemValidator),
     defaultValues: defaultValues ? defaultValues : mockDefault,
   });

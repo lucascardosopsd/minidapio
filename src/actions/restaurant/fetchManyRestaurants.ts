@@ -36,9 +36,25 @@ export const fetchManyRestaurants = async ({
 
   return {
     restaurants: restaurants.map((restaurant) => ({
-      ...restaurant,
-      workHours: restaurant.workHours as unknown as WorkHourProps[],
+      id: restaurant.id,
+      title: restaurant.name,
+      active: restaurant.isActive,
+      landline: null,
+      whatsapp: null,
+      address: restaurant.address,
       methods: restaurant.methods as unknown as PaymentMethodProps,
+      workHours: restaurant.workHours as unknown as WorkHourProps[],
+      logo: "",
+      color: "",
+      linkMaps: null,
+      note: restaurant.description,
+      activeMenu: true,
+      slug: "",
+      createdAt: restaurant.createdAt,
+      updatedAt: restaurant.updatedAt,
+      userId: restaurant.userId,
+      state: "",
+      province: "",
     })),
     pages,
   };

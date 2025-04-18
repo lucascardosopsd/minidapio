@@ -22,7 +22,7 @@ export const useRestaurantForm = ({
       },
       workHours: [
         {
-          weekday: 1,
+          weekDay: 1,
           opened: true,
           times: {
             open: "18:00",

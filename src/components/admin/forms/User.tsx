@@ -10,9 +10,11 @@ import { SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { User } from "@prisma/client";
 
+type UserFormData = z.infer<typeof userValidatorSchema>;
+
 interface UserFormProps {
   defaultValues?: User;
-  onSubmit: (data: z.infer<typeof userValidatorSchema>) => Promise<void>;
+  onSubmit: (data: UserFormData) => Promise<void>;
   loading: boolean;
 }
 

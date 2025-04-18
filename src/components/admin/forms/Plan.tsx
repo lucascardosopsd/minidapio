@@ -14,22 +14,32 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Plan } from "@prisma/client";
 import { Controller, useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
-import { z } from "zod";
 import dynamic from "next/dynamic";
 import { Checkbox } from "@/components/ui/checkbox";
 const RichTextEditor = dynamic(() => import("@/components/misc/Richtext"), {
   ssr: false,
 });
 
+interface PlanFormData extends Plan {
+  subTitle: string;
+  level: number;
+  highlighted: boolean;
+}
+
 interface PlanFormProps {
-  onSubmit: (data: z.infer<typeof planValidator>) => void;
+  onSubmit: (data: PlanFormData) => void;
   loading: boolean;
   defaultValues: Plan | null;
 }
 
 const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
-  const form = useForm({
-    defaultValues: defaultValues || {
+  const form = useForm<PlanFormData>({
+    defaultValues: defaultValues ? {
+      ...defaultValues,
+      subTitle: "",
+      level: 0,
+      highlighted: false,
+    } : {
       title: "",
       subTitle: "",
       alias: "",
@@ -38,6 +48,10 @@ const PlanForm = ({ onSubmit, loading, defaultValues }: PlanFormProps) => {
       description: "",
       highlighted: false,
       order: 0,
+      id: "",
+      stripePriceId: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     resolver: zodResolver(planValidator),
   });

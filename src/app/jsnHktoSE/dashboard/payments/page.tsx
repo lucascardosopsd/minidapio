@@ -2,11 +2,11 @@ import Paginate from "@/components/misc/Paginate";
 import ReusableComboSearch from "@/components/misc/ReusableComboSearch";
 import { Separator } from "@/components/ui/separator";
 import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table";
 import { fetchPaymentsByQuery } from "@/actions/payment/fetchPaymentsByQuery";
 import { fetchUsersByQuery } from "@/actions/user/fetchUsersByQuery";
@@ -44,9 +44,9 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
           userId,
         },
       include: {
-        Subscription: {
+        subscription: {
           include: {
-            Plan: true,
+            plan: true,
           },
         },
       },

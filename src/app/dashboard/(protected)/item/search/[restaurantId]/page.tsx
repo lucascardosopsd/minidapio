@@ -14,7 +14,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import SearchItemRow from "@/components/search/restaurant/ItemRow";
-import { Category, Item } from "@prisma/client";
+import { Category, MenuItem } from "@prisma/client";
+
+interface ItemProps extends MenuItem {
+  Category: Category;
+}
 
 interface PageProps {
   params: Promise<{
@@ -31,7 +35,7 @@ interface PageProps {
   }>;
 }
 
-interface FetchItemsProps extends Item {
+interface FetchItemsProps extends MenuItem {
   Category: Category;
 }
 
@@ -55,30 +59,29 @@ export default async function Restaurant({ params, searchParams }: PageProps) {
     },
   });
 
-  const { items, pages } = await fetchManyItems<FetchManyItemsResProps>({
+  const { items, count } = await fetchManyItems({
     take: 20,
-    page: page - 1,
-    query: {
-      where: {
-        title: {
-          contains: sParams.title && sParams.title,
-          mode: "insensitive",
-        },
-        description: {
-          contains: sParams.description && sParams.description,
-          mode: "insensitive",
-        },
-        active: sParams.active && sParams.active == "true" ? true : false,
-        price: sParams.price ? parseFloat(sParams.price!) : undefined,
-        sale: sParams.sale && sParams.sale == "true" ? true : false,
-        categoryId: sParams.categoryId && sParams.categoryId,
-        restaurantId,
+    skip: (page - 1) * 20,
+    where: {
+      name: {
+        contains: sParams.title && sParams.title,
+        mode: "insensitive",
       },
-      include: {
-        Category: true,
+      description: {
+        contains: sParams.description && sParams.description,
+        mode: "insensitive",
       },
+      isAvailable: sParams.active && sParams.active == "true" ? true : false,
+      price: sParams.price ? parseFloat(sParams.price!) : undefined,
+      categoryId: sParams.categoryId && sParams.categoryId,
+      restaurantId,
+    },
+    include: {
+      category: true,
     },
   });
+
+  const pages = Math.ceil(count / 20);
 
   return (
     <main className="flex flex-col gap-4 pt-5 h-[90svh] ">
@@ -109,13 +112,26 @@ export default async function Restaurant({ params, searchParams }: PageProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {items.map((item) => (
-                <SearchItemRow
-                  categories={categories}
-                  item={item}
-                  key={item.id}
-                />
-              ))}
+              {items.map((item) => {
+                const category = categories.find(cat => cat.id === item.categoryId);
+                return (
+                  <SearchItemRow
+                    categories={categories}
+                    item={{
+                      ...item,
+                      Category: category,
+                      title: item.name,
+                      active: item.isAvailable,
+                      highlight: false,
+                      sale: false,
+                      salePrice: null,
+                      order: null,
+                      image: "",
+                    } as unknown as ItemProps}
+                    key={item.id}
+                  />
+                );
+              })}
             </TableBody>
           </Table>
 

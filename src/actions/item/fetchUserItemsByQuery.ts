@@ -1,48 +1,47 @@
-"use server";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import prisma from "@/lib/prisma";
-import { Item, Prisma } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+'use server';
+import { getCurrentUser } from '@/hooks/useCurrentUser';
+import prisma from '@/lib/prisma';
+import { MenuItem, Prisma } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
-export type ItemsQuery = Prisma.ItemFindManyArgs;
+export type ItemsQuery = Prisma.MenuItemFindManyArgs;
 
 interface fetchUserItemsByQueryReturnProps {
   count: number;
-  items: Item[];
+  items: MenuItem[];
 }
 
 export const fetchUserItemsByQuery = async (
   query: ItemsQuery,
   path?: string
 ): Promise<fetchUserItemsByQueryReturnProps> => {
-  const user = await useCurrentUser();
+  const user = await getCurrentUser();
 
   const safeQuery = {
     ...query,
     orderBy: {
-      title: "asc",
+      name: 'asc',
     },
     where: {
       ...query.where,
-      title: query.where?.title && {
-        contains: query.where?.title as string,
-        mode: "insensitive",
+      userId: user?.id,
+      name: query.where?.name && {
+        contains: query.where?.name as string,
+        mode: 'insensitive',
       },
       description: query.where?.description && {
         contains: query.where?.description as string,
-        mode: "insensitive",
+        mode: 'insensitive',
       },
       price: query.where?.price,
-      active: query.where?.active,
-      sale: query.where?.sale,
-      userId: user?.id,
+      isAvailable: query.where?.isAvailable,
     },
   } satisfies ItemsQuery;
 
   try {
     const [count, items] = await prisma.$transaction([
-      prisma.item.count(),
-      prisma.item.findMany(safeQuery),
+      prisma.menuItem.count({ where: { userId: user?.id } }),
+      prisma.menuItem.findMany(safeQuery),
     ]);
 
     if (path) revalidatePath(path);

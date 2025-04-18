@@ -10,6 +10,7 @@ interface GenerateMetadataProps {
   params?: Promise<{
     slug?: string;
     userId?: string;
+    restaurantId?: string;
   }>;
 }
 
@@ -23,7 +24,7 @@ export const generateMetadata = async (
     take: 10,
     page: 0,
     query: {
-      where: { slug: paramsObj?.slug, userId: paramsObj?.userId },
+      where: { id: paramsObj?.restaurantId },
     },
   });
   const previousImages = (await parent).openGraph?.images || [];
@@ -34,8 +35,8 @@ export const generateMetadata = async (
     openGraph: {
       description: `Cardápio digital ${restaurants[0]?.title}`,
       title: restaurants[0]?.title,
-      url: `${process.env.HOST}/menu/${paramsObj?.userId}/${paramsObj?.slug}`,
-      images: [restaurants[0]?.logo, ...previousImages],
+      url: `${process.env.HOST}/menu/${paramsObj?.restaurantId}/${paramsObj?.slug}`,
+      images: restaurants[0]?.logo ? [restaurants[0].logo, ...previousImages] : previousImages,
       locale: "pt-BR",
     },
   };

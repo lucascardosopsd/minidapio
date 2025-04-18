@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { Plan, Subscription } from "@prisma/client";
 
 export interface SubscriptionWithPlan extends Subscription {
-  Plan: Plan | null;
+  plan: Plan | null;
 }
 
 export const fetchUserSubscriptions = async ({
@@ -16,7 +16,7 @@ export const fetchUserSubscriptions = async ({
       createdAt: "desc",
     },
     include: {
-      Plan: true,
+      plan: true,
     },
   });
 };

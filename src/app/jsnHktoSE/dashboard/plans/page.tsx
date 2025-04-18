@@ -40,7 +40,15 @@ const PlansPage = async () => {
 
           <TableBody>
             {plans.map((plan) => (
-              <PlanRow key={plan.id} plan={plan} />
+              <PlanRow 
+                key={plan.id} 
+                plan={{
+                  ...plan,
+                  level: 0,
+                  subTitle: "",
+                  highlighted: false
+                }} 
+              />
             ))}
           </TableBody>
         </Table>

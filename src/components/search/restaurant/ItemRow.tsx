@@ -1,30 +1,32 @@
-"use client";
-import { Checkbox } from "../../ui/checkbox";
-import { useItemStore } from "@/context/item";
-import { Badge } from "../../ui/badge";
-import { Category, Item } from "@prisma/client";
-import { TableCell, TableRow } from "@/components/ui/table";
-import { useEffect, useRef, useState } from "react";
-import { updateItem } from "@/actions/item/updateItem";
-import { z } from "zod";
-import { ItemValidator } from "@/validators/item";
-import { toast } from "sonner";
-import { FaPen } from "react-icons/fa6";
-import { revalidateRoute } from "@/actions/revalidateRoute";
-import { usePathname } from "next/navigation";
-import ReusableSheet from "@/components/misc/ReusableSheet";
-import Image from "next/image";
-import { NumericFormat } from "react-number-format";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import ItemForm from "@/components/restaurant/forms/Item";
+'use client';
+import { Checkbox } from '../../ui/checkbox';
+import { useItemStore } from '@/context/item';
+import { Badge } from '../../ui/badge';
+import { Category, MenuItem } from '@prisma/client';
+import { TableCell, TableRow } from '@/components/ui/table';
+import { useEffect, useRef, useState } from 'react';
+import { updateItem } from '@/actions/item/updateItem';
+import { z } from 'zod';
+import { ItemValidator } from '@/validators/item';
+import { toast } from 'sonner';
+import { FaPen } from 'react-icons/fa6';
+import { revalidateRoute } from '@/actions/revalidateRoute';
+import { usePathname } from 'next/navigation';
+import ReusableSheet from '@/components/misc/ReusableSheet';
+import Image from 'next/image';
+import { NumericFormat } from 'react-number-format';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import ItemForm from '@/components/restaurant/forms/Item';
 
-interface ItemProps extends Item {
+interface ItemProps extends MenuItem {
   Category: Category;
+  title?: string;
+  image?: string;
+  order?: number;
+  sale?: boolean;
+  salePrice?: number;
+  highlight?: boolean;
+  active?: boolean;
 }
 
 interface SearchItemRowProps {
@@ -49,17 +51,18 @@ const SearchItemRow = ({ item, categories }: SearchItemRowProps) => {
     }
   }, [item.price]);
 
-  const handleUpdateItem = async (
-    data: Partial<z.infer<typeof ItemValidator>>
-  ) => {
+  const handleUpdateItem = async (data: Partial<z.infer<typeof ItemValidator>>) => {
     setLoading(true);
     try {
-      await updateItem({ data, id: item.id });
-      toast.success("Item Atualizado!");
+      await updateItem({
+        data: data as z.infer<typeof ItemValidator>,
+        id: item.id,
+      });
+      toast.success('Item Atualizado!');
       revalidateRoute({ fullPath: pathname });
     } catch (error) {
-      toast.error("Ocorreu um erro.");
-      throw new Error("Error when create/update new item");
+      toast.error('Ocorreu um erro.');
+      throw new Error('Error when create/update new item');
     } finally {
       setOpen(false);
       setLoading(false);
@@ -69,10 +72,7 @@ const SearchItemRow = ({ item, categories }: SearchItemRowProps) => {
   return (
     <TableRow>
       <TableCell>
-        <Checkbox
-          onClick={() => toggleId(item.id)}
-          checked={idList.some((id) => item.id == id)}
-        />
+        <Checkbox onClick={() => toggleId(item.id)} checked={idList.some(id => item.id == id)} />
       </TableCell>
 
       <TableCell>
@@ -93,15 +93,15 @@ const SearchItemRow = ({ item, categories }: SearchItemRowProps) => {
         <div className="flex items-center">
           <p>{item.title}</p>
 
-          <p className="text-primary text-xs ml-1">[{item.order!}]</p>
+          <p className="ml-1 text-xs text-primary">[{item.order!}]</p>
         </div>
       </TableCell>
 
       <TableCell>
         {item.description ? (
-          <Badge className="w-full  flex justify-center">Sim</Badge>
+          <Badge className="flex  w-full justify-center">Sim</Badge>
         ) : (
-          <Badge variant="outline" className="w-full flex justify-center">
+          <Badge variant="outline" className="flex w-full justify-center">
             Não
           </Badge>
         )}
@@ -113,7 +113,7 @@ const SearchItemRow = ({ item, categories }: SearchItemRowProps) => {
         {item.price ? (
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="flex items-center justify-center w-full">
+              <TooltipTrigger className="flex w-full items-center justify-center">
                 <NumericFormat
                   decimalSeparator=","
                   valueIsNumericString
@@ -121,13 +121,13 @@ const SearchItemRow = ({ item, categories }: SearchItemRowProps) => {
                   maxLength={8}
                   prefix="R$"
                   placeholder="R$0,00"
-                  onValueChange={(values) => setPrice(values.floatValue!)}
+                  onValueChange={values => setPrice(values.floatValue!)}
                   value={price}
-                  onKeyDown={(e) => {
-                    if (e.key == "Enter") {
+                  onKeyDown={e => {
+                    if (e.key == 'Enter') {
                       priceRef?.current && priceRef.current.blur();
 
-                      if (typeof price == "undefined") {
+                      if (typeof price == 'undefined') {
                         handleUpdateItem({ price: 0 });
                         return;
                       }
@@ -152,9 +152,9 @@ const SearchItemRow = ({ item, categories }: SearchItemRowProps) => {
           <p className="text-primary">
             {item?.salePrice &&
               item?.salePrice > 0 &&
-              item?.salePrice.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
+              item?.salePrice.toLocaleString('pt-br', {
+                style: 'currency',
+                currency: 'BRL',
               })}
           </p>
         )}
@@ -162,9 +162,9 @@ const SearchItemRow = ({ item, categories }: SearchItemRowProps) => {
 
       <TableCell>
         {item.sale ? (
-          <Badge className="w-full  flex justify-center">Promoção</Badge>
+          <Badge className="flex  w-full justify-center">Promoção</Badge>
         ) : (
-          <Badge variant="outline" className="w-full flex justify-center">
+          <Badge variant="outline" className="flex w-full justify-center">
             Não
           </Badge>
         )}
@@ -172,9 +172,9 @@ const SearchItemRow = ({ item, categories }: SearchItemRowProps) => {
 
       <TableCell>
         {item.highlight ? (
-          <Badge className="w-full flex justify-center">Destaque</Badge>
+          <Badge className="flex w-full justify-center">Destaque</Badge>
         ) : (
-          <Badge variant="outline" className="w-full flex justify-center">
+          <Badge variant="outline" className="flex w-full justify-center">
             Não
           </Badge>
         )}
@@ -182,9 +182,9 @@ const SearchItemRow = ({ item, categories }: SearchItemRowProps) => {
 
       <TableCell>
         {item.active ? (
-          <Badge className="w-full flex justify-center">Ativo</Badge>
+          <Badge className="flex w-full justify-center">Ativo</Badge>
         ) : (
-          <Badge variant="outline" className="w-full flex justify-center">
+          <Badge variant="outline" className="flex w-full justify-center">
             Inativo
           </Badge>
         )}

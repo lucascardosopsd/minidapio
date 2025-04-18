@@ -1,26 +1,22 @@
-"use server";
-import { z } from "zod";
-import prisma from "@/lib/prisma";
-import { categoryValidator } from "@/validators/category";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+'use server';
+import { z } from 'zod';
+import prisma from '@/lib/prisma';
+import { categoryValidator } from '@/validators/category';
 
-export const createNewCategory = async ({
-  data,
-}: {
-  data: z.infer<typeof categoryValidator>;
-}) => {
-  const user = await useCurrentUser();
-
+export const createNewCategory = async ({ data }: { data: z.infer<typeof categoryValidator> }) => {
   try {
     const newCategory = await prisma.category.create({
       data: {
-        ...data,
-        userId: user?.id,
+        title: data.title,
+        order: data.order ?? undefined,
+        active: data.active,
+        restaurantId: data.restaurantId,
       },
     });
 
     return newCategory;
   } catch (error) {
-    throw new Error("Can't create new restaurant");
+    console.error(error);
+    throw new Error('Error when create category');
   }
 };

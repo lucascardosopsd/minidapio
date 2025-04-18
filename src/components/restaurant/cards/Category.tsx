@@ -1,36 +1,26 @@
-"use client";
-import { CategoriesWithItemsProps } from "@/types/category";
-import {
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../../ui/accordion";
-import { FaPen, FaTrash } from "react-icons/fa6";
-import { Badge } from "../../ui/badge";
-import DeleteModal from "../ConfirmModal";
-import { deleteCategory } from "@/actions/category/deleteCategory";
-import { toast } from "sonner";
-import CategoryForm from "../forms/Category";
-import { usePathname } from "next/navigation";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import ItemRow from "../tableRows/Item";
-import ItemForm from "../forms/Item";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import { z } from "zod";
-import { createNewItem } from "@/actions/item/createNewItem";
-import { ItemValidator } from "@/validators/item";
-import { revalidateRoute } from "@/actions/revalidateRoute";
-import ReusableSheet from "@/components/misc/ReusableSheet";
-import { updateCategory } from "@/actions/category/updateCategory";
-import { categoryValidator } from "@/validators/category";
-import { PlanLimitProps } from "@/constants/planLimits";
+'use client';
+import { CategoriesWithItemsProps } from '@/types/category';
+import { AccordionContent, AccordionItem, AccordionTrigger } from '../../ui/accordion';
+import { FaPen, FaTrash } from 'react-icons/fa6';
+import { Badge } from '../../ui/badge';
+import DeleteModal from '../ConfirmModal';
+import { deleteCategory } from '@/actions/category/deleteCategory';
+import { toast } from 'sonner';
+import CategoryForm from '../forms/Category';
+import { usePathname } from 'next/navigation';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import ItemRow from '../tableRows/Item';
+import ItemForm from '../forms/Item';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import { z } from 'zod';
+import { createNewItem } from '@/actions/item/createNewItem';
+import { ItemValidator } from '@/validators/item';
+import { revalidateRoute } from '@/actions/revalidateRoute';
+import ReusableSheet from '@/components/misc/ReusableSheet';
+import { updateCategory } from '@/actions/category/updateCategory';
+import { categoryValidator } from '@/validators/category';
+import { PlanLimitProps } from '@/constants/planLimits';
 
 interface CategoryCardProps {
   category: CategoriesWithItemsProps;
@@ -39,20 +29,13 @@ interface CategoryCardProps {
   limits: PlanLimitProps;
 }
 
-const CategoryCard = ({
-  category,
-  restaurantId,
-  categories,
-  limits,
-}: CategoryCardProps) => {
+const CategoryCard = ({ category, restaurantId, categories, limits }: CategoryCardProps) => {
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const [openItem, setOpenItem] = useState(false);
   const [openEditCategory, setOpenEditCategory] = useState(false);
 
-  const itemsCount = categories.flatMap(
-    (category) => category.items && category.items
-  ).length;
+  const itemsCount = categories.flatMap(category => category.items && category.items).length;
 
   const handleNewItem = async (data: z.infer<typeof ItemValidator>) => {
     data.restaurantId = restaurantId;
@@ -60,11 +43,11 @@ const CategoryCard = ({
     setLoading(true);
     try {
       await createNewItem({ data });
-      toast.success("Item criado!");
+      toast.success('Item criado!');
       revalidateRoute({ fullPath: pathname });
     } catch (error) {
-      toast.error("Ocorreu um erro.");
-      throw new Error("Error when create/update new item");
+      toast.error('Ocorreu um erro.');
+      throw new Error('Error when create/update new item');
     } finally {
       setLoading(false);
       setOpenItem(false);
@@ -74,26 +57,24 @@ const CategoryCard = ({
   const handleDeleteCategory = async () => {
     try {
       await deleteCategory(category.id, restaurantId, pathname);
-      toast("Categoria deletada");
+      toast('Categoria deletada');
     } catch (error) {
-      toast("ocorreu um erro");
-      throw new Error("Error when delete category");
+      toast('ocorreu um erro');
+      throw new Error('Error when delete category');
     }
   };
 
-  const handleUpdateCategory = async (
-    data: z.infer<typeof categoryValidator>
-  ) => {
+  const handleUpdateCategory = async (data: z.infer<typeof categoryValidator>) => {
     setLoading(true);
 
     try {
       await updateCategory({ data, id: category.id });
 
       revalidateRoute({ fullPath: pathname });
-      toast("Categoria atualizada");
+      toast('Categoria atualizada');
     } catch (error) {
       console.log(error);
-      toast("Ocorreu um erro.");
+      toast('Ocorreu um erro.');
       throw new Error("Can't update category");
     } finally {
       setOpenEditCategory(false);
@@ -102,16 +83,11 @@ const CategoryCard = ({
   };
 
   return (
-    <AccordionItem
-      className="flex flex-col mx-4 border-none bg-background"
-      value={category.id}
-    >
-      <AccordionTrigger className="w-full px-5 gap-5 border border-border rounded-lg">
-        <div className="flex items-center flex-col tablet:flex-row w-full gap-2">
-          <p className="text-center tablet:text-start w-full">
-            {category.title}
-          </p>
-          <div className="flex w-full justify-center tablet:justify-end tablet:w-auto gap-4 tablet:ml-auto mx-auto">
+    <AccordionItem className="mx-4 flex flex-col border-none bg-background" value={category.id}>
+      <AccordionTrigger className="w-full gap-5 rounded-lg border border-border px-5">
+        <div className="flex w-full flex-col items-center gap-2 tablet:flex-row">
+          <p className="w-full text-center tablet:text-start">{category.title}</p>
+          <div className="mx-auto flex w-full justify-center gap-4 tablet:ml-auto tablet:w-auto tablet:justify-end">
             <ReusableSheet
               content={
                 <ItemForm
@@ -164,9 +140,9 @@ const CategoryCard = ({
         </div>
       </AccordionTrigger>
       <AccordionContent>
-        <div className="overflow-x-auto w-[calc(100svw-60px)] tablet:w-full">
-          <div className="w-[250svw] pr-20 tablet:pr-0 tablet:w-full">
-            <div className="flex flex-col space-y-2 mt-2">
+        <div className="w-[calc(100svw-60px)] overflow-x-auto tablet:w-full">
+          <div className="w-[250svw] pr-20 tablet:w-full tablet:pr-0">
+            <div className="mt-2 flex flex-col space-y-2">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -185,23 +161,17 @@ const CategoryCard = ({
                   {category.items &&
                     category?.items
                       .sort((a, b) => a.order - b.order)
-                      .map((item) => (
-                        <ItemRow
-                          categories={categories}
-                          item={item}
-                          key={item.id}
-                        />
-                      ))}
+                      .map(item => <ItemRow categories={categories} item={item} key={item.id} />)}
                 </TableBody>
               </Table>
             </div>
 
             {!category.items?.length && (
-              <div className="flex flex-col items-center justify-center w-full mt-5">
+              <div className="mt-5 flex w-full flex-col items-center justify-center">
                 <p>Esta categoria não possuí itens.</p>
                 <div className="flex">
                   <p>👆 Crie itens clicando em </p>
-                  <p className="text-primary ml-1">"+"</p>
+                  <p className="ml-1 text-primary">"+"</p>
                 </div>
               </div>
             )}

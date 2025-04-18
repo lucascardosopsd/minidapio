@@ -1,51 +1,53 @@
-"use client";
-import Image from "next/image";
-import { Badge } from "../../ui/badge";
-import { Card, CardContent, CardFooter, CardHeader } from "../../ui/card";
-import Link from "next/link";
-import { Button } from "../../ui/button";
-import { FaArrowRight } from "react-icons/fa6";
-import RestaurantForm from "../forms/Restaurant";
-import { ImSpinner } from "react-icons/im";
-import { useState } from "react";
-import { toast } from "sonner";
-import { deleteRestaurant } from "@/actions/restaurant/deleteRestaurant";
-import { copyToClipboard } from "@/tools/copyToClipboard";
+'use client';
+import Image from 'next/image';
+import { Badge } from '../../ui/badge';
+import { Card, CardContent, CardFooter, CardHeader } from '../../ui/card';
+import Link from 'next/link';
+import { Button } from '../../ui/button';
+import { FaArrowRight } from 'react-icons/fa6';
+import { RestaurantForm } from '../forms/Restaurant';
+import { ImSpinner } from 'react-icons/im';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { deleteRestaurant } from '@/actions/restaurant/deleteRestaurant';
+import { copyToClipboard } from '@/tools/copyToClipboard';
 
-import { restaurantValidator } from "@/validators/restaurant";
-import { z } from "zod";
-import { updateRestaurant } from "@/actions/restaurant/updateRestaurant";
-import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
-import ReusableModal from "@/components/misc/ReusableModal";
-import { RestaurantProps } from "@/types/restaurant";
-import { fetchCategoriesByQuery } from "@/actions/category/fetchCategoriesByQuery";
-import { createNewRestaurant } from "@/actions/restaurant/createNewRestaurant";
-import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
-import { createNewCategory } from "@/actions/category/createNewCategory";
-import { createNewItem } from "@/actions/item/createNewItem";
-import { Copy, Link2, Pen, Trash } from "lucide-react";
-import { revalidateRoute } from "@/actions/revalidateRoute";
-import { usePathname } from "next/navigation";
-import { Input } from "@/components/ui/input";
-import { slugGen } from "@/tools/slugGen";
-import ReusableDialog from "@/components/misc/ReusableDialog";
-import { CategoriesWithItemsProps } from "@/types/category";
+import { restaurantValidator } from '@/validators/restaurant';
+import { z } from 'zod';
+import { updateRestaurant } from '@/actions/restaurant/updateRestaurant';
+import { fetchUserRestaurantsByQuery } from '@/actions/restaurant/fetchUserRestaurantsByQuery';
+import ReusableModal from '@/components/misc/ReusableModal';
+import { RestaurantProps } from '@/types/restaurant';
+import { fetchCategoriesByQuery } from '@/actions/category/fetchCategoriesByQuery';
+import { createNewRestaurant } from '@/actions/restaurant/createNewRestaurant';
+import { fetchRestaurantsByQuery } from '@/actions/restaurant/fetchRestaurantsByQuery';
+import { createNewCategory } from '@/actions/category/createNewCategory';
+import { createNewItem } from '@/actions/item/createNewItem';
+import { Copy, Link2, Pen, Trash } from 'lucide-react';
+import { revalidateRoute } from '@/actions/revalidateRoute';
+import { usePathname } from 'next/navigation';
+import { Input } from '@/components/ui/input';
+import { slugGen } from '@/tools/slugGen';
+import ReusableDialog from '@/components/misc/ReusableDialog';
+import { CategoriesWithItemsProps } from '@/types/category';
+import { getCurrentUser } from '@/hooks/useCurrentUser';
+import { PlanLimitProps } from '@/constants/planLimits';
+
 interface RestaurantCardProps {
   restaurant: RestaurantProps;
+  limits?: PlanLimitProps;
 }
 
-const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
+export const RestaurantCard = ({ restaurant, limits }: RestaurantCardProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const [newName, setNewName] = useState("");
+  const [newName, setNewName] = useState('');
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [openDuplicateModal, setOpenDuplicateModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const handleUpdateRestaurant = async (
-    data: z.infer<typeof restaurantValidator>
-  ) => {
+  const handleUpdateRestaurant = async (data: z.infer<typeof restaurantValidator>) => {
     setLoading(true);
 
     const restaurantExists = await fetchUserRestaurantsByQuery({
@@ -65,9 +67,9 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
 
     try {
       await updateRestaurant({ id, data });
-      toast.success("Restaurante Atualizado");
+      toast.success('Restaurante Atualizado');
     } catch (error) {
-      toast("Ocorreu um erro.");
+      toast('Ocorreu um erro.');
     } finally {
       setOpen(false);
     }
@@ -78,9 +80,9 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
   const handleDeleteRestaurant = async () => {
     try {
       await deleteRestaurant(restaurant.id);
-      toast("Restaurant excluído.");
+      toast('Restaurant excluído.');
     } catch (error) {
-      toast("Ocorreu um erro ao excluir.");
+      toast('Ocorreu um erro ao excluir.');
       throw new Error("Can't delete restaurant");
     } finally {
       setOpenDeleteModal(false);
@@ -90,19 +92,21 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
   const handleDuplicateRestaurant = async () => {
     setLoading(true);
     try {
+      const user = await getCurrentUser();
+
       const restaurantExists = await fetchUserRestaurantsByQuery({
         where: {
-          title: newName,
+          name: newName,
         },
       });
 
       if (restaurantExists[0]) {
-        toast.error("O nome do restaurante já existe. Escolha outro.");
+        toast.error('O nome do restaurante já existe. Escolha outro.');
         return;
       }
 
       if (newName.length < 4) {
-        toast.error("O nome precisa ser maior");
+        toast.error('O nome precisa ser maior');
         return;
       }
 
@@ -117,28 +121,25 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
         take: 10,
         query: {
           where: {
-            userId: restaurant.userId,
+            ownerId: restaurant.userId || undefined,
           },
         },
       });
 
       if (restaurants.length >= 4) {
-        toast.error("Limite de 4 restaurantes atingido");
+        toast.error('Limite de 4 restaurantes atingido');
         setLoading(false);
         return;
       }
 
-      const {
-        id: id,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-        ...rest
-      } = restaurant;
+      const { id: id, createdAt: createdAt, updatedAt: updatedAt, ...rest } = restaurant;
 
       const newRestaurant = await createNewRestaurant({
-        ...rest,
-        title: newName,
-        slug: slugGen(newName),
+        data: {
+          ...rest,
+          title: newName,
+          slug: slugGen(newName),
+        },
       });
 
       const { categories } = await fetchCategoriesByQuery<{
@@ -157,16 +158,16 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
         },
       });
 
-      categories.forEach(async (category) => {
+      categories.forEach(async category => {
         const newCategory = await createNewCategory({
           data: {
-            order: category.order,
             title: category.title,
+            order: category.order || 0,
             restaurantId: newRestaurant.id,
           },
         });
 
-        category.items?.forEach(async (item) => {
+        category.items?.forEach(async item => {
           const { id: id, ...rest } = item;
 
           await createNewItem({
@@ -182,7 +183,7 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
       revalidateRoute({ fullPath: pathname });
     } catch (error) {
       console.log(error);
-      toast.error("Ocorreu um erro ao duplicar");
+      toast.error('Ocorreu um erro ao duplicar');
     } finally {
       setLoading(false);
       setOpenDuplicateModal(false);
@@ -193,7 +194,7 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
     <>
       <div className="flex flex-col">
         <Card
-          className="w-full flex flex-col tablet:flex-row rounded-none rounded-t-lg border-b-0"
+          className="flex w-full flex-col rounded-none rounded-t-lg border-b-0 tablet:flex-row"
           key={restaurant.id}
         >
           <CardHeader className="items-center justify-center border-r">
@@ -203,28 +204,22 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
               width={0}
               height={0}
               sizes="1000px"
-              className="rounded-full h-20 w-20"
+              className="h-20 w-20 rounded-full"
             />
           </CardHeader>
-          <CardContent className="flex items-center justify-between p-5 gap-5 flex-1">
+          <CardContent className="flex flex-1 items-center justify-between gap-5 p-5">
             <p className="line-clamp-1">{restaurant.title}</p>
 
-            <Badge
-              variant={restaurant.active ? "default" : "destructive"}
-              className="h-5"
-            >
-              {restaurant.active ? "Ativo" : "Inativo"}
+            <Badge variant={restaurant.active ? 'default' : 'destructive'} className="h-5">
+              {restaurant.active ? 'Ativo' : 'Inativo'}
             </Badge>
           </CardContent>
 
-          <CardFooter className="tablet:border-l flex items-center justify-center tablet:pb-0">
-            <Link
-              href={`/dashboard/restaurant/${restaurant.id}`}
-              className="w-full"
-            >
+          <CardFooter className="flex items-center justify-center tablet:border-l tablet:pb-0">
+            <Link href={`/dashboard/restaurant/${restaurant.id}`} className="w-full">
               <Button
-                variant={restaurant.active ? "default" : "outline"}
-                className="gap-2 w-full tablet:w-min"
+                variant={restaurant.active ? 'default' : 'outline'}
+                className="w-full gap-2 tablet:w-min"
               >
                 <p>Gerenciar</p>
                 <FaArrowRight />
@@ -233,15 +228,15 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
           </CardFooter>
         </Card>
 
-        <div className="flex flex-col tablet:flex-row tablet:justify-evenly tablet:items-center p-5 border rounded-b-lg gap-5 ">
+        <div className="flex flex-col gap-5 rounded-b-lg border p-5 tablet:flex-row tablet:items-center tablet:justify-evenly ">
           <Button
             type="button"
             className="w-full"
             onClick={() =>
               copyToClipboard(
                 `${process.env.NEXT_PUBLIC_HOST}/menu/${restaurant.id}/${restaurant.slug}`,
-                "slug",
-                "Link do cardápio copiado!"
+                'slug',
+                'Link do cardápio copiado!'
               )
             }
           >
@@ -262,7 +257,7 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
             onOpen={setOpen}
             title="Editar Restaurante"
             trigger={
-              <div className="flex gap-2 items-center">
+              <div className="flex items-center gap-2">
                 Editar <Pen />
               </div>
             }
@@ -272,7 +267,7 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
 
           <Button
             onClick={() => setOpenDuplicateModal(true)}
-            className="flex gap-2 w-full"
+            className="flex w-full gap-2"
             variant="outline"
           >
             Duplicar <Copy />
@@ -280,7 +275,7 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
 
           <Button
             onClick={() => setOpenDeleteModal(true)}
-            className="flex gap-2 text-red-500 hover:text-red-500 border-red-500 w-full"
+            className="flex w-full gap-2 border-red-500 text-red-500 hover:text-red-500"
             variant="outline"
           >
             Deletar <Trash />
@@ -308,7 +303,7 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
               <Input
                 placeholder="Digite o nome da cópia"
                 value={newName}
-                onChange={(e) => setNewName(e.target.value)}
+                onChange={e => setNewName(e.target.value)}
               />
             </div>
           </div>
@@ -336,5 +331,3 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
     </>
   );
 };
-
-export default RestaurantCard;

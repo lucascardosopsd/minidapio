@@ -1,158 +1,179 @@
-datasource db {
-  provider          = "mongodb"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-}
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id           String         @id @default(auto()) @map("_id") @db.ObjectId
-  clerkId      String         @unique
-  name         String?
-  email        String         @unique
-  profileImage String?
-  customerId   String?
-  role         String?        @default("user")
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  subscription Subscription[]
-  restaurants  Restaurant[]
-  categories   Category[]
-  Payment      Payment[]
-  items        Item[]
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
-model VerificationToken {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  identifier String
-  token      String   @unique
-  expires    DateTime
+model User {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?        @unique
+  emailVerified DateTime?
+  profileImage  String?
+  customerId    String?        @unique
+  stripeId      String?        @unique
+  clerkId       String?        @unique
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subscriptions Subscription[]
+  payments      Payment[]
+  role          UserRole       @default(USER)
+  restaurants   Restaurant[]
+  categories    Category[]
+  orders        Order[]
+  profile       Profile?
+  menuItems     MenuItem[]
+}
 
-  @@unique([identifier, token])
+model Profile {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone     String?
+  address   String?
+  city      String?
+  state     String?
+  zipCode   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Restaurant {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  title      String
-  active     Boolean
-  whatsapp   String?
-  landline   String?
-  address    String
-  methods    Json?
-  workHours  Json?
-  logo       String
-  color      String
-  linkMaps   String?
-  note       String?
-  activeMenu Boolean
-  slug       String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  userId     String?  @db.ObjectId
-  province   String
-  state      String
-
-  User       User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Categories Category[]
-  Items      Item[]
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  address     String
+  phone       String
+  ownerId     String     @db.ObjectId
+  owner       User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  userId      String?    @db.ObjectId
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  menuItems   MenuItem[]
+  categories  Category[]
+  orders      Order[]
+  workHours   Json?
+  methods     Json?
 }
 
 model Category {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
   title        String
-  order        Int?    @default(0)
-  active       Boolean @default(true)
-  restaurantId String? @db.ObjectId
-  userId       String? @db.ObjectId
-
-  items      Item[]
-  Restaurant Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  User       User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order        Int         @default(0)
+  active       Boolean     @default(true)
+  restaurantId String?     @db.ObjectId
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  userId       String?     @db.ObjectId
+  user         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items        MenuItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
-model Item {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
-  title        String
+model MenuItem {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
   description  String?
-  price        Float?
-  image        String
-  highlight    Boolean
-  active       Boolean
-  sale         Boolean
-  salePrice    Float?
-  order        Int     @default(0)
-  restaurantId String? @db.ObjectId
-  categoryId   String? @db.ObjectId
-
-  Category   Category?   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  Restaurant Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  User       User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String?     @db.ObjectId
+  price        Float
+  categoryId   String      @db.ObjectId
+  category     Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  restaurantId String      @db.ObjectId
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  userId       String      @db.ObjectId
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isAvailable  Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  orderItems   OrderItem[]
 }
 
-model Plan {
-  id           String         @id @default(auto()) @map("_id") @db.ObjectId
-  title        String
-  subTitle     String?
-  alias        String
-  level        Int
-  highlighted  Boolean
-  price        Float
-  description  String
-  order        Int            @default(0)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  Subscription Subscription[]
-  Payment      Payment[]
+model Order {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String      @db.ObjectId
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  restaurantId String      @db.ObjectId
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  status       OrderStatus @default(PENDING)
+  total        Float
+  items        OrderItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model OrderItem {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId    String   @db.ObjectId
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId String   @db.ObjectId
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  quantity   Int
+  price      Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Subscription {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  object           String?
-  asaasId          String?
-  dateCreated      String
-  customerId       String
-  value            Float
-  nextDueDate      String?
-  cycle            String?
-  description      String
-  billingType      String
-  deleted          Boolean
-  status           String?
-  planId           String?  @db.ObjectId
-  userId           String?  @db.ObjectId
-  paymentProfileId String?  @db.ObjectId
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  User    User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Plan    Plan?     @relation(fields: [planId], references: [id], onDelete: Cascade)
-  Payment Payment[]
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  stripeId         String?   @unique
+  status           String
+  currentPeriodEnd DateTime
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String    @db.ObjectId
+  plan             Plan      @relation(fields: [planId], references: [id], onDelete: Cascade)
+  planId           String    @db.ObjectId
+  payments         Payment[]
 }
 
 model Payment {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  asaasId        String
-  dateCreated    String
-  customer       String
-  paymentLink    String?
-  dueDate        String?
-  value          Float
-  billingType    String
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  stripeId       String?      @unique
+  amount         Float
+  currency       String
   status         String
-  description    String?
-  paymentDate    String?
-  deleted        Boolean
-  userId         String   @db.ObjectId
-  planId         String?  @db.ObjectId
-  subscriptionId String?  @db.ObjectId
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String       @db.ObjectId
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  subscriptionId String       @db.ObjectId
+  plan           Plan         @relation(fields: [planId], references: [id], onDelete: Cascade)
+  planId         String       @db.ObjectId
+}
 
-  Subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
-  Plan         Plan?         @relation(fields: [planId], references: [id], onDelete: Cascade)
-  User         User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Plan {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  description   String
+  price         Float
+  stripePriceId String?        @unique
+  alias         String         @unique @default("free")
+  order         Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subscriptions Subscription[]
+  payments      Payment[]
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  RESTAURANT_OWNER
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
 }

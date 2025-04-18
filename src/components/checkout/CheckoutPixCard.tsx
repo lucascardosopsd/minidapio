@@ -1,212 +1,76 @@
 "use client";
-import { PaymentResProps, PixCodeResProps } from "@/types/paymentProps";
-import { Plan, Subscription, User } from "@prisma/client";
+import { Plan, User } from "@prisma/client";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent, CardHeader,
+    CardTitle
 } from "../ui/card";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { copyToClipboard } from "@/tools/copyToClipboard";
-import { Copy } from "lucide-react";
-import moment from "moment";
 import { Separator } from "../ui/separator";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import createSubscription from "@/actions/subscription/createSubscription";
-import createPayment from "@/actions/payment/createPayment";
-import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
+import { useRouter } from "next/navigation";
 
-interface CheckoutPixCard {
+interface CheckoutPixCardProps {
   plan: Plan;
   user: User;
 }
 
-const CheckoutPixCard = ({ plan, user }: CheckoutPixCard) => {
-  const [payment, setPayment] = useState<PaymentResProps>();
-  const [qrCode, setQrCode] = useState({
-    encodedImage: "",
-    payload: "",
-    expirationDate: "",
-  });
-
+const CheckoutPixCard = ({ plan, user }: CheckoutPixCardProps) => {
+  const [loading, setLoading] = useState(false);
+  const [qrCode, setQrCode] = useState<string | null>(null);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
 
-  const params = new URLSearchParams(searchParams);
-  const { replace } = useRouter();
-
-  const handleCreatePayment = async () => {
-    if (params.get("paymentId")) {
-      return;
-    }
-
+  const handlePixPayment = async () => {
     try {
-      const { data } = await axios.post<PaymentResProps>("/api/asaas/payment", {
-        billingType: "PIX",
-        customer: user.customerId,
-        value: plan.price,
+      setLoading(true);
+
+      const { data: paymentIntent } = await axios.post('/api/stripe/payment-intent', {
+        amount: plan.price * 100, // Stripe expects amounts in cents
+        currency: 'brl',
+        paymentMethod: 'pix',
+        planId: plan.id,
+        userId: user.id,
       });
 
-      params.set("paymentId", data.id);
-      replace(`${pathname}?${params.toString()}`);
-
-      setPayment(data);
+      setQrCode(paymentIntent.qrCode);
     } catch (error) {
-      toast.error(
-        "Ocorreu um erro ao criar o pagamento via PIX. Contate o suporte."
-      );
+      console.error(error);
+      toast.error('Erro ao gerar o QR Code do PIX');
+    } finally {
+      setLoading(false);
     }
   };
-
-  const handleCreateQrCode = async () => {
-    try {
-      const { data } = await axios.get<PixCodeResProps>(
-        `/api/asaas/payment/pixQrCode/${params.get("paymentId")}`
-      );
-
-      data && setQrCode(data);
-    } catch (error) {
-      toast.error(
-        "Ocorreu um erro ao criar o pagamento via PIX. Contate o suporte."
-      );
-    }
-  };
-
-  const handleCheckSub = async () => {
-    try {
-      const { data } = await axios.get<PaymentResProps>(
-        `/api/asaas/payment/${params.get("paymentId")}`
-      );
-
-      if (data.status == "RECEIVED") {
-        const { subscriptions: lastSubs } = await fetchSubscriptionsByQuery({
-          page: 0,
-          take: 1,
-          query: {
-            where: {
-              userId: user.id,
-            },
-            orderBy: {
-              createdAt: "desc",
-            },
-          },
-        });
-
-        const isSameBillingType = lastSubs[0].billingType == data.billingType;
-        let newSub: Subscription | null = null;
-
-        if (!isSameBillingType) {
-          newSub = await createSubscription({
-            subscription: {
-              billingType: data.billingType,
-              customerId: data.customer,
-              dateCreated: moment().format(),
-              deleted: data.deleted,
-              description: data.description,
-              value: data.value,
-              userId: user.id,
-              planId: plan.id,
-            },
-          });
-        }
-
-        await createPayment({
-          userId: user.id,
-          payment: {
-            asaasId: data.id,
-            billingType: data.billingType,
-            customer: data.customer,
-            dateCreated: data.dateCreated,
-            deleted: data.deleted,
-            paymentDate: data.paymentDate,
-            planId: plan.id,
-            value: data.value,
-            status: data.status,
-            userId: user.id,
-            subscriptionId: newSub ? newSub?.id! : lastSubs[0].id,
-          },
-        });
-
-        toast.success("Pagamento identificado. Redirecionando.");
-
-        router.push("/dashboard/restaurants");
-
-        return;
-      }
-
-      if (data.status == "PENDING") {
-        toast.info("Pagamento ainda não identificado.");
-
-        return;
-      }
-
-      router.push("/dashboard/plans");
-    } catch (error) {
-      toast.error(
-        "Estamos enfrentando problemas com a verificação do pagamento."
-      );
-    }
-  };
-
-  useEffect(() => {
-    !payment && handleCreatePayment().then(() => handleCreateQrCode());
-  }, [user]);
 
   return (
-    <Card className="flex flex-col">
-      <CardHeader className="p-5">
-        <CardTitle>
-          <p className="mb-4">
-            Pagamento via{" "}
-            <span className="font-semibold text-primary">PIX</span>
-          </p>
-        </CardTitle>
-        <Separator />
+    <Card>
+      <CardHeader>
+        <CardTitle>PIX</CardTitle>
       </CardHeader>
-
-      {qrCode.encodedImage && (
-        <CardContent className="p-5">
-          <Image
-            src={`data:image/png;base64,${qrCode.encodedImage}`}
-            height={500}
-            width={500}
-            alt="qrcode"
-            className="h-36 w-36 rounded mx-auto"
-          />
-        </CardContent>
-      )}
-
-      <CardFooter className="flex-col gap-2 justify-center items-center h-full">
-        <div className="flex flex-col gap-5 items-center justify-center break-all">
-          <Button
-            className="w-full gap-2"
-            variant="outline"
-            onClick={() =>
-              copyToClipboard(qrCode.payload, "", "Código Copiado")
-            }
-          >
-            Copiar código
-            <Copy />
-          </Button>
-
-          <Button onClick={handleCheckSub}>Realizei o pagamento</Button>
+      <Separator />
+      <CardContent>
+        <div className="flex flex-col items-center gap-4">
+          {qrCode ? (
+            <>
+              <Image
+                src={`data:image/png;base64,${qrCode}`}
+                alt="QR Code PIX"
+                width={200}
+                height={200}
+              />
+              <p className="text-sm text-center">
+                Escaneie o QR Code acima com o aplicativo do seu banco para realizar o pagamento
+              </p>
+            </>
+          ) : (
+            <Button onClick={handlePixPayment} disabled={loading}>
+              {loading ? 'Gerando QR Code...' : 'Pagar com PIX'}
+            </Button>
+          )}
         </div>
-
-        <div className="flex flex-col p-5">
-          <p className="text-center text-xs">Válido até</p>
-
-          <p className="text-center text-xs">
-            {moment(payment?.dueDate).format("DD/MM/YYYY")}
-          </p>
-        </div>
-      </CardFooter>
+      </CardContent>
     </Card>
   );
 };

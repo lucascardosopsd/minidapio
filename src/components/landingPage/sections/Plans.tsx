@@ -10,6 +10,12 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Plan } from "@prisma/client";
+
+// Extend Plan type with highlighted property
+interface ExtendedPlan extends Plan {
+  highlighted?: boolean;
+}
 
 const PlansSection = async () => {
   const { plans } = await fetchPlansByQuery({
@@ -17,10 +23,13 @@ const PlansSection = async () => {
     take: 10,
     query: {
       orderBy: {
-        order: "asc",
+        price: "asc",
       },
     },
   });
+
+  // Cast plans to ExtendedPlan type
+  const extendedPlans = plans as ExtendedPlan[];
 
   return (
     <section className="container w-full h-full flex-col gap-20 tablet:h-[70svh] flex items-center justify-center py-5">
@@ -36,7 +45,7 @@ const PlansSection = async () => {
       </div>
 
       <AnimatedList delay={200} className="flex-col tablet:flex-row">
-        {plans.map((plan) => (
+        {extendedPlans.map((plan) => (
           <Card
             key={plan.id}
             className={cn(

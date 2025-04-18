@@ -1,5 +1,5 @@
-import { FormControl, FormField, FormItem, FormMessage } from "../ui/form";
-import { Control, useWatch } from "react-hook-form";
+import { FormControl, FormField, FormItem, FormMessage } from '../ui/form';
+import { Control } from 'react-hook-form';
 
 interface ColorPickerProps {
   control: Control<any>;
@@ -7,8 +7,6 @@ interface ColorPickerProps {
 }
 
 const ColorPicker = ({ control, fieldName }: ColorPickerProps) => {
-  const watchColor = useWatch({ control, name: "color" });
-
   return (
     <FormField
       control={control}
@@ -19,7 +17,7 @@ const ColorPicker = ({ control, fieldName }: ColorPickerProps) => {
             <>
               <input
                 type="color"
-                className="h-10 w-full disabled:opacity-50 disabled:pointer-events-none border-4 rounded"
+                className="h-10 w-full rounded border-4 disabled:pointer-events-none disabled:opacity-50"
                 id="hs-color-input"
                 {...field}
               />

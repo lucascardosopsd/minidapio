@@ -1,6 +1,6 @@
 import { updateUser } from "../user/updateUser";
 import { User } from "@prisma/client";
-import { AsaasCustomerObj, AsaasCustomerResProps } from "@/types/asaasCustomer";
+import { StripeCustomer } from "@/types/stripe";
 import axios from "axios";
 
 interface ProfileDataProps {
@@ -14,20 +14,20 @@ interface ProfileDataProps {
   address: string;
 }
 
-export const createUpdateAsaasCustomer = async ({
+export const createUpdateStripeCustomer = async ({
   user,
   data,
 }: {
   user: User;
   data: ProfileDataProps;
-}): Promise<AsaasCustomerObj> => {
+}): Promise<StripeCustomer> => {
   try {
     // if customer, update info
     if (user.customerId) {
       const {
         data: { customer },
-      } = await axios.put<AsaasCustomerResProps>(
-        `/api/asaas/customer/${user.customerId}`,
+      } = await axios.put(
+        `/api/stripe/customer/${user.customerId}`,
         data
       );
 
@@ -36,21 +36,19 @@ export const createUpdateAsaasCustomer = async ({
 
     const {
       data: { customer },
-    } = await axios.post<AsaasCustomerResProps>("/api/asaas/customer", data);
+    } = await axios.post("/api/stripe/customer", data);
 
     console.log(customer);
 
-    console.log(
-      await updateUser({
-        id: user.id,
-        data: {
-          customerId: customer.id,
-        },
-      })
-    );
+    await updateUser({
+      id: user.id,
+      data: {
+        customerId: customer.id,
+      },
+    });
 
     return customer;
   } catch (error) {
     throw new Error("Error when create payment account");
   }
-};
+}; 

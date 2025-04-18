@@ -18,8 +18,14 @@ import { formatPrice } from "@/tools/formatPrice";
 import PlanForm from "../forms/Plan";
 import ReusableModal from "@/components/misc/ReusableModal";
 
+interface PlanRowData extends Plan {
+  level: number;
+  subTitle: string;
+  highlighted: boolean;
+}
+
 interface PlanRowProps {
-  plan: Plan;
+  plan: PlanRowData;
 }
 
 const PlanRow = ({ plan }: PlanRowProps) => {

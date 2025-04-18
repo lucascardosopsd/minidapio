@@ -1,20 +1,20 @@
-"use client";
-import { FullRestaurantProps } from "@/types/restaurant";
-import { Badge } from "../ui/badge";
-import Link from "next/link";
-import { Button } from "../ui/button";
-import { SlLocationPin } from "react-icons/sl";
-import { Separator } from "../ui/separator";
-import { weekDays } from "@/constants/weekDays";
-import { paymentMethods } from "@/constants/paymentMethods";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import ItemCard from "./cards/Item";
-import SearchField from "../misc/SearchField";
-import { cn } from "@/lib/utils";
-import { groupHours } from "@/reducers/groupHours";
+'use client';
+import { FullRestaurantProps } from '@/types/restaurant';
+import { Badge } from '../ui/badge';
+import Link from 'next/link';
+import { Button } from '../ui/button';
+import { SlLocationPin } from 'react-icons/sl';
+import { Separator } from '../ui/separator';
+import { weekDays } from '@/constants/weekDays';
+import { paymentMethods } from '@/constants/paymentMethods';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '../ui/drawer';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import ItemCard from './cards/Item';
+import SearchField from '../misc/SearchField';
+import { cn } from '@/lib/utils';
+import { groupHours } from '@/reducers/groupHours';
 
-import { Item } from "@prisma/client";
+import { MenuItem } from '@prisma/client';
 interface RestaurantProfileProps {
   restaurant: FullRestaurantProps;
   isSearching?: boolean;
@@ -23,11 +23,8 @@ interface RestaurantProfileProps {
   };
 }
 
-const RestaurantProfile = ({
-  restaurant,
-  pageSearchParams,
-}: RestaurantProfileProps) => {
-  const themeColor = restaurant?.color || "#fff";
+const RestaurantProfile = ({ restaurant, pageSearchParams }: RestaurantProfileProps) => {
+  const themeColor = restaurant?.color || '#fff';
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -36,23 +33,20 @@ const RestaurantProfile = ({
   const { replace } = useRouter();
 
   const handleClearSearchParams = () => {
-    params.set("title", "");
+    params.set('title', '');
     replace(`${pathname}?${params.toString()}`);
   };
 
   return (
     <>
-      <div className="flex justify-center absolute left-0 bottom-0 w-full z-20">
-        <Drawer
-          open={!!pageSearchParams?.title}
-          onClose={handleClearSearchParams}
-        >
+      <div className="absolute bottom-0 left-0 z-20 flex w-full justify-center">
+        <Drawer open={!!pageSearchParams?.title} onClose={handleClearSearchParams}>
           <DrawerContent>
             <DrawerHeader>
               <DrawerTitle className="text-center">Pesquisa</DrawerTitle>
             </DrawerHeader>
 
-            <div className="flex flex-col items-center gap-5 mx-auto w-svw max-w-[500px] p-5 h-[calc(100svh-100px)] overflow-y-auto">
+            <div className="mx-auto flex h-[calc(100svh-100px)] w-svw max-w-[500px] flex-col items-center gap-5 overflow-y-auto p-5">
               <div className="w-full">
                 <SearchField
                   keyName="title"
@@ -62,11 +56,11 @@ const RestaurantProfile = ({
               </div>
 
               {restaurant.Items.length ? (
-                restaurant.Items.map((item: Item) => (
+                restaurant.Items.map((item: MenuItem) => (
                   <ItemCard item={item} themeColor={themeColor} key={item.id} />
                 ))
               ) : (
-                <div className="h-full w-full flex items-center justify-center">
+                <div className="flex h-full w-full items-center justify-center">
                   <p>Nenhum item encontrado</p>
                 </div>
               )}
@@ -75,23 +69,17 @@ const RestaurantProfile = ({
         </Drawer>
       </div>
 
-      <div className="bg-gradient-to-t from-background to-transparent h-[250px] w-full absolute bottom-0 left-0 z-10 cursor-none pointer-events-none" />
+      <div className="pointer-events-none absolute bottom-0 left-0 z-10 h-[250px] w-full cursor-none bg-gradient-to-t from-background to-transparent" />
 
-      <div className="flex flex-col items-center justify-center gap-5 relative w-full pb-32 pt-32 ">
-        <div className="flex flex-col justify-center gap-1 text-sm w-full max-w-[400px] p-2 rounded">
+      <div className="relative flex w-full flex-col items-center justify-center gap-5 pb-32 pt-32 ">
+        <div className="flex w-full max-w-[400px] flex-col justify-center gap-1 rounded p-2 text-sm">
           {groupHours(restaurant.workHours)
             .sort((a, b) => Number(a.weekDay) - Number(b.weekDay))
-            .map((workHour) => (
-              <div
-                className="flex flex-col justify-center"
-                key={workHour.weekDay}
-              >
+            .map(workHour => (
+              <div className="flex flex-col justify-center" key={workHour.weekDay}>
                 <div className="flex flex-col justify-center">
                   <p style={{ color: themeColor }} className="text-center">
-                    {
-                      weekDays.filter((day) => day.value == workHour.weekDay)[0]
-                        .name
-                    }
+                    {weekDays.find(day => day.value === workHour.weekDay)?.name ?? 'Unknown'}
                   </p>
                 </div>
 
@@ -103,10 +91,7 @@ const RestaurantProfile = ({
                           {time.open}-{time.close}
                         </p>
                         <span
-                          className={cn(
-                            "hidden ml-2",
-                            index < workHour.times.length - 1 && "flex"
-                          )}
+                          className={cn('ml-2 hidden', index < workHour.times.length - 1 && 'flex')}
                         >
                           |
                         </span>
@@ -120,7 +105,7 @@ const RestaurantProfile = ({
             ))}
         </div>
 
-        <div className="flex flex-col items-center gap-1 text-sm  p-2 rounded w-full">
+        <div className="flex w-full flex-col items-center gap-1  rounded p-2 text-sm">
           <p>{restaurant.whatsapp}</p>
           <Separator style={{ background: themeColor }} />
           <p>{restaurant.landline}</p>
@@ -130,10 +115,7 @@ const RestaurantProfile = ({
           {Object.entries(restaurant.methods).map(([key, value], index) => (
             <span key={key} className="flex gap-1">
               {paymentMethods.map(
-                (payment) =>
-                  key == payment.label && (
-                    <p key={payment.title}>{payment.title}</p>
-                  )
+                payment => key == payment.label && <p key={payment.title}>{payment.title}</p>
               )}
 
               {index !== Object.entries(restaurant.methods).length! - 1 && (

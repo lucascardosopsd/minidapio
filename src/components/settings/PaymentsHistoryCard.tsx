@@ -1,18 +1,18 @@
 import { formatPrice } from "@/tools/formatPrice";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "../ui/card";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "../ui/table";
 import { statusI18n } from "@/constants/paymentStatusI18n";
 import moment from "moment";
@@ -50,9 +50,9 @@ const PaymentsHistoryCard = ({ payments }: PaymentsHistoryCardProps) => {
           <TableBody>
             {payments.map((payment, index) => (
               <TableRow key={index}>
-                <TableCell>{payment.asaasId}</TableCell>
+                <TableCell>{payment.stripeId}</TableCell>
                 <TableCell>
-                  {formatPrice(payment.value, "pt-BR", "BRL")}
+                  {formatPrice(payment.amount, "pt-BR", "BRL")}
                 </TableCell>
                 <TableCell>{payment.Subscription?.Plan?.title}</TableCell>
                 <TableCell>{statusI18n[payment.status]}</TableCell>

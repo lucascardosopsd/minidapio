@@ -1,16 +1,18 @@
-"use server";
-import { Accordion } from "@/components/ui/accordion";
-import { Separator } from "@/components/ui/separator";
-import ItemsActions from "@/components/restaurant/ItemsActions";
-import CategoriesList from "@/components/restaurant/lists/Categories";
-import RestaurantActionbar from "@/components/restaurant/Actionbar";
-import { Item } from "@prisma/client";
-import { planLimits } from "@/constants/planLimits";
-import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
-import { SubscriptionWithPlanProps } from "@/types/plan";
-import { fetchCategoriesByQuery } from "@/actions/category/fetchCategoriesByQuery";
-import { CategoriesWithItemsProps } from "@/types/category";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { Accordion } from '@/components/ui/accordion';
+import { Separator } from '@/components/ui/separator';
+import ItemsActions from '@/components/restaurant/ItemsActions';
+import CategoriesList from '@/components/restaurant/lists/Categories';
+import RestaurantActionbar from '@/components/restaurant/Actionbar';
+import { planLimits } from '@/constants/planLimits';
+import { fetchSubscriptionsByQuery } from '@/actions/subscription/fetchManySubscriptions';
+import { SubscriptionWithPlanProps } from '@/types/plan';
+import { fetchCategoriesByQuery } from '@/actions/category/fetchCategoriesByQuery';
+import { CategoriesWithItemsProps } from '@/types/category';
+import { getCurrentUser } from '@/hooks/useCurrentUser';
+import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
+import { RestaurantForm } from '@/components/restaurant/forms/Restaurant';
+import { fetchRestaurantById } from '@/actions/restaurant/fetchRestaurantById';
 
 interface CustomFetchSubscriptionsByQueryResProps {
   subscriptions: SubscriptionWithPlanProps[];
@@ -28,36 +30,46 @@ interface PageProps {
   }>;
 }
 
-export default async function Restaurant({ params }: PageProps) {
-  const { id: restaurantId } = await params;
+export const metadata: Metadata = {
+  title: 'Editar Restaurante',
+  description: 'Edite as informações do seu restaurante',
+};
 
-  const user = await useCurrentUser();
+const RestaurantPage = async ({ params }: PageProps) => {
+  const user = await getCurrentUser();
 
-  const { categories } = await fetchCategoriesByQuery<CustomFetchCategoriesRes>(
-    {
-      page: 0,
-      take: 10000,
-      query: {
-        where: {
-          restaurantId,
-        },
-        orderBy: {
-          order: "asc",
-        },
-        include: {
-          items: {
-            orderBy: {
-              order: "desc",
-            },
+  if (!user) {
+    redirect('/sign-in');
+  }
+
+  const { id } = await params;
+  const restaurant = await fetchRestaurantById(id);
+
+  if (!restaurant) {
+    redirect('/dashboard/restaurants');
+  }
+
+  const { categories } = await fetchCategoriesByQuery<CustomFetchCategoriesRes>({
+    page: 0,
+    take: 10000,
+    query: {
+      where: {
+        restaurantId: restaurant.id,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+      include: {
+        items: {
+          orderBy: {
+            createdAt: 'desc',
           },
         },
       },
-    }
-  );
+    },
+  });
 
-  const items = categories.flatMap(
-    (category) => category?.items && category.items
-  ) as Item[];
+  const items = categories.flatMap(category => category?.items && category.items);
 
   const { subscriptions } =
     await fetchSubscriptionsByQuery<CustomFetchSubscriptionsByQueryResProps>({
@@ -66,34 +78,51 @@ export default async function Restaurant({ params }: PageProps) {
       query: {
         where: { userId: user?.id },
         orderBy: {
-          createdAt: "desc",
+          createdAt: 'desc',
         },
         include: {
-          Plan: true,
+          plan: true,
         },
       },
     });
 
-  const limits = planLimits[subscriptions[0]?.Plan?.alias || "free"];
+  const limits = planLimits[subscriptions[0]?.Plan?.alias || 'free']!;
 
   return (
-    <main className="flex flex-col gap-4 pt-5 h-[90svh] overflow-y-auto">
-      <RestaurantActionbar
-        restaurantId={restaurantId}
-        limits={limits}
-        categoriesCount={categories.length}
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-2xl font-semibold">Editar Restaurante</h1>
+        <p className="text-muted-foreground">Edite as informações do seu restaurante</p>
+      </div>
+
+      <RestaurantForm
+        defaultValues={restaurant}
+        onSubmit={async data => {
+          // TODO: Implement update logic
+        }}
+        loading={false}
       />
 
-      <Separator />
+      <main className="flex h-[90svh] flex-col gap-4 overflow-y-auto pt-5">
+        <RestaurantActionbar
+          restaurantId={restaurant.id}
+          limits={limits}
+          categoriesCount={categories.length}
+        />
 
-      <div className="fixed flex justify-center bottom-0 left-0 p-5 bg-gradient-to-t from-background via-background to-transparent z-50 w-full">
-        <ItemsActions categories={categories} items={items!} />
-      </div>
-      <div className="w-full mx-auto h-full">
-        <Accordion type="multiple">
-          <CategoriesList categories={categories} limits={limits} />
-        </Accordion>
-      </div>
-    </main>
+        <Separator />
+
+        <div className="fixed bottom-0 left-0 z-50 flex w-full justify-center bg-gradient-to-t from-background via-background to-transparent p-5">
+          <ItemsActions categories={categories} items={items!} />
+        </div>
+        <div className="mx-auto h-full w-full">
+          <Accordion type="multiple">
+            <CategoriesList categories={categories} limits={limits} />
+          </Accordion>
+        </div>
+      </main>
+    </div>
   );
-}
+};
+
+export default RestaurantPage;

@@ -19,18 +19,18 @@ const RestaurantsPage = ({ searchParams }: UsersPageProps) => {
           title
             ? {
                 where: {
-                  title: {
+                  name: {
                     contains: title,
                     mode: "insensitive",
                   },
                 },
                 orderBy: {
-                  title: "asc",
+                  name: "asc",
                 },
               }
             : {
                 orderBy: {
-                  title: "asc",
+                  name: "asc",
                 },
               }
         }

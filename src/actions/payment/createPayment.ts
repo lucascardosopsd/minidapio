@@ -15,6 +15,8 @@ interface NewPaymentProps {
   planId: string;
   userId: string;
   subscriptionId: string;
+  amount: number;
+  currency: string;
 }
 
 interface CreatePaymentProps {
@@ -24,7 +26,11 @@ interface CreatePaymentProps {
 
 const createPayment = async ({ payment }: CreatePaymentProps) => {
   return await prisma.payment.create({
-    data: payment,
+    data: {
+      ...payment,
+      amount: payment.value,
+      currency: "BRL",
+    },
   });
 };
 

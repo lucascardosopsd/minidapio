@@ -1,25 +1,32 @@
-"use server";
-import { restaurantValidator } from "@/validators/restaurant";
-import { z } from "zod";
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { Restaurant } from "@prisma/client";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+'use server';
+import { z } from 'zod';
+import prisma from '@/lib/prisma';
+import { restaurantValidator } from '@/validators/restaurant';
+import { revalidatePath } from 'next/cache';
+import { getCurrentUser } from '@/hooks/useCurrentUser';
 
-export const createNewRestaurant = async (
-  data: z.infer<typeof restaurantValidator>
-): Promise<Restaurant> => {
-  const user = await useCurrentUser();
+interface CreateNewRestaurantProps {
+  data: z.infer<typeof restaurantValidator>;
+}
 
+export const createNewRestaurant = async ({ data }: CreateNewRestaurantProps) => {
   try {
+    const user = await getCurrentUser();
     const newRestaurant = await prisma.restaurant.create({
       data: {
-        ...data,
-        userId: user?.id,
+        name: data.title,
+        description: data.note,
+        address: data.address,
+        phone: data.landline || '',
+        ownerId: user.id,
+        userId: user.id,
+        isActive: data.active,
+        workHours: data.workHours as any,
+        methods: data.methods as any,
       },
     });
 
-    revalidatePath("/restaurants");
+    revalidatePath('/dashboard/restaurants');
 
     return newRestaurant;
   } catch (error) {

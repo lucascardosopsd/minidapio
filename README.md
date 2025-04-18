@@ -1,36 +1,136 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MiniDapio
 
-## Getting Started
+MiniDapio é uma plataforma de delivery de comida que conecta restaurantes e clientes, permitindo pedidos online com uma experiência moderna e intuitiva.
 
-First, run the development server:
+## 🚀 Tecnologias
 
+- [Next.js 14](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Prisma](https://www.prisma.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Clerk](https://clerk.com/)
+- [Uploadthing](https://uploadthing.com/)
+- [Stripe](https://stripe.com/)
+
+## 📋 Pré-requisitos
+
+- Node.js 18.x ou superior
+- Yarn 1.22.x ou superior
+- PostgreSQL 14.x ou superior
+- Conta no Clerk
+- Conta no Uploadthing
+- Conta no Stripe
+
+## 🔧 Instalação
+
+1. Clone o repositório:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/seu-usuario/minidapio.git
+cd minidapio
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Instale as dependências:
+```bash
+yarn install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Copie o arquivo de ambiente:
+```bash
+cp .env.example .env
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+4. Configure as variáveis de ambiente no arquivo `.env`
 
-## Learn More
+5. Execute as migrações do banco de dados:
+```bash
+yarn prisma migrate dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+6. Inicie o servidor de desenvolvimento:
+```bash
+yarn dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🏗️ Estrutura do Projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+src/
+├── app/              # Rotas e páginas da aplicação
+├── components/       # Componentes React
+│   ├── ui/          # Componentes de UI reutilizáveis
+│   └── ...          # Componentes específicos
+├── lib/             # Bibliotecas e configurações
+├── hooks/           # Hooks personalizados
+├── utils/           # Funções utilitárias
+├── types/           # Definições de tipos TypeScript
+├── constants/       # Constantes da aplicação
+└── styles/          # Estilos globais
+```
 
-## Deploy on Vercel
+## 🧪 Testes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# Executar testes unitários
+yarn test
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# Executar testes com cobertura
+yarn test:coverage
+
+# Executar testes e2e
+yarn test:e2e
+```
+
+## 📦 Build
+
+```bash
+# Criar build de produção
+yarn build
+
+# Iniciar servidor de produção
+yarn start
+```
+
+## 🔍 Linting e Formatação
+
+```bash
+# Verificar linting
+yarn lint
+
+# Corrigir problemas de linting
+yarn lint:fix
+
+# Formatar código
+yarn format
+```
+
+## 📝 Convenções de Código
+
+- [Conventional Commits](https://www.conventionalcommits.org/)
+- [ESLint](https://eslint.org/)
+- [Prettier](https://prettier.io/)
+
+## 🤝 Contribuindo
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 👥 Autores
+
+- Seu Nome - [@seu-usuario](https://github.com/seu-usuario)
+
+## 🙏 Agradecimentos
+
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Prisma](https://www.prisma.io/)
+- [Clerk](https://clerk.com/)
+- [Uploadthing](https://uploadthing.com/)
+- [Stripe](https://stripe.com/)

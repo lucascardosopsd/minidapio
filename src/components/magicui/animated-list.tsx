@@ -39,6 +39,8 @@ export const AnimatedList = React.memo(
 
         return () => clearInterval(interval);
       }
+      
+      return undefined; // Return undefined when isInView is false
     }, [childrenArray.length, delay, isInView]);
 
     const itemsToShow = useMemo(

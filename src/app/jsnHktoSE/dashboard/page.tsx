@@ -40,8 +40,8 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
     take: 1000000,
     query: {
       where: {
-        province: province,
         userId: userId,
+        isActive: true,
       },
     },
   });
@@ -62,7 +62,7 @@ const AdminDashboard = async ({ searchParams }: AdminDashboardProps) => {
   });
 
   const revenue = payments.reduce(
-    (prev, current) => (prev += current.value),
+    (prev, current) => (prev += current.amount),
     0
   );
 

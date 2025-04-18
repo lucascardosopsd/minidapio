@@ -3,11 +3,11 @@ import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
 import { ChevronRight, Menu } from "lucide-react";
 import { ThemeToggle } from "../misc/ThemeToggle";
 import { Button } from "../ui/button";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { getCurrentUser } from "@/hooks/useCurrentUser";
 import { cn } from "@/lib/utils";
 
 const Navbar = async () => {
-  const user = await useCurrentUser();
+  const user = await getCurrentUser();
   return (
     <>
       <div className="hidden tablet:flex px-[16px] tablet:px-[80px] desktop:px-[162px] h-20 sticky top-0 left-0 w-full backdrop-blur-md bg-background/50 z-50 border-b border-foreground/5 ">

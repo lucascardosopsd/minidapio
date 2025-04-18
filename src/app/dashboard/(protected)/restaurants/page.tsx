@@ -1,18 +1,46 @@
+import { Metadata } from "next";
+import { getCurrentUser } from "@/hooks/useCurrentUser";
+import { redirect } from "next/navigation";
+import { RestaurantList } from "@/components/restaurant/RestaurantList";
 import { fetchUserRestaurants } from "@/actions/restaurant/fetchUserRestaurants";
-import RestaurantsList from "@/components/restaurant/lists/Restaurants";
 import { fetchSubscriptionsByQuery } from "@/actions/subscription/fetchManySubscriptions";
-import { SubscriptionWithPlanProps } from "@/types/plan";
 import { planLimits } from "@/constants/planLimits";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { SubscriptionWithPlanProps } from "@/types/plan";
 
 interface CustomFetchSubscriptionsByQueryResProps {
   subscriptions: SubscriptionWithPlanProps[];
   pages: number;
 }
 
-export default async function Dashboard() {
-  const user = await useCurrentUser();
+export const metadata: Metadata = {
+  title: "Restaurantes",
+  description: "Gerencie seus restaurantes",
+};
+
+const RestaurantsPage = async () => {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/sign-in");
+  }
+
   const restaurants = await fetchUserRestaurants();
+
+  const mappedRestaurants = restaurants.map(restaurant => ({
+    ...restaurant,
+    title: restaurant.name,
+    active: restaurant.isActive,
+    landline: null,
+    whatsapp: null,
+    logo: "",
+    color: "",
+    linkMaps: null,
+    note: null,
+    activeMenu: true,
+    slug: restaurant.name.toLowerCase().replace(/\s+/g, '-'),
+    state: "",
+    province: ""
+  }));
 
   const { subscriptions } =
     await fetchSubscriptionsByQuery<CustomFetchSubscriptionsByQueryResProps>({
@@ -21,7 +49,7 @@ export default async function Dashboard() {
       query: {
         where: { userId: user?.id },
         include: {
-          Plan: true,
+          plan: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -29,11 +57,20 @@ export default async function Dashboard() {
       },
     });
 
-  const limits = planLimits[subscriptions[0]?.Plan?.alias || "free"];
+  const limits = planLimits[subscriptions[0]?.Plan?.alias || "free"]!;
 
   return (
-    <main className="flex flex-col items-center justify-center h-[calc(100svh-4rem)] gap-8 ">
-      <RestaurantsList restaurants={restaurants!} limits={limits} />
-    </main>
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-2xl font-semibold">Restaurantes</h1>
+        <p className="text-muted-foreground">
+          Gerencie seus restaurantes e cardápios
+        </p>
+      </div>
+
+      <RestaurantList restaurants={mappedRestaurants} limits={limits} />
+    </div>
   );
-}
+};
+
+export default RestaurantsPage;

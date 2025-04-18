@@ -3,7 +3,7 @@ import {
   CheckMonthlyPaymentReturnProps,
   checkMonthlySubscription,
 } from "@/actions/subscription/checkMonthlySubscription";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { getCurrentUser } from "@/hooks/useCurrentUser";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -13,7 +13,7 @@ const UpgradeButton = () => {
   );
 
   const fetchSub = async () => {
-    const user = await useCurrentUser();
+    const user = await getCurrentUser();
 
     if (!user) return;
 
@@ -54,7 +54,7 @@ const UpgradeButton = () => {
       {currentSub.type == "paid" && currentSub.remaining && (
         <Link href="/dashboard/plans">
           <span className="h-10 px-4 flex items-center justify-center bg-background border rounded-full border-primary text-sm">
-            {currentSub.subscription?.Plan?.title}
+            {currentSub.subscription?.plan?.title}
           </span>
         </Link>
       )}

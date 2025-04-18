@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { deleteManyItems } from "@/actions/item/deleteManyItems";
+import { getCurrentUser } from "@/hooks/useCurrentUser";
 
 const DeleteItemsDialog = () => {
   const { idList, setAllIds } = useItemStore();
@@ -23,6 +24,11 @@ const DeleteItemsDialog = () => {
   const handleDelete = async () => {
     setLoading(true);
     try {
+      const user = await getCurrentUser();
+      if (!user) {
+        toast.error("Usuário não encontrado");
+        return;
+      }
       await deleteManyItems(idList, pathname);
       toast("Itens deletados!");
     } catch (error) {

@@ -12,13 +12,17 @@ export const POST = async (req: Request) => {
       take: 10,
       query: {
         where: {
-          customer: refund.customer,
+          userId: refund.customer,
         },
         orderBy: {
           createdAt: "desc",
         },
       },
     });
+
+    if (!payments[0]) {
+      return Response.json({ ok: false, error: "Payment not found" });
+    }
 
     await deletePayment({
       id: payments[0].id,

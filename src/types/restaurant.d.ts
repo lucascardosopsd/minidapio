@@ -1,4 +1,4 @@
-import { Item } from "@prisma/client";
+import { MenuItem } from "@prisma/client";
 import { CategoriesWithItemsProps } from "./category";
 
 export interface PaymentMethodProps {
@@ -28,7 +28,7 @@ export interface RestaurantProps {
   whatsapp: string | null;
   address: string;
   methods: PaymentMethodProps;
-  workHours: WorkHoursProps[];
+  workHours: WorkHourProps[];
   logo: string;
   color: string;
   linkMaps: string | null;
@@ -43,7 +43,7 @@ export interface RestaurantProps {
 }
 
 export interface FullRestaurantProps extends RestaurantProps {
-  Items: Item[];
+  Items: MenuItem[];
   Categories: CategoriesWithItemsProps[];
 }
 

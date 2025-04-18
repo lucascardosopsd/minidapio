@@ -13,8 +13,8 @@ const PaymentRow = ({ payment }: PaymentRowProps) => {
 
   return (
     <TableRow>
-      <TableCell>{payment.asaasId}</TableCell>
-      <TableCell>{formatPrice(payment.value, "pt-BR", "BRL")}</TableCell>
+      <TableCell>{payment.stripeId}</TableCell>
+      <TableCell>{formatPrice(payment.amount, "pt-BR", "BRL")}</TableCell>
       <TableCell>{payment.Subscription?.Plan?.title}</TableCell>
       <TableCell>{statusI18n[payment.status]}</TableCell>
       <TableCell>{payment.createdAt.toLocaleDateString()}</TableCell>

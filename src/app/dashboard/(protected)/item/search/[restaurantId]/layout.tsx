@@ -25,7 +25,31 @@ const Layout = ({ children, params }: LayoutProps) => {
       where: {
         id: restaurantId,
       },
-    }).then((data) => setRestaurant(data[0]));
+    }).then((data) => {
+      if (data[0]) {
+        setRestaurant({
+          id: data[0].id,
+          title: data[0].name,
+          active: data[0].isActive,
+          landline: null,
+          whatsapp: null,
+          address: data[0].address,
+          methods: data[0].methods as any,
+          workHours: data[0].workHours as any,
+          logo: "",
+          color: "",
+          linkMaps: null,
+          note: data[0].description,
+          activeMenu: true,
+          slug: "",
+          createdAt: data[0].createdAt,
+          updatedAt: data[0].updatedAt,
+          userId: data[0].userId,
+          state: "",
+          province: "",
+        });
+      }
+    });
   }, []);
 
   const searchParams = useSearchParams();

@@ -1,37 +1,29 @@
-"use client";
-import { useItemFormHook } from "@/hooks/useItemForm";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../ui/form";
-import { Input } from "../../ui/input";
-import { NumericFormat } from "react-number-format";
-import { SelectItem } from "../../ui/select";
-import { z } from "zod";
-import { ItemValidator } from "@/validators/item";
-import { Checkbox } from "../../ui/checkbox";
-import Fence from "../Fence";
-import { Textarea } from "../../ui/textarea";
-import { Button } from "../../ui/button";
-import FieldBuilder from "../../builders/FieldBuilder";
-import UploadImage from "../../misc/UploadImage";
-import { useWatch } from "react-hook-form";
-import { AnimatePresence, motion } from "framer-motion";
-import SelectBuilder from "../../builders/SelectBuilder";
-import { CategoriesWithItemsProps } from "@/types/category";
-import { isEmpty } from "@/tools/isEmpty";
-import { Item } from "@prisma/client";
-import { Copy } from "lucide-react";
-import { copyToClipboard } from "@/tools/copyToClipboard";
-import Image from "next/image";
-import { useState } from "react";
+'use client';
+import { useItemFormHook } from '@/hooks/useItemForm';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form';
+import { Input } from '../../ui/input';
+import { NumericFormat } from 'react-number-format';
+import { SelectItem } from '../../ui/select';
+import { z } from 'zod';
+import { ItemValidator } from '@/validators/item';
+import { Checkbox } from '../../ui/checkbox';
+import Fence from '../Fence';
+import { Textarea } from '../../ui/textarea';
+import { Button } from '../../ui/button';
+import FieldBuilder from '../../builders/FieldBuilder';
+import UploadImage from '../../misc/UploadImage';
+import { useWatch } from 'react-hook-form';
+import { AnimatePresence, motion } from 'framer-motion';
+import SelectBuilder from '../../builders/SelectBuilder';
+import { CategoriesWithItemsProps } from '@/types/category';
+import { isEmpty } from '@/tools/isEmpty';
+import { Copy } from 'lucide-react';
+import { copyToClipboard } from '@/tools/copyToClipboard';
+import Image from 'next/image';
+import { useState } from 'react';
 
 interface ItemFormProps {
-  defaultValues?: Item;
+  defaultValues?: Partial<z.infer<typeof ItemValidator>>;
   categoryId?: string;
   loading: boolean;
   categories: CategoriesWithItemsProps[];
@@ -50,26 +42,18 @@ const ItemForm = ({
     defaultValues: defaultValues || { categoryId, active: true, order: 0 },
   });
 
-  const [imgUrl, setImgUrl] = useState("");
+  const [imgUrl, setImgUrl] = useState('');
 
   const watchSale = useWatch({
     control: form.control,
-    name: "sale",
+    name: 'sale',
     defaultValue: false,
   });
 
   return (
     <Form {...form}>
-      <form
-        className="flex flex-col gap-4"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
-        <FieldBuilder
-          control={form.control}
-          fieldElement={<Input />}
-          name="title"
-          title="Nome*"
-        />
+      <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <FieldBuilder control={form.control} fieldElement={<Input />} name="title" title="Nome*" />
 
         <FieldBuilder
           control={form.control}
@@ -92,7 +76,7 @@ const ItemForm = ({
                   maxLength={8}
                   prefix="R$"
                   placeholder="R$0,00"
-                  onValueChange={(values) => {
+                  onValueChange={values => {
                     field.onChange(values.floatValue);
                   }}
                   value={field.value}
@@ -106,7 +90,7 @@ const ItemForm = ({
 
         {!imgUrl && <UploadImage control={form.control} name="image" />}
 
-        {!imgUrl && !form.watch("image") && (
+        {!imgUrl && !form.watch('image') && (
           <FormField
             control={form.control}
             name="image"
@@ -116,7 +100,7 @@ const ItemForm = ({
                 <FormControl>
                   <Input
                     placeholder="Ou cole o link da imagem"
-                    onChange={(e) => {
+                    onChange={e => {
                       field.onChange(e.target.value);
                       setImgUrl(e.target.value);
                     }}
@@ -133,44 +117,42 @@ const ItemForm = ({
           <div className="relative">
             <Image
               alt="Imagem do produto"
-              src={form.watch("image")}
+              src={form.watch('image')}
               height={500}
               width={500}
-              className="w-full h-auto rounded"
+              className="h-auto w-full rounded"
             />
 
             <span
-              className="flex items-center opacity-0 hover:opacity-100 transition justify-center gap-2 absolute w-full h-full rounded border border-primary border-dashed z-50 top-0 bg-background/50"
+              className="absolute top-0 z-50 flex h-full w-full items-center justify-center gap-2 rounded border border-dashed border-primary bg-background/50 opacity-0 transition hover:opacity-100"
               onClick={() => {
-                form.resetField("image");
-                setImgUrl("");
+                form.resetField('image');
+                setImgUrl('');
               }}
             >
-              <p className="font-semibold select-none">substituir</p>
+              <p className="select-none font-semibold">substituir</p>
             </span>
           </div>
         )}
 
-        {form.watch("image") && defaultValues && (
+        {form.watch('image') && defaultValues && (
           <Button
             type="button"
             className="flex gap-2"
-            onClick={() =>
-              copyToClipboard(form.watch("image"), "", "Link copiado!")
-            }
+            onClick={() => copyToClipboard(form.watch('image'), '', 'Link copiado!')}
           >
             Link da Imagem <Copy />
           </Button>
         )}
 
-        {form.watch("image") && !imgUrl && (
+        {form.watch('image') && !imgUrl && (
           <Button
             type="button"
-            variant={!defaultValues ? "default" : "outline"}
+            variant={!defaultValues ? 'default' : 'outline'}
             onClick={() => {
-              form.resetField("image");
-              form.setValue("image", "");
-              setImgUrl("");
+              form.resetField('image');
+              form.setValue('image', '');
+              setImgUrl('');
             }}
           >
             Substituir por URL
@@ -183,11 +165,7 @@ const ItemForm = ({
               <FieldBuilder
                 control={form.control}
                 fieldElement={
-                  <Checkbox
-                    defaultChecked={
-                      defaultValues?.active && defaultValues?.active
-                    }
-                  />
+                  <Checkbox defaultChecked={defaultValues?.active && defaultValues?.active} />
                 }
                 name="active"
                 type="checkbox"
@@ -201,11 +179,7 @@ const ItemForm = ({
               <FieldBuilder
                 control={form.control}
                 fieldElement={
-                  <Checkbox
-                    defaultChecked={
-                      defaultValues?.highlight && defaultValues?.highlight
-                    }
-                  />
+                  <Checkbox defaultChecked={defaultValues?.highlight && defaultValues?.highlight} />
                 }
                 name="highlight"
                 type="checkbox"
@@ -219,9 +193,7 @@ const ItemForm = ({
               <FieldBuilder
                 control={form.control}
                 fieldElement={
-                  <Checkbox
-                    defaultChecked={defaultValues?.sale && defaultValues?.sale}
-                  />
+                  <Checkbox defaultChecked={defaultValues?.sale && defaultValues?.sale} />
                 }
                 name="sale"
                 type="checkbox"
@@ -251,7 +223,7 @@ const ItemForm = ({
                         maxLength={8}
                         prefix="R$"
                         placeholder="R$0,00"
-                        onValueChange={(values) => onChange(values.floatValue)}
+                        onValueChange={values => onChange(values.floatValue)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -265,8 +237,8 @@ const ItemForm = ({
         <p>Ordem</p>
         <Input
           type="number"
-          {...form.register("order", {
-            valueAsNumber: !isEmpty("order"),
+          {...form.register('order', {
+            valueAsNumber: !isEmpty('order'),
           })}
         />
 
@@ -275,21 +247,16 @@ const ItemForm = ({
             control={form.control}
             name="categoryId"
             title="Categoria*"
-            selectItem={categories.map((category) => (
+            selectItem={categories.map(category => (
               <SelectItem value={category.id}>{category.title}</SelectItem>
             ))}
             placeholder="Selecione a categoria"
           />
         </div>
 
-        <div className="flex gap-2 items-center">
-          <Button
-            variant="default"
-            className="w-full"
-            type="submit"
-            disabled={loading}
-          >
-            {defaultValues ? "Atualizar" : "Criar"}
+        <div className="flex items-center gap-2">
+          <Button variant="default" className="w-full" type="submit" disabled={loading}>
+            {defaultValues ? 'Atualizar' : 'Criar'}
           </Button>
         </div>
       </form>

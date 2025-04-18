@@ -11,4 +11,5 @@ export interface ItemProps {
   order: number | null;
   categoryId: string | null;
   restaurantId: string | null;
+  userId: string;
 }

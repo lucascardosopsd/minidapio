@@ -1,14 +1,15 @@
-import { axiosAsaas } from "@/lib/axiosAsaas";
+import { axiosStripe } from "@/lib/axiosStripe";
+import { NextResponse as Response } from "next/server";
 
-export async function GET(
+export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
-    const customer = await axiosAsaas.get(`/customers/${id}`);
+    const { data } = await axiosStripe.delete(`/subscriptions/${id}`);
 
-    return Response.json({ customer: customer.data });
+    return Response.json(data);
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log(error.message);
@@ -16,7 +17,7 @@ export async function GET(
       console.log("An unknown error occurred");
     }
 
-    return Response.json({});
+    return Response.json({ error: "Failed to cancel subscription", status: 500 });
   }
 }
 
@@ -26,11 +27,11 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
-    const data = await req.json();
+    const body = await req.json();
 
-    const customer = await axiosAsaas.put(`/customers/${id}`, data);
+    const { data } = await axiosStripe.post(`/subscriptions/${id}`, body);
 
-    return Response.json({ customer: customer.data });
+    return Response.json(data);
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log(error.message);
@@ -38,7 +39,6 @@ export async function PUT(
       console.log("An unknown error occurred");
     }
 
-    // @ts-ignore
-    return Response.json({ error: error.response.data, status: 500 });
+    return Response.json({ error: "Failed to update subscription", status: 500 });
   }
-}
+} 

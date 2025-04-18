@@ -1,36 +1,38 @@
-"use server";
-import prisma from "@/lib/prisma";
-import { Item, Prisma } from "@prisma/client";
+'use server';
+import prisma from '@/lib/prisma';
+import { MenuItem, Prisma } from '@prisma/client';
 
 interface FetchManyItemsResProps {
-  items: Item[];
-  pages: number;
+  items: MenuItem[];
+  count: number;
 }
 
-interface FetchManyItemsProps {
-  take: number;
-  page: number;
-  query?: Prisma.ItemFindManyArgs;
-}
+export const fetchManyItems = async (
+  query: Prisma.MenuItemFindManyArgs
+): Promise<FetchManyItemsResProps> => {
+  try {
+    // Ensure we include the user relationship
+    const safeQuery = {
+      ...query,
+      include: {
+        ...query.include,
+        user: true,
+      },
+    };
 
-export const fetchManyItems = async <T = FetchManyItemsResProps>({
-  page,
-  take,
-  query = {},
-}: FetchManyItemsProps): Promise<T> => {
-  const count = await prisma.item.count();
-  const pages = Math.ceil(count / take);
+    const [items, count] = await prisma.$transaction([
+      prisma.menuItem.findMany(safeQuery),
+      prisma.menuItem.count({
+        where: query.where,
+      }),
+    ]);
 
-  const skip = page * take;
-
-  const items = await prisma.item.findMany({
-    skip,
-    take,
-    ...query,
-  });
-
-  return {
-    items,
-    pages,
-  } as T;
+    return {
+      items,
+      count,
+    };
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error when fetch items');
+  }
 };

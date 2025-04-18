@@ -34,11 +34,11 @@ const NewPaymentProfilePage = async () => {
     query: {
       where: { userId: user?.id },
       include: {
-        Subscription: {
+        subscription: {
           include: {
-            Plan: {
+            plan: {
               include: {
-                Subscription: true,
+                subscriptions: true,
               },
             },
           },

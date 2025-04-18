@@ -6,17 +6,17 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import { Item } from "@prisma/client";
+import { MenuItem } from "@prisma/client";
 import { useEffect, useState } from "react";
 import ItemCard from "./cards/Item";
 
 interface FavoritesModalProps {
-  items: Item[];
+  items: MenuItem[];
   themeColor: string;
 }
 
 const FavoritesModal = ({ items, themeColor }: FavoritesModalProps) => {
-  const [favoriteList, setFavoriteList] = useState<Item[]>([] as Item[]);
+  const [favoriteList, setFavoriteList] = useState<MenuItem[]>([] as MenuItem[]);
 
   const handleFetchFavorites = () => {
     if (localStorage) {

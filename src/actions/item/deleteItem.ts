@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 export const deleteItem = async (id: string, restaurantId: string) => {
   try {
-    await prisma.item.delete({
+    await prisma.menuItem.delete({
       where: {
         id,
       },
@@ -12,6 +12,7 @@ export const deleteItem = async (id: string, restaurantId: string) => {
 
     revalidatePath("/dashboard/restaurant/" + restaurantId);
   } catch (error) {
-    throw new Error("Can't delete restaurant");
+    console.error(error);
+    throw new Error("Error when delete item");
   }
 };

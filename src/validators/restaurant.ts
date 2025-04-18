@@ -6,7 +6,7 @@ const hoursSchema = z.object({
 });
 
 const workHoursSchema = z.object({
-  weekDay: z.string({
+  weekDay: z.number({
     required_error: "Dia Obrigatório",
     invalid_type_error: "Dia obrigatório",
   }),

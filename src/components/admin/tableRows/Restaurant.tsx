@@ -8,7 +8,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { revalidateRoute } from "@/actions/revalidateRoute";
 import { deleteRestaurant } from "@/actions/restaurant/deleteRestaurant";
 import ReusableModal from "@/components/misc/ReusableModal";
-import RestaurantForm from "@/components/restaurant/forms/Restaurant";
+import { RestaurantForm } from "@/components/restaurant/forms/Restaurant";
 import { restaurantValidator } from "@/validators/restaurant";
 import { fetchUserRestaurantsByQuery } from "@/actions/restaurant/fetchUserRestaurantsByQuery";
 import { z } from "zod";

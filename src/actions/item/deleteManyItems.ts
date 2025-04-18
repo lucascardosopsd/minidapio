@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 export const deleteManyItems = async (ids: string[], path?: string) => {
   try {
-    await prisma.item.deleteMany({
+    await prisma.menuItem.deleteMany({
       where: {
         id: {
           in: ids,
@@ -12,8 +12,11 @@ export const deleteManyItems = async (ids: string[], path?: string) => {
       },
     });
 
-    if (path) revalidatePath(path);
+    if (path) {
+      revalidatePath(path);
+    }
   } catch (error) {
-    throw new Error("Can't delete items");
+    console.error(error);
+    throw new Error("Error when delete items");
   }
 };

@@ -1,34 +1,30 @@
-import { HourProps } from "@/types/hours";
+import { WorkHourProps } from '@/types/restaurant';
 
 interface GroupedHourProps {
-  weekDay: string;
+  weekDay: number;
   opened: boolean;
   times: [
     {
-      open: string;
-      close: string;
-    }
+      open: string | null;
+      close: string | null;
+    },
   ];
 }
 
-export const groupHours = (
-  restaurantHours: HourProps[]
-): GroupedHourProps[] => {
+export const groupHours = (restaurantHours: WorkHourProps[]): GroupedHourProps[] => {
   let groupedHours: GroupedHourProps[] = [];
 
-  restaurantHours.forEach((hour: HourProps) => {
-    const indexDay = groupedHours.findIndex(
-      (groupedHour) => groupedHour.weekDay == hour.weekDay
-    );
+  restaurantHours.forEach((hour: WorkHourProps) => {
+    const indexDay = groupedHours.findIndex(groupedHour => groupedHour.weekDay == hour.weekDay);
 
     if (!groupedHours[indexDay]) {
       groupedHours.push({
         weekDay: hour.weekDay,
         opened: hour.opened,
-        times: [hour?.times!],
+        times: [hour?.times],
       });
     } else {
-      groupedHours[indexDay].times.push(hour?.times!);
+      groupedHours[indexDay].times.push(hour?.times);
     }
   });
 

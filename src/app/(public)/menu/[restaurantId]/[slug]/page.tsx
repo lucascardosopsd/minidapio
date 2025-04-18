@@ -1,9 +1,10 @@
-import { fetchRestaurantsByQuery } from "@/actions/restaurant/fetchRestaurantsByQuery";
 import MenuHeader from "@/components/menu/Header";
 import NoteModal from "@/components/menu/NoteModal";
 import { checkMonthlySubscription } from "@/actions/subscription/checkMonthlySubscription";
 import { FullRestaurantProps } from "@/types/restaurant";
 import CategoryList from "@/components/menu/CategoriesList";
+import prisma from "@/lib/prisma";
+import { Category } from "@prisma/client";
 
 interface MenuProps {
   params: Promise<{
@@ -20,42 +21,56 @@ interface CustomRestaurantRes {
 const Menu = async ({ params }: MenuProps) => {
   const { restaurantId } = await params;
 
-  const { restaurants } = await fetchRestaurantsByQuery<CustomRestaurantRes>({
-    page: 0,
-    take: 10,
-    query: {
-      where: { id: restaurantId },
-      include: {
-        Items: true,
-        Categories: {
-          orderBy: {
-            order: "asc",
-          },
-          include: {
-            items: {
-              where: {
-                active: true,
-              },
-              orderBy: {
-                highlight: "desc",
-              },
-            },
-          },
+  const restaurant = await prisma.restaurant.findUnique({
+    where: { id: restaurantId },
+    include: {
+      menuItems: true,
+      categories: {
+        orderBy: {
+          order: "asc",
+        },
+        include: {
+          items: true,
         },
       },
     },
   });
 
-  if (!restaurants[0]) {
+  if (!restaurant) {
     return (
       <div className="flex items-center justify-center h-svh w-full ">
-        Restaurante não encontrado.
+        <h1 className="text-2xl font-bold">Restaurant not found</h1>
       </div>
     );
   }
 
+  // Map Prisma model to FullRestaurantProps
+  const mappedRestaurant: FullRestaurantProps = {
+    id: restaurant.id,
+    title: restaurant.name,
+    active: restaurant.isActive,
+    landline: null,
+    whatsapp: null,
+    address: restaurant.address,
+    methods: restaurant.methods as any,
+    workHours: restaurant.workHours as any,
+    logo: "",
+    color: "",
+    linkMaps: null,
+    note: restaurant.description,
+    activeMenu: true,
+    slug: "",
+    createdAt: restaurant.createdAt,
+    updatedAt: restaurant.updatedAt,
+    userId: restaurant.userId,
+    state: "",
+    province: "",
+    Items: restaurant.menuItems as any,
+    Categories: restaurant.categories as any,
+  };
+
   const currentSub = await checkMonthlySubscription({
-    userId: restaurants[0].userId!,
+    userId: restaurant.ownerId!,
   });
 
   if (currentSub.remaining == null) {
@@ -68,14 +83,14 @@ const Menu = async ({ params }: MenuProps) => {
 
   return (
     <div className="h-svh antialiased w-full overflow-hidden ">
-      {restaurants[0].note && <NoteModal restaurant={restaurants[0]} />}
-      <MenuHeader restaurant={restaurants[0]} />
+      {mappedRestaurant.note && <NoteModal restaurant={mappedRestaurant} />}
+      <MenuHeader restaurant={mappedRestaurant} />
 
       <div className="flex flex-col gap-2 h-[88svh] overflow-y-auto px-5 pb-20">
-        {restaurants[0].Categories.map((category) => (
+        {mappedRestaurant.Categories.map((category: Category) => (
           <CategoryList
             category={category}
-            themeColor={restaurants[0].color}
+            themeColor={mappedRestaurant.color}
             key={category.id}
           />
         ))}

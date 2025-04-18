@@ -34,7 +34,13 @@ const UserRow = ({ user }: UserRowProps) => {
   ) => {
     setLoading(true);
     try {
-      await updateUser({ id: user?.id!, data });
+      // Convert string role to UserRole enum
+      const userData = {
+        ...data,
+        role: data.role ? data.role.toUpperCase() as 'ADMIN' | 'USER' | 'RESTAURANT_OWNER' : undefined
+      };
+      
+      await updateUser({ id: user?.id!, data: userData });
 
       setIsModalOpen(false);
 

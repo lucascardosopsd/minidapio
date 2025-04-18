@@ -11,7 +11,11 @@ const createSubscription = async ({
   subscription,
 }: CreatesubscriptionProps) => {
   return await prisma.subscription.create({
-    data: subscription,
+    data: {
+      ...subscription,
+      currentPeriodEnd: new Date(subscription.nextDueDate || new Date().setMonth(new Date().getMonth() + 1)),
+      status: subscription.status || "active",
+    },
   });
 };
 

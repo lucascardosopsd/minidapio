@@ -47,7 +47,7 @@ export const checkMonthlySubscription = async ({
   ) {
     return {
       type: "trial",
-      lastPayMethod: payments[0]?.billingType,
+      lastPayMethod: "CREDIT_CARD",
       remaining: trialRemaining,
       subscription: null,
     };
@@ -58,7 +58,7 @@ export const checkMonthlySubscription = async ({
       type: "paid",
       remaining: null,
       subscription: null,
-      lastPayMethod: payments[0].billingType,
+      lastPayMethod: payments[0] ? "CREDIT_CARD" : "PIX",
     };
   }
 
@@ -70,15 +70,15 @@ export const checkMonthlySubscription = async ({
     return {
       type: "paid",
       remaining: null,
-      subscription: subscriptions[0],
-      lastPayMethod: payments[0].billingType,
+      subscription: subscriptions[0] || null,
+      lastPayMethod: payments[0] ? "CREDIT_CARD" : "PIX",
     };
   }
 
   return {
     type: "paid",
     remaining: paidRemaining,
-    subscription: subscriptions[0],
-    lastPayMethod: payments[0].billingType,
+    subscription: subscriptions[0] || null,
+    lastPayMethod: payments[0] ? "CREDIT_CARD" : "PIX",
   };
 };

@@ -1,37 +1,28 @@
-"use client";
+"use client";;
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Separator } from "../ui/separator";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
+import { Form, FormControl, FormItem, FormLabel } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutValidator } from "@/validators/checkout";
 import FieldBuilder from "../builders/FieldBuilder";
 import { Input } from "../ui/input";
-import { PatternFormat } from "react-number-format";
 import { Button } from "../ui/button";
 import { z } from "zod";
-import { AsaasCustomerObj } from "@/types/asaasCustomer";
+import { StripeCustomer } from "@/types/stripe";
 import axios from "axios";
 import { toast } from "sonner";
-import validator from "card-validator";
 import { useRouter } from "next/navigation";
 import { Plan, User } from "@prisma/client";
 import { useState } from "react";
-import moment from "moment";
-import createSubscription from "@/actions/subscription/createSubscription";
-import { AsaasSubscriptionResObj } from "@/types/asaasSubscriptions";
-import { revalidateRoute } from "@/actions/revalidateRoute";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 interface CheckoutCreditCardProps {
   plan: Plan;
-  customer: AsaasCustomerObj | null;
+  customer: StripeCustomer | null;
   user: User;
 }
 
@@ -42,91 +33,58 @@ const CheckoutCreditCard = ({
 }: CheckoutCreditCardProps) => {
   const [loading, setLoading] = useState(false);
   const planDescription = { __html: plan.description };
+  const stripe = useStripe();
+  const elements = useElements();
 
-  const cardForm = useForm({
-    defaultValues: {
-      holderName: "",
-      number: "",
-      month: "",
-      year: "",
-      expiry: "",
-      expiryMonth: "",
-      expiryYear: "",
-      ccv: "",
-    },
+  const form = useForm<z.infer<typeof checkoutValidator>>({
     resolver: zodResolver(checkoutValidator),
   });
 
   const router = useRouter();
 
-  const handleSubscription = async (
-    data: z.infer<typeof checkoutValidator>
-  ) => {
-    setLoading(true);
-
-    const { isValid } = validator.number(data.number);
-
-    if (!isValid) {
-      toast.error("Cartão inválido!");
-      setLoading(false);
-      return;
-    }
-
-    const { expiry, ...rest } = data;
-
-    const fullData = {
-      customer: customer?.id,
-      billingType: "CREDIT_CARD",
-      nextDueDate: moment().format("YYYY-MM-DD"),
-      value: plan.price,
-      cycle: "MONTHLY",
-      description: "Assinatura Plano Mensal Minidapio",
-      creditCard: rest,
-      creditCardHolderInfo: {
-        name: customer?.name,
-        email: customer?.email,
-        cpfCnpj: customer?.cpfCnpj,
-        postalCode: customer?.postalCode,
-        addressNumber: customer?.addressNumber,
-        addressComplement: null,
-        phone: customer?.mobilePhone,
-        mobilePhone: customer?.mobilePhone,
-      },
-    };
-
+  const handleSubscription = async (values: z.infer<typeof checkoutValidator>) => {
     try {
-      const { data: asaasRes } = await axios.post<AsaasSubscriptionResObj>(
-        `${process.env.NEXT_PUBLIC_HOST}/api/asaas/subscription`,
-        fullData
-      );
+      if (!stripe || !elements) {
+        throw new Error("Stripe has not loaded");
+      }
+      
+      setLoading(true);
 
-      await createSubscription({
-        subscription: {
-          asaasId: asaasRes.id,
-          billingType: asaasRes.billingType,
-          customerId: asaasRes.customer,
-          cycle: asaasRes.cycle,
-          dateCreated: asaasRes.dateCreated,
-          deleted: asaasRes.deleted,
-          description: asaasRes.description,
-          nextDueDate: asaasRes.nextDueDate,
-          object: asaasRes.object,
-          status: asaasRes.status,
-          value: asaasRes.value,
-          userId: user.id,
-          planId: plan.id,
-        },
+      const { data: subscription } = await axios.post('/api/stripe/subscription', {
+        customerId: customer?.id,
+        priceId: plan.stripePriceId,
+        planId: plan.id,
+        userId: user.id,
       });
 
-      toast.success("Inscrição realizada!");
+      const cardElement = elements.getElement(CardElement);
+      if (!cardElement) {
+        throw new Error("Card element not found");
+      }
 
-      revalidateRoute({ fullPath: "/" });
+      const { error: paymentMethodError, paymentMethod } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+      });
 
-      router.push("/dashboard/restaurants");
+      if (paymentMethodError) {
+        throw new Error(paymentMethodError.message);
+      }
+
+      const { error } = await stripe.confirmCardPayment(subscription.clientSecret, {
+        payment_method: paymentMethod.id,
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      toast.success('Inscrição realizada!');
+      router.push('/dashboard/restaurants');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(
-        "Ocorreu um erro ao tentar criar a assinatura, verifique as informações preenchidas."
+        'Ocorreu um erro ao tentar criar a assinatura, verifique as informações preenchidas.'
       );
     } finally {
       setLoading(false);
@@ -134,138 +92,101 @@ const CheckoutCreditCard = ({
   };
 
   return (
-    <section className="flex flex-col gap-5 justify-center items-center ">
-      <div className="flex flex-col gap-5 justify-center w-full tablet:max-w-[70svw]">
-        <Card>
-          <CardHeader>
-            <CardTitle>
-              <p className="mb-4">
-                Pagamento via{" "}
-                <span className="font-semibold text-primary">Cartão</span>
-              </p>
-            </CardTitle>
-            <Separator />
-          </CardHeader>
+    <Elements stripe={stripePromise}>
+      <section className="flex flex-col gap-5 justify-center items-center ">
+        <div className="flex flex-col gap-5 justify-center w-full tablet:max-w-[70svw]">
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                <p className="mb-4">
+                  Pagamento via{" "}
+                  <span className="font-semibold text-primary">Cartão</span>
+                </p>
+              </CardTitle>
+              <Separator />
+            </CardHeader>
 
-          <CardContent>
-            <Form {...cardForm}>
-              <form
-                className="flex flex-col tablet:flex-row gap-5"
-                onSubmit={cardForm.handleSubmit(handleSubscription)}
-              >
-                <div className="flex flex-col gap-2 flex-1">
-                  <FieldBuilder
-                    control={cardForm.control}
-                    fieldElement={<Input maxLength={100} />}
-                    name="holderName"
-                    title="Nome no cartão"
-                  />
-
-                  <div className="grid grid-cols-3 gap-5">
-                    <FormField
-                      control={cardForm.control}
-                      name="number"
-                      render={({ field }) => (
-                        <FormItem className="w-full col-span-3">
-                          <FormLabel>Número</FormLabel>
-                          <FormControl>
-                            <PatternFormat
-                              format="#### #### #### ####"
-                              placeholder="0000 0000 0000 0000"
-                              onValueChange={(values) => {
-                                field.onChange(values.value);
-                              }}
-                              value={field.value}
-                              onBlur={field.onBlur}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={cardForm.control}
-                      name="expiry"
-                      render={({ field }) => (
-                        <FormItem className="flex-1">
-                          <FormLabel>Vencimento</FormLabel>
-                          <FormControl>
-                            <PatternFormat
-                              format="##/##"
-                              placeholder="00/00"
-                              onValueChange={(values) => {
-                                const month =
-                                  values.formattedValue.split("/")[0];
-                                const year =
-                                  values.formattedValue.split("/")[1];
-
-                                cardForm.setValue("expiryMonth", month);
-                                cardForm.setValue("expiryYear", year);
-
-                                field.onChange(values.formattedValue);
-                              }}
-                              value={field.value}
-                              onBlur={field.onBlur}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
+            <CardContent>
+              <Form {...form}>
+                <form
+                  className="flex flex-col tablet:flex-row gap-5"
+                  onSubmit={form.handleSubmit(handleSubscription)}
+                >
+                  <div className="flex flex-col gap-2 flex-1">
                     <FieldBuilder
-                      control={cardForm.control}
-                      fieldElement={<Input maxLength={4} placeholder="0000" />}
-                      name="ccv"
-                      title="CCV"
+                      control={form.control}
+                      fieldElement={<Input maxLength={100} />}
+                      name="holderName"
+                      title="Nome no cartão"
                     />
-                  </div>
-                </div>
 
-                <div className="flex-1 flex flex-col gap-5">
-                  <p className="text-2xl text-primary">Resumo da compra</p>
-
-                  <div className="flex flex-col">
-                    <div className="flex justify-between items-center w-full">
-                      <p>Plano</p>
-                      <p>{plan.title}</p>
+                    <div className="grid grid-cols-3 gap-5">
+                      <FormItem className="w-full col-span-3">
+                        <FormLabel>Dados do cartão</FormLabel>
+                        <FormControl>
+                          <div className="p-3 border rounded-md">
+                            <CardElement options={{
+                              style: {
+                                base: {
+                                  fontSize: '16px',
+                                  color: '#424770',
+                                  '::placeholder': {
+                                    color: '#aab7c4',
+                                  },
+                                },
+                                invalid: {
+                                  color: '#9e2146',
+                                },
+                              },
+                            }} />
+                          </div>
+                        </FormControl>
+                      </FormItem>
                     </div>
-                    <p
-                      className="text-xs"
-                      dangerouslySetInnerHTML={planDescription}
-                    ></p>
                   </div>
 
-                  <div className="flex justify-between items-center w-full">
-                    <p>Tipo</p>
-                    <p>Recorrente</p>
+                  <div className="flex-1 flex flex-col gap-5">
+                    <p className="text-2xl text-primary">Resumo da compra</p>
+
+                    <div className="flex flex-col">
+                      <div className="flex justify-between items-center w-full">
+                        <p>Plano</p>
+                        <p>{plan.title}</p>
+                      </div>
+                      <p
+                        className="text-xs"
+                        dangerouslySetInnerHTML={planDescription}
+                      ></p>
+                    </div>
+
+                    <div className="flex justify-between items-center w-full">
+                      <p>Tipo</p>
+                      <p>Recorrente</p>
+                    </div>
+
+                    <Separator />
+
+                    <div className="flex justify-between items-center w-full  text-xl text-primary">
+                      <p>Total</p>
+                      <p>
+                        {plan.price.toLocaleString("pt-BR", {
+                          currency: "BRL",
+                          style: "currency",
+                        })}
+                      </p>
+                    </div>
+
+                    <Button type="submit" className="w-full" disabled={loading}>
+                      {loading ? 'Processando...' : 'Finalizar'}
+                    </Button>
                   </div>
-
-                  <Separator />
-
-                  <div className="flex justify-between items-center w-full  text-xl text-primary">
-                    <p>Total</p>
-                    <p>
-                      {plan.price.toLocaleString("pt-BR", {
-                        currency: "BRL",
-                        style: "currency",
-                      })}
-                    </p>
-                  </div>
-
-                  <Button type="submit" disabled={loading || !customer}>
-                    {customer
-                      ? "Finalizar"
-                      : "Salve as informações do primeiro bloco"}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+    </Elements>
   );
 };
 

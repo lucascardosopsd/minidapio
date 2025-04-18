@@ -1,15 +1,15 @@
-"use client";
-import { weekDays } from "@/constants/weekDays";
-import { useRestaurantForm } from "@/hooks/useRestaurantForm";
-import { useFieldArray, useWatch } from "react-hook-form";
-import { z } from "zod";
-import { paymentMethods } from "@/constants/paymentMethods";
-import FieldBuilder from "../../builders/FieldBuilder";
-import UploadImage from "../../misc/UploadImage";
-import SelectBuilder from "../../builders/SelectBuilder";
-import { PatternFormat } from "react-number-format";
-import Fence from "../Fence";
-import ColorPicker from "../ColorPicker";
+'use client';
+import { weekDays } from '@/constants/weekDays';
+import { useRestaurantForm } from '@/hooks/useRestaurantForm';
+import { useFieldArray, useWatch } from 'react-hook-form';
+import { z } from 'zod';
+import { paymentMethods } from '@/constants/paymentMethods';
+import FieldBuilder from '../../builders/FieldBuilder';
+import UploadImage from '../../misc/UploadImage';
+import SelectBuilder from '../../builders/SelectBuilder';
+import { PatternFormat } from 'react-number-format';
+import Fence from '../Fence';
+import ColorPicker from '../ColorPicker';
 import {
   Form,
   FormControl,
@@ -17,23 +17,23 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { restaurantValidator } from "@/validators/restaurant";
-import { ArrowDown } from "lucide-react";
-import { RestaurantProps } from "@/types/restaurant";
-import { slugGen } from "@/tools/slugGen";
-import { provinces } from "@/constants/brazilianProvinces";
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { restaurantValidator } from '@/validators/restaurant';
+import { ArrowDown } from 'lucide-react';
+import { RestaurantProps } from '@/types/restaurant';
+import { slugGen } from '@/tools/slugGen';
+import { provinces } from '@/constants/brazilianProvinces';
 
 interface RestaurantFormProps {
   defaultValues?: RestaurantProps | undefined;
@@ -41,7 +41,7 @@ interface RestaurantFormProps {
   loading: boolean;
 }
 
-const RestaurantForm = ({
+export const RestaurantForm = ({
   defaultValues = undefined,
   onSubmit,
   loading,
@@ -50,7 +50,7 @@ const RestaurantForm = ({
 
   const watchTitle = useWatch({
     control: form.control,
-    name: "title",
+    name: 'title',
   });
 
   const {
@@ -58,15 +58,15 @@ const RestaurantForm = ({
     append: appendWorkHour,
     remove: removeWorkHour,
   } = useFieldArray({
-    name: "workHours",
+    name: 'workHours',
     control: form.control,
   });
 
   const handleAppendWorkHour = () => {
     appendWorkHour({
-      weekDay: weekDays[0].value,
+      weekDay: weekDays[0]?.value || 0,
       opened: true,
-      times: { open: "", close: "" },
+      times: { open: '', close: '' },
     });
   };
 
@@ -74,20 +74,13 @@ const RestaurantForm = ({
     <Form {...form}>
       <form
         // lock slug of update
-        onSubmit={form.handleSubmit((data) =>
-          !defaultValues
-            ? onSubmit(data)
-            : onSubmit({ ...data, slug: defaultValues.slug })
+        onSubmit={form.handleSubmit(data =>
+          !defaultValues ? onSubmit(data) : onSubmit({ ...data, slug: defaultValues.slug })
         )}
-        className="space-y-4 pb-10 relative max-w-[500px] w-full mx-auto"
+        className="relative mx-auto w-full max-w-[500px] space-y-4 pb-10"
       >
         {/* Basic */}
-        <FieldBuilder
-          control={form.control}
-          fieldElement={<Input />}
-          name="title"
-          title="Nome*"
-        />
+        <FieldBuilder control={form.control} fieldElement={<Input />} name="title" title="Nome*" />
 
         <Fence className="flex-col !items-start">
           <FieldBuilder
@@ -131,13 +124,13 @@ const RestaurantForm = ({
         </div>
 
         {/* Methods */}
-        <div className="border border-border p-2 rounded space-y-4 flex flex-col">
+        <div className="flex flex-col space-y-4 rounded border border-border p-2">
           <p>Métodos de Pagamento*</p>
 
           <div className="grid grid-cols-2 gap-2">
             {paymentMethods.map((method, index) => (
               <div
-                className="flex items-center gap-2 p-2 border border-primary rounded "
+                className="flex items-center gap-2 rounded border border-primary p-2 "
                 key={index}
               >
                 <div>
@@ -148,7 +141,7 @@ const RestaurantForm = ({
                     name={`methods.${method.label}`}
                   />
                 </div>
-                <p className="w-full text-start flex-1">{method.title}</p>
+                <p className="w-full flex-1 text-start">{method.title}</p>
               </div>
             ))}
           </div>
@@ -159,11 +152,11 @@ const RestaurantForm = ({
           control={form.control}
           name="state"
           selectItem={Object.keys(provinces)
-            .map((uf) => ({
-              label: provinces[uf].title,
+            .map(uf => ({
+              label: provinces[uf]!.title,
               value: uf,
             }))
-            .map((option) => (
+            .map(option => (
               <SelectItem value={option.value} key={option.value}>
                 {option.label}
               </SelectItem>
@@ -174,22 +167,23 @@ const RestaurantForm = ({
           title="Cidade"
           control={form.control}
           name="province"
-          selectItem={provinces[form.watch("state")].provinces
-            .map((province) => ({ label: province, value: province }))
-            .map((option) => (
-              <SelectItem value={option.value} key={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
+          selectItem={provinces[form.watch('state')]!.provinces.map(province => ({
+            label: province,
+            value: province,
+          })).map(option => (
+            <SelectItem value={option.value} key={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         />
 
         {/* Hours */}
-        <div className="border border-border p-2 rounded-lg space-y-4 flex flex-col">
+        <div className="flex flex-col space-y-4 rounded-lg border border-border p-2">
           <p>Horários*</p>
 
           {workHoursFields.map((field, index) => (
             <span key={field.id}>
-              <div className="flex flex-col gap-2 border border-primary rounded-lg p-2">
+              <div className="flex flex-col gap-2 rounded-lg border border-primary p-2">
                 <FormField
                   control={form.control}
                   name={`workHours.${index}.weekDay`}
@@ -197,8 +191,8 @@ const RestaurantForm = ({
                     <FormItem>
                       <FormLabel>Dia</FormLabel>
                       <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
+                        value={field.value?.toString() || ''}
+                        onValueChange={value => field.onChange(parseInt(value))}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -206,8 +200,8 @@ const RestaurantForm = ({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {weekDays.map((day) => (
-                            <SelectItem value={day.value} key={day.id}>
+                          {weekDays.map(day => (
+                            <SelectItem key={day.id} value={day.value.toString()}>
                               {day.name}
                             </SelectItem>
                           ))}
@@ -246,11 +240,7 @@ const RestaurantForm = ({
                   <p>Aberto</p>
                 </div>
 
-                <Button
-                  variant="destructive"
-                  onClick={() => removeWorkHour(index)}
-                  type="button"
-                >
+                <Button variant="destructive" onClick={() => removeWorkHour(index)} type="button">
                   Remover
                 </Button>
 
@@ -290,27 +280,15 @@ const RestaurantForm = ({
         />
 
         {watchTitle && (
-          <input
-            type="text"
-            {...form.register("slug")}
-            value={slugGen(watchTitle)}
-            hidden
-          />
+          <input type="text" {...form.register('slug')} value={slugGen(watchTitle)} hidden />
         )}
 
-        <div className="flex gap-2 items-center">
-          <Button
-            variant="default"
-            className="w-full"
-            type="submit"
-            disabled={loading}
-          >
-            {defaultValues ? "Atualizar" : "Criar"}
+        <div className="flex items-center gap-2">
+          <Button variant="default" className="w-full" type="submit" disabled={loading}>
+            {defaultValues ? 'Atualizar' : 'Criar'}
           </Button>
         </div>
       </form>
     </Form>
   );
 };
-
-export default RestaurantForm;

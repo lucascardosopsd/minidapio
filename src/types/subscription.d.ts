@@ -3,7 +3,7 @@ import { WithProperty } from "./common";
 
 export interface NewSubscriptionProps {
   object?: string;
-  asaasId?: string;
+  stripeId?: string;
   dateCreated: string;
   customerId: string;
   value: number;

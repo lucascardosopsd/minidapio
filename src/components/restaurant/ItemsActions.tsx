@@ -7,10 +7,10 @@ import { CategoriesWithItemsProps } from "@/types/category";
 import { Checkbox } from "../ui/checkbox";
 import DeleteItemsDialog from "./dialogs/DeleteItems";
 import DuplicateItemsDialog from "./dialogs/DuplicateItems";
-import { Item } from "@prisma/client";
+import { MenuItem } from "@prisma/client";
 
 interface ItemsActionsProps {
-  items: Item[];
+  items: MenuItem[];
   categories: CategoriesWithItemsProps[];
   visible?: boolean;
 }

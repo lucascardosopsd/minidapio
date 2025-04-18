@@ -1,8 +1,7 @@
-"use server";
-import { z } from "zod";
-import prisma from "@/lib/prisma";
-import { categoryValidator } from "@/validators/category";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+'use server';
+import { z } from 'zod';
+import prisma from '@/lib/prisma';
+import { categoryValidator } from '@/validators/category';
 
 interface UpdateCategoryProps {
   data: z.infer<typeof categoryValidator>;
@@ -10,19 +9,22 @@ interface UpdateCategoryProps {
 }
 
 export const updateCategory = async ({ data, id }: UpdateCategoryProps) => {
-  const user = await useCurrentUser();
-
   try {
-    await prisma.category.update({
+    const updatedCategory = await prisma.category.update({
       where: {
         id,
       },
       data: {
-        ...data,
-        userId: user?.id,
+        title: data.title,
+        order: data.order ?? undefined,
+        active: data.active,
+        restaurantId: data.restaurantId,
       },
     });
+
+    return updatedCategory;
   } catch (error) {
-    throw new Error("Can't update item");
+    console.error(error);
+    throw new Error('Error when update category');
   }
 };

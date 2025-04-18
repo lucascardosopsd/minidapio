@@ -1,30 +1,36 @@
-"use client";
-import { Checkbox } from "../../ui/checkbox";
-import ItemForm from "../forms/Item";
-import { useItemStore } from "@/context/item";
-import { Badge } from "../../ui/badge";
-import { Category, Item } from "@prisma/client";
-import { TableCell, TableRow } from "@/components/ui/table";
-import { useEffect, useRef, useState } from "react";
-import { updateItem } from "@/actions/item/updateItem";
-import { z } from "zod";
-import { ItemValidator } from "@/validators/item";
-import { toast } from "sonner";
-import { FaPen } from "react-icons/fa6";
-import { revalidateRoute } from "@/actions/revalidateRoute";
-import { usePathname } from "next/navigation";
-import ReusableSheet from "@/components/misc/ReusableSheet";
-import Image from "next/image";
-import { NumericFormat } from "react-number-format";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+'use client';
+import { Checkbox } from '../../ui/checkbox';
+import ItemForm from '../forms/Item';
+import { useItemStore } from '@/context/item';
+import { Badge } from '../../ui/badge';
+import { Category, MenuItem } from '@prisma/client';
+import { TableCell, TableRow } from '@/components/ui/table';
+import { useEffect, useRef, useState } from 'react';
+import { updateItem } from '@/actions/item/updateItem';
+import { z } from 'zod';
+import { ItemValidator } from '@/validators/item';
+import { toast } from 'sonner';
+import { FaPen } from 'react-icons/fa6';
+import { revalidateRoute } from '@/actions/revalidateRoute';
+import { usePathname } from 'next/navigation';
+import ReusableSheet from '@/components/misc/ReusableSheet';
+import Image from 'next/image';
+import { NumericFormat } from 'react-number-format';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
+// Extended type with additional properties
+type ExtendedMenuItem = MenuItem & {
+  title?: string;
+  image?: string;
+  order?: number;
+  sale?: boolean;
+  salePrice?: number;
+  highlight?: boolean;
+  active?: boolean;
+};
 
 interface ItemRowProps {
-  item: Item;
+  item: ExtendedMenuItem;
   categories: Category[];
 }
 
@@ -48,17 +54,18 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
     if (item.salePrice) setSalePrice(item.salePrice);
   }, [item.price]);
 
-  const handleUpdateItem = async (
-    data: Partial<z.infer<typeof ItemValidator>>
-  ) => {
+  const handleUpdateItem = async (data: Partial<z.infer<typeof ItemValidator>>) => {
     setLoading(true);
     try {
-      await updateItem({ data, id: item.id });
-      toast.success("Item Atualizado!");
+      await updateItem({
+        data: data as z.infer<typeof ItemValidator>,
+        id: item.id,
+      });
+      toast.success('Item Atualizado!');
       revalidateRoute({ fullPath: pathname });
     } catch (error) {
-      toast.error("Ocorreu um erro.");
-      throw new Error("Error when create/update new item");
+      toast.error('Ocorreu um erro.');
+      throw new Error('Error when create/update new item');
     } finally {
       setOpen(false);
       setLoading(false);
@@ -68,10 +75,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
   return (
     <TableRow>
       <TableCell>
-        <Checkbox
-          onClick={() => toggleId(item.id)}
-          checked={idList.some((id) => item.id == id)}
-        />
+        <Checkbox onClick={() => toggleId(item.id)} checked={idList.some(id => item.id == id)} />
       </TableCell>
 
       <TableCell>
@@ -92,15 +96,15 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         <div className="flex items-center">
           <p>{item.title}</p>
 
-          <p className="text-primary text-xs ml-1">[{item.order!}]</p>
+          <p className="ml-1 text-xs text-primary">[{item.order!}]</p>
         </div>
       </TableCell>
 
       <TableCell>
         {item.description ? (
-          <Badge className="w-full flex justify-center">Sim</Badge>
+          <Badge className="flex w-full justify-center">Sim</Badge>
         ) : (
-          <Badge variant="outline" className="w-full flex justify-center">
+          <Badge variant="outline" className="flex w-full justify-center">
             Não
           </Badge>
         )}
@@ -110,7 +114,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         {item.price ? (
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="flex items-center justify-center mx-auto">
+              <TooltipTrigger className="mx-auto flex items-center justify-center">
                 <NumericFormat
                   decimalSeparator=","
                   valueIsNumericString
@@ -118,13 +122,13 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
                   maxLength={8}
                   prefix="R$"
                   placeholder="R$0,00"
-                  onValueChange={(values) => setPrice(values.floatValue!)}
+                  onValueChange={values => setPrice(values.floatValue!)}
                   value={price}
-                  onKeyDown={(e) => {
-                    if (e.key == "Enter") {
+                  onKeyDown={e => {
+                    if (e.key == 'Enter') {
                       priceRef?.current && priceRef.current.blur();
 
-                      if (typeof price == "undefined") {
+                      if (typeof price == 'undefined') {
                         handleUpdateItem({ price: 0 });
                         return;
                       }
@@ -133,7 +137,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
                     }
                   }}
                   getInputRef={priceRef}
-                  className="max-w-32 text-center !rounded-full"
+                  className="max-w-32 !rounded-full text-center"
                 />
               </TooltipTrigger>
               <TooltipContent>
@@ -150,7 +154,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
         {item.sale ? (
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="flex items-center justify-center mx-auto">
+              <TooltipTrigger className="mx-auto flex items-center justify-center">
                 <NumericFormat
                   decimalSeparator=","
                   valueIsNumericString
@@ -158,21 +162,19 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
                   maxLength={8}
                   prefix="R$"
                   placeholder="R$0,00"
-                  onValueChange={(values) => setSalePrice(values.floatValue!)}
+                  onValueChange={values => setSalePrice(values.floatValue!)}
                   value={salePrice}
-                  onKeyDown={(e) => {
-                    if (e.key == "Enter") {
+                  onKeyDown={e => {
+                    if (e.key == 'Enter') {
                       saleRef?.current && saleRef.current.blur();
 
-                      if (typeof salePrice == "undefined") {
+                      if (typeof salePrice == 'undefined') {
                         handleUpdateItem({ salePrice: 0 });
                         return;
                       }
 
                       if (salePrice >= price) {
-                        toast.error(
-                          "Preço da promoção precisa ser menor que o preço do produto."
-                        );
+                        toast.error('Preço da promoção precisa ser menor que o preço do produto.');
 
                         return;
                       }
@@ -181,7 +183,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
                     }
                   }}
                   getInputRef={saleRef}
-                  className="max-w-32 text-center !rounded-full"
+                  className="max-w-32 !rounded-full text-center"
                 />
               </TooltipTrigger>
               <TooltipContent>
@@ -190,10 +192,7 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
             </Tooltip>
           </TooltipProvider>
         ) : (
-          <Badge
-            variant="outline"
-            className="flex justify-center max-w-32 mx-auto py-3"
-          >
+          <Badge variant="outline" className="mx-auto flex max-w-32 justify-center py-3">
             Não
           </Badge>
         )}
@@ -201,14 +200,9 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
 
       <TableCell>
         {item.highlight ? (
-          <Badge className="w-full max-w-32 mx-auto flex justify-center">
-            Destaque
-          </Badge>
+          <Badge className="mx-auto flex w-full max-w-32 justify-center">Destaque</Badge>
         ) : (
-          <Badge
-            variant="outline"
-            className="w-full max-w-32 mx-auto flex justify-center"
-          >
+          <Badge variant="outline" className="mx-auto flex w-full max-w-32 justify-center">
             Não
           </Badge>
         )}
@@ -216,14 +210,9 @@ const ItemRow = ({ item, categories }: ItemRowProps) => {
 
       <TableCell>
         {item.active ? (
-          <Badge className="w-full max-w-32 mx-auto flex justify-center">
-            Ativo
-          </Badge>
+          <Badge className="mx-auto flex w-full max-w-32 justify-center">Ativo</Badge>
         ) : (
-          <Badge
-            variant="outline"
-            className="w-full max-w-32 mx-auto flex justify-center"
-          >
+          <Badge variant="outline" className="mx-auto flex w-full max-w-32 justify-center">
             Inativo
           </Badge>
         )}
